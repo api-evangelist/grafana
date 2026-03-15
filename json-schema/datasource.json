@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.github.io/grafana/json-schema/datasource.json",
+  "title": "Grafana Data Source Configuration",
+  "description": "Schema for a Grafana data source configuration, defining connection details and type-specific settings for backends such as Prometheus, MySQL, Elasticsearch, Loki, and others.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Auto-generated numeric ID"
+    },
+    "uid": {
+      "type": "string",
+      "description": "Unique identifier that can be set by the client for stable cross-instance references",
+      "maxLength": 40
+    },
+    "orgId": {
+      "type": "integer",
+      "description": "Organization ID the data source belongs to"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name, must be unique within the org"
+    },
+    "type": {
+      "type": "string",
+      "description": "Data source plugin type identifier",
+      "examples": [
+        "prometheus", "loki", "elasticsearch", "mysql", "postgres",
+        "mssql", "influxdb", "graphite", "cloudwatch", "stackdriver",
+        "azure-monitor", "tempo", "jaeger", "zipkin", "opentsdb",
+        "testdata", "grafana-pyroscope-datasource"
+      ]
+    },
+    "access": {
+      "type": "string",
+      "enum": ["proxy", "direct"],
+      "default": "proxy",
+      "description": "Access mode: proxy (server-side) or direct (browser-side, deprecated)"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL of the data source backend"
+    },
+    "user": {
+      "type": "string",
+      "description": "Username for data source authentication"
+    },
+    "database": {
+      "type": "string",
+      "description": "Default database name"
+    },
+    "basicAuth": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether basic auth is enabled for the data source connection"
+    },
+    "basicAuthUser": {
+      "type": "string",
+      "description": "Basic auth username"
+    },
+    "withCredentials": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether to send credentials (cookies, auth headers) with cross-site requests"
+    },
+    "isDefault": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this is the default data source for the organization"
+    },
+    "readOnly": {
+      "type": "boolean",
+      "description": "Whether the data source was provisioned and cannot be modified via the UI"
+    },
+    "version": {
+      "type": "integer",
+      "description": "Version number for optimistic locking"
+    },
+    "jsonData": {
+      "type": "object",
+      "description": "Data-source-type-specific configuration stored as JSON",
+      "properties": {
+        "httpMethod": {
+          "type": "string",
+          "enum": ["GET", "POST"],
+          "description": "HTTP method for queries (Prometheus)"
+        },
+        "timeInterval": {
+          "type": "string",
+          "description": "Minimum scrape interval (Prometheus)"
+        },
+        "queryTimeout": {
+          "type": "string",
+          "description": "Query timeout"
+        },
+        "tlsAuth": { "type": "boolean" },
+        "tlsAuthWithCACert": { "type": "boolean" },
+        "tlsSkipVerify": { "type": "boolean" },
+        "oauthPassThru": { "type": "boolean" },
+        "timeout": { "type": "integer" },
+        "esVersion": {
+          "type": "string",
+          "description": "Elasticsearch version"
+        },
+        "timeField": {
+          "type": "string",
+          "description": "Default time field (Elasticsearch)"
+        },
+        "maxConcurrentShardRequests": {
+          "type": "integer",
+          "description": "Max concurrent shard requests (Elasticsearch)"
+        },
+        "logMessageField": {
+          "type": "string",
+          "description": "Log message field name (Elasticsearch)"
+        },
+        "logLevelField": {
+          "type": "string",
+          "description": "Log level field name (Elasticsearch)"
+        },
+        "derivedFields": {
+          "type": "array",
+          "description": "Derived fields for Loki",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "matcherRegex": { "type": "string" },
+              "url": { "type": "string" },
+              "datasourceUid": { "type": "string" }
+            }
+          }
+        },
+        "maxLines": {
+          "type": "integer",
+          "description": "Maximum log lines to return (Loki)"
+        },
+        "tracesToLogs": {
+          "type": "object",
+          "description": "Trace to logs correlation settings"
+        },
+        "serviceMap": {
+          "type": "object",
+          "description": "Service map settings (Tempo)"
+        },
+        "nodeGraph": {
+          "type": "object",
+          "description": "Node graph settings"
+        },
+        "alertmanagerUid": {
+          "type": "string"
+        },
+        "manageAlerts": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "secureJsonData": {
+      "type": "object",
+      "description": "Sensitive configuration fields (passwords, tokens) - write-only, never returned by the API",
+      "properties": {
+        "password": { "type": "string" },
+        "basicAuthPassword": { "type": "string" },
+        "tlsCACert": { "type": "string" },
+        "tlsClientCert": { "type": "string" },
+        "tlsClientKey": { "type": "string" },
+        "accessKey": { "type": "string" },
+        "secretKey": { "type": "string" },
+        "httpHeaderValue1": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "secureJsonFields": {
+      "type": "object",
+      "description": "Indicates which secure fields are set (returned by GET). Keys are field names, values are boolean true.",
+      "additionalProperties": {
+        "type": "boolean"
+      }
+    }
+  },
+  "required": ["name", "type", "access"]
+}

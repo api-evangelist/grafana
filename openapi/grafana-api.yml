@@ -1,0 +1,1879 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP API
+  description: >-
+    The Grafana HTTP API provides programmatic access to Grafana's core
+    functionality including dashboards, data sources, alerts, users,
+    organizations, folders, annotations, and teams. Authentication is
+    handled via API keys, basic auth, or OAuth tokens passed in the
+    Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+
+servers:
+  - url: https://{instance}.grafana.net/api
+    description: Grafana Cloud
+    variables:
+      instance:
+        default: your-instance
+  - url: http://localhost:3000/api
+    description: Local Grafana instance
+
+security:
+  - BearerAuth: []
+  - BasicAuth: []
+  - ApiKeyAuth: []
+
+tags:
+  - name: Dashboards
+    description: Manage dashboards
+  - name: Data Sources
+    description: Manage data source connections
+  - name: Alerts
+    description: Alerting rules and notifications
+  - name: Users
+    description: User management
+  - name: Organizations
+    description: Organization management
+  - name: Folders
+    description: Dashboard folder management
+  - name: Annotations
+    description: Dashboard annotations
+  - name: Teams
+    description: Team management
+
+paths:
+  # ── Dashboards ──────────────────────────────────────────────
+  /dashboards/db:
+    post:
+      tags: [Dashboards]
+      operationId: createUpdateDashboard
+      summary: Create or update a dashboard
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveDashboardCommand'
+      responses:
+        '200':
+          description: Dashboard saved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaveDashboardResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /dashboards/uid/{uid}:
+    get:
+      tags: [Dashboards]
+      operationId: getDashboardByUid
+      summary: Get dashboard by UID
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Dashboard found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardFullWithMeta'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Dashboards]
+      operationId: deleteDashboardByUid
+      summary: Delete dashboard by UID
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Dashboard deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /search:
+    get:
+      tags: [Dashboards]
+      operationId: searchDashboards
+      summary: Search dashboards and folders
+      parameters:
+        - name: query
+          in: query
+          schema:
+            type: string
+        - name: tag
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [dash-folder, dash-db]
+        - name: folderIds
+          in: query
+          schema:
+            type: array
+            items:
+              type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 1000
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardSearchHit'
+
+  # ── Data Sources ────────────────────────────────────────────
+  /datasources:
+    get:
+      tags: [Data Sources]
+      operationId: getDataSources
+      summary: List all data sources
+      responses:
+        '200':
+          description: Data sources list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataSource'
+    post:
+      tags: [Data Sources]
+      operationId: createDataSource
+      summary: Create a data source
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDataSourceCommand'
+      responses:
+        '200':
+          description: Data source created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSource'
+        '409':
+          description: Data source with same name already exists
+
+  /datasources/{id}:
+    get:
+      tags: [Data Sources]
+      operationId: getDataSourceById
+      summary: Get data source by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Data source found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSource'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Data Sources]
+      operationId: updateDataSource
+      summary: Update data source by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDataSourceCommand'
+      responses:
+        '200':
+          description: Data source updated
+    delete:
+      tags: [Data Sources]
+      operationId: deleteDataSourceById
+      summary: Delete data source by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Data source deleted
+
+  /datasources/uid/{uid}:
+    get:
+      tags: [Data Sources]
+      operationId: getDataSourceByUid
+      summary: Get data source by UID
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Data source found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSource'
+
+  # ── Alert Rules (Unified Alerting) ─────────────────────────
+  /v1/provisioning/alert-rules:
+    get:
+      tags: [Alerts]
+      operationId: getAlertRules
+      summary: List all alert rules
+      responses:
+        '200':
+          description: Alert rules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AlertRule'
+    post:
+      tags: [Alerts]
+      operationId: createAlertRule
+      summary: Create an alert rule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertRule'
+      responses:
+        '201':
+          description: Alert rule created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertRule'
+
+  /v1/provisioning/alert-rules/{uid}:
+    get:
+      tags: [Alerts]
+      operationId: getAlertRule
+      summary: Get alert rule by UID
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Alert rule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertRule'
+    put:
+      tags: [Alerts]
+      operationId: updateAlertRule
+      summary: Update alert rule
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertRule'
+      responses:
+        '200':
+          description: Alert rule updated
+    delete:
+      tags: [Alerts]
+      operationId: deleteAlertRule
+      summary: Delete alert rule
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Alert rule deleted
+
+  /v1/provisioning/contact-points:
+    get:
+      tags: [Alerts]
+      operationId: getContactPoints
+      summary: List contact points
+      responses:
+        '200':
+          description: Contact points
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContactPoint'
+    post:
+      tags: [Alerts]
+      operationId: createContactPoint
+      summary: Create a contact point
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactPoint'
+      responses:
+        '202':
+          description: Contact point created
+
+  # ── Users ───────────────────────────────────────────────────
+  /admin/users:
+    post:
+      tags: [Users]
+      operationId: adminCreateUser
+      summary: Create a new user (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserCommand'
+      responses:
+        '200':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUserResponse'
+
+  /users:
+    get:
+      tags: [Users]
+      operationId: searchUsers
+      summary: Search users
+      parameters:
+        - name: perpage
+          in: query
+          schema:
+            type: integer
+            default: 1000
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: query
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Users found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserSearchHit'
+
+  /users/{id}:
+    get:
+      tags: [Users]
+      operationId: getUserById
+      summary: Get user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags: [Users]
+      operationId: updateUser
+      summary: Update user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserCommand'
+      responses:
+        '200':
+          description: User updated
+
+  /user:
+    get:
+      tags: [Users]
+      operationId: getCurrentUser
+      summary: Get current user
+      responses:
+        '200':
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  # ── Organizations ───────────────────────────────────────────
+  /orgs:
+    get:
+      tags: [Organizations]
+      operationId: searchOrgs
+      summary: Search organizations
+      parameters:
+        - name: query
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: perpage
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Organizations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization'
+    post:
+      tags: [Organizations]
+      operationId: createOrg
+      summary: Create organization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrgCommand'
+      responses:
+        '200':
+          description: Organization created
+
+  /orgs/{orgId}:
+    get:
+      tags: [Organizations]
+      operationId: getOrgById
+      summary: Get organization by ID
+      parameters:
+        - name: orgId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Organization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+    put:
+      tags: [Organizations]
+      operationId: updateOrg
+      summary: Update organization
+      parameters:
+        - name: orgId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrgCommand'
+      responses:
+        '200':
+          description: Organization updated
+    delete:
+      tags: [Organizations]
+      operationId: deleteOrg
+      summary: Delete organization
+      parameters:
+        - name: orgId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Organization deleted
+
+  /orgs/{orgId}/users:
+    get:
+      tags: [Organizations]
+      operationId: getOrgUsers
+      summary: Get users in organization
+      parameters:
+        - name: orgId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Organization users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrgUser'
+    post:
+      tags: [Organizations]
+      operationId: addOrgUser
+      summary: Add user to organization
+      parameters:
+        - name: orgId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddOrgUserCommand'
+      responses:
+        '200':
+          description: User added
+
+  # ── Folders ─────────────────────────────────────────────────
+  /folders:
+    get:
+      tags: [Folders]
+      operationId: getFolders
+      summary: List all folders
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 1000
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Folders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Folder'
+    post:
+      tags: [Folders]
+      operationId: createFolder
+      summary: Create a folder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFolderCommand'
+      responses:
+        '200':
+          description: Folder created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Folder'
+
+  /folders/{uid}:
+    get:
+      tags: [Folders]
+      operationId: getFolderByUid
+      summary: Get folder by UID
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Folder
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Folder'
+    put:
+      tags: [Folders]
+      operationId: updateFolder
+      summary: Update folder
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFolderCommand'
+      responses:
+        '200':
+          description: Folder updated
+    delete:
+      tags: [Folders]
+      operationId: deleteFolder
+      summary: Delete folder
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Folder deleted
+
+  # ── Annotations ─────────────────────────────────────────────
+  /annotations:
+    get:
+      tags: [Annotations]
+      operationId: getAnnotations
+      summary: Find annotations
+      parameters:
+        - name: from
+          in: query
+          schema:
+            type: integer
+            description: Epoch timestamp in milliseconds
+        - name: to
+          in: query
+          schema:
+            type: integer
+        - name: dashboardId
+          in: query
+          schema:
+            type: integer
+        - name: panelId
+          in: query
+          schema:
+            type: integer
+        - name: tags
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: Annotations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Annotation'
+    post:
+      tags: [Annotations]
+      operationId: createAnnotation
+      summary: Create annotation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnnotationCommand'
+      responses:
+        '200':
+          description: Annotation created
+
+  /annotations/{id}:
+    delete:
+      tags: [Annotations]
+      operationId: deleteAnnotation
+      summary: Delete annotation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Annotation deleted
+
+  # ── Teams ───────────────────────────────────────────────────
+  /teams/search:
+    get:
+      tags: [Teams]
+      operationId: searchTeams
+      summary: Search teams
+      parameters:
+        - name: query
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: perpage
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Teams
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamSearchResult'
+
+  /teams:
+    post:
+      tags: [Teams]
+      operationId: createTeam
+      summary: Create team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTeamCommand'
+      responses:
+        '200':
+          description: Team created
+
+  /teams/{id}:
+    get:
+      tags: [Teams]
+      operationId: getTeamById
+      summary: Get team by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Team
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+    put:
+      tags: [Teams]
+      operationId: updateTeam
+      summary: Update team
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTeamCommand'
+      responses:
+        '200':
+          description: Team updated
+    delete:
+      tags: [Teams]
+      operationId: deleteTeam
+      summary: Delete team
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Team deleted
+
+  /teams/{id}/members:
+    get:
+      tags: [Teams]
+      operationId: getTeamMembers
+      summary: Get team members
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Team members
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamMember'
+    post:
+      tags: [Teams]
+      operationId: addTeamMember
+      summary: Add team member
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddTeamMemberCommand'
+      responses:
+        '200':
+          description: Member added
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'
+
+  responses:
+    Unauthorized:
+      description: Unauthorized - invalid or missing authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Forbidden - insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: string
+
+    # ── Dashboard Schemas ───────────────────────────────────
+    SaveDashboardCommand:
+      type: object
+      required: [dashboard]
+      properties:
+        dashboard:
+          $ref: '#/components/schemas/Dashboard'
+        folderId:
+          type: integer
+          description: Deprecated - use folderUid
+        folderUid:
+          type: string
+        overwrite:
+          type: boolean
+          default: false
+        message:
+          type: string
+          description: Commit message for version history
+
+    SaveDashboardResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        uid:
+          type: string
+        url:
+          type: string
+        status:
+          type: string
+        version:
+          type: integer
+        slug:
+          type: string
+
+    DashboardFullWithMeta:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/DashboardMeta'
+        dashboard:
+          $ref: '#/components/schemas/Dashboard'
+
+    DashboardMeta:
+      type: object
+      properties:
+        isStarred:
+          type: boolean
+        slug:
+          type: string
+        url:
+          type: string
+        folderId:
+          type: integer
+        folderUid:
+          type: string
+        folderTitle:
+          type: string
+        folderUrl:
+          type: string
+        canSave:
+          type: boolean
+        canEdit:
+          type: boolean
+        canAdmin:
+          type: boolean
+        canStar:
+          type: boolean
+        canDelete:
+          type: boolean
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        version:
+          type: integer
+        provisioned:
+          type: boolean
+        provisionedExternalId:
+          type: string
+
+    Dashboard:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: true
+          description: Null when creating a new dashboard
+        uid:
+          type: string
+        title:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        timezone:
+          type: string
+          default: browser
+        schemaVersion:
+          type: integer
+        version:
+          type: integer
+        refresh:
+          type: string
+          description: 'Auto-refresh interval, e.g. 5s, 1m, 1h'
+        time:
+          type: object
+          properties:
+            from:
+              type: string
+            to:
+              type: string
+        timepicker:
+          type: object
+          properties:
+            refresh_intervals:
+              type: array
+              items:
+                type: string
+            time_options:
+              type: array
+              items:
+                type: string
+        templating:
+          type: object
+          properties:
+            list:
+              type: array
+              items:
+                $ref: '#/components/schemas/TemplateVariable'
+        annotations:
+          type: object
+          properties:
+            list:
+              type: array
+              items:
+                type: object
+        panels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Panel'
+        editable:
+          type: boolean
+          default: true
+        fiscalYearStartMonth:
+          type: integer
+        graphTooltip:
+          type: integer
+          enum: [0, 1, 2]
+          description: '0: default, 1: shared crosshair, 2: shared tooltip'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardLink'
+        liveNow:
+          type: boolean
+
+    Panel:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          description: 'Panel plugin type, e.g. timeseries, stat, gauge, table, barchart, etc.'
+        title:
+          type: string
+        description:
+          type: string
+        gridPos:
+          type: object
+          properties:
+            h:
+              type: integer
+            w:
+              type: integer
+            x:
+              type: integer
+            'y':
+              type: integer
+        datasource:
+          type: object
+          properties:
+            type:
+              type: string
+            uid:
+              type: string
+        targets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Target'
+        fieldConfig:
+          type: object
+          properties:
+            defaults:
+              type: object
+              properties:
+                unit:
+                  type: string
+                min:
+                  type: number
+                max:
+                  type: number
+                decimals:
+                  type: integer
+                thresholds:
+                  type: object
+                  properties:
+                    mode:
+                      type: string
+                      enum: [absolute, percentage]
+                    steps:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          color:
+                            type: string
+                          value:
+                            type: number
+                            nullable: true
+                color:
+                  type: object
+                  properties:
+                    mode:
+                      type: string
+                mappings:
+                  type: array
+                  items:
+                    type: object
+            overrides:
+              type: array
+              items:
+                type: object
+        options:
+          type: object
+          description: Panel-type-specific options
+        transformations:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              options:
+                type: object
+        transparent:
+          type: boolean
+        links:
+          type: array
+          items:
+            type: object
+        repeat:
+          type: string
+          description: Variable name to repeat panel for
+        repeatDirection:
+          type: string
+          enum: [h, v]
+        maxPerRow:
+          type: integer
+
+    Target:
+      type: object
+      description: Query target - structure varies by data source type
+      properties:
+        refId:
+          type: string
+        datasource:
+          type: object
+          properties:
+            type:
+              type: string
+            uid:
+              type: string
+        expr:
+          type: string
+          description: Prometheus query expression
+        rawSql:
+          type: string
+          description: SQL query for SQL-based data sources
+        format:
+          type: string
+        legendFormat:
+          type: string
+        interval:
+          type: string
+        hide:
+          type: boolean
+
+    TemplateVariable:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum: [query, custom, constant, datasource, interval, textbox, adhoc]
+        label:
+          type: string
+        datasource:
+          type: object
+        query:
+          type: string
+        current:
+          type: object
+        hide:
+          type: integer
+          enum: [0, 1, 2]
+        multi:
+          type: boolean
+        includeAll:
+          type: boolean
+        allValue:
+          type: string
+        refresh:
+          type: integer
+          enum: [0, 1, 2]
+        sort:
+          type: integer
+
+    DashboardLink:
+      type: object
+      properties:
+        title:
+          type: string
+        type:
+          type: string
+          enum: [dashboards, link]
+        url:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        targetBlank:
+          type: boolean
+        asDropdown:
+          type: boolean
+        icon:
+          type: string
+        includeVars:
+          type: boolean
+        keepTime:
+          type: boolean
+
+    DashboardSearchHit:
+      type: object
+      properties:
+        id:
+          type: integer
+        uid:
+          type: string
+        title:
+          type: string
+        uri:
+          type: string
+        url:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        isStarred:
+          type: boolean
+        folderId:
+          type: integer
+        folderUid:
+          type: string
+        folderTitle:
+          type: string
+        folderUrl:
+          type: string
+        sortMeta:
+          type: integer
+
+    # ── Data Source Schemas ──────────────────────────────────
+    DataSource:
+      type: object
+      properties:
+        id:
+          type: integer
+        uid:
+          type: string
+        orgId:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+          description: 'Plugin type, e.g. prometheus, mysql, elasticsearch, loki, influxdb, postgres, graphite, cloudwatch'
+        typeName:
+          type: string
+        typeLogoUrl:
+          type: string
+        access:
+          type: string
+          enum: [proxy, direct]
+        url:
+          type: string
+        user:
+          type: string
+        database:
+          type: string
+        basicAuth:
+          type: boolean
+        basicAuthUser:
+          type: string
+        withCredentials:
+          type: boolean
+        isDefault:
+          type: boolean
+        jsonData:
+          type: object
+          description: Data-source-specific configuration
+        secureJsonFields:
+          type: object
+          description: Encrypted fields indicator
+        readOnly:
+          type: boolean
+        version:
+          type: integer
+
+    CreateDataSourceCommand:
+      type: object
+      required: [name, type, access]
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        access:
+          type: string
+          enum: [proxy, direct]
+        url:
+          type: string
+        user:
+          type: string
+        database:
+          type: string
+        basicAuth:
+          type: boolean
+        basicAuthUser:
+          type: string
+        withCredentials:
+          type: boolean
+        isDefault:
+          type: boolean
+        jsonData:
+          type: object
+        secureJsonData:
+          type: object
+          description: Sensitive fields sent on create/update only
+        uid:
+          type: string
+
+    # ── Alert Schemas ───────────────────────────────────────
+    AlertRule:
+      type: object
+      properties:
+        uid:
+          type: string
+        title:
+          type: string
+        orgID:
+          type: integer
+        folderUID:
+          type: string
+        ruleGroup:
+          type: string
+        condition:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              refId:
+                type: string
+              queryType:
+                type: string
+              relativeTimeRange:
+                type: object
+                properties:
+                  from:
+                    type: integer
+                  to:
+                    type: integer
+              datasourceUid:
+                type: string
+              model:
+                type: object
+        noDataState:
+          type: string
+          enum: [Alerting, NoData, OK]
+        execErrState:
+          type: string
+          enum: [Alerting, Error, OK]
+        for:
+          type: string
+          description: 'Duration, e.g. 5m, 1h'
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        isPaused:
+          type: boolean
+        provenance:
+          type: string
+
+    ContactPoint:
+      type: object
+      properties:
+        uid:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          description: 'Receiver type: email, slack, pagerduty, webhook, etc.'
+        settings:
+          type: object
+          description: Type-specific configuration
+        disableResolveMessage:
+          type: boolean
+        provenance:
+          type: string
+
+    # ── User Schemas ────────────────────────────────────────
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        login:
+          type: string
+        theme:
+          type: string
+        orgId:
+          type: integer
+        isGrafanaAdmin:
+          type: boolean
+        isDisabled:
+          type: boolean
+        isExternal:
+          type: boolean
+        authLabels:
+          type: array
+          items:
+            type: string
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        avatarUrl:
+          type: string
+
+    CreateUserCommand:
+      type: object
+      required: [login, password]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        login:
+          type: string
+        password:
+          type: string
+        OrgId:
+          type: integer
+
+    CreateUserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+
+    UpdateUserCommand:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        login:
+          type: string
+        theme:
+          type: string
+
+    UserSearchHit:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        login:
+          type: string
+        email:
+          type: string
+        avatarUrl:
+          type: string
+        isAdmin:
+          type: boolean
+        isDisabled:
+          type: boolean
+        lastSeenAt:
+          type: string
+          format: date-time
+        lastSeenAtAge:
+          type: string
+        authLabels:
+          type: array
+          items:
+            type: string
+
+    # ── Organization Schemas ────────────────────────────────
+    Organization:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        address:
+          type: object
+          properties:
+            address1:
+              type: string
+            address2:
+              type: string
+            city:
+              type: string
+            zipCode:
+              type: string
+            state:
+              type: string
+            country:
+              type: string
+
+    CreateOrgCommand:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+
+    UpdateOrgCommand:
+      type: object
+      properties:
+        name:
+          type: string
+
+    OrgUser:
+      type: object
+      properties:
+        orgId:
+          type: integer
+        userId:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        avatarUrl:
+          type: string
+        login:
+          type: string
+        role:
+          type: string
+          enum: [Viewer, Editor, Admin]
+        lastSeenAt:
+          type: string
+          format: date-time
+        lastSeenAtAge:
+          type: string
+
+    AddOrgUserCommand:
+      type: object
+      required: [loginOrEmail, role]
+      properties:
+        loginOrEmail:
+          type: string
+        role:
+          type: string
+          enum: [Viewer, Editor, Admin]
+
+    # ── Folder Schemas ──────────────────────────────────────
+    Folder:
+      type: object
+      properties:
+        id:
+          type: integer
+        uid:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+        hasAcl:
+          type: boolean
+        canSave:
+          type: boolean
+        canEdit:
+          type: boolean
+        canAdmin:
+          type: boolean
+        canDelete:
+          type: boolean
+        createdBy:
+          type: string
+        created:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+        updated:
+          type: string
+          format: date-time
+        version:
+          type: integer
+        parentUid:
+          type: string
+          description: UID of parent folder for nested folders
+
+    CreateFolderCommand:
+      type: object
+      required: [title]
+      properties:
+        uid:
+          type: string
+        title:
+          type: string
+        parentUid:
+          type: string
+
+    UpdateFolderCommand:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+        version:
+          type: integer
+
+    # ── Annotation Schemas ──────────────────────────────────
+    Annotation:
+      type: object
+      properties:
+        id:
+          type: integer
+        alertId:
+          type: integer
+        dashboardId:
+          type: integer
+        dashboardUID:
+          type: string
+        panelId:
+          type: integer
+        userId:
+          type: integer
+        login:
+          type: string
+        email:
+          type: string
+        avatarUrl:
+          type: string
+        time:
+          type: integer
+          description: Epoch timestamp in milliseconds
+        timeEnd:
+          type: integer
+        text:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        created:
+          type: integer
+        updated:
+          type: integer
+
+    CreateAnnotationCommand:
+      type: object
+      required: [text]
+      properties:
+        dashboardId:
+          type: integer
+        dashboardUID:
+          type: string
+        panelId:
+          type: integer
+        time:
+          type: integer
+        timeEnd:
+          type: integer
+        text:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+
+    # ── Team Schemas ────────────────────────────────────────
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+        orgId:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        avatarUrl:
+          type: string
+        memberCount:
+          type: integer
+        permission:
+          type: integer
+        accessControl:
+          type: object
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
+
+    CreateTeamCommand:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+
+    UpdateTeamCommand:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+
+    TeamSearchResult:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+        teams:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
+        page:
+          type: integer
+        perPage:
+          type: integer
+
+    TeamMember:
+      type: object
+      properties:
+        orgId:
+          type: integer
+        teamId:
+          type: integer
+        userId:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        login:
+          type: string
+        avatarUrl:
+          type: string
+        labels:
+          type: array
+          items:
+            type: string
+        permission:
+          type: integer
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
+
+    AddTeamMemberCommand:
+      type: object
+      required: [userId]
+      properties:
+        userId:
+          type: integer

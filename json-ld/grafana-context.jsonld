@@ -1,0 +1,195 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "grafana": "https://grafana.com/docs/grafana/latest/developers/http_api/",
+    "schema": "https://schema.org/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "sioc": "http://rdfs.org/sioc/ns#",
+    "ssn": "http://www.w3.org/ns/ssn/",
+    "sosa": "http://www.w3.org/ns/sosa/",
+    "qudt": "http://qudt.org/schema/qudt/",
+
+    "Dashboard": {
+      "@id": "schema:CreativeWork",
+      "@context": {
+        "uid": "dcterms:identifier",
+        "title": "schema:name",
+        "description": "schema:description",
+        "tags": "schema:keywords",
+        "version": "schema:version",
+        "created": "dcterms:created",
+        "updated": "dcterms:modified",
+        "createdBy": "dcterms:creator",
+        "updatedBy": "schema:editor",
+        "panels": "schema:hasPart",
+        "url": "schema:url",
+        "editable": "schema:isAccessibleForFree",
+        "folder": "schema:isPartOf",
+        "time": {
+          "@id": "schema:temporalCoverage"
+        },
+        "annotations": "schema:comment",
+        "links": "schema:relatedLink",
+        "templating": "schema:variableMeasured"
+      }
+    },
+
+    "Panel": {
+      "@id": "schema:DataVisualization",
+      "@context": {
+        "id": "schema:identifier",
+        "type": "schema:additionalType",
+        "title": "schema:name",
+        "description": "schema:description",
+        "datasource": "schema:provider",
+        "targets": "schema:query",
+        "gridPos": "schema:spatialCoverage",
+        "fieldConfig": "schema:measurementTechnique",
+        "options": "schema:additionalProperty",
+        "transformations": "schema:algorithm",
+        "transparent": "schema:cssSelector",
+        "repeat": "schema:repeatCount",
+        "links": "schema:relatedLink",
+        "thresholds": "schema:valueReference"
+      }
+    },
+
+    "DataSource": {
+      "@id": "schema:DataFeed",
+      "@context": {
+        "uid": "dcterms:identifier",
+        "name": "schema:name",
+        "type": "schema:additionalType",
+        "url": "schema:contentUrl",
+        "access": "schema:accessMode",
+        "database": "schema:dataset",
+        "isDefault": "schema:isDefaultAction",
+        "basicAuth": "schema:authenticator",
+        "jsonData": "schema:additionalProperty",
+        "readOnly": "schema:readonlyValue",
+        "version": "schema:version",
+        "user": "schema:accountId"
+      }
+    },
+
+    "AlertRule": {
+      "@id": "schema:MonitorAction",
+      "@context": {
+        "uid": "dcterms:identifier",
+        "title": "schema:name",
+        "condition": "schema:actionStatus",
+        "folderUID": "schema:isPartOf",
+        "ruleGroup": "schema:category",
+        "for": "schema:duration",
+        "annotations": "schema:comment",
+        "labels": "schema:keywords",
+        "noDataState": "schema:defaultValue",
+        "data": "schema:query",
+        "isPaused": "schema:potentialAction"
+      }
+    },
+
+    "ContactPoint": {
+      "@id": "schema:ContactPoint",
+      "@context": {
+        "uid": "dcterms:identifier",
+        "name": "schema:name",
+        "type": "schema:contactType",
+        "settings": "schema:additionalProperty",
+        "disableResolveMessage": "schema:actionOption"
+      }
+    },
+
+    "User": {
+      "@id": "foaf:Person",
+      "@context": {
+        "id": "schema:identifier",
+        "email": "schema:email",
+        "name": "schema:name",
+        "login": "schema:alternateName",
+        "isGrafanaAdmin": "schema:hasCredential",
+        "isDisabled": "schema:actionStatus",
+        "avatarUrl": "schema:image",
+        "createdAt": "dcterms:created",
+        "updatedAt": "dcterms:modified",
+        "orgId": "schema:memberOf",
+        "authLabels": "schema:identifier"
+      }
+    },
+
+    "Organization": {
+      "@id": "schema:Organization",
+      "@context": {
+        "id": "schema:identifier",
+        "name": "schema:name",
+        "address": "schema:address",
+        "users": "schema:member"
+      }
+    },
+
+    "Team": {
+      "@id": "schema:Team",
+      "@context": {
+        "id": "schema:identifier",
+        "name": "schema:name",
+        "email": "schema:email",
+        "avatarUrl": "schema:image",
+        "memberCount": "schema:numberOfEmployees",
+        "members": "schema:member",
+        "created": "dcterms:created",
+        "updated": "dcterms:modified"
+      }
+    },
+
+    "Folder": {
+      "@id": "schema:Collection",
+      "@context": {
+        "uid": "dcterms:identifier",
+        "title": "schema:name",
+        "url": "schema:url",
+        "parentUid": "schema:isPartOf",
+        "created": "dcterms:created",
+        "updated": "dcterms:modified",
+        "createdBy": "dcterms:creator",
+        "updatedBy": "schema:editor"
+      }
+    },
+
+    "Annotation": {
+      "@id": "schema:Comment",
+      "@context": {
+        "id": "schema:identifier",
+        "text": "schema:text",
+        "time": "schema:startDate",
+        "timeEnd": "schema:endDate",
+        "tags": "schema:keywords",
+        "dashboardId": "schema:isPartOf",
+        "panelId": "schema:about",
+        "created": "dcterms:created",
+        "updated": "dcterms:modified"
+      }
+    },
+
+    "Query": {
+      "@id": "schema:SearchAction",
+      "@context": {
+        "refId": "schema:identifier",
+        "expr": "schema:query",
+        "format": "schema:encodingFormat",
+        "interval": "schema:repeatFrequency",
+        "legendFormat": "schema:alternateName"
+      }
+    },
+
+    "Observation": {
+      "@id": "sosa:Observation",
+      "@context": {
+        "value": "sosa:hasSimpleResult",
+        "timestamp": "sosa:resultTime",
+        "metric": "sosa:observedProperty",
+        "unit": "qudt:unit"
+      }
+    }
+  }
+}

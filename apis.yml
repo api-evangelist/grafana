@@ -1,55 +1,52 @@
-aid: grafana
-url: https://raw.githubusercontent.com/api-evangelist/grafana/refs/heads/main/apis.yml
-apis:
-- aid: grafana:grafana
-  name: Grafana
-  tags:
-  - Analytics
-  - Visualizations
-  - Monitoring
-  - Analysis
-  humanURL: https://grafana.com
-  properties:
-  - url: https://grafana.com
-    type: Documentation
-  - url: openapi/grafana-openapi.yml
-    type: OpenAPI
-  description: Grafana is an open-source analytics and visualization platform that helps you monitor and analyze data from various sources. It lets you create customizable dashboards with charts, graphs, and alerts to visualize metrics and logs in real-time. Commonly used for monitoring infrastructure, applications, and business metrics, Grafana connects to dozens of data sources like Prometheus, Elasticsearch, and cloud platforms, making it easier to understand system performance, troubleshoot issues, and track key indicators all in one location.
 name: Grafana
+description: >-
+  Grafana is the open-source analytics and monitoring platform that connects
+  to a wide range of data sources including Prometheus, Loki, Elasticsearch,
+  InfluxDB, MySQL, PostgreSQL, and cloud providers. It provides a comprehensive
+  HTTP API for managing dashboards, data sources, alert rules, users,
+  organizations, folders, annotations, and teams.
+url: https://grafana.com
 tags:
-- Analytics
 - Observability
-- alerts
-- dashboards
-- metrics
-- monitoring
-- observability
-- open-source
-- visualization
-type: Index
-image: https://grafana.com/static/assets/img/grafana_icon.svg
-access: 3rd-Party
-created: '2025-01-08'
-modified: '2025-12-29'
-position: Consumer
-description: Grafana is an open-source platform for monitoring and observability, allowing you to query, visualize, alert on, and understand your metrics.
-maintainers:
-- FN: Kin Lane
-  email: info@apievangelist.com
-- FN: Grafana Labs
-  email: info@grafana.com
-  url: https://grafana.com
-specificationVersion: '0.19'
-common:
-- url: https://grafana.com/docs/grafana/latest/getting-started/
-  type: Getting Started
-- url: https://github.com/grafana/grafana
-  type: GitHub
-- url: https://grafana.com/blog/
-  type: Blog
-- url: https://community.grafana.com/
-  type: Community
-- url: https://grafana.com/pricing/
-  type: Pricing
-- url: https://status.grafana.com/
-  type: Status
+- Monitoring
+- Dashboards
+- Visualization
+- Alerting
+- Analytics
+- Metrics
+- Logs
+- Traces
+created: '2025'
+modified: '2025'
+apis:
+- name: Grafana HTTP API
+  description: >-
+    RESTful API for managing Grafana resources including dashboards, data
+    sources, alert rules, users, organizations, folders, annotations, and
+    teams. Supports authentication via API keys, basic auth, and OAuth tokens.
+  baseUrl: http://localhost:3000/api
+  tags:
+  - Dashboards
+  - Data Sources
+  - Alerts
+  - Users
+  - Organizations
+  - Folders
+  - Annotations
+  - Teams
+  properties:
+  - type: OpenAPI
+    url: openapi/grafana-api.yml
+  - type: JSONSchema
+    url: json-schema/dashboard.json
+  - type: JSONSchema
+    url: json-schema/panel.json
+  - type: JSONSchema
+    url: json-schema/datasource.json
+  - type: JSONLD
+    url: json-ld/grafana-context.jsonld
+  - type: Documentation
+    url: https://grafana.com/docs/grafana/latest/developers/http_api/
+  - type: GitHubRepository
+    url: https://github.com/grafana/grafana
+common: []
