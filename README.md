@@ -1,54 +1,37 @@
-# Grafana (grafana)
-Grafana is an open-source platform for monitoring and observability, allowing you to query, visualize, alert on, and understand your metrics.
+# Grafana
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/grafana/refs/heads/main/apis.yml)
+Grafana is the open-source analytics and monitoring platform that connects to a wide range of data sources including Prometheus, Loki, Elasticsearch, InfluxDB, MySQL, PostgreSQL, and cloud providers. It provides a comprehensive HTTP API for managing dashboards, data sources, alert rules, users, organizations, folders, annotations, and teams.
 
-## Scope
-
-- **Type:** Index 
-- **Position:** Consumer 
-- **Access:** 3rd-Party 
-
-## Tags:
-
- - Analytics, Observability, alerts, dashboards, metrics, monitoring, observability, open-source, visualization
-
-## Timestamps
-
-- **Created:** 2025-01-08 
-- **Modified:** 2025-12-29 
+**APIs.json:** [apis.yml](https://raw.githubusercontent.com/api-evangelist/grafana/refs/heads/main/apis.yml)
 
 ## APIs
 
-### Grafana
-Grafana is an open-source analytics and visualization platform that helps you monitor and analyze data from various sources. It lets you create customizable dashboards with charts, graphs, and alerts to visualize metrics and logs in real-time. Commonly used for monitoring infrastructure, applications, and business metrics, Grafana connects to dozens of data sources like Prometheus, Elasticsearch, and cloud platforms, making it easier to understand system performance, troubleshoot issues, and track key indicators all in one location.
+- **Grafana HTTP API** — RESTful API for managing Grafana resources including dashboards, data sources, alert rules, users, organizations, folders, annotations, and teams. Supports authentication via API keys, basic auth, and OAuth tokens.
+  - [OpenAPI](openapi/grafana-api.yml)
+  - [Full OpenAPI](openapi/grafana-openapi.yml)
+  - [Documentation](https://grafana.com/docs/grafana/latest/developers/http_api/)
+  - [JSONSchema — Dashboard](json-schema/dashboard.json)
+  - [JSONSchema — Data Source](json-schema/datasource.json)
+  - [JSONSchema — Panel](json-schema/panel.json)
+  - [JSON-LD Context](json-ld/grafana-context.jsonld)
 
-**Human URL:** [https://grafana.com](https://grafana.com)
+## Tags
 
+Alerting, Analytics, Dashboards, Logs, Metrics, Monitoring, Observability, Traces, Visualization
 
-#### Tags:
+## Properties
 
- - Analytics, Visualizations, Monitoring, Analysis
-
-#### Properties
-
-- [Documentation](https://grafana.com)
-- [OpenAPI](openapi/grafana-openapi.yml)
-
-## Common Properties
-
+- [Portal](https://grafana.com)
 - [Getting Started](https://grafana.com/docs/grafana/latest/getting-started/)
-- [GitHub](https://github.com/grafana/grafana)
-- [Blog](https://grafana.com/blog/)
-- [Community](https://community.grafana.com/)
+- [Documentation](https://grafana.com/docs/grafana/latest/)
+- [Authentication](https://grafana.com/docs/grafana/latest/administration/service-accounts/)
 - [Pricing](https://grafana.com/pricing/)
+- [Terms of Service](https://grafana.com/legal/terms/)
+- [Privacy Policy](https://grafana.com/legal/privacy-policy/)
 - [Status](https://status.grafana.com/)
+- [Support](https://grafana.com/support/)
+- [Blog](https://grafana.com/blog/)
 
 ## Maintainers
 
-**FN:** Kin Lane
-
-**Email:** info@apievangelist.com
-**FN:** Grafana Labs
-
-**Email:** info@grafana.com
+- **Kin Lane** — kin@apievangelist.com
