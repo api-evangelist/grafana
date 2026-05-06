@@ -1,0 +1,1870 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana HTTP API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data
+    sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic
+    auth, or OAuth tokens passed in the Authorization header.
+  tags:
+  - Grafana
+  - API
+  created: '2026-05-06'
+  modified: '2026-05-06'
+capability:
+  consumes:
+  - type: http
+    namespace: grafana
+    baseUri: https://your-instance.grafana.net/api
+    description: Grafana HTTP API HTTP API.
+    authentication:
+      type: bearer
+      token: '{{GRAFANA_TOKEN}}'
+    resources:
+    - name: dashboards-db
+      path: /dashboards/db
+      operations:
+      - name: createupdatedashboard
+        method: POST
+        description: Create or update a dashboard
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: dashboards-uid-uid
+      path: /dashboards/uid/{uid}
+      operations:
+      - name: getdashboardbyuid
+        method: GET
+        description: Get dashboard by UID
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletedashboardbyuid
+        method: DELETE
+        description: Delete dashboard by UID
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      operations:
+      - name: searchdashboards
+        method: GET
+        description: Search dashboards and folders
+        inputParameters:
+        - name: query
+          in: query
+          type: string
+        - name: tag
+          in: query
+          type: array
+        - name: type
+          in: query
+          type: string
+        - name: folderIds
+          in: query
+          type: array
+        - name: limit
+          in: query
+          type: integer
+        - name: page
+          in: query
+          type: integer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: datasources
+      path: /datasources
+      operations:
+      - name: getdatasources
+        method: GET
+        description: List all data sources
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createdatasource
+        method: POST
+        description: Create a data source
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: datasources-id
+      path: /datasources/{id}
+      operations:
+      - name: getdatasourcebyid
+        method: GET
+        description: Get data source by ID
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatedatasource
+        method: PUT
+        description: Update data source by ID
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletedatasourcebyid
+        method: DELETE
+        description: Delete data source by ID
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: datasources-uid-uid
+      path: /datasources/uid/{uid}
+      operations:
+      - name: getdatasourcebyuid
+        method: GET
+        description: Get data source by UID
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-provisioning-alert-rules
+      path: /v1/provisioning/alert-rules
+      operations:
+      - name: getalertrules
+        method: GET
+        description: List all alert rules
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createalertrule
+        method: POST
+        description: Create an alert rule
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-provisioning-alert-rules-uid
+      path: /v1/provisioning/alert-rules/{uid}
+      operations:
+      - name: getalertrule
+        method: GET
+        description: Get alert rule by UID
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatealertrule
+        method: PUT
+        description: Update alert rule
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletealertrule
+        method: DELETE
+        description: Delete alert rule
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-provisioning-contact-points
+      path: /v1/provisioning/contact-points
+      operations:
+      - name: getcontactpoints
+        method: GET
+        description: List contact points
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createcontactpoint
+        method: POST
+        description: Create a contact point
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-users
+      path: /admin/users
+      operations:
+      - name: admincreateuser
+        method: POST
+        description: Create a new user (admin)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: users
+      path: /users
+      operations:
+      - name: searchusers
+        method: GET
+        description: Search users
+        inputParameters:
+        - name: perpage
+          in: query
+          type: integer
+        - name: page
+          in: query
+          type: integer
+        - name: query
+          in: query
+          type: string
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: users-id
+      path: /users/{id}
+      operations:
+      - name: getuserbyid
+        method: GET
+        description: Get user by ID
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateuser
+        method: PUT
+        description: Update user
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: user
+      path: /user
+      operations:
+      - name: getcurrentuser
+        method: GET
+        description: Get current user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: orgs
+      path: /orgs
+      operations:
+      - name: searchorgs
+        method: GET
+        description: Search organizations
+        inputParameters:
+        - name: query
+          in: query
+          type: string
+        - name: page
+          in: query
+          type: integer
+        - name: perpage
+          in: query
+          type: integer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createorg
+        method: POST
+        description: Create organization
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: orgs-orgid
+      path: /orgs/{orgId}
+      operations:
+      - name: getorgbyid
+        method: GET
+        description: Get organization by ID
+        inputParameters:
+        - name: orgId
+          in: path
+          type: integer
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateorg
+        method: PUT
+        description: Update organization
+        inputParameters:
+        - name: orgId
+          in: path
+          type: integer
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteorg
+        method: DELETE
+        description: Delete organization
+        inputParameters:
+        - name: orgId
+          in: path
+          type: integer
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: orgs-orgid-users
+      path: /orgs/{orgId}/users
+      operations:
+      - name: getorgusers
+        method: GET
+        description: Get users in organization
+        inputParameters:
+        - name: orgId
+          in: path
+          type: integer
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: addorguser
+        method: POST
+        description: Add user to organization
+        inputParameters:
+        - name: orgId
+          in: path
+          type: integer
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: folders
+      path: /folders
+      operations:
+      - name: getfolders
+        method: GET
+        description: List all folders
+        inputParameters:
+        - name: limit
+          in: query
+          type: integer
+        - name: page
+          in: query
+          type: integer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createfolder
+        method: POST
+        description: Create a folder
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: folders-uid
+      path: /folders/{uid}
+      operations:
+      - name: getfolderbyuid
+        method: GET
+        description: Get folder by UID
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatefolder
+        method: PUT
+        description: Update folder
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletefolder
+        method: DELETE
+        description: Delete folder
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: annotations
+      path: /annotations
+      operations:
+      - name: getannotations
+        method: GET
+        description: Find annotations
+        inputParameters:
+        - name: from
+          in: query
+          type: integer
+        - name: to
+          in: query
+          type: integer
+        - name: dashboardId
+          in: query
+          type: integer
+        - name: panelId
+          in: query
+          type: integer
+        - name: tags
+          in: query
+          type: array
+        - name: limit
+          in: query
+          type: integer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createannotation
+        method: POST
+        description: Create annotation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: annotations-id
+      path: /annotations/{id}
+      operations:
+      - name: deleteannotation
+        method: DELETE
+        description: Delete annotation
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: teams-search
+      path: /teams/search
+      operations:
+      - name: searchteams
+        method: GET
+        description: Search teams
+        inputParameters:
+        - name: query
+          in: query
+          type: string
+        - name: page
+          in: query
+          type: integer
+        - name: perpage
+          in: query
+          type: integer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: teams
+      path: /teams
+      operations:
+      - name: createteam
+        method: POST
+        description: Create team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: teams-id
+      path: /teams/{id}
+      operations:
+      - name: getteambyid
+        method: GET
+        description: Get team by ID
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateteam
+        method: PUT
+        description: Update team
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteteam
+        method: DELETE
+        description: Delete team
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: teams-id-members
+      path: /teams/{id}/members
+      operations:
+      - name: getteammembers
+        method: GET
+        description: Get team members
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: addteammember
+        method: POST
+        description: Add team member
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: grafana-rest
+    description: REST adapter for Grafana HTTP API.
+    resources:
+    - path: /dashboards/db
+      name: createupdatedashboard
+      operations:
+      - method: POST
+        name: createupdatedashboard
+        description: Create or update a dashboard
+        call: grafana.createupdatedashboard
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /dashboards/uid/{uid}
+      name: getdashboardbyuid
+      operations:
+      - method: GET
+        name: getdashboardbyuid
+        description: Get dashboard by UID
+        call: grafana.getdashboardbyuid
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /dashboards/uid/{uid}
+      name: deletedashboardbyuid
+      operations:
+      - method: DELETE
+        name: deletedashboardbyuid
+        description: Delete dashboard by UID
+        call: grafana.deletedashboardbyuid
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /search
+      name: searchdashboards
+      operations:
+      - method: GET
+        name: searchdashboards
+        description: Search dashboards and folders
+        call: grafana.searchdashboards
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /datasources
+      name: getdatasources
+      operations:
+      - method: GET
+        name: getdatasources
+        description: List all data sources
+        call: grafana.getdatasources
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /datasources
+      name: createdatasource
+      operations:
+      - method: POST
+        name: createdatasource
+        description: Create a data source
+        call: grafana.createdatasource
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /datasources/{id}
+      name: getdatasourcebyid
+      operations:
+      - method: GET
+        name: getdatasourcebyid
+        description: Get data source by ID
+        call: grafana.getdatasourcebyid
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /datasources/{id}
+      name: updatedatasource
+      operations:
+      - method: PUT
+        name: updatedatasource
+        description: Update data source by ID
+        call: grafana.updatedatasource
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /datasources/{id}
+      name: deletedatasourcebyid
+      operations:
+      - method: DELETE
+        name: deletedatasourcebyid
+        description: Delete data source by ID
+        call: grafana.deletedatasourcebyid
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /datasources/uid/{uid}
+      name: getdatasourcebyuid
+      operations:
+      - method: GET
+        name: getdatasourcebyuid
+        description: Get data source by UID
+        call: grafana.getdatasourcebyuid
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/provisioning/alert-rules
+      name: getalertrules
+      operations:
+      - method: GET
+        name: getalertrules
+        description: List all alert rules
+        call: grafana.getalertrules
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/provisioning/alert-rules
+      name: createalertrule
+      operations:
+      - method: POST
+        name: createalertrule
+        description: Create an alert rule
+        call: grafana.createalertrule
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/provisioning/alert-rules/{uid}
+      name: getalertrule
+      operations:
+      - method: GET
+        name: getalertrule
+        description: Get alert rule by UID
+        call: grafana.getalertrule
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/provisioning/alert-rules/{uid}
+      name: updatealertrule
+      operations:
+      - method: PUT
+        name: updatealertrule
+        description: Update alert rule
+        call: grafana.updatealertrule
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/provisioning/alert-rules/{uid}
+      name: deletealertrule
+      operations:
+      - method: DELETE
+        name: deletealertrule
+        description: Delete alert rule
+        call: grafana.deletealertrule
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/provisioning/contact-points
+      name: getcontactpoints
+      operations:
+      - method: GET
+        name: getcontactpoints
+        description: List contact points
+        call: grafana.getcontactpoints
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/provisioning/contact-points
+      name: createcontactpoint
+      operations:
+      - method: POST
+        name: createcontactpoint
+        description: Create a contact point
+        call: grafana.createcontactpoint
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/users
+      name: admincreateuser
+      operations:
+      - method: POST
+        name: admincreateuser
+        description: Create a new user (admin)
+        call: grafana.admincreateuser
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /users
+      name: searchusers
+      operations:
+      - method: GET
+        name: searchusers
+        description: Search users
+        call: grafana.searchusers
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /users/{id}
+      name: getuserbyid
+      operations:
+      - method: GET
+        name: getuserbyid
+        description: Get user by ID
+        call: grafana.getuserbyid
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /users/{id}
+      name: updateuser
+      operations:
+      - method: PUT
+        name: updateuser
+        description: Update user
+        call: grafana.updateuser
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /user
+      name: getcurrentuser
+      operations:
+      - method: GET
+        name: getcurrentuser
+        description: Get current user
+        call: grafana.getcurrentuser
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /orgs
+      name: searchorgs
+      operations:
+      - method: GET
+        name: searchorgs
+        description: Search organizations
+        call: grafana.searchorgs
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /orgs
+      name: createorg
+      operations:
+      - method: POST
+        name: createorg
+        description: Create organization
+        call: grafana.createorg
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /orgs/{orgId}
+      name: getorgbyid
+      operations:
+      - method: GET
+        name: getorgbyid
+        description: Get organization by ID
+        call: grafana.getorgbyid
+        with:
+          orgId: rest.orgId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /orgs/{orgId}
+      name: updateorg
+      operations:
+      - method: PUT
+        name: updateorg
+        description: Update organization
+        call: grafana.updateorg
+        with:
+          orgId: rest.orgId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /orgs/{orgId}
+      name: deleteorg
+      operations:
+      - method: DELETE
+        name: deleteorg
+        description: Delete organization
+        call: grafana.deleteorg
+        with:
+          orgId: rest.orgId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /orgs/{orgId}/users
+      name: getorgusers
+      operations:
+      - method: GET
+        name: getorgusers
+        description: Get users in organization
+        call: grafana.getorgusers
+        with:
+          orgId: rest.orgId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /orgs/{orgId}/users
+      name: addorguser
+      operations:
+      - method: POST
+        name: addorguser
+        description: Add user to organization
+        call: grafana.addorguser
+        with:
+          orgId: rest.orgId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /folders
+      name: getfolders
+      operations:
+      - method: GET
+        name: getfolders
+        description: List all folders
+        call: grafana.getfolders
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /folders
+      name: createfolder
+      operations:
+      - method: POST
+        name: createfolder
+        description: Create a folder
+        call: grafana.createfolder
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /folders/{uid}
+      name: getfolderbyuid
+      operations:
+      - method: GET
+        name: getfolderbyuid
+        description: Get folder by UID
+        call: grafana.getfolderbyuid
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /folders/{uid}
+      name: updatefolder
+      operations:
+      - method: PUT
+        name: updatefolder
+        description: Update folder
+        call: grafana.updatefolder
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /folders/{uid}
+      name: deletefolder
+      operations:
+      - method: DELETE
+        name: deletefolder
+        description: Delete folder
+        call: grafana.deletefolder
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /annotations
+      name: getannotations
+      operations:
+      - method: GET
+        name: getannotations
+        description: Find annotations
+        call: grafana.getannotations
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /annotations
+      name: createannotation
+      operations:
+      - method: POST
+        name: createannotation
+        description: Create annotation
+        call: grafana.createannotation
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /annotations/{id}
+      name: deleteannotation
+      operations:
+      - method: DELETE
+        name: deleteannotation
+        description: Delete annotation
+        call: grafana.deleteannotation
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /teams/search
+      name: searchteams
+      operations:
+      - method: GET
+        name: searchteams
+        description: Search teams
+        call: grafana.searchteams
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /teams
+      name: createteam
+      operations:
+      - method: POST
+        name: createteam
+        description: Create team
+        call: grafana.createteam
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /teams/{id}
+      name: getteambyid
+      operations:
+      - method: GET
+        name: getteambyid
+        description: Get team by ID
+        call: grafana.getteambyid
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /teams/{id}
+      name: updateteam
+      operations:
+      - method: PUT
+        name: updateteam
+        description: Update team
+        call: grafana.updateteam
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /teams/{id}
+      name: deleteteam
+      operations:
+      - method: DELETE
+        name: deleteteam
+        description: Delete team
+        call: grafana.deleteteam
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /teams/{id}/members
+      name: getteammembers
+      operations:
+      - method: GET
+        name: getteammembers
+        description: Get team members
+        call: grafana.getteammembers
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /teams/{id}/members
+      name: addteammember
+      operations:
+      - method: POST
+        name: addteammember
+        description: Add team member
+        call: grafana.addteammember
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: grafana-mcp
+    transport: http
+    description: MCP adapter for Grafana HTTP API for AI agent use.
+    tools:
+    - name: createupdatedashboard
+      description: Create or update a dashboard
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana.createupdatedashboard
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getdashboardbyuid
+      description: Get dashboard by UID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.getdashboardbyuid
+      with:
+        uid: tools.uid
+      inputParameters:
+      - name: uid
+        type: string
+        description: uid
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletedashboardbyuid
+      description: Delete dashboard by UID
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana.deletedashboardbyuid
+      with:
+        uid: tools.uid
+      inputParameters:
+      - name: uid
+        type: string
+        description: uid
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: searchdashboards
+      description: Search dashboards and folders
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.searchdashboards
+      with:
+        query: tools.query
+        tag: tools.tag
+        type: tools.type
+        folderIds: tools.folderIds
+        limit: tools.limit
+        page: tools.page
+      inputParameters:
+      - name: query
+        type: string
+        description: query
+      - name: tag
+        type: array
+        description: tag
+      - name: type
+        type: string
+        description: type
+      - name: folderIds
+        type: array
+        description: folderIds
+      - name: limit
+        type: integer
+        description: limit
+      - name: page
+        type: integer
+        description: page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getdatasources
+      description: List all data sources
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.getdatasources
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createdatasource
+      description: Create a data source
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana.createdatasource
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getdatasourcebyid
+      description: Get data source by ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.getdatasourcebyid
+      with:
+        id: tools.id
+      inputParameters:
+      - name: id
+        type: integer
+        description: id
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatedatasource
+      description: Update data source by ID
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana.updatedatasource
+      with:
+        id: tools.id
+      inputParameters:
+      - name: id
+        type: integer
+        description: id
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletedatasourcebyid
+      description: Delete data source by ID
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana.deletedatasourcebyid
+      with:
+        id: tools.id
+      inputParameters:
+      - name: id
+        type: integer
+        description: id
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getdatasourcebyuid
+      description: Get data source by UID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.getdatasourcebyuid
+      with:
+        uid: tools.uid
+      inputParameters:
+      - name: uid
+        type: string
+        description: uid
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getalertrules
+      description: List all alert rules
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.getalertrules
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createalertrule
+      description: Create an alert rule
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana.createalertrule
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getalertrule
+      description: Get alert rule by UID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.getalertrule
+      with:
+        uid: tools.uid
+      inputParameters:
+      - name: uid
+        type: string
+        description: uid
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatealertrule
+      description: Update alert rule
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana.updatealertrule
+      with:
+        uid: tools.uid
+      inputParameters:
+      - name: uid
+        type: string
+        description: uid
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletealertrule
+      description: Delete alert rule
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana.deletealertrule
+      with:
+        uid: tools.uid
+      inputParameters:
+      - name: uid
+        type: string
+        description: uid
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getcontactpoints
+      description: List contact points
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.getcontactpoints
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createcontactpoint
+      description: Create a contact point
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana.createcontactpoint
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: admincreateuser
+      description: Create a new user (admin)
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana.admincreateuser
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: searchusers
+      description: Search users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.searchusers
+      with:
+        perpage: tools.perpage
+        page: tools.page
+        query: tools.query
+      inputParameters:
+      - name: perpage
+        type: integer
+        description: perpage
+      - name: page
+        type: integer
+        description: page
+      - name: query
+        type: string
+        description: query
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getuserbyid
+      description: Get user by ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.getuserbyid
+      with:
+        id: tools.id
+      inputParameters:
+      - name: id
+        type: integer
+        description: id
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateuser
+      description: Update user
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana.updateuser
+      with:
+        id: tools.id
+      inputParameters:
+      - name: id
+        type: integer
+        description: id
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getcurrentuser
+      description: Get current user
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.getcurrentuser
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: searchorgs
+      description: Search organizations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.searchorgs
+      with:
+        query: tools.query
+        page: tools.page
+        perpage: tools.perpage
+      inputParameters:
+      - name: query
+        type: string
+        description: query
+      - name: page
+        type: integer
+        description: page
+      - name: perpage
+        type: integer
+        description: perpage
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createorg
+      description: Create organization
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana.createorg
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getorgbyid
+      description: Get organization by ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.getorgbyid
+      with:
+        orgId: tools.orgId
+      inputParameters:
+      - name: orgId
+        type: integer
+        description: orgId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateorg
+      description: Update organization
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana.updateorg
+      with:
+        orgId: tools.orgId
+      inputParameters:
+      - name: orgId
+        type: integer
+        description: orgId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteorg
+      description: Delete organization
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana.deleteorg
+      with:
+        orgId: tools.orgId
+      inputParameters:
+      - name: orgId
+        type: integer
+        description: orgId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getorgusers
+      description: Get users in organization
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.getorgusers
+      with:
+        orgId: tools.orgId
+      inputParameters:
+      - name: orgId
+        type: integer
+        description: orgId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: addorguser
+      description: Add user to organization
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana.addorguser
+      with:
+        orgId: tools.orgId
+      inputParameters:
+      - name: orgId
+        type: integer
+        description: orgId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getfolders
+      description: List all folders
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.getfolders
+      with:
+        limit: tools.limit
+        page: tools.page
+      inputParameters:
+      - name: limit
+        type: integer
+        description: limit
+      - name: page
+        type: integer
+        description: page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createfolder
+      description: Create a folder
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana.createfolder
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getfolderbyuid
+      description: Get folder by UID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.getfolderbyuid
+      with:
+        uid: tools.uid
+      inputParameters:
+      - name: uid
+        type: string
+        description: uid
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatefolder
+      description: Update folder
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana.updatefolder
+      with:
+        uid: tools.uid
+      inputParameters:
+      - name: uid
+        type: string
+        description: uid
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletefolder
+      description: Delete folder
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana.deletefolder
+      with:
+        uid: tools.uid
+      inputParameters:
+      - name: uid
+        type: string
+        description: uid
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getannotations
+      description: Find annotations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.getannotations
+      with:
+        from: tools.from
+        to: tools.to
+        dashboardId: tools.dashboardId
+        panelId: tools.panelId
+        tags: tools.tags
+        limit: tools.limit
+      inputParameters:
+      - name: from
+        type: integer
+        description: from
+      - name: to
+        type: integer
+        description: to
+      - name: dashboardId
+        type: integer
+        description: dashboardId
+      - name: panelId
+        type: integer
+        description: panelId
+      - name: tags
+        type: array
+        description: tags
+      - name: limit
+        type: integer
+        description: limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createannotation
+      description: Create annotation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana.createannotation
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteannotation
+      description: Delete annotation
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana.deleteannotation
+      with:
+        id: tools.id
+      inputParameters:
+      - name: id
+        type: integer
+        description: id
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: searchteams
+      description: Search teams
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.searchteams
+      with:
+        query: tools.query
+        page: tools.page
+        perpage: tools.perpage
+      inputParameters:
+      - name: query
+        type: string
+        description: query
+      - name: page
+        type: integer
+        description: page
+      - name: perpage
+        type: integer
+        description: perpage
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createteam
+      description: Create team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana.createteam
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getteambyid
+      description: Get team by ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.getteambyid
+      with:
+        id: tools.id
+      inputParameters:
+      - name: id
+        type: integer
+        description: id
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateteam
+      description: Update team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana.updateteam
+      with:
+        id: tools.id
+      inputParameters:
+      - name: id
+        type: integer
+        description: id
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteteam
+      description: Delete team
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana.deleteteam
+      with:
+        id: tools.id
+      inputParameters:
+      - name: id
+        type: integer
+        description: id
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getteammembers
+      description: Get team members
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana.getteammembers
+      with:
+        id: tools.id
+      inputParameters:
+      - name: id
+        type: integer
+        description: id
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: addteammember
+      description: Add team member
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana.addteammember
+      with:
+        id: tools.id
+      inputParameters:
+      - name: id
+        type: integer
+        description: id
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+binds:
+- namespace: env
+  keys:
+    GRAFANA_TOKEN: GRAFANA_TOKEN
