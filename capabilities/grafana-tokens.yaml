@@ -1,0 +1,575 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Tokens
+  description: 'Grafana — Tokens. 14 operations. Lead operation: Grafana Admin Get User Auth Tokens. Self-contained Naftiko
+    capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Tokens
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-tokens
+    baseUri: http://{defaultHost}
+    description: Grafana — Tokens business capability. Self-contained, no shared references.
+    resources:
+    - name: admin-users-user_id-auth-tokens
+      path: /admin/users/{user_id}/auth-tokens
+      operations:
+      - name: admingetuserauthtokens
+        method: GET
+        description: Grafana Admin Get User Auth Tokens
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    - name: admin-users-user_id-revoke-auth-token
+      path: /admin/users/{user_id}/revoke-auth-token
+      operations:
+      - name: adminrevokeuserauthtoken
+        method: POST
+        description: Grafana Admin Revoke User Auth Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: cloudmigration-token
+      path: /cloudmigration/token
+      operations:
+      - name: getcloudmigrationtoken
+        method: GET
+        description: Grafana Get Cloud Migration Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createcloudmigrationtoken
+        method: POST
+        description: Grafana Create Cloud Migration Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: cloudmigration-token-uid
+      path: /cloudmigration/token/{uid}
+      operations:
+      - name: deletecloudmigrationtoken
+        method: DELETE
+        description: Grafana Delete Cloud Migration Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          description: UID of a cloud migration token
+          required: true
+    - name: licensing-token
+      path: /licensing/token
+      operations:
+      - name: getlicensetoken
+        method: GET
+        description: Grafana Get License Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: postlicensetoken
+        method: POST
+        description: Grafana Post License Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletelicensetoken
+        method: DELETE
+        description: Grafana Delete License Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: licensing-token-renew
+      path: /licensing/token/renew
+      operations:
+      - name: postrenewlicensetoken
+        method: POST
+        description: Grafana Post Renew License Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: serviceaccounts-serviceAccountId-tokens
+      path: /serviceaccounts/{serviceAccountId}/tokens
+      operations:
+      - name: listtokens
+        method: GET
+        description: Grafana List Tokens
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: serviceAccountId
+          in: path
+          type: integer
+          required: true
+      - name: createtoken
+        method: POST
+        description: Grafana Create Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: serviceAccountId
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: serviceaccounts-serviceAccountId-tokens-tokenId
+      path: /serviceaccounts/{serviceAccountId}/tokens/{tokenId}
+      operations:
+      - name: deletetoken
+        method: DELETE
+        description: Grafana Delete Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: tokenId
+          in: path
+          type: integer
+          required: true
+        - name: serviceAccountId
+          in: path
+          type: integer
+          required: true
+    - name: user-auth-tokens
+      path: /user/auth-tokens
+      operations:
+      - name: getuserauthtokens
+        method: GET
+        description: Grafana Get User Auth Tokens
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: user-revoke-auth-token
+      path: /user/revoke-auth-token
+      operations:
+      - name: revokeuserauthtoken
+        method: POST
+        description: Grafana Revoke User Auth Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-tokens-rest
+    port: 8080
+    description: REST adapter for Grafana — Tokens. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/admin/users/{user-id}/auth-tokens
+      name: admin-users-user-id-auth-tokens
+      description: REST surface for admin-users-user_id-auth-tokens.
+      operations:
+      - method: GET
+        name: admingetuserauthtokens
+        description: Grafana Admin Get User Auth Tokens
+        call: grafana-tokens.admingetuserauthtokens
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/revoke-auth-token
+      name: admin-users-user-id-revoke-auth-token
+      description: REST surface for admin-users-user_id-revoke-auth-token.
+      operations:
+      - method: POST
+        name: adminrevokeuserauthtoken
+        description: Grafana Admin Revoke User Auth Token
+        call: grafana-tokens.adminrevokeuserauthtoken
+        with:
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cloudmigration/token
+      name: cloudmigration-token
+      description: REST surface for cloudmigration-token.
+      operations:
+      - method: GET
+        name: getcloudmigrationtoken
+        description: Grafana Get Cloud Migration Token
+        call: grafana-tokens.getcloudmigrationtoken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createcloudmigrationtoken
+        description: Grafana Create Cloud Migration Token
+        call: grafana-tokens.createcloudmigrationtoken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cloudmigration/token/{uid}
+      name: cloudmigration-token-uid
+      description: REST surface for cloudmigration-token-uid.
+      operations:
+      - method: DELETE
+        name: deletecloudmigrationtoken
+        description: Grafana Delete Cloud Migration Token
+        call: grafana-tokens.deletecloudmigrationtoken
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/licensing/token
+      name: licensing-token
+      description: REST surface for licensing-token.
+      operations:
+      - method: GET
+        name: getlicensetoken
+        description: Grafana Get License Token
+        call: grafana-tokens.getlicensetoken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postlicensetoken
+        description: Grafana Post License Token
+        call: grafana-tokens.postlicensetoken
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletelicensetoken
+        description: Grafana Delete License Token
+        call: grafana-tokens.deletelicensetoken
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/licensing/token/renew
+      name: licensing-token-renew
+      description: REST surface for licensing-token-renew.
+      operations:
+      - method: POST
+        name: postrenewlicensetoken
+        description: Grafana Post Renew License Token
+        call: grafana-tokens.postrenewlicensetoken
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serviceaccounts/{serviceaccountid}/tokens
+      name: serviceaccounts-serviceaccountid-tokens
+      description: REST surface for serviceaccounts-serviceAccountId-tokens.
+      operations:
+      - method: GET
+        name: listtokens
+        description: Grafana List Tokens
+        call: grafana-tokens.listtokens
+        with:
+          serviceAccountId: rest.serviceAccountId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createtoken
+        description: Grafana Create Token
+        call: grafana-tokens.createtoken
+        with:
+          serviceAccountId: rest.serviceAccountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serviceaccounts/{serviceaccountid}/tokens/{tokenid}
+      name: serviceaccounts-serviceaccountid-tokens-tokenid
+      description: REST surface for serviceaccounts-serviceAccountId-tokens-tokenId.
+      operations:
+      - method: DELETE
+        name: deletetoken
+        description: Grafana Delete Token
+        call: grafana-tokens.deletetoken
+        with:
+          tokenId: rest.tokenId
+          serviceAccountId: rest.serviceAccountId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user/auth-tokens
+      name: user-auth-tokens
+      description: REST surface for user-auth-tokens.
+      operations:
+      - method: GET
+        name: getuserauthtokens
+        description: Grafana Get User Auth Tokens
+        call: grafana-tokens.getuserauthtokens
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user/revoke-auth-token
+      name: user-revoke-auth-token
+      description: REST surface for user-revoke-auth-token.
+      operations:
+      - method: POST
+        name: revokeuserauthtoken
+        description: Grafana Revoke User Auth Token
+        call: grafana-tokens.revokeuserauthtoken
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-tokens-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Tokens. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-admin-get-user-auth
+      description: Grafana Admin Get User Auth Tokens
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-tokens.admingetuserauthtokens
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-revoke-user-auth
+      description: Grafana Admin Revoke User Auth Token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-tokens.adminrevokeuserauthtoken
+      with:
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-cloud-migration-token
+      description: Grafana Get Cloud Migration Token
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-tokens.getcloudmigrationtoken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-create-cloud-migration-token
+      description: Grafana Create Cloud Migration Token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-tokens.createcloudmigrationtoken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-delete-cloud-migration-token
+      description: Grafana Delete Cloud Migration Token
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-tokens.deletecloudmigrationtoken
+      with:
+        uid: tools.uid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-license-token
+      description: Grafana Get License Token
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-tokens.getlicensetoken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-post-license-token
+      description: Grafana Post License Token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-tokens.postlicensetoken
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-delete-license-token
+      description: Grafana Delete License Token
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-tokens.deletelicensetoken
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-post-renew-license-token
+      description: Grafana Post Renew License Token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-tokens.postrenewlicensetoken
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-list-tokens
+      description: Grafana List Tokens
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-tokens.listtokens
+      with:
+        serviceAccountId: tools.serviceAccountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-create-token
+      description: Grafana Create Token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-tokens.createtoken
+      with:
+        serviceAccountId: tools.serviceAccountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-delete-token
+      description: Grafana Delete Token
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-tokens.deletetoken
+      with:
+        tokenId: tools.tokenId
+        serviceAccountId: tools.serviceAccountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-user-auth-tokens
+      description: Grafana Get User Auth Tokens
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-tokens.getuserauthtokens
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-revoke-user-auth-token
+      description: Grafana Revoke User Auth Token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-tokens.revokeuserauthtoken
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

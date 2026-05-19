@@ -1,0 +1,177 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Trees
+  description: 'Grafana — Trees. 4 operations. Lead operation: Grafana Route Get Policy Tree. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Trees
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-trees
+    baseUri: http://{defaultHost}
+    description: Grafana — Trees business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-provisioning-policies
+      path: /v1/provisioning/policies
+      operations:
+      - name: routegetpolicytree
+        method: GET
+        description: Grafana Route Get Policy Tree
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: routeputpolicytree
+        method: PUT
+        description: Grafana Route Put Policy Tree
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: X-Disable-Provenance
+          in: header
+          type: string
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: routeresetpolicytree
+        method: DELETE
+        description: Grafana Route Reset Policy Tree
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Content-Type
+          in: header
+          type: string
+          required: true
+    - name: v1-provisioning-policies-export
+      path: /v1/provisioning/policies/export
+      operations:
+      - name: routegetpolicytreeexport
+        method: GET
+        description: Grafana Route Get Policy Tree Export
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-trees-rest
+    port: 8080
+    description: REST adapter for Grafana — Trees. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/v1/provisioning/policies
+      name: v1-provisioning-policies
+      description: REST surface for v1-provisioning-policies.
+      operations:
+      - method: GET
+        name: routegetpolicytree
+        description: Grafana Route Get Policy Tree
+        call: grafana-trees.routegetpolicytree
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: routeputpolicytree
+        description: Grafana Route Put Policy Tree
+        call: grafana-trees.routeputpolicytree
+        with:
+          X-Disable-Provenance: rest.X-Disable-Provenance
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: routeresetpolicytree
+        description: Grafana Route Reset Policy Tree
+        call: grafana-trees.routeresetpolicytree
+        with:
+          Content-Type: rest.Content-Type
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/provisioning/policies/export
+      name: v1-provisioning-policies-export
+      description: REST surface for v1-provisioning-policies-export.
+      operations:
+      - method: GET
+        name: routegetpolicytreeexport
+        description: Grafana Route Get Policy Tree Export
+        call: grafana-trees.routegetpolicytreeexport
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-trees-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Trees. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-route-get-policy-tree
+      description: Grafana Route Get Policy Tree
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-trees.routegetpolicytree
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-put-policy-tree
+      description: Grafana Route Put Policy Tree
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-trees.routeputpolicytree
+      with:
+        X-Disable-Provenance: tools.X-Disable-Provenance
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-reset-policy-tree
+      description: Grafana Route Reset Policy Tree
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-trees.routeresetpolicytree
+      with:
+        Content-Type: tools.Content-Type
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-get-policy-tree-2
+      description: Grafana Route Get Policy Tree Export
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-trees.routegetpolicytreeexport
+      outputParameters:
+      - type: object
+        mapping: $.

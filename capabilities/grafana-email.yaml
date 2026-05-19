@@ -1,0 +1,155 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Email
+  description: 'Grafana — Email. 3 operations. Lead operation: Grafana Send Test Email. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Email
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-email
+    baseUri: http://{defaultHost}
+    description: Grafana — Email business capability. Self-contained, no shared references.
+    resources:
+    - name: reports-test-email
+      path: /reports/test-email
+      operations:
+      - name: sendtestemail
+        method: POST
+        description: Grafana Send Test Email
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: user-email-update
+      path: /user/email/update
+      operations:
+      - name: updateuseremail
+        method: GET
+        description: Grafana Update User Email
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: users-lookup
+      path: /users/lookup
+      operations:
+      - name: getuserbyloginoremail
+        method: GET
+        description: Grafana Get User By Login Or Email
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: loginOrEmail
+          in: query
+          type: string
+          description: loginOrEmail of the user
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-email-rest
+    port: 8080
+    description: REST adapter for Grafana — Email. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/reports/test-email
+      name: reports-test-email
+      description: REST surface for reports-test-email.
+      operations:
+      - method: POST
+        name: sendtestemail
+        description: Grafana Send Test Email
+        call: grafana-email.sendtestemail
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user/email/update
+      name: user-email-update
+      description: REST surface for user-email-update.
+      operations:
+      - method: GET
+        name: updateuseremail
+        description: Grafana Update User Email
+        call: grafana-email.updateuseremail
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/lookup
+      name: users-lookup
+      description: REST surface for users-lookup.
+      operations:
+      - method: GET
+        name: getuserbyloginoremail
+        description: Grafana Get User By Login Or Email
+        call: grafana-email.getuserbyloginoremail
+        with:
+          loginOrEmail: rest.loginOrEmail
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-email-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Email. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-send-test-email
+      description: Grafana Send Test Email
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: grafana-email.sendtestemail
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-user-email
+      description: Grafana Update User Email
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-email.updateuseremail
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-user-login-email
+      description: Grafana Get User By Login Or Email
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-email.getuserbyloginoremail
+      with:
+        loginOrEmail: tools.loginOrEmail
+      outputParameters:
+      - type: object
+        mapping: $.

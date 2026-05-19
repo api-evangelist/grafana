@@ -1,0 +1,288 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana HTTP API — Alerts
+  description: 'Grafana HTTP API — Alerts. 7 operations. Lead operation: List all alert rules. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Alerts
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-alerts
+    baseUri: https://{instance}.grafana.net/api
+    description: Grafana HTTP API — Alerts business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-provisioning-alert-rules
+      path: /v1/provisioning/alert-rules
+      operations:
+      - name: getalertrules
+        method: GET
+        description: List all alert rules
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createalertrule
+        method: POST
+        description: Create an alert rule
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v1-provisioning-alert-rules-uid
+      path: /v1/provisioning/alert-rules/{uid}
+      operations:
+      - name: getalertrule
+        method: GET
+        description: Get alert rule by UID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+      - name: updatealertrule
+        method: PUT
+        description: Update alert rule
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletealertrule
+        method: DELETE
+        description: Delete alert rule
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+    - name: v1-provisioning-contact-points
+      path: /v1/provisioning/contact-points
+      operations:
+      - name: getcontactpoints
+        method: GET
+        description: List contact points
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createcontactpoint
+        method: POST
+        description: Create a contact point
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.GRAFANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: grafana-alerts-rest
+    port: 8080
+    description: REST adapter for Grafana HTTP API — Alerts. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v1/provisioning/alert-rules
+      name: v1-provisioning-alert-rules
+      description: REST surface for v1-provisioning-alert-rules.
+      operations:
+      - method: GET
+        name: getalertrules
+        description: List all alert rules
+        call: grafana-alerts.getalertrules
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createalertrule
+        description: Create an alert rule
+        call: grafana-alerts.createalertrule
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/provisioning/alert-rules/{uid}
+      name: v1-provisioning-alert-rules-uid
+      description: REST surface for v1-provisioning-alert-rules-uid.
+      operations:
+      - method: GET
+        name: getalertrule
+        description: Get alert rule by UID
+        call: grafana-alerts.getalertrule
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updatealertrule
+        description: Update alert rule
+        call: grafana-alerts.updatealertrule
+        with:
+          uid: rest.uid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletealertrule
+        description: Delete alert rule
+        call: grafana-alerts.deletealertrule
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/provisioning/contact-points
+      name: v1-provisioning-contact-points
+      description: REST surface for v1-provisioning-contact-points.
+      operations:
+      - method: GET
+        name: getcontactpoints
+        description: List contact points
+        call: grafana-alerts.getcontactpoints
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createcontactpoint
+        description: Create a contact point
+        call: grafana-alerts.createcontactpoint
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-alerts-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana HTTP API — Alerts. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: list-all-alert-rules
+      description: List all alert rules
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-alerts.getalertrules
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-alert-rule
+      description: Create an alert rule
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-alerts.createalertrule
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-alert-rule-uid
+      description: Get alert rule by UID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-alerts.getalertrule
+      with:
+        uid: tools.uid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-alert-rule
+      description: Update alert rule
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-alerts.updatealertrule
+      with:
+        uid: tools.uid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-alert-rule
+      description: Delete alert rule
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-alerts.deletealertrule
+      with:
+        uid: tools.uid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-contact-points
+      description: List contact points
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-alerts.getcontactpoints
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-contact-point
+      description: Create a contact point
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-alerts.createcontactpoint
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

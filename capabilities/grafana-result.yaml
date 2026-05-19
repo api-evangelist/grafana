@@ -1,0 +1,72 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Result
+  description: 'Grafana — Result. 1 operations. Lead operation: Grafana Search Result. Self-contained Naftiko capability covering
+    one Grafana business surface.'
+  tags:
+  - Grafana
+  - Result
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-result
+    baseUri: http://{defaultHost}
+    description: Grafana — Result business capability. Self-contained, no shared references.
+    resources:
+    - name: access-control-assignments-search
+      path: /access-control/assignments/search
+      operations:
+      - name: searchresult
+        method: POST
+        description: Grafana Search Result
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-result-rest
+    port: 8080
+    description: REST adapter for Grafana — Result. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/access-control/assignments/search
+      name: access-control-assignments-search
+      description: REST surface for access-control-assignments-search.
+      operations:
+      - method: POST
+        name: searchresult
+        description: Grafana Search Result
+        call: grafana-result.searchresult
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-result-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Result. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-search-result
+      description: Grafana Search Result
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: grafana-result.searchresult
+      outputParameters:
+      - type: object
+        mapping: $.

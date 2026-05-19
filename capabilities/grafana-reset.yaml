@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Reset
+  description: 'Grafana — Reset. 1 operations. Lead operation: Grafana Route Reset Policy Tree. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Reset
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-reset
+    baseUri: http://{defaultHost}
+    description: Grafana — Reset business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-provisioning-policies
+      path: /v1/provisioning/policies
+      operations:
+      - name: routeresetpolicytree
+        method: DELETE
+        description: Grafana Route Reset Policy Tree
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Content-Type
+          in: header
+          type: string
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-reset-rest
+    port: 8080
+    description: REST adapter for Grafana — Reset. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/v1/provisioning/policies
+      name: v1-provisioning-policies
+      description: REST surface for v1-provisioning-policies.
+      operations:
+      - method: DELETE
+        name: routeresetpolicytree
+        description: Grafana Route Reset Policy Tree
+        call: grafana-reset.routeresetpolicytree
+        with:
+          Content-Type: rest.Content-Type
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-reset-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Reset. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-route-reset-policy-tree
+      description: Grafana Route Reset Policy Tree
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-reset.routeresetpolicytree
+      with:
+        Content-Type: tools.Content-Type
+      outputParameters:
+      - type: object
+        mapping: $.

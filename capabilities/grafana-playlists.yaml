@@ -1,0 +1,86 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Playlists
+  description: 'Grafana — Playlists. 1 operations. Lead operation: Grafana Search Playlists. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Playlists
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-playlists
+    baseUri: http://{defaultHost}
+    description: Grafana — Playlists business capability. Self-contained, no shared references.
+    resources:
+    - name: playlists
+      path: /playlists
+      operations:
+      - name: searchplaylists
+        method: GET
+        description: Grafana Search Playlists
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: query
+          in: query
+          type: string
+        - name: limit
+          in: query
+          type: integer
+          description: in:limit
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-playlists-rest
+    port: 8080
+    description: REST adapter for Grafana — Playlists. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/playlists
+      name: playlists
+      description: REST surface for playlists.
+      operations:
+      - method: GET
+        name: searchplaylists
+        description: Grafana Search Playlists
+        call: grafana-playlists.searchplaylists
+        with:
+          query: rest.query
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-playlists-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Playlists. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-search-playlists
+      description: Grafana Search Playlists
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-playlists.searchplaylists
+      with:
+        query: tools.query
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.

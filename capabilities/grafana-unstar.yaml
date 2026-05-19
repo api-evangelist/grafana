@@ -1,0 +1,122 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Unstar
+  description: 'Grafana — Unstar. 2 operations. Lead operation: Grafana Unstar Query. Self-contained Naftiko capability covering
+    one Grafana business surface.'
+  tags:
+  - Grafana
+  - Unstar
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-unstar
+    baseUri: http://{defaultHost}
+    description: Grafana — Unstar business capability. Self-contained, no shared references.
+    resources:
+    - name: query-history-star-query_history_uid
+      path: /query-history/star/{query_history_uid}
+      operations:
+      - name: unstarquery
+        method: DELETE
+        description: Grafana Unstar Query
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: query_history_uid
+          in: path
+          type: string
+          required: true
+    - name: user-stars-dashboard-uid-dashboard_uid
+      path: /user/stars/dashboard/uid/{dashboard_uid}
+      operations:
+      - name: unstardashboardbyuid
+        method: DELETE
+        description: Grafana Unstar Dashboard By UID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: dashboard_uid
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-unstar-rest
+    port: 8080
+    description: REST adapter for Grafana — Unstar. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/query-history/star/{query-history-uid}
+      name: query-history-star-query-history-uid
+      description: REST surface for query-history-star-query_history_uid.
+      operations:
+      - method: DELETE
+        name: unstarquery
+        description: Grafana Unstar Query
+        call: grafana-unstar.unstarquery
+        with:
+          query_history_uid: rest.query_history_uid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user/stars/dashboard/uid/{dashboard-uid}
+      name: user-stars-dashboard-uid-dashboard-uid
+      description: REST surface for user-stars-dashboard-uid-dashboard_uid.
+      operations:
+      - method: DELETE
+        name: unstardashboardbyuid
+        description: Grafana Unstar Dashboard By UID
+        call: grafana-unstar.unstardashboardbyuid
+        with:
+          dashboard_uid: rest.dashboard_uid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-unstar-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Unstar. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-unstar-query
+      description: Grafana Unstar Query
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-unstar.unstarquery
+      with:
+        query_history_uid: tools.query_history_uid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-unstar-dashboard-uid
+      description: Grafana Unstar Dashboard By UID
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-unstar.unstardashboardbyuid
+      with:
+        dashboard_uid: tools.dashboard_uid
+      outputParameters:
+      - type: object
+        mapping: $.

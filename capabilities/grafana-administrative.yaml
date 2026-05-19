@@ -1,0 +1,623 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Administrative
+  description: 'Grafana — Administrative. 15 operations. Lead operation: Grafana Admin Provisioning Reload Access Control.
+    Self-contained Naftiko capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Administrative
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-administrative
+    baseUri: http://{defaultHost}
+    description: Grafana — Administrative business capability. Self-contained, no shared references.
+    resources:
+    - name: admin-provisioning-access-control-reload
+      path: /admin/provisioning/access-control/reload
+      operations:
+      - name: adminprovisioningreloadaccesscontrol
+        method: POST
+        description: Grafana Admin Provisioning Reload Access Control
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-provisioning-dashboards-reload
+      path: /admin/provisioning/dashboards/reload
+      operations:
+      - name: adminprovisioningreloaddashboards
+        method: POST
+        description: Grafana Admin Provisioning Reload Dashboards
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-provisioning-datasources-reload
+      path: /admin/provisioning/datasources/reload
+      operations:
+      - name: adminprovisioningreloaddatasources
+        method: POST
+        description: Grafana Admin Provisioning Reload Datasources
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-provisioning-plugins-reload
+      path: /admin/provisioning/plugins/reload
+      operations:
+      - name: adminprovisioningreloadplugins
+        method: POST
+        description: Grafana Admin Provisioning Reload Plugins
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-settings
+      path: /admin/settings
+      operations:
+      - name: admingetsettings
+        method: GET
+        description: Grafana Admin Get Settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-stats
+      path: /admin/stats
+      operations:
+      - name: admingetstats
+        method: GET
+        description: Grafana Admin Get Stats
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-users
+      path: /admin/users
+      operations:
+      - name: admincreateuser
+        method: POST
+        description: Grafana Admin Create User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: admin-users-user_id
+      path: /admin/users/{user_id}
+      operations:
+      - name: admindeleteuser
+        method: DELETE
+        description: Grafana Admin Delete User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    - name: admin-users-user_id-auth-tokens
+      path: /admin/users/{user_id}/auth-tokens
+      operations:
+      - name: admingetuserauthtokens
+        method: GET
+        description: Grafana Admin Get User Auth Tokens
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    - name: admin-users-user_id-disable
+      path: /admin/users/{user_id}/disable
+      operations:
+      - name: admindisableuser
+        method: POST
+        description: Grafana Admin Disable User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    - name: admin-users-user_id-enable
+      path: /admin/users/{user_id}/enable
+      operations:
+      - name: adminenableuser
+        method: POST
+        description: Grafana Admin Enable User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    - name: admin-users-user_id-logout
+      path: /admin/users/{user_id}/logout
+      operations:
+      - name: adminlogoutuser
+        method: POST
+        description: Grafana Admin Logout User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    - name: admin-users-user_id-password
+      path: /admin/users/{user_id}/password
+      operations:
+      - name: adminupdateuserpassword
+        method: PUT
+        description: Grafana Admin Update User Password
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: admin-users-user_id-permissions
+      path: /admin/users/{user_id}/permissions
+      operations:
+      - name: adminupdateuserpermissions
+        method: PUT
+        description: Grafana Admin Update User Permissions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: admin-users-user_id-revoke-auth-token
+      path: /admin/users/{user_id}/revoke-auth-token
+      operations:
+      - name: adminrevokeuserauthtoken
+        method: POST
+        description: Grafana Admin Revoke User Auth Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-administrative-rest
+    port: 8080
+    description: REST adapter for Grafana — Administrative. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/admin/provisioning/access-control/reload
+      name: admin-provisioning-access-control-reload
+      description: REST surface for admin-provisioning-access-control-reload.
+      operations:
+      - method: POST
+        name: adminprovisioningreloadaccesscontrol
+        description: Grafana Admin Provisioning Reload Access Control
+        call: grafana-administrative.adminprovisioningreloadaccesscontrol
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/provisioning/dashboards/reload
+      name: admin-provisioning-dashboards-reload
+      description: REST surface for admin-provisioning-dashboards-reload.
+      operations:
+      - method: POST
+        name: adminprovisioningreloaddashboards
+        description: Grafana Admin Provisioning Reload Dashboards
+        call: grafana-administrative.adminprovisioningreloaddashboards
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/provisioning/datasources/reload
+      name: admin-provisioning-datasources-reload
+      description: REST surface for admin-provisioning-datasources-reload.
+      operations:
+      - method: POST
+        name: adminprovisioningreloaddatasources
+        description: Grafana Admin Provisioning Reload Datasources
+        call: grafana-administrative.adminprovisioningreloaddatasources
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/provisioning/plugins/reload
+      name: admin-provisioning-plugins-reload
+      description: REST surface for admin-provisioning-plugins-reload.
+      operations:
+      - method: POST
+        name: adminprovisioningreloadplugins
+        description: Grafana Admin Provisioning Reload Plugins
+        call: grafana-administrative.adminprovisioningreloadplugins
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/settings
+      name: admin-settings
+      description: REST surface for admin-settings.
+      operations:
+      - method: GET
+        name: admingetsettings
+        description: Grafana Admin Get Settings
+        call: grafana-administrative.admingetsettings
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/stats
+      name: admin-stats
+      description: REST surface for admin-stats.
+      operations:
+      - method: GET
+        name: admingetstats
+        description: Grafana Admin Get Stats
+        call: grafana-administrative.admingetstats
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users
+      name: admin-users
+      description: REST surface for admin-users.
+      operations:
+      - method: POST
+        name: admincreateuser
+        description: Grafana Admin Create User
+        call: grafana-administrative.admincreateuser
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}
+      name: admin-users-user-id
+      description: REST surface for admin-users-user_id.
+      operations:
+      - method: DELETE
+        name: admindeleteuser
+        description: Grafana Admin Delete User
+        call: grafana-administrative.admindeleteuser
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/auth-tokens
+      name: admin-users-user-id-auth-tokens
+      description: REST surface for admin-users-user_id-auth-tokens.
+      operations:
+      - method: GET
+        name: admingetuserauthtokens
+        description: Grafana Admin Get User Auth Tokens
+        call: grafana-administrative.admingetuserauthtokens
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/disable
+      name: admin-users-user-id-disable
+      description: REST surface for admin-users-user_id-disable.
+      operations:
+      - method: POST
+        name: admindisableuser
+        description: Grafana Admin Disable User
+        call: grafana-administrative.admindisableuser
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/enable
+      name: admin-users-user-id-enable
+      description: REST surface for admin-users-user_id-enable.
+      operations:
+      - method: POST
+        name: adminenableuser
+        description: Grafana Admin Enable User
+        call: grafana-administrative.adminenableuser
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/logout
+      name: admin-users-user-id-logout
+      description: REST surface for admin-users-user_id-logout.
+      operations:
+      - method: POST
+        name: adminlogoutuser
+        description: Grafana Admin Logout User
+        call: grafana-administrative.adminlogoutuser
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/password
+      name: admin-users-user-id-password
+      description: REST surface for admin-users-user_id-password.
+      operations:
+      - method: PUT
+        name: adminupdateuserpassword
+        description: Grafana Admin Update User Password
+        call: grafana-administrative.adminupdateuserpassword
+        with:
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/permissions
+      name: admin-users-user-id-permissions
+      description: REST surface for admin-users-user_id-permissions.
+      operations:
+      - method: PUT
+        name: adminupdateuserpermissions
+        description: Grafana Admin Update User Permissions
+        call: grafana-administrative.adminupdateuserpermissions
+        with:
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/revoke-auth-token
+      name: admin-users-user-id-revoke-auth-token
+      description: REST surface for admin-users-user_id-revoke-auth-token.
+      operations:
+      - method: POST
+        name: adminrevokeuserauthtoken
+        description: Grafana Admin Revoke User Auth Token
+        call: grafana-administrative.adminrevokeuserauthtoken
+        with:
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-administrative-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Administrative. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-admin-provisioning-reload-access
+      description: Grafana Admin Provisioning Reload Access Control
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-administrative.adminprovisioningreloadaccesscontrol
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-provisioning-reload-dashboards
+      description: Grafana Admin Provisioning Reload Dashboards
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-administrative.adminprovisioningreloaddashboards
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-provisioning-reload-datasources
+      description: Grafana Admin Provisioning Reload Datasources
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-administrative.adminprovisioningreloaddatasources
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-provisioning-reload-plugins
+      description: Grafana Admin Provisioning Reload Plugins
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-administrative.adminprovisioningreloadplugins
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-get-settings
+      description: Grafana Admin Get Settings
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-administrative.admingetsettings
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-get-stats
+      description: Grafana Admin Get Stats
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-administrative.admingetstats
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-create-user
+      description: Grafana Admin Create User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-administrative.admincreateuser
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-delete-user
+      description: Grafana Admin Delete User
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-administrative.admindeleteuser
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-get-user-auth
+      description: Grafana Admin Get User Auth Tokens
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-administrative.admingetuserauthtokens
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-disable-user
+      description: Grafana Admin Disable User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-administrative.admindisableuser
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-enable-user
+      description: Grafana Admin Enable User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-administrative.adminenableuser
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-logout-user
+      description: Grafana Admin Logout User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-administrative.adminlogoutuser
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-update-user-password
+      description: Grafana Admin Update User Password
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-administrative.adminupdateuserpassword
+      with:
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-update-user-permissions
+      description: Grafana Admin Update User Permissions
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-administrative.adminupdateuserpermissions
+      with:
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-revoke-user-auth
+      description: Grafana Admin Revoke User Auth Token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-administrative.adminrevokeuserauthtoken
+      with:
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

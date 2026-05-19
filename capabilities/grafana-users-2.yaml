@@ -1,0 +1,2049 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Users
+  description: 'Grafana — Users. 49 operations. Lead operation: Grafana List Users Roles. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Users
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-users-2
+    baseUri: http://{defaultHost}
+    description: Grafana — Users business capability. Self-contained, no shared references.
+    resources:
+    - name: access-control-users-roles-search
+      path: /access-control/users/roles/search
+      operations:
+      - name: listusersroles
+        method: POST
+        description: Grafana List Users Roles
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: access-control-users-userId-roles
+      path: /access-control/users/{userId}/roles
+      operations:
+      - name: listuserroles
+        method: GET
+        description: Grafana List User Roles
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: userId
+          in: path
+          type: integer
+          required: true
+      - name: setuserroles
+        method: PUT
+        description: Grafana Set User Roles
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: userId
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: adduserrole
+        method: POST
+        description: Grafana Add User Role
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: userId
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: access-control-users-userId-roles-roleUID
+      path: /access-control/users/{userId}/roles/{roleUID}
+      operations:
+      - name: removeuserrole
+        method: DELETE
+        description: Grafana Remove User Role
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: global
+          in: query
+          type: boolean
+          description: A flag indicating if the assignment is global or not. If set to false, the default org ID of the authenticated
+            user will be used from the request to remove assi
+        - name: roleUID
+          in: path
+          type: string
+          required: true
+        - name: userId
+          in: path
+          type: integer
+          required: true
+    - name: access-control-resource-resourceID-users-userID
+      path: /access-control/{resource}/{resourceID}/users/{userID}
+      operations:
+      - name: setresourcepermissionsforuser
+        method: POST
+        description: Grafana Set Resource Permissions For User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: resource
+          in: path
+          type: string
+          required: true
+        - name: resourceID
+          in: path
+          type: string
+          required: true
+        - name: userID
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: admin-ldap-sync-user_id
+      path: /admin/ldap/sync/{user_id}
+      operations:
+      - name: postsyncuserwithldap
+        method: POST
+        description: Grafana Post Sync User With LDAP
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    - name: admin-ldap-user_name
+      path: /admin/ldap/{user_name}
+      operations:
+      - name: getuserfromldap
+        method: GET
+        description: Grafana Get User From LDAP
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_name
+          in: path
+          type: string
+          required: true
+    - name: admin-users
+      path: /admin/users
+      operations:
+      - name: admincreateuser
+        method: POST
+        description: Grafana Admin Create User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: admin-users-user_id
+      path: /admin/users/{user_id}
+      operations:
+      - name: admindeleteuser
+        method: DELETE
+        description: Grafana Admin Delete User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    - name: admin-users-user_id-auth-tokens
+      path: /admin/users/{user_id}/auth-tokens
+      operations:
+      - name: admingetuserauthtokens
+        method: GET
+        description: Grafana Admin Get User Auth Tokens
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    - name: admin-users-user_id-disable
+      path: /admin/users/{user_id}/disable
+      operations:
+      - name: admindisableuser
+        method: POST
+        description: Grafana Admin Disable User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    - name: admin-users-user_id-enable
+      path: /admin/users/{user_id}/enable
+      operations:
+      - name: adminenableuser
+        method: POST
+        description: Grafana Admin Enable User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    - name: admin-users-user_id-logout
+      path: /admin/users/{user_id}/logout
+      operations:
+      - name: adminlogoutuser
+        method: POST
+        description: Grafana Admin Logout User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    - name: admin-users-user_id-password
+      path: /admin/users/{user_id}/password
+      operations:
+      - name: adminupdateuserpassword
+        method: PUT
+        description: Grafana Admin Update User Password
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: admin-users-user_id-permissions
+      path: /admin/users/{user_id}/permissions
+      operations:
+      - name: adminupdateuserpermissions
+        method: PUT
+        description: Grafana Admin Update User Permissions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: admin-users-user_id-quotas
+      path: /admin/users/{user_id}/quotas
+      operations:
+      - name: getuserquota
+        method: GET
+        description: Grafana Get User Quota
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    - name: admin-users-user_id-quotas-quota_target
+      path: /admin/users/{user_id}/quotas/{quota_target}
+      operations:
+      - name: updateuserquota
+        method: PUT
+        description: Grafana Update User Quota
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: quota_target
+          in: path
+          type: string
+          required: true
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: admin-users-user_id-revoke-auth-token
+      path: /admin/users/{user_id}/revoke-auth-token
+      operations:
+      - name: adminrevokeuserauthtoken
+        method: POST
+        description: Grafana Admin Revoke User Auth Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: org-users
+      path: /org/users
+      operations:
+      - name: getorgusersforcurrentorg
+        method: GET
+        description: Grafana Get Org Users For Current Org
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: query
+          in: query
+          type: string
+        - name: limit
+          in: query
+          type: integer
+      - name: addorgusertocurrentorg
+        method: POST
+        description: Grafana Add Org User To Current Org
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: org-users-lookup
+      path: /org/users/lookup
+      operations:
+      - name: getorgusersforcurrentorglookup
+        method: GET
+        description: Grafana Get Org Users For Current Org Lookup
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: query
+          in: query
+          type: string
+        - name: limit
+          in: query
+          type: integer
+    - name: org-users-user_id
+      path: /org/users/{user_id}
+      operations:
+      - name: removeorguserforcurrentorg
+        method: DELETE
+        description: Grafana Remove Org User For Current Org
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+      - name: updateorguserforcurrentorg
+        method: PATCH
+        description: Grafana Update Org User For Current Org
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: orgs-org_id-users
+      path: /orgs/{org_id}/users
+      operations:
+      - name: getorgusers
+        method: GET
+        description: Grafana Get Org Users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: org_id
+          in: path
+          type: integer
+          required: true
+      - name: addorguser
+        method: POST
+        description: Grafana Add Org User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: org_id
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: orgs-org_id-users-search
+      path: /orgs/{org_id}/users/search
+      operations:
+      - name: searchorgusers
+        method: GET
+        description: Grafana Search Org Users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: org_id
+          in: path
+          type: integer
+          required: true
+    - name: orgs-org_id-users-user_id
+      path: /orgs/{org_id}/users/{user_id}
+      operations:
+      - name: removeorguser
+        method: DELETE
+        description: Grafana Remove Org User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: org_id
+          in: path
+          type: integer
+          required: true
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+      - name: updateorguser
+        method: PATCH
+        description: Grafana Update Org User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: org_id
+          in: path
+          type: integer
+          required: true
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: user
+      path: /user
+      operations:
+      - name: getsignedinuser
+        method: GET
+        description: Grafana Get Signed In User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatesignedinuser
+        method: PUT
+        description: Grafana Update Signed In User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: user-auth-tokens
+      path: /user/auth-tokens
+      operations:
+      - name: getuserauthtokens
+        method: GET
+        description: Grafana Get User Auth Tokens
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: user-email-update
+      path: /user/email/update
+      operations:
+      - name: updateuseremail
+        method: GET
+        description: Grafana Update User Email
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: user-orgs
+      path: /user/orgs
+      operations:
+      - name: getsignedinuserorglist
+        method: GET
+        description: Grafana Get Signed In User Org List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: user-password
+      path: /user/password
+      operations:
+      - name: changeuserpassword
+        method: PUT
+        description: Grafana Change User Password
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: user-preferences
+      path: /user/preferences
+      operations:
+      - name: getuserpreferences
+        method: GET
+        description: Grafana Get User Preferences
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateuserpreferences
+        method: PUT
+        description: Grafana Update User Preferences
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: patchuserpreferences
+        method: PATCH
+        description: Grafana Patch User Preferences
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: user-quotas
+      path: /user/quotas
+      operations:
+      - name: getuserquotas
+        method: GET
+        description: Grafana Get User Quotas
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: user-revoke-auth-token
+      path: /user/revoke-auth-token
+      operations:
+      - name: revokeuserauthtoken
+        method: POST
+        description: Grafana Revoke User Auth Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: user-teams
+      path: /user/teams
+      operations:
+      - name: getsignedinuserteamlist
+        method: GET
+        description: Grafana Get Signed In User Team List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: user-using-org_id
+      path: /user/using/{org_id}
+      operations:
+      - name: usersetusingorg
+        method: POST
+        description: Grafana User Set Using Org
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: org_id
+          in: path
+          type: integer
+          required: true
+    - name: users
+      path: /users
+      operations:
+      - name: searchusers
+        method: GET
+        description: Grafana Search Users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: perpage
+          in: query
+          type: integer
+          description: Limit the maximum number of users to return per page
+        - name: page
+          in: query
+          type: integer
+          description: Page index for starting fetching users
+    - name: users-lookup
+      path: /users/lookup
+      operations:
+      - name: getuserbyloginoremail
+        method: GET
+        description: Grafana Get User By Login Or Email
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: loginOrEmail
+          in: query
+          type: string
+          description: loginOrEmail of the user
+          required: true
+    - name: users-search
+      path: /users/search
+      operations:
+      - name: searchuserswithpaging
+        method: GET
+        description: Grafana Search Users With Paging
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: users-user_id
+      path: /users/{user_id}
+      operations:
+      - name: getuserbyid
+        method: GET
+        description: Grafana Get User By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+      - name: updateuser
+        method: PUT
+        description: Grafana Update User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: users-user_id-orgs
+      path: /users/{user_id}/orgs
+      operations:
+      - name: getuserorglist
+        method: GET
+        description: Grafana Get User Org List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    - name: users-user_id-teams
+      path: /users/{user_id}/teams
+      operations:
+      - name: getuserteams
+        method: GET
+        description: Grafana Get User Teams
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-users-2-rest
+    port: 8080
+    description: REST adapter for Grafana — Users. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/access-control/users/roles/search
+      name: access-control-users-roles-search
+      description: REST surface for access-control-users-roles-search.
+      operations:
+      - method: POST
+        name: listusersroles
+        description: Grafana List Users Roles
+        call: grafana-users-2.listusersroles
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/users/{userid}/roles
+      name: access-control-users-userid-roles
+      description: REST surface for access-control-users-userId-roles.
+      operations:
+      - method: GET
+        name: listuserroles
+        description: Grafana List User Roles
+        call: grafana-users-2.listuserroles
+        with:
+          userId: rest.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: setuserroles
+        description: Grafana Set User Roles
+        call: grafana-users-2.setuserroles
+        with:
+          userId: rest.userId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: adduserrole
+        description: Grafana Add User Role
+        call: grafana-users-2.adduserrole
+        with:
+          userId: rest.userId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/users/{userid}/roles/{roleuid}
+      name: access-control-users-userid-roles-roleuid
+      description: REST surface for access-control-users-userId-roles-roleUID.
+      operations:
+      - method: DELETE
+        name: removeuserrole
+        description: Grafana Remove User Role
+        call: grafana-users-2.removeuserrole
+        with:
+          global: rest.global
+          roleUID: rest.roleUID
+          userId: rest.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/{resource}/{resourceid}/users/{userid}
+      name: access-control-resource-resourceid-users-userid
+      description: REST surface for access-control-resource-resourceID-users-userID.
+      operations:
+      - method: POST
+        name: setresourcepermissionsforuser
+        description: Grafana Set Resource Permissions For User
+        call: grafana-users-2.setresourcepermissionsforuser
+        with:
+          resource: rest.resource
+          resourceID: rest.resourceID
+          userID: rest.userID
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/ldap/sync/{user-id}
+      name: admin-ldap-sync-user-id
+      description: REST surface for admin-ldap-sync-user_id.
+      operations:
+      - method: POST
+        name: postsyncuserwithldap
+        description: Grafana Post Sync User With LDAP
+        call: grafana-users-2.postsyncuserwithldap
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/ldap/{user-name}
+      name: admin-ldap-user-name
+      description: REST surface for admin-ldap-user_name.
+      operations:
+      - method: GET
+        name: getuserfromldap
+        description: Grafana Get User From LDAP
+        call: grafana-users-2.getuserfromldap
+        with:
+          user_name: rest.user_name
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users
+      name: admin-users
+      description: REST surface for admin-users.
+      operations:
+      - method: POST
+        name: admincreateuser
+        description: Grafana Admin Create User
+        call: grafana-users-2.admincreateuser
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}
+      name: admin-users-user-id
+      description: REST surface for admin-users-user_id.
+      operations:
+      - method: DELETE
+        name: admindeleteuser
+        description: Grafana Admin Delete User
+        call: grafana-users-2.admindeleteuser
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/auth-tokens
+      name: admin-users-user-id-auth-tokens
+      description: REST surface for admin-users-user_id-auth-tokens.
+      operations:
+      - method: GET
+        name: admingetuserauthtokens
+        description: Grafana Admin Get User Auth Tokens
+        call: grafana-users-2.admingetuserauthtokens
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/disable
+      name: admin-users-user-id-disable
+      description: REST surface for admin-users-user_id-disable.
+      operations:
+      - method: POST
+        name: admindisableuser
+        description: Grafana Admin Disable User
+        call: grafana-users-2.admindisableuser
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/enable
+      name: admin-users-user-id-enable
+      description: REST surface for admin-users-user_id-enable.
+      operations:
+      - method: POST
+        name: adminenableuser
+        description: Grafana Admin Enable User
+        call: grafana-users-2.adminenableuser
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/logout
+      name: admin-users-user-id-logout
+      description: REST surface for admin-users-user_id-logout.
+      operations:
+      - method: POST
+        name: adminlogoutuser
+        description: Grafana Admin Logout User
+        call: grafana-users-2.adminlogoutuser
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/password
+      name: admin-users-user-id-password
+      description: REST surface for admin-users-user_id-password.
+      operations:
+      - method: PUT
+        name: adminupdateuserpassword
+        description: Grafana Admin Update User Password
+        call: grafana-users-2.adminupdateuserpassword
+        with:
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/permissions
+      name: admin-users-user-id-permissions
+      description: REST surface for admin-users-user_id-permissions.
+      operations:
+      - method: PUT
+        name: adminupdateuserpermissions
+        description: Grafana Admin Update User Permissions
+        call: grafana-users-2.adminupdateuserpermissions
+        with:
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/quotas
+      name: admin-users-user-id-quotas
+      description: REST surface for admin-users-user_id-quotas.
+      operations:
+      - method: GET
+        name: getuserquota
+        description: Grafana Get User Quota
+        call: grafana-users-2.getuserquota
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/quotas/{quota-target}
+      name: admin-users-user-id-quotas-quota-target
+      description: REST surface for admin-users-user_id-quotas-quota_target.
+      operations:
+      - method: PUT
+        name: updateuserquota
+        description: Grafana Update User Quota
+        call: grafana-users-2.updateuserquota
+        with:
+          quota_target: rest.quota_target
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/revoke-auth-token
+      name: admin-users-user-id-revoke-auth-token
+      description: REST surface for admin-users-user_id-revoke-auth-token.
+      operations:
+      - method: POST
+        name: adminrevokeuserauthtoken
+        description: Grafana Admin Revoke User Auth Token
+        call: grafana-users-2.adminrevokeuserauthtoken
+        with:
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/org/users
+      name: org-users
+      description: REST surface for org-users.
+      operations:
+      - method: GET
+        name: getorgusersforcurrentorg
+        description: Grafana Get Org Users For Current Org
+        call: grafana-users-2.getorgusersforcurrentorg
+        with:
+          query: rest.query
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: addorgusertocurrentorg
+        description: Grafana Add Org User To Current Org
+        call: grafana-users-2.addorgusertocurrentorg
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/org/users/lookup
+      name: org-users-lookup
+      description: REST surface for org-users-lookup.
+      operations:
+      - method: GET
+        name: getorgusersforcurrentorglookup
+        description: Grafana Get Org Users For Current Org Lookup
+        call: grafana-users-2.getorgusersforcurrentorglookup
+        with:
+          query: rest.query
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/org/users/{user-id}
+      name: org-users-user-id
+      description: REST surface for org-users-user_id.
+      operations:
+      - method: DELETE
+        name: removeorguserforcurrentorg
+        description: Grafana Remove Org User For Current Org
+        call: grafana-users-2.removeorguserforcurrentorg
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateorguserforcurrentorg
+        description: Grafana Update Org User For Current Org
+        call: grafana-users-2.updateorguserforcurrentorg
+        with:
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/orgs/{org-id}/users
+      name: orgs-org-id-users
+      description: REST surface for orgs-org_id-users.
+      operations:
+      - method: GET
+        name: getorgusers
+        description: Grafana Get Org Users
+        call: grafana-users-2.getorgusers
+        with:
+          org_id: rest.org_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: addorguser
+        description: Grafana Add Org User
+        call: grafana-users-2.addorguser
+        with:
+          org_id: rest.org_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/orgs/{org-id}/users/search
+      name: orgs-org-id-users-search
+      description: REST surface for orgs-org_id-users-search.
+      operations:
+      - method: GET
+        name: searchorgusers
+        description: Grafana Search Org Users
+        call: grafana-users-2.searchorgusers
+        with:
+          org_id: rest.org_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/orgs/{org-id}/users/{user-id}
+      name: orgs-org-id-users-user-id
+      description: REST surface for orgs-org_id-users-user_id.
+      operations:
+      - method: DELETE
+        name: removeorguser
+        description: Grafana Remove Org User
+        call: grafana-users-2.removeorguser
+        with:
+          org_id: rest.org_id
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateorguser
+        description: Grafana Update Org User
+        call: grafana-users-2.updateorguser
+        with:
+          org_id: rest.org_id
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user
+      name: user
+      description: REST surface for user.
+      operations:
+      - method: GET
+        name: getsignedinuser
+        description: Grafana Get Signed In User
+        call: grafana-users-2.getsignedinuser
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updatesignedinuser
+        description: Grafana Update Signed In User
+        call: grafana-users-2.updatesignedinuser
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user/auth-tokens
+      name: user-auth-tokens
+      description: REST surface for user-auth-tokens.
+      operations:
+      - method: GET
+        name: getuserauthtokens
+        description: Grafana Get User Auth Tokens
+        call: grafana-users-2.getuserauthtokens
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user/email/update
+      name: user-email-update
+      description: REST surface for user-email-update.
+      operations:
+      - method: GET
+        name: updateuseremail
+        description: Grafana Update User Email
+        call: grafana-users-2.updateuseremail
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user/orgs
+      name: user-orgs
+      description: REST surface for user-orgs.
+      operations:
+      - method: GET
+        name: getsignedinuserorglist
+        description: Grafana Get Signed In User Org List
+        call: grafana-users-2.getsignedinuserorglist
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user/password
+      name: user-password
+      description: REST surface for user-password.
+      operations:
+      - method: PUT
+        name: changeuserpassword
+        description: Grafana Change User Password
+        call: grafana-users-2.changeuserpassword
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user/preferences
+      name: user-preferences
+      description: REST surface for user-preferences.
+      operations:
+      - method: GET
+        name: getuserpreferences
+        description: Grafana Get User Preferences
+        call: grafana-users-2.getuserpreferences
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateuserpreferences
+        description: Grafana Update User Preferences
+        call: grafana-users-2.updateuserpreferences
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchuserpreferences
+        description: Grafana Patch User Preferences
+        call: grafana-users-2.patchuserpreferences
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user/quotas
+      name: user-quotas
+      description: REST surface for user-quotas.
+      operations:
+      - method: GET
+        name: getuserquotas
+        description: Grafana Get User Quotas
+        call: grafana-users-2.getuserquotas
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user/revoke-auth-token
+      name: user-revoke-auth-token
+      description: REST surface for user-revoke-auth-token.
+      operations:
+      - method: POST
+        name: revokeuserauthtoken
+        description: Grafana Revoke User Auth Token
+        call: grafana-users-2.revokeuserauthtoken
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user/teams
+      name: user-teams
+      description: REST surface for user-teams.
+      operations:
+      - method: GET
+        name: getsignedinuserteamlist
+        description: Grafana Get Signed In User Team List
+        call: grafana-users-2.getsignedinuserteamlist
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user/using/{org-id}
+      name: user-using-org-id
+      description: REST surface for user-using-org_id.
+      operations:
+      - method: POST
+        name: usersetusingorg
+        description: Grafana User Set Using Org
+        call: grafana-users-2.usersetusingorg
+        with:
+          org_id: rest.org_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users
+      name: users
+      description: REST surface for users.
+      operations:
+      - method: GET
+        name: searchusers
+        description: Grafana Search Users
+        call: grafana-users-2.searchusers
+        with:
+          perpage: rest.perpage
+          page: rest.page
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/lookup
+      name: users-lookup
+      description: REST surface for users-lookup.
+      operations:
+      - method: GET
+        name: getuserbyloginoremail
+        description: Grafana Get User By Login Or Email
+        call: grafana-users-2.getuserbyloginoremail
+        with:
+          loginOrEmail: rest.loginOrEmail
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/search
+      name: users-search
+      description: REST surface for users-search.
+      operations:
+      - method: GET
+        name: searchuserswithpaging
+        description: Grafana Search Users With Paging
+        call: grafana-users-2.searchuserswithpaging
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}
+      name: users-user-id
+      description: REST surface for users-user_id.
+      operations:
+      - method: GET
+        name: getuserbyid
+        description: Grafana Get User By ID
+        call: grafana-users-2.getuserbyid
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateuser
+        description: Grafana Update User
+        call: grafana-users-2.updateuser
+        with:
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/orgs
+      name: users-user-id-orgs
+      description: REST surface for users-user_id-orgs.
+      operations:
+      - method: GET
+        name: getuserorglist
+        description: Grafana Get User Org List
+        call: grafana-users-2.getuserorglist
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/teams
+      name: users-user-id-teams
+      description: REST surface for users-user_id-teams.
+      operations:
+      - method: GET
+        name: getuserteams
+        description: Grafana Get User Teams
+        call: grafana-users-2.getuserteams
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-users-2-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Users. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-list-users-roles
+      description: Grafana List Users Roles
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: grafana-users-2.listusersroles
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-list-user-roles
+      description: Grafana List User Roles
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.listuserroles
+      with:
+        userId: tools.userId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-set-user-roles
+      description: Grafana Set User Roles
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.setuserroles
+      with:
+        userId: tools.userId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-add-user-role
+      description: Grafana Add User Role
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-users-2.adduserrole
+      with:
+        userId: tools.userId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-remove-user-role
+      description: Grafana Remove User Role
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-users-2.removeuserrole
+      with:
+        global: tools.global
+        roleUID: tools.roleUID
+        userId: tools.userId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-set-resource-permissions-user
+      description: Grafana Set Resource Permissions For User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-users-2.setresourcepermissionsforuser
+      with:
+        resource: tools.resource
+        resourceID: tools.resourceID
+        userID: tools.userID
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-post-sync-user-ldap
+      description: Grafana Post Sync User With LDAP
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-users-2.postsyncuserwithldap
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-user-ldap
+      description: Grafana Get User From LDAP
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.getuserfromldap
+      with:
+        user_name: tools.user_name
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-create-user
+      description: Grafana Admin Create User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-users-2.admincreateuser
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-delete-user
+      description: Grafana Admin Delete User
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-users-2.admindeleteuser
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-get-user-auth
+      description: Grafana Admin Get User Auth Tokens
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.admingetuserauthtokens
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-disable-user
+      description: Grafana Admin Disable User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-users-2.admindisableuser
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-enable-user
+      description: Grafana Admin Enable User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-users-2.adminenableuser
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-logout-user
+      description: Grafana Admin Logout User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-users-2.adminlogoutuser
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-update-user-password
+      description: Grafana Admin Update User Password
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.adminupdateuserpassword
+      with:
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-update-user-permissions
+      description: Grafana Admin Update User Permissions
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.adminupdateuserpermissions
+      with:
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-user-quota
+      description: Grafana Get User Quota
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.getuserquota
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-user-quota
+      description: Grafana Update User Quota
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.updateuserquota
+      with:
+        quota_target: tools.quota_target
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-revoke-user-auth
+      description: Grafana Admin Revoke User Auth Token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-users-2.adminrevokeuserauthtoken
+      with:
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-org-users-current
+      description: Grafana Get Org Users For Current Org
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.getorgusersforcurrentorg
+      with:
+        query: tools.query
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-add-org-user-current
+      description: Grafana Add Org User To Current Org
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-users-2.addorgusertocurrentorg
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-org-users-current-2
+      description: Grafana Get Org Users For Current Org Lookup
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.getorgusersforcurrentorglookup
+      with:
+        query: tools.query
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-remove-org-user-current
+      description: Grafana Remove Org User For Current Org
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-users-2.removeorguserforcurrentorg
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-org-user-current
+      description: Grafana Update Org User For Current Org
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.updateorguserforcurrentorg
+      with:
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-org-users
+      description: Grafana Get Org Users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.getorgusers
+      with:
+        org_id: tools.org_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-add-org-user
+      description: Grafana Add Org User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-users-2.addorguser
+      with:
+        org_id: tools.org_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-search-org-users
+      description: Grafana Search Org Users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.searchorgusers
+      with:
+        org_id: tools.org_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-remove-org-user
+      description: Grafana Remove Org User
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-users-2.removeorguser
+      with:
+        org_id: tools.org_id
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-org-user
+      description: Grafana Update Org User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.updateorguser
+      with:
+        org_id: tools.org_id
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-signed-user
+      description: Grafana Get Signed In User
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.getsignedinuser
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-signed-user
+      description: Grafana Update Signed In User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.updatesignedinuser
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-user-auth-tokens
+      description: Grafana Get User Auth Tokens
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.getuserauthtokens
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-user-email
+      description: Grafana Update User Email
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.updateuseremail
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-signed-user-org
+      description: Grafana Get Signed In User Org List
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.getsignedinuserorglist
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-change-user-password
+      description: Grafana Change User Password
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.changeuserpassword
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-user-preferences
+      description: Grafana Get User Preferences
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.getuserpreferences
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-user-preferences
+      description: Grafana Update User Preferences
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.updateuserpreferences
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-patch-user-preferences
+      description: Grafana Patch User Preferences
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.patchuserpreferences
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-user-quotas
+      description: Grafana Get User Quotas
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.getuserquotas
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-revoke-user-auth-token
+      description: Grafana Revoke User Auth Token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-users-2.revokeuserauthtoken
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-signed-user-team
+      description: Grafana Get Signed In User Team List
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.getsignedinuserteamlist
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-user-set-using-org
+      description: Grafana User Set Using Org
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-users-2.usersetusingorg
+      with:
+        org_id: tools.org_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-search-users
+      description: Grafana Search Users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.searchusers
+      with:
+        perpage: tools.perpage
+        page: tools.page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-user-login-email
+      description: Grafana Get User By Login Or Email
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.getuserbyloginoremail
+      with:
+        loginOrEmail: tools.loginOrEmail
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-search-users-paging
+      description: Grafana Search Users With Paging
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.searchuserswithpaging
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-user-id
+      description: Grafana Get User By ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.getuserbyid
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-user
+      description: Grafana Update User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.updateuser
+      with:
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-user-org-list
+      description: Grafana Get User Org List
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.getuserorglist
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-user-teams
+      description: Grafana Get User Teams
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-users-2.getuserteams
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.

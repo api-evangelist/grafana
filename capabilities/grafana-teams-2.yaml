@@ -1,0 +1,1182 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Teams
+  description: 'Grafana — Teams. 26 operations. Lead operation: Grafana List Teams Roles. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Teams
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-teams-2
+    baseUri: http://{defaultHost}
+    description: Grafana — Teams business capability. Self-contained, no shared references.
+    resources:
+    - name: access-control-teams-roles-search
+      path: /access-control/teams/roles/search
+      operations:
+      - name: listteamsroles
+        method: POST
+        description: Grafana List Teams Roles
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: access-control-teams-teamId-roles
+      path: /access-control/teams/{teamId}/roles
+      operations:
+      - name: listteamroles
+        method: GET
+        description: Grafana List Team Roles
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: integer
+          required: true
+      - name: setteamroles
+        method: PUT
+        description: Grafana Set Team Roles
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: addteamrole
+        method: POST
+        description: Grafana Add Team Role
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: access-control-teams-teamId-roles-roleUID
+      path: /access-control/teams/{teamId}/roles/{roleUID}
+      operations:
+      - name: removeteamrole
+        method: DELETE
+        description: Grafana Remove Team Role
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: roleUID
+          in: path
+          type: string
+          required: true
+        - name: teamId
+          in: path
+          type: integer
+          required: true
+    - name: access-control-resource-resourceID-teams-teamID
+      path: /access-control/{resource}/{resourceID}/teams/{teamID}
+      operations:
+      - name: setresourcepermissionsforteam
+        method: POST
+        description: Grafana Set Resource Permissions For Team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: resource
+          in: path
+          type: string
+          required: true
+        - name: resourceID
+          in: path
+          type: string
+          required: true
+        - name: teamID
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: datasources-uid-uid-lbac-teams
+      path: /datasources/uid/{uid}/lbac/teams
+      operations:
+      - name: getteamlbacrulesapi
+        method: GET
+        description: Grafana Get Team LBAC Rules Api
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+      - name: updateteamlbacrulesapi
+        method: PUT
+        description: Grafana Update Team LBAC Rules Api
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: teams
+      path: /teams
+      operations:
+      - name: createteam
+        method: POST
+        description: Grafana Create Team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-search
+      path: /teams/search
+      operations:
+      - name: searchteams
+        method: GET
+        description: Grafana Search Teams
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: page
+          in: query
+          type: integer
+        - name: perpage
+          in: query
+          type: integer
+          description: Number of items per page
+        - name: name
+          in: query
+          type: string
+        - name: query
+          in: query
+          type: string
+          description: If set it will return results where the query value is contained in the name field. Query values with
+            spaces need to be URL encoded.
+        - name: accesscontrol
+          in: query
+          type: boolean
+        - name: sort
+          in: query
+          type: string
+    - name: teams-teamId-groups
+      path: /teams/{teamId}/groups
+      operations:
+      - name: getteamgroupsapi
+        method: GET
+        description: Grafana Get Team Groups Api
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: string
+          required: true
+      - name: addteamgroupapi
+        method: POST
+        description: Grafana Add Team Group Api
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: removeteamgroupapiquery
+        method: DELETE
+        description: Grafana Remove Team Group Api Query
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: groupId
+          in: query
+          type: string
+        - name: teamId
+          in: path
+          type: string
+          required: true
+    - name: teams-teamId-groups-search
+      path: /teams/{teamId}/groups/search
+      operations:
+      - name: searchteamgroups
+        method: GET
+        description: Grafana Search Team Groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: integer
+          required: true
+        - name: page
+          in: query
+          type: integer
+        - name: perpage
+          in: query
+          type: integer
+          description: Number of items per page
+        - name: query
+          in: query
+          type: string
+          description: If set it will return results where the query value is contained in the name field. Query values with
+            spaces need to be URL encoded.
+        - name: name
+          in: query
+          type: string
+          description: Filter by exact name match
+    - name: teams-team_id
+      path: /teams/{team_id}
+      operations:
+      - name: getteambyid
+        method: GET
+        description: Grafana Get Team By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_id
+          in: path
+          type: string
+          required: true
+        - name: accesscontrol
+          in: query
+          type: boolean
+      - name: updateteam
+        method: PUT
+        description: Grafana Update Team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteteambyid
+        method: DELETE
+        description: Grafana Delete Team By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_id
+          in: path
+          type: string
+          required: true
+    - name: teams-team_id-members
+      path: /teams/{team_id}/members
+      operations:
+      - name: getteammembers
+        method: GET
+        description: Grafana Get Team Members
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_id
+          in: path
+          type: string
+          required: true
+      - name: setteammemberships
+        method: PUT
+        description: Grafana Set Team Memberships
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: addteammember
+        method: POST
+        description: Grafana Add Team Member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-team_id-members-user_id
+      path: /teams/{team_id}/members/{user_id}
+      operations:
+      - name: updateteammember
+        method: PUT
+        description: Grafana Update Team Member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_id
+          in: path
+          type: string
+          required: true
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: removeteammember
+        method: DELETE
+        description: Grafana Remove Team Member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_id
+          in: path
+          type: string
+          required: true
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    - name: teams-team_id-preferences
+      path: /teams/{team_id}/preferences
+      operations:
+      - name: getteampreferences
+        method: GET
+        description: Grafana Get Team Preferences
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_id
+          in: path
+          type: string
+          required: true
+      - name: updateteampreferences
+        method: PUT
+        description: Grafana Update Team Preferences
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: user-teams
+      path: /user/teams
+      operations:
+      - name: getsignedinuserteamlist
+        method: GET
+        description: Grafana Get Signed In User Team List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: users-user_id-teams
+      path: /users/{user_id}/teams
+      operations:
+      - name: getuserteams
+        method: GET
+        description: Grafana Get User Teams
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-teams-2-rest
+    port: 8080
+    description: REST adapter for Grafana — Teams. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/access-control/teams/roles/search
+      name: access-control-teams-roles-search
+      description: REST surface for access-control-teams-roles-search.
+      operations:
+      - method: POST
+        name: listteamsroles
+        description: Grafana List Teams Roles
+        call: grafana-teams-2.listteamsroles
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/teams/{teamid}/roles
+      name: access-control-teams-teamid-roles
+      description: REST surface for access-control-teams-teamId-roles.
+      operations:
+      - method: GET
+        name: listteamroles
+        description: Grafana List Team Roles
+        call: grafana-teams-2.listteamroles
+        with:
+          teamId: rest.teamId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: setteamroles
+        description: Grafana Set Team Roles
+        call: grafana-teams-2.setteamroles
+        with:
+          teamId: rest.teamId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: addteamrole
+        description: Grafana Add Team Role
+        call: grafana-teams-2.addteamrole
+        with:
+          teamId: rest.teamId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/teams/{teamid}/roles/{roleuid}
+      name: access-control-teams-teamid-roles-roleuid
+      description: REST surface for access-control-teams-teamId-roles-roleUID.
+      operations:
+      - method: DELETE
+        name: removeteamrole
+        description: Grafana Remove Team Role
+        call: grafana-teams-2.removeteamrole
+        with:
+          roleUID: rest.roleUID
+          teamId: rest.teamId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/{resource}/{resourceid}/teams/{teamid}
+      name: access-control-resource-resourceid-teams-teamid
+      description: REST surface for access-control-resource-resourceID-teams-teamID.
+      operations:
+      - method: POST
+        name: setresourcepermissionsforteam
+        description: Grafana Set Resource Permissions For Team
+        call: grafana-teams-2.setresourcepermissionsforteam
+        with:
+          resource: rest.resource
+          resourceID: rest.resourceID
+          teamID: rest.teamID
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/datasources/uid/{uid}/lbac/teams
+      name: datasources-uid-uid-lbac-teams
+      description: REST surface for datasources-uid-uid-lbac-teams.
+      operations:
+      - method: GET
+        name: getteamlbacrulesapi
+        description: Grafana Get Team LBAC Rules Api
+        call: grafana-teams-2.getteamlbacrulesapi
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateteamlbacrulesapi
+        description: Grafana Update Team LBAC Rules Api
+        call: grafana-teams-2.updateteamlbacrulesapi
+        with:
+          uid: rest.uid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams
+      name: teams
+      description: REST surface for teams.
+      operations:
+      - method: POST
+        name: createteam
+        description: Grafana Create Team
+        call: grafana-teams-2.createteam
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/search
+      name: teams-search
+      description: REST surface for teams-search.
+      operations:
+      - method: GET
+        name: searchteams
+        description: Grafana Search Teams
+        call: grafana-teams-2.searchteams
+        with:
+          page: rest.page
+          perpage: rest.perpage
+          name: rest.name
+          query: rest.query
+          accesscontrol: rest.accesscontrol
+          sort: rest.sort
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{teamid}/groups
+      name: teams-teamid-groups
+      description: REST surface for teams-teamId-groups.
+      operations:
+      - method: GET
+        name: getteamgroupsapi
+        description: Grafana Get Team Groups Api
+        call: grafana-teams-2.getteamgroupsapi
+        with:
+          teamId: rest.teamId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: addteamgroupapi
+        description: Grafana Add Team Group Api
+        call: grafana-teams-2.addteamgroupapi
+        with:
+          teamId: rest.teamId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: removeteamgroupapiquery
+        description: Grafana Remove Team Group Api Query
+        call: grafana-teams-2.removeteamgroupapiquery
+        with:
+          groupId: rest.groupId
+          teamId: rest.teamId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{teamid}/groups/search
+      name: teams-teamid-groups-search
+      description: REST surface for teams-teamId-groups-search.
+      operations:
+      - method: GET
+        name: searchteamgroups
+        description: Grafana Search Team Groups
+        call: grafana-teams-2.searchteamgroups
+        with:
+          teamId: rest.teamId
+          page: rest.page
+          perpage: rest.perpage
+          query: rest.query
+          name: rest.name
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}
+      name: teams-team-id
+      description: REST surface for teams-team_id.
+      operations:
+      - method: GET
+        name: getteambyid
+        description: Grafana Get Team By ID
+        call: grafana-teams-2.getteambyid
+        with:
+          team_id: rest.team_id
+          accesscontrol: rest.accesscontrol
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateteam
+        description: Grafana Update Team
+        call: grafana-teams-2.updateteam
+        with:
+          team_id: rest.team_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteteambyid
+        description: Grafana Delete Team By ID
+        call: grafana-teams-2.deleteteambyid
+        with:
+          team_id: rest.team_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/members
+      name: teams-team-id-members
+      description: REST surface for teams-team_id-members.
+      operations:
+      - method: GET
+        name: getteammembers
+        description: Grafana Get Team Members
+        call: grafana-teams-2.getteammembers
+        with:
+          team_id: rest.team_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: setteammemberships
+        description: Grafana Set Team Memberships
+        call: grafana-teams-2.setteammemberships
+        with:
+          team_id: rest.team_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: addteammember
+        description: Grafana Add Team Member
+        call: grafana-teams-2.addteammember
+        with:
+          team_id: rest.team_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/members/{user-id}
+      name: teams-team-id-members-user-id
+      description: REST surface for teams-team_id-members-user_id.
+      operations:
+      - method: PUT
+        name: updateteammember
+        description: Grafana Update Team Member
+        call: grafana-teams-2.updateteammember
+        with:
+          team_id: rest.team_id
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: removeteammember
+        description: Grafana Remove Team Member
+        call: grafana-teams-2.removeteammember
+        with:
+          team_id: rest.team_id
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/preferences
+      name: teams-team-id-preferences
+      description: REST surface for teams-team_id-preferences.
+      operations:
+      - method: GET
+        name: getteampreferences
+        description: Grafana Get Team Preferences
+        call: grafana-teams-2.getteampreferences
+        with:
+          team_id: rest.team_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateteampreferences
+        description: Grafana Update Team Preferences
+        call: grafana-teams-2.updateteampreferences
+        with:
+          team_id: rest.team_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user/teams
+      name: user-teams
+      description: REST surface for user-teams.
+      operations:
+      - method: GET
+        name: getsignedinuserteamlist
+        description: Grafana Get Signed In User Team List
+        call: grafana-teams-2.getsignedinuserteamlist
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/teams
+      name: users-user-id-teams
+      description: REST surface for users-user_id-teams.
+      operations:
+      - method: GET
+        name: getuserteams
+        description: Grafana Get User Teams
+        call: grafana-teams-2.getuserteams
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-teams-2-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Teams. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-list-teams-roles
+      description: Grafana List Teams Roles
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: grafana-teams-2.listteamsroles
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-list-team-roles
+      description: Grafana List Team Roles
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-teams-2.listteamroles
+      with:
+        teamId: tools.teamId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-set-team-roles
+      description: Grafana Set Team Roles
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-teams-2.setteamroles
+      with:
+        teamId: tools.teamId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-add-team-role
+      description: Grafana Add Team Role
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-teams-2.addteamrole
+      with:
+        teamId: tools.teamId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-remove-team-role
+      description: Grafana Remove Team Role
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-teams-2.removeteamrole
+      with:
+        roleUID: tools.roleUID
+        teamId: tools.teamId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-set-resource-permissions-team
+      description: Grafana Set Resource Permissions For Team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-teams-2.setresourcepermissionsforteam
+      with:
+        resource: tools.resource
+        resourceID: tools.resourceID
+        teamID: tools.teamID
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-team-lbac-rules
+      description: Grafana Get Team LBAC Rules Api
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-teams-2.getteamlbacrulesapi
+      with:
+        uid: tools.uid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-team-lbac-rules
+      description: Grafana Update Team LBAC Rules Api
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-teams-2.updateteamlbacrulesapi
+      with:
+        uid: tools.uid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-create-team
+      description: Grafana Create Team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-teams-2.createteam
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-search-teams
+      description: Grafana Search Teams
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-teams-2.searchteams
+      with:
+        page: tools.page
+        perpage: tools.perpage
+        name: tools.name
+        query: tools.query
+        accesscontrol: tools.accesscontrol
+        sort: tools.sort
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-team-groups-api
+      description: Grafana Get Team Groups Api
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-teams-2.getteamgroupsapi
+      with:
+        teamId: tools.teamId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-add-team-group-api
+      description: Grafana Add Team Group Api
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-teams-2.addteamgroupapi
+      with:
+        teamId: tools.teamId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-remove-team-group-api
+      description: Grafana Remove Team Group Api Query
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-teams-2.removeteamgroupapiquery
+      with:
+        groupId: tools.groupId
+        teamId: tools.teamId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-search-team-groups
+      description: Grafana Search Team Groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-teams-2.searchteamgroups
+      with:
+        teamId: tools.teamId
+        page: tools.page
+        perpage: tools.perpage
+        query: tools.query
+        name: tools.name
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-team-id
+      description: Grafana Get Team By ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-teams-2.getteambyid
+      with:
+        team_id: tools.team_id
+        accesscontrol: tools.accesscontrol
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-team
+      description: Grafana Update Team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-teams-2.updateteam
+      with:
+        team_id: tools.team_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-delete-team-id
+      description: Grafana Delete Team By ID
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-teams-2.deleteteambyid
+      with:
+        team_id: tools.team_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-team-members
+      description: Grafana Get Team Members
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-teams-2.getteammembers
+      with:
+        team_id: tools.team_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-set-team-memberships
+      description: Grafana Set Team Memberships
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-teams-2.setteammemberships
+      with:
+        team_id: tools.team_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-add-team-member
+      description: Grafana Add Team Member
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-teams-2.addteammember
+      with:
+        team_id: tools.team_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-team-member
+      description: Grafana Update Team Member
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-teams-2.updateteammember
+      with:
+        team_id: tools.team_id
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-remove-team-member
+      description: Grafana Remove Team Member
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-teams-2.removeteammember
+      with:
+        team_id: tools.team_id
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-team-preferences
+      description: Grafana Get Team Preferences
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-teams-2.getteampreferences
+      with:
+        team_id: tools.team_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-team-preferences
+      description: Grafana Update Team Preferences
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-teams-2.updateteampreferences
+      with:
+        team_id: tools.team_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-signed-user-team
+      description: Grafana Get Signed In User Team List
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-teams-2.getsignedinuserteamlist
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-user-teams
+      description: Grafana Get User Teams
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-teams-2.getuserteams
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.

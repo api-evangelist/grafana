@@ -1,0 +1,156 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Provider
+  description: 'Grafana — Provider. 3 operations. Lead operation: Grafana Get Provider Settings. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Provider
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-provider
+    baseUri: http://{defaultHost}
+    description: Grafana — Provider business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-sso-settings-key
+      path: /v1/sso-settings/{key}
+      operations:
+      - name: getprovidersettings
+        method: GET
+        description: Grafana Get Provider Settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: key
+          in: path
+          type: string
+          required: true
+      - name: updateprovidersettings
+        method: PUT
+        description: Grafana Update Provider Settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: key
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: removeprovidersettings
+        method: DELETE
+        description: Grafana Remove Provider Settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: key
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-provider-rest
+    port: 8080
+    description: REST adapter for Grafana — Provider. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/v1/sso-settings/{key}
+      name: v1-sso-settings-key
+      description: REST surface for v1-sso-settings-key.
+      operations:
+      - method: GET
+        name: getprovidersettings
+        description: Grafana Get Provider Settings
+        call: grafana-provider.getprovidersettings
+        with:
+          key: rest.key
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateprovidersettings
+        description: Grafana Update Provider Settings
+        call: grafana-provider.updateprovidersettings
+        with:
+          key: rest.key
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: removeprovidersettings
+        description: Grafana Remove Provider Settings
+        call: grafana-provider.removeprovidersettings
+        with:
+          key: rest.key
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-provider-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Provider. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-get-provider-settings
+      description: Grafana Get Provider Settings
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-provider.getprovidersettings
+      with:
+        key: tools.key
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-provider-settings
+      description: Grafana Update Provider Settings
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-provider.updateprovidersettings
+      with:
+        key: tools.key
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-remove-provider-settings
+      description: Grafana Remove Provider Settings
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-provider.removeprovidersettings
+      with:
+        key: tools.key
+      outputParameters:
+      - type: object
+        mapping: $.

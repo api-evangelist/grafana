@@ -1,0 +1,72 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Refresh
+  description: 'Grafana — Refresh. 1 operations. Lead operation: Grafana Refresh License Stats. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Refresh
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-refresh
+    baseUri: http://{defaultHost}
+    description: Grafana — Refresh business capability. Self-contained, no shared references.
+    resources:
+    - name: licensing-refresh-stats
+      path: /licensing/refresh-stats
+      operations:
+      - name: refreshlicensestats
+        method: GET
+        description: Grafana Refresh License Stats
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-refresh-rest
+    port: 8080
+    description: REST adapter for Grafana — Refresh. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/licensing/refresh-stats
+      name: licensing-refresh-stats
+      description: REST surface for licensing-refresh-stats.
+      operations:
+      - method: GET
+        name: refreshlicensestats
+        description: Grafana Refresh License Stats
+        call: grafana-refresh.refreshlicensestats
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-refresh-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Refresh. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-refresh-license-stats
+      description: Grafana Refresh License Stats
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-refresh.refreshlicensestats
+      outputParameters:
+      - type: object
+        mapping: $.

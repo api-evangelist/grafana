@@ -1,0 +1,87 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Snapshots
+  description: 'Grafana — Snapshots. 1 operations. Lead operation: Grafana Search Dashboard Snapshots. Self-contained Naftiko
+    capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Snapshots
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-snapshots
+    baseUri: http://{defaultHost}
+    description: Grafana — Snapshots business capability. Self-contained, no shared references.
+    resources:
+    - name: dashboard-snapshots
+      path: /dashboard/snapshots
+      operations:
+      - name: searchdashboardsnapshots
+        method: GET
+        description: Grafana Search Dashboard Snapshots
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: query
+          in: query
+          type: string
+          description: Search Query
+        - name: limit
+          in: query
+          type: integer
+          description: Limit the number of returned results
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-snapshots-rest
+    port: 8080
+    description: REST adapter for Grafana — Snapshots. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/dashboard/snapshots
+      name: dashboard-snapshots
+      description: REST surface for dashboard-snapshots.
+      operations:
+      - method: GET
+        name: searchdashboardsnapshots
+        description: Grafana Search Dashboard Snapshots
+        call: grafana-snapshots.searchdashboardsnapshots
+        with:
+          query: rest.query
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-snapshots-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Snapshots. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-search-dashboard-snapshots
+      description: Grafana Search Dashboard Snapshots
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-snapshots.searchdashboardsnapshots
+      with:
+        query: tools.query
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.

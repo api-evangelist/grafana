@@ -1,0 +1,168 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Status
+  description: 'Grafana — Status. 4 operations. Lead operation: Grafana Get Access Control Status. Self-contained Naftiko
+    capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Status
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-status
+    baseUri: http://{defaultHost}
+    description: Grafana — Status business capability. Self-contained, no shared references.
+    resources:
+    - name: access-control-status
+      path: /access-control/status
+      operations:
+      - name: getaccesscontrolstatus
+        method: GET
+        description: Grafana Get Access Control Status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-ldap-sync-status
+      path: /admin/ldap-sync-status
+      operations:
+      - name: getsyncstatus
+        method: GET
+        description: Grafana Get Sync Status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-ldap-status
+      path: /admin/ldap/status
+      operations:
+      - name: getldapstatus
+        method: GET
+        description: Grafana Get LDAP Status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: licensing-check
+      path: /licensing/check
+      operations:
+      - name: getstatus
+        method: GET
+        description: Grafana Get Status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-status-rest
+    port: 8080
+    description: REST adapter for Grafana — Status. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/access-control/status
+      name: access-control-status
+      description: REST surface for access-control-status.
+      operations:
+      - method: GET
+        name: getaccesscontrolstatus
+        description: Grafana Get Access Control Status
+        call: grafana-status.getaccesscontrolstatus
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/ldap-sync-status
+      name: admin-ldap-sync-status
+      description: REST surface for admin-ldap-sync-status.
+      operations:
+      - method: GET
+        name: getsyncstatus
+        description: Grafana Get Sync Status
+        call: grafana-status.getsyncstatus
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/ldap/status
+      name: admin-ldap-status
+      description: REST surface for admin-ldap-status.
+      operations:
+      - method: GET
+        name: getldapstatus
+        description: Grafana Get LDAP Status
+        call: grafana-status.getldapstatus
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/licensing/check
+      name: licensing-check
+      description: REST surface for licensing-check.
+      operations:
+      - method: GET
+        name: getstatus
+        description: Grafana Get Status
+        call: grafana-status.getstatus
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-status-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Status. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-get-access-control-status
+      description: Grafana Get Access Control Status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-status.getaccesscontrolstatus
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-sync-status
+      description: Grafana Get Sync Status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-status.getsyncstatus
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-ldap-status
+      description: Grafana Get LDAP Status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-status.getldapstatus
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-status
+      description: Grafana Get Status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-status.getstatus
+      outputParameters:
+      - type: object
+        mapping: $.

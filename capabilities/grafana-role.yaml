@@ -1,0 +1,546 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Role
+  description: 'Grafana — Role. 11 operations. Lead operation: Grafana Create Role. Self-contained Naftiko capability covering
+    one Grafana business surface.'
+  tags:
+  - Grafana
+  - Role
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-role
+    baseUri: http://{defaultHost}
+    description: Grafana — Role business capability. Self-contained, no shared references.
+    resources:
+    - name: access-control-roles
+      path: /access-control/roles
+      operations:
+      - name: createrole
+        method: POST
+        description: Grafana Create Role
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: access-control-roles-roleUID
+      path: /access-control/roles/{roleUID}
+      operations:
+      - name: getrole
+        method: GET
+        description: Grafana Get Role
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: roleUID
+          in: path
+          type: string
+          required: true
+      - name: updaterole
+        method: PUT
+        description: Grafana Update Role
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: roleUID
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleterole
+        method: DELETE
+        description: Grafana Delete Role
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: force
+          in: query
+          type: boolean
+        - name: global
+          in: query
+          type: boolean
+        - name: roleUID
+          in: path
+          type: string
+          required: true
+    - name: access-control-roles-roleUID-assignments
+      path: /access-control/roles/{roleUID}/assignments
+      operations:
+      - name: getroleassignments
+        method: GET
+        description: Grafana Get Role Assignments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: roleUID
+          in: path
+          type: string
+          required: true
+      - name: setroleassignments
+        method: PUT
+        description: Grafana Set Role Assignments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: roleUID
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: access-control-teams-teamId-roles
+      path: /access-control/teams/{teamId}/roles
+      operations:
+      - name: addteamrole
+        method: POST
+        description: Grafana Add Team Role
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: access-control-teams-teamId-roles-roleUID
+      path: /access-control/teams/{teamId}/roles/{roleUID}
+      operations:
+      - name: removeteamrole
+        method: DELETE
+        description: Grafana Remove Team Role
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: roleUID
+          in: path
+          type: string
+          required: true
+        - name: teamId
+          in: path
+          type: integer
+          required: true
+    - name: access-control-users-userId-roles
+      path: /access-control/users/{userId}/roles
+      operations:
+      - name: adduserrole
+        method: POST
+        description: Grafana Add User Role
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: userId
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: access-control-users-userId-roles-roleUID
+      path: /access-control/users/{userId}/roles/{roleUID}
+      operations:
+      - name: removeuserrole
+        method: DELETE
+        description: Grafana Remove User Role
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: global
+          in: query
+          type: boolean
+          description: A flag indicating if the assignment is global or not. If set to false, the default org ID of the authenticated
+            user will be used from the request to remove assi
+        - name: roleUID
+          in: path
+          type: string
+          required: true
+        - name: userId
+          in: path
+          type: integer
+          required: true
+    - name: access-control-resource-resourceID-builtInRoles-builtInRole
+      path: /access-control/{resource}/{resourceID}/builtInRoles/{builtInRole}
+      operations:
+      - name: setresourcepermissionsforbuiltinrole
+        method: POST
+        description: Grafana Set Resource Permissions For Built In Role
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: resource
+          in: path
+          type: string
+          required: true
+        - name: resourceID
+          in: path
+          type: string
+          required: true
+        - name: builtInRole
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-role-rest
+    port: 8080
+    description: REST adapter for Grafana — Role. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/access-control/roles
+      name: access-control-roles
+      description: REST surface for access-control-roles.
+      operations:
+      - method: POST
+        name: createrole
+        description: Grafana Create Role
+        call: grafana-role.createrole
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/roles/{roleuid}
+      name: access-control-roles-roleuid
+      description: REST surface for access-control-roles-roleUID.
+      operations:
+      - method: GET
+        name: getrole
+        description: Grafana Get Role
+        call: grafana-role.getrole
+        with:
+          roleUID: rest.roleUID
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updaterole
+        description: Grafana Update Role
+        call: grafana-role.updaterole
+        with:
+          roleUID: rest.roleUID
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleterole
+        description: Grafana Delete Role
+        call: grafana-role.deleterole
+        with:
+          force: rest.force
+          global: rest.global
+          roleUID: rest.roleUID
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/roles/{roleuid}/assignments
+      name: access-control-roles-roleuid-assignments
+      description: REST surface for access-control-roles-roleUID-assignments.
+      operations:
+      - method: GET
+        name: getroleassignments
+        description: Grafana Get Role Assignments
+        call: grafana-role.getroleassignments
+        with:
+          roleUID: rest.roleUID
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: setroleassignments
+        description: Grafana Set Role Assignments
+        call: grafana-role.setroleassignments
+        with:
+          roleUID: rest.roleUID
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/teams/{teamid}/roles
+      name: access-control-teams-teamid-roles
+      description: REST surface for access-control-teams-teamId-roles.
+      operations:
+      - method: POST
+        name: addteamrole
+        description: Grafana Add Team Role
+        call: grafana-role.addteamrole
+        with:
+          teamId: rest.teamId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/teams/{teamid}/roles/{roleuid}
+      name: access-control-teams-teamid-roles-roleuid
+      description: REST surface for access-control-teams-teamId-roles-roleUID.
+      operations:
+      - method: DELETE
+        name: removeteamrole
+        description: Grafana Remove Team Role
+        call: grafana-role.removeteamrole
+        with:
+          roleUID: rest.roleUID
+          teamId: rest.teamId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/users/{userid}/roles
+      name: access-control-users-userid-roles
+      description: REST surface for access-control-users-userId-roles.
+      operations:
+      - method: POST
+        name: adduserrole
+        description: Grafana Add User Role
+        call: grafana-role.adduserrole
+        with:
+          userId: rest.userId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/users/{userid}/roles/{roleuid}
+      name: access-control-users-userid-roles-roleuid
+      description: REST surface for access-control-users-userId-roles-roleUID.
+      operations:
+      - method: DELETE
+        name: removeuserrole
+        description: Grafana Remove User Role
+        call: grafana-role.removeuserrole
+        with:
+          global: rest.global
+          roleUID: rest.roleUID
+          userId: rest.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/{resource}/{resourceid}/builtinroles/{builtinrole}
+      name: access-control-resource-resourceid-builtinroles-builtinrole
+      description: REST surface for access-control-resource-resourceID-builtInRoles-builtInRole.
+      operations:
+      - method: POST
+        name: setresourcepermissionsforbuiltinrole
+        description: Grafana Set Resource Permissions For Built In Role
+        call: grafana-role.setresourcepermissionsforbuiltinrole
+        with:
+          resource: rest.resource
+          resourceID: rest.resourceID
+          builtInRole: rest.builtInRole
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-role-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Role. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-create-role
+      description: Grafana Create Role
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-role.createrole
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-role
+      description: Grafana Get Role
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-role.getrole
+      with:
+        roleUID: tools.roleUID
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-role
+      description: Grafana Update Role
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-role.updaterole
+      with:
+        roleUID: tools.roleUID
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-delete-role
+      description: Grafana Delete Role
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-role.deleterole
+      with:
+        force: tools.force
+        global: tools.global
+        roleUID: tools.roleUID
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-role-assignments
+      description: Grafana Get Role Assignments
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-role.getroleassignments
+      with:
+        roleUID: tools.roleUID
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-set-role-assignments
+      description: Grafana Set Role Assignments
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-role.setroleassignments
+      with:
+        roleUID: tools.roleUID
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-add-team-role
+      description: Grafana Add Team Role
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-role.addteamrole
+      with:
+        teamId: tools.teamId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-remove-team-role
+      description: Grafana Remove Team Role
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-role.removeteamrole
+      with:
+        roleUID: tools.roleUID
+        teamId: tools.teamId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-add-user-role
+      description: Grafana Add User Role
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-role.adduserrole
+      with:
+        userId: tools.userId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-remove-user-role
+      description: Grafana Remove User Role
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-role.removeuserrole
+      with:
+        global: tools.global
+        roleUID: tools.roleUID
+        userId: tools.userId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-set-resource-permissions-built
+      description: Grafana Set Resource Permissions For Built In Role
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-role.setresourcepermissionsforbuiltinrole
+      with:
+        resource: tools.resource
+        resourceID: tools.resourceID
+        builtInRole: tools.builtInRole
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

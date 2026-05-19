@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Keys
+  description: 'Grafana — Keys. 1 operations. Lead operation: Grafana Delete Dashboard Snapshot By Delete Key. Self-contained
+    Naftiko capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Keys
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-keys
+    baseUri: http://{defaultHost}
+    description: Grafana — Keys business capability. Self-contained, no shared references.
+    resources:
+    - name: snapshots-delete-deleteKey
+      path: /snapshots-delete/{deleteKey}
+      operations:
+      - name: deletedashboardsnapshotbydeletekey
+        method: GET
+        description: Grafana Delete Dashboard Snapshot By Delete Key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: deleteKey
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-keys-rest
+    port: 8080
+    description: REST adapter for Grafana — Keys. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/snapshots-delete/{deletekey}
+      name: snapshots-delete-deletekey
+      description: REST surface for snapshots-delete-deleteKey.
+      operations:
+      - method: GET
+        name: deletedashboardsnapshotbydeletekey
+        description: Grafana Delete Dashboard Snapshot By Delete Key
+        call: grafana-keys.deletedashboardsnapshotbydeletekey
+        with:
+          deleteKey: rest.deleteKey
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-keys-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Keys. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-delete-dashboard-snapshot-delete
+      description: Grafana Delete Dashboard Snapshot By Delete Key
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-keys.deletedashboardsnapshotbydeletekey
+      with:
+        deleteKey: tools.deleteKey
+      outputParameters:
+      - type: object
+        mapping: $.

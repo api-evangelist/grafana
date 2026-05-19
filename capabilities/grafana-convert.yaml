@@ -1,0 +1,638 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Convert
+  description: 'Grafana — Convert. 14 operations. Lead operation: Grafana Route Convert Prometheus Cortex Get Rules. Self-contained
+    Naftiko capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Convert
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-convert
+    baseUri: http://{defaultHost}
+    description: Grafana — Convert business capability. Self-contained, no shared references.
+    resources:
+    - name: convert-api-prom-rules
+      path: /convert/api/prom/rules
+      operations:
+      - name: routeconvertprometheuscortexgetrules
+        method: GET
+        description: Grafana Route Convert Prometheus Cortex Get Rules
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: routeconvertprometheuscortexpostrulegroups
+        method: POST
+        description: Grafana Route Convert Prometheus Cortex Post Rule Groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Content-Type
+          in: header
+          type: string
+          required: true
+    - name: convert-api-prom-rules-NamespaceTitle
+      path: /convert/api/prom/rules/{NamespaceTitle}
+      operations:
+      - name: routeconvertprometheuscortexgetnamespace
+        method: GET
+        description: Grafana Route Convert Prometheus Cortex Get Namespace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: NamespaceTitle
+          in: path
+          type: string
+          required: true
+      - name: routeconvertprometheuscortexpostrulegroup
+        method: POST
+        description: Grafana Route Convert Prometheus Cortex Post Rule Group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: NamespaceTitle
+          in: path
+          type: string
+          required: true
+        - name: x-grafana-alerting-datasource-uid
+          in: header
+          type: string
+        - name: x-grafana-alerting-recording-rules-paused
+          in: header
+          type: boolean
+        - name: x-grafana-alerting-alert-rules-paused
+          in: header
+          type: boolean
+        - name: x-grafana-alerting-target-datasource-uid
+          in: header
+          type: string
+        - name: x-grafana-alerting-folder-uid
+          in: header
+          type: string
+        - name: x-grafana-alerting-notification-settings
+          in: header
+          type: string
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: routeconvertprometheuscortexdeletenamespace
+        method: DELETE
+        description: Grafana Route Convert Prometheus Cortex Delete Namespace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: NamespaceTitle
+          in: path
+          type: string
+          required: true
+    - name: convert-api-prom-rules-NamespaceTitle-Group
+      path: /convert/api/prom/rules/{NamespaceTitle}/{Group}
+      operations:
+      - name: routeconvertprometheuscortexgetrulegroup
+        method: GET
+        description: Grafana Route Convert Prometheus Cortex Get Rule Group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: NamespaceTitle
+          in: path
+          type: string
+          required: true
+        - name: Group
+          in: path
+          type: string
+          required: true
+      - name: routeconvertprometheuscortexdeleterulegroup
+        method: DELETE
+        description: Grafana Route Convert Prometheus Cortex Delete Rule Group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: NamespaceTitle
+          in: path
+          type: string
+          required: true
+        - name: Group
+          in: path
+          type: string
+          required: true
+    - name: convert-prometheus-config-v1-rules
+      path: /convert/prometheus/config/v1/rules
+      operations:
+      - name: routeconvertprometheusgetrules
+        method: GET
+        description: Grafana Route Convert Prometheus Get Rules
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: routeconvertprometheuspostrulegroups
+        method: POST
+        description: Grafana Route Convert Prometheus Post Rule Groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Content-Type
+          in: header
+          type: string
+          required: true
+    - name: convert-prometheus-config-v1-rules-NamespaceTitle
+      path: /convert/prometheus/config/v1/rules/{NamespaceTitle}
+      operations:
+      - name: routeconvertprometheusgetnamespace
+        method: GET
+        description: Grafana Route Convert Prometheus Get Namespace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: NamespaceTitle
+          in: path
+          type: string
+          required: true
+      - name: routeconvertprometheuspostrulegroup
+        method: POST
+        description: Grafana Route Convert Prometheus Post Rule Group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: NamespaceTitle
+          in: path
+          type: string
+          required: true
+        - name: x-grafana-alerting-datasource-uid
+          in: header
+          type: string
+        - name: x-grafana-alerting-recording-rules-paused
+          in: header
+          type: boolean
+        - name: x-grafana-alerting-alert-rules-paused
+          in: header
+          type: boolean
+        - name: x-grafana-alerting-target-datasource-uid
+          in: header
+          type: string
+        - name: x-grafana-alerting-folder-uid
+          in: header
+          type: string
+        - name: x-grafana-alerting-notification-settings
+          in: header
+          type: string
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: routeconvertprometheusdeletenamespace
+        method: DELETE
+        description: Grafana Route Convert Prometheus Delete Namespace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: NamespaceTitle
+          in: path
+          type: string
+          required: true
+    - name: convert-prometheus-config-v1-rules-NamespaceTitle-Group
+      path: /convert/prometheus/config/v1/rules/{NamespaceTitle}/{Group}
+      operations:
+      - name: routeconvertprometheusgetrulegroup
+        method: GET
+        description: Grafana Route Convert Prometheus Get Rule Group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: NamespaceTitle
+          in: path
+          type: string
+          required: true
+        - name: Group
+          in: path
+          type: string
+          required: true
+      - name: routeconvertprometheusdeleterulegroup
+        method: DELETE
+        description: Grafana Route Convert Prometheus Delete Rule Group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: NamespaceTitle
+          in: path
+          type: string
+          required: true
+        - name: Group
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-convert-rest
+    port: 8080
+    description: REST adapter for Grafana — Convert. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/convert/api/prom/rules
+      name: convert-api-prom-rules
+      description: REST surface for convert-api-prom-rules.
+      operations:
+      - method: GET
+        name: routeconvertprometheuscortexgetrules
+        description: Grafana Route Convert Prometheus Cortex Get Rules
+        call: grafana-convert.routeconvertprometheuscortexgetrules
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: routeconvertprometheuscortexpostrulegroups
+        description: Grafana Route Convert Prometheus Cortex Post Rule Groups
+        call: grafana-convert.routeconvertprometheuscortexpostrulegroups
+        with:
+          Content-Type: rest.Content-Type
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/convert/api/prom/rules/{namespacetitle}
+      name: convert-api-prom-rules-namespacetitle
+      description: REST surface for convert-api-prom-rules-NamespaceTitle.
+      operations:
+      - method: GET
+        name: routeconvertprometheuscortexgetnamespace
+        description: Grafana Route Convert Prometheus Cortex Get Namespace
+        call: grafana-convert.routeconvertprometheuscortexgetnamespace
+        with:
+          NamespaceTitle: rest.NamespaceTitle
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: routeconvertprometheuscortexpostrulegroup
+        description: Grafana Route Convert Prometheus Cortex Post Rule Group
+        call: grafana-convert.routeconvertprometheuscortexpostrulegroup
+        with:
+          NamespaceTitle: rest.NamespaceTitle
+          x-grafana-alerting-datasource-uid: rest.x-grafana-alerting-datasource-uid
+          x-grafana-alerting-recording-rules-paused: rest.x-grafana-alerting-recording-rules-paused
+          x-grafana-alerting-alert-rules-paused: rest.x-grafana-alerting-alert-rules-paused
+          x-grafana-alerting-target-datasource-uid: rest.x-grafana-alerting-target-datasource-uid
+          x-grafana-alerting-folder-uid: rest.x-grafana-alerting-folder-uid
+          x-grafana-alerting-notification-settings: rest.x-grafana-alerting-notification-settings
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: routeconvertprometheuscortexdeletenamespace
+        description: Grafana Route Convert Prometheus Cortex Delete Namespace
+        call: grafana-convert.routeconvertprometheuscortexdeletenamespace
+        with:
+          NamespaceTitle: rest.NamespaceTitle
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/convert/api/prom/rules/{namespacetitle}/{group}
+      name: convert-api-prom-rules-namespacetitle-group
+      description: REST surface for convert-api-prom-rules-NamespaceTitle-Group.
+      operations:
+      - method: GET
+        name: routeconvertprometheuscortexgetrulegroup
+        description: Grafana Route Convert Prometheus Cortex Get Rule Group
+        call: grafana-convert.routeconvertprometheuscortexgetrulegroup
+        with:
+          NamespaceTitle: rest.NamespaceTitle
+          Group: rest.Group
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: routeconvertprometheuscortexdeleterulegroup
+        description: Grafana Route Convert Prometheus Cortex Delete Rule Group
+        call: grafana-convert.routeconvertprometheuscortexdeleterulegroup
+        with:
+          NamespaceTitle: rest.NamespaceTitle
+          Group: rest.Group
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/convert/prometheus/config/v1/rules
+      name: convert-prometheus-config-v1-rules
+      description: REST surface for convert-prometheus-config-v1-rules.
+      operations:
+      - method: GET
+        name: routeconvertprometheusgetrules
+        description: Grafana Route Convert Prometheus Get Rules
+        call: grafana-convert.routeconvertprometheusgetrules
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: routeconvertprometheuspostrulegroups
+        description: Grafana Route Convert Prometheus Post Rule Groups
+        call: grafana-convert.routeconvertprometheuspostrulegroups
+        with:
+          Content-Type: rest.Content-Type
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/convert/prometheus/config/v1/rules/{namespacetitle}
+      name: convert-prometheus-config-v1-rules-namespacetitle
+      description: REST surface for convert-prometheus-config-v1-rules-NamespaceTitle.
+      operations:
+      - method: GET
+        name: routeconvertprometheusgetnamespace
+        description: Grafana Route Convert Prometheus Get Namespace
+        call: grafana-convert.routeconvertprometheusgetnamespace
+        with:
+          NamespaceTitle: rest.NamespaceTitle
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: routeconvertprometheuspostrulegroup
+        description: Grafana Route Convert Prometheus Post Rule Group
+        call: grafana-convert.routeconvertprometheuspostrulegroup
+        with:
+          NamespaceTitle: rest.NamespaceTitle
+          x-grafana-alerting-datasource-uid: rest.x-grafana-alerting-datasource-uid
+          x-grafana-alerting-recording-rules-paused: rest.x-grafana-alerting-recording-rules-paused
+          x-grafana-alerting-alert-rules-paused: rest.x-grafana-alerting-alert-rules-paused
+          x-grafana-alerting-target-datasource-uid: rest.x-grafana-alerting-target-datasource-uid
+          x-grafana-alerting-folder-uid: rest.x-grafana-alerting-folder-uid
+          x-grafana-alerting-notification-settings: rest.x-grafana-alerting-notification-settings
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: routeconvertprometheusdeletenamespace
+        description: Grafana Route Convert Prometheus Delete Namespace
+        call: grafana-convert.routeconvertprometheusdeletenamespace
+        with:
+          NamespaceTitle: rest.NamespaceTitle
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/convert/prometheus/config/v1/rules/{namespacetitle}/{group}
+      name: convert-prometheus-config-v1-rules-namespacetitle-group
+      description: REST surface for convert-prometheus-config-v1-rules-NamespaceTitle-Group.
+      operations:
+      - method: GET
+        name: routeconvertprometheusgetrulegroup
+        description: Grafana Route Convert Prometheus Get Rule Group
+        call: grafana-convert.routeconvertprometheusgetrulegroup
+        with:
+          NamespaceTitle: rest.NamespaceTitle
+          Group: rest.Group
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: routeconvertprometheusdeleterulegroup
+        description: Grafana Route Convert Prometheus Delete Rule Group
+        call: grafana-convert.routeconvertprometheusdeleterulegroup
+        with:
+          NamespaceTitle: rest.NamespaceTitle
+          Group: rest.Group
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-convert-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Convert. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-route-convert-prometheus-cortex
+      description: Grafana Route Convert Prometheus Cortex Get Rules
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-convert.routeconvertprometheuscortexgetrules
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-convert-prometheus-cortex-2
+      description: Grafana Route Convert Prometheus Cortex Post Rule Groups
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-convert.routeconvertprometheuscortexpostrulegroups
+      with:
+        Content-Type: tools.Content-Type
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-convert-prometheus-cortex-3
+      description: Grafana Route Convert Prometheus Cortex Get Namespace
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-convert.routeconvertprometheuscortexgetnamespace
+      with:
+        NamespaceTitle: tools.NamespaceTitle
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-convert-prometheus-cortex-4
+      description: Grafana Route Convert Prometheus Cortex Post Rule Group
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-convert.routeconvertprometheuscortexpostrulegroup
+      with:
+        NamespaceTitle: tools.NamespaceTitle
+        x-grafana-alerting-datasource-uid: tools.x-grafana-alerting-datasource-uid
+        x-grafana-alerting-recording-rules-paused: tools.x-grafana-alerting-recording-rules-paused
+        x-grafana-alerting-alert-rules-paused: tools.x-grafana-alerting-alert-rules-paused
+        x-grafana-alerting-target-datasource-uid: tools.x-grafana-alerting-target-datasource-uid
+        x-grafana-alerting-folder-uid: tools.x-grafana-alerting-folder-uid
+        x-grafana-alerting-notification-settings: tools.x-grafana-alerting-notification-settings
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-convert-prometheus-cortex-5
+      description: Grafana Route Convert Prometheus Cortex Delete Namespace
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-convert.routeconvertprometheuscortexdeletenamespace
+      with:
+        NamespaceTitle: tools.NamespaceTitle
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-convert-prometheus-cortex-6
+      description: Grafana Route Convert Prometheus Cortex Get Rule Group
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-convert.routeconvertprometheuscortexgetrulegroup
+      with:
+        NamespaceTitle: tools.NamespaceTitle
+        Group: tools.Group
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-convert-prometheus-cortex-7
+      description: Grafana Route Convert Prometheus Cortex Delete Rule Group
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-convert.routeconvertprometheuscortexdeleterulegroup
+      with:
+        NamespaceTitle: tools.NamespaceTitle
+        Group: tools.Group
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-convert-prometheus-get
+      description: Grafana Route Convert Prometheus Get Rules
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-convert.routeconvertprometheusgetrules
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-convert-prometheus-post
+      description: Grafana Route Convert Prometheus Post Rule Groups
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-convert.routeconvertprometheuspostrulegroups
+      with:
+        Content-Type: tools.Content-Type
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-convert-prometheus-get-2
+      description: Grafana Route Convert Prometheus Get Namespace
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-convert.routeconvertprometheusgetnamespace
+      with:
+        NamespaceTitle: tools.NamespaceTitle
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-convert-prometheus-post-2
+      description: Grafana Route Convert Prometheus Post Rule Group
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-convert.routeconvertprometheuspostrulegroup
+      with:
+        NamespaceTitle: tools.NamespaceTitle
+        x-grafana-alerting-datasource-uid: tools.x-grafana-alerting-datasource-uid
+        x-grafana-alerting-recording-rules-paused: tools.x-grafana-alerting-recording-rules-paused
+        x-grafana-alerting-alert-rules-paused: tools.x-grafana-alerting-alert-rules-paused
+        x-grafana-alerting-target-datasource-uid: tools.x-grafana-alerting-target-datasource-uid
+        x-grafana-alerting-folder-uid: tools.x-grafana-alerting-folder-uid
+        x-grafana-alerting-notification-settings: tools.x-grafana-alerting-notification-settings
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-convert-prometheus-delete
+      description: Grafana Route Convert Prometheus Delete Namespace
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-convert.routeconvertprometheusdeletenamespace
+      with:
+        NamespaceTitle: tools.NamespaceTitle
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-convert-prometheus-get-3
+      description: Grafana Route Convert Prometheus Get Rule Group
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-convert.routeconvertprometheusgetrulegroup
+      with:
+        NamespaceTitle: tools.NamespaceTitle
+        Group: tools.Group
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-convert-prometheus-delete-2
+      description: Grafana Route Convert Prometheus Delete Rule Group
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-convert.routeconvertprometheusdeleterulegroup
+      with:
+        NamespaceTitle: tools.NamespaceTitle
+        Group: tools.Group
+      outputParameters:
+      - type: object
+        mapping: $.

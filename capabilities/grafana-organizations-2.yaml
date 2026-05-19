@@ -1,0 +1,98 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Organizations
+  description: 'Grafana — Organizations. 1 operations. Lead operation: Grafana Search Organizations. Self-contained Naftiko
+    capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Organizations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-organizations-2
+    baseUri: http://{defaultHost}
+    description: Grafana — Organizations business capability. Self-contained, no shared references.
+    resources:
+    - name: orgs
+      path: /orgs
+      operations:
+      - name: searchorganizations
+        method: GET
+        description: Grafana Search Organizations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: page
+          in: query
+          type: integer
+        - name: perpage
+          in: query
+          type: integer
+          description: Number of items per page
+        - name: name
+          in: query
+          type: string
+        - name: query
+          in: query
+          type: string
+          description: If set it will return results where the query value is contained in the name field. Query values with
+            spaces need to be URL encoded.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-organizations-2-rest
+    port: 8080
+    description: REST adapter for Grafana — Organizations. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/orgs
+      name: orgs
+      description: REST surface for orgs.
+      operations:
+      - method: GET
+        name: searchorganizations
+        description: Grafana Search Organizations
+        call: grafana-organizations-2.searchorganizations
+        with:
+          page: rest.page
+          perpage: rest.perpage
+          name: rest.name
+          query: rest.query
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-organizations-2-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Organizations. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-search-organizations
+      description: Grafana Search Organizations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-organizations-2.searchorganizations
+      with:
+        page: tools.page
+        perpage: tools.perpage
+        name: tools.name
+        query: tools.query
+      outputParameters:
+      - type: object
+        mapping: $.

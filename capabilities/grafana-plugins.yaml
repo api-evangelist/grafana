@@ -1,0 +1,72 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Plugins
+  description: 'Grafana — Plugins. 1 operations. Lead operation: Grafana Admin Provisioning Reload Plugins. Self-contained
+    Naftiko capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Plugins
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-plugins
+    baseUri: http://{defaultHost}
+    description: Grafana — Plugins business capability. Self-contained, no shared references.
+    resources:
+    - name: admin-provisioning-plugins-reload
+      path: /admin/provisioning/plugins/reload
+      operations:
+      - name: adminprovisioningreloadplugins
+        method: POST
+        description: Grafana Admin Provisioning Reload Plugins
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-plugins-rest
+    port: 8080
+    description: REST adapter for Grafana — Plugins. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/admin/provisioning/plugins/reload
+      name: admin-provisioning-plugins-reload
+      description: REST surface for admin-provisioning-plugins-reload.
+      operations:
+      - method: POST
+        name: adminprovisioningreloadplugins
+        description: Grafana Admin Provisioning Reload Plugins
+        call: grafana-plugins.adminprovisioningreloadplugins
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-plugins-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Plugins. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-admin-provisioning-reload-plugins
+      description: Grafana Admin Provisioning Reload Plugins
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-plugins.adminprovisioningreloadplugins
+      outputParameters:
+      - type: object
+        mapping: $.

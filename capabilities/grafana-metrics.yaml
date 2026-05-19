@@ -1,0 +1,82 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Metrics
+  description: 'Grafana — Metrics. 1 operations. Lead operation: Grafana Query Metrics With Expressions. Self-contained Naftiko
+    capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Metrics
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-metrics
+    baseUri: http://{defaultHost}
+    description: Grafana — Metrics business capability. Self-contained, no shared references.
+    resources:
+    - name: ds-query
+      path: /ds/query
+      operations:
+      - name: querymetricswithexpressions
+        method: POST
+        description: Grafana Query Metrics With Expressions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-metrics-rest
+    port: 8080
+    description: REST adapter for Grafana — Metrics. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/ds/query
+      name: ds-query
+      description: REST surface for ds-query.
+      operations:
+      - method: POST
+        name: querymetricswithexpressions
+        description: Grafana Query Metrics With Expressions
+        call: grafana-metrics.querymetricswithexpressions
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-metrics-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Metrics. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-query-metrics-expressions
+      description: Grafana Query Metrics With Expressions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: grafana-metrics.querymetricswithexpressions
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

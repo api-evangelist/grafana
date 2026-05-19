@@ -1,0 +1,122 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Disables
+  description: 'Grafana — Disables. 2 operations. Lead operation: Grafana Admin Disable User. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Disables
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-disables
+    baseUri: http://{defaultHost}
+    description: Grafana — Disables business capability. Self-contained, no shared references.
+    resources:
+    - name: admin-users-user_id-disable
+      path: /admin/users/{user_id}/disable
+      operations:
+      - name: admindisableuser
+        method: POST
+        description: Grafana Admin Disable User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    - name: datasources-dataSourceUID-cache-disable
+      path: /datasources/{dataSourceUID}/cache/disable
+      operations:
+      - name: disabledatasourcecache
+        method: POST
+        description: Grafana Disable Data Source Cache
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: dataSourceUID
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-disables-rest
+    port: 8080
+    description: REST adapter for Grafana — Disables. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/admin/users/{user-id}/disable
+      name: admin-users-user-id-disable
+      description: REST surface for admin-users-user_id-disable.
+      operations:
+      - method: POST
+        name: admindisableuser
+        description: Grafana Admin Disable User
+        call: grafana-disables.admindisableuser
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/datasources/{datasourceuid}/cache/disable
+      name: datasources-datasourceuid-cache-disable
+      description: REST surface for datasources-dataSourceUID-cache-disable.
+      operations:
+      - method: POST
+        name: disabledatasourcecache
+        description: Grafana Disable Data Source Cache
+        call: grafana-disables.disabledatasourcecache
+        with:
+          dataSourceUID: rest.dataSourceUID
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-disables-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Disables. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-admin-disable-user
+      description: Grafana Admin Disable User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-disables.admindisableuser
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-disable-data-source-cache
+      description: Grafana Disable Data Source Cache
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-disables.disabledatasourcecache
+      with:
+        dataSourceUID: tools.dataSourceUID
+      outputParameters:
+      - type: object
+        mapping: $.

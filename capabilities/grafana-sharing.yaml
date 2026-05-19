@@ -1,0 +1,72 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Sharing
+  description: 'Grafana — Sharing. 1 operations. Lead operation: Grafana Get Sharing Options. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Sharing
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-sharing
+    baseUri: http://{defaultHost}
+    description: Grafana — Sharing business capability. Self-contained, no shared references.
+    resources:
+    - name: snapshot-shared-options
+      path: /snapshot/shared-options
+      operations:
+      - name: getsharingoptions
+        method: GET
+        description: Grafana Get Sharing Options
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-sharing-rest
+    port: 8080
+    description: REST adapter for Grafana — Sharing. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/snapshot/shared-options
+      name: snapshot-shared-options
+      description: REST surface for snapshot-shared-options.
+      operations:
+      - method: GET
+        name: getsharingoptions
+        description: Grafana Get Sharing Options
+        call: grafana-sharing.getsharingoptions
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-sharing-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Sharing. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-get-sharing-options
+      description: Grafana Get Sharing Options
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-sharing.getsharingoptions
+      outputParameters:
+      - type: object
+        mapping: $.

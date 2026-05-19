@@ -1,0 +1,88 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Comments
+  description: 'Grafana — Comments. 1 operations. Lead operation: Grafana Patch Query Comment. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Comments
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-comments
+    baseUri: http://{defaultHost}
+    description: Grafana — Comments business capability. Self-contained, no shared references.
+    resources:
+    - name: query-history-query_history_uid
+      path: /query-history/{query_history_uid}
+      operations:
+      - name: patchquerycomment
+        method: PATCH
+        description: Grafana Patch Query Comment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: query_history_uid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-comments-rest
+    port: 8080
+    description: REST adapter for Grafana — Comments. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/query-history/{query-history-uid}
+      name: query-history-query-history-uid
+      description: REST surface for query-history-query_history_uid.
+      operations:
+      - method: PATCH
+        name: patchquerycomment
+        description: Grafana Patch Query Comment
+        call: grafana-comments.patchquerycomment
+        with:
+          query_history_uid: rest.query_history_uid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-comments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Comments. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-patch-query-comment
+      description: Grafana Patch Query Comment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-comments.patchquerycomment
+      with:
+        query_history_uid: tools.query_history_uid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

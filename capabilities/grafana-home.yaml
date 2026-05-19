@@ -1,0 +1,71 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Home
+  description: 'Grafana — Home. 1 operations. Lead operation: Grafana Get Home Dashboard. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Home
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-home
+    baseUri: http://{defaultHost}
+    description: Grafana — Home business capability. Self-contained, no shared references.
+    resources:
+    - name: dashboards-home
+      path: /dashboards/home
+      operations:
+      - name: gethomedashboard
+        method: GET
+        description: Grafana Get Home Dashboard
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-home-rest
+    port: 8080
+    description: REST adapter for Grafana — Home. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/dashboards/home
+      name: dashboards-home
+      description: REST surface for dashboards-home.
+      operations:
+      - method: GET
+        name: gethomedashboard
+        description: Grafana Get Home Dashboard
+        call: grafana-home.gethomedashboard
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-home-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Home. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-get-home-dashboard
+      description: Grafana Get Home Dashboard
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-home.gethomedashboard
+      outputParameters:
+      - type: object
+        mapping: $.

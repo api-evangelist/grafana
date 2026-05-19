@@ -1,0 +1,179 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana HTTP API — Annotations
+  description: 'Grafana HTTP API — Annotations. 3 operations. Lead operation: Find annotations. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Annotations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-annotations
+    baseUri: https://{instance}.grafana.net/api
+    description: Grafana HTTP API — Annotations business capability. Self-contained, no shared references.
+    resources:
+    - name: annotations
+      path: /annotations
+      operations:
+      - name: getannotations
+        method: GET
+        description: Find annotations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: from
+          in: query
+          type: integer
+        - name: to
+          in: query
+          type: integer
+        - name: dashboardId
+          in: query
+          type: integer
+        - name: panelId
+          in: query
+          type: integer
+        - name: tags
+          in: query
+          type: array
+        - name: limit
+          in: query
+          type: integer
+      - name: createannotation
+        method: POST
+        description: Create annotation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: annotations-id
+      path: /annotations/{id}
+      operations:
+      - name: deleteannotation
+        method: DELETE
+        description: Delete annotation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.GRAFANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: grafana-annotations-rest
+    port: 8080
+    description: REST adapter for Grafana HTTP API — Annotations. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/annotations
+      name: annotations
+      description: REST surface for annotations.
+      operations:
+      - method: GET
+        name: getannotations
+        description: Find annotations
+        call: grafana-annotations.getannotations
+        with:
+          from: rest.from
+          to: rest.to
+          dashboardId: rest.dashboardId
+          panelId: rest.panelId
+          tags: rest.tags
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createannotation
+        description: Create annotation
+        call: grafana-annotations.createannotation
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/annotations/{id}
+      name: annotations-id
+      description: REST surface for annotations-id.
+      operations:
+      - method: DELETE
+        name: deleteannotation
+        description: Delete annotation
+        call: grafana-annotations.deleteannotation
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-annotations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana HTTP API — Annotations. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: find-annotations
+      description: Find annotations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-annotations.getannotations
+      with:
+        from: tools.from
+        to: tools.to
+        dashboardId: tools.dashboardId
+        panelId: tools.panelId
+        tags: tools.tags
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-annotation
+      description: Create annotation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-annotations.createannotation
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-annotation
+      description: Delete annotation
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-annotations.deleteannotation
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.

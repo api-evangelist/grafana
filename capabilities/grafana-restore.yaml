@@ -1,0 +1,88 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Restore
+  description: 'Grafana — Restore. 1 operations. Lead operation: Grafana Restore Dashboard Version By UID. Self-contained
+    Naftiko capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Restore
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-restore
+    baseUri: http://{defaultHost}
+    description: Grafana — Restore business capability. Self-contained, no shared references.
+    resources:
+    - name: dashboards-uid-uid-restore
+      path: /dashboards/uid/{uid}/restore
+      operations:
+      - name: restoredashboardversionbyuid
+        method: POST
+        description: Grafana Restore Dashboard Version By UID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-restore-rest
+    port: 8080
+    description: REST adapter for Grafana — Restore. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/dashboards/uid/{uid}/restore
+      name: dashboards-uid-uid-restore
+      description: REST surface for dashboards-uid-uid-restore.
+      operations:
+      - method: POST
+        name: restoredashboardversionbyuid
+        description: Grafana Restore Dashboard Version By UID
+        call: grafana-restore.restoredashboardversionbyuid
+        with:
+          uid: rest.uid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-restore-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Restore. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-restore-dashboard-version-uid
+      description: Grafana Restore Dashboard Version By UID
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-restore.restoredashboardversionbyuid
+      with:
+        uid: tools.uid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

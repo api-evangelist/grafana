@@ -1,0 +1,317 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Recording
+  description: 'Grafana — Recording. 8 operations. Lead operation: Grafana List Recording Rules. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Recording
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-recording
+    baseUri: http://{defaultHost}
+    description: Grafana — Recording business capability. Self-contained, no shared references.
+    resources:
+    - name: recording-rules
+      path: /recording-rules
+      operations:
+      - name: listrecordingrules
+        method: GET
+        description: Grafana List Recording Rules
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updaterecordingrule
+        method: PUT
+        description: Grafana Update Recording Rule
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: createrecordingrule
+        method: POST
+        description: Grafana Create Recording Rule
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: recording-rules-test
+      path: /recording-rules/test
+      operations:
+      - name: testcreaterecordingrule
+        method: POST
+        description: Grafana Test Create Recording Rule
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: recording-rules-writer
+      path: /recording-rules/writer
+      operations:
+      - name: getrecordingrulewritetarget
+        method: GET
+        description: Grafana Get Recording Rule Write Target
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createrecordingrulewritetarget
+        method: POST
+        description: Grafana Create Recording Rule Write Target
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleterecordingrulewritetarget
+        method: DELETE
+        description: Grafana Delete Recording Rule Write Target
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: recording-rules-recordingRuleID
+      path: /recording-rules/{recordingRuleID}
+      operations:
+      - name: deleterecordingrule
+        method: DELETE
+        description: Grafana Delete Recording Rule
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: recordingRuleID
+          in: path
+          type: integer
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-recording-rest
+    port: 8080
+    description: REST adapter for Grafana — Recording. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/recording-rules
+      name: recording-rules
+      description: REST surface for recording-rules.
+      operations:
+      - method: GET
+        name: listrecordingrules
+        description: Grafana List Recording Rules
+        call: grafana-recording.listrecordingrules
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updaterecordingrule
+        description: Grafana Update Recording Rule
+        call: grafana-recording.updaterecordingrule
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createrecordingrule
+        description: Grafana Create Recording Rule
+        call: grafana-recording.createrecordingrule
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/recording-rules/test
+      name: recording-rules-test
+      description: REST surface for recording-rules-test.
+      operations:
+      - method: POST
+        name: testcreaterecordingrule
+        description: Grafana Test Create Recording Rule
+        call: grafana-recording.testcreaterecordingrule
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/recording-rules/writer
+      name: recording-rules-writer
+      description: REST surface for recording-rules-writer.
+      operations:
+      - method: GET
+        name: getrecordingrulewritetarget
+        description: Grafana Get Recording Rule Write Target
+        call: grafana-recording.getrecordingrulewritetarget
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createrecordingrulewritetarget
+        description: Grafana Create Recording Rule Write Target
+        call: grafana-recording.createrecordingrulewritetarget
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleterecordingrulewritetarget
+        description: Grafana Delete Recording Rule Write Target
+        call: grafana-recording.deleterecordingrulewritetarget
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/recording-rules/{recordingruleid}
+      name: recording-rules-recordingruleid
+      description: REST surface for recording-rules-recordingRuleID.
+      operations:
+      - method: DELETE
+        name: deleterecordingrule
+        description: Grafana Delete Recording Rule
+        call: grafana-recording.deleterecordingrule
+        with:
+          recordingRuleID: rest.recordingRuleID
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-recording-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Recording. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-list-recording-rules
+      description: Grafana List Recording Rules
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-recording.listrecordingrules
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-recording-rule
+      description: Grafana Update Recording Rule
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-recording.updaterecordingrule
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-create-recording-rule
+      description: Grafana Create Recording Rule
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-recording.createrecordingrule
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-test-create-recording-rule
+      description: Grafana Test Create Recording Rule
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: grafana-recording.testcreaterecordingrule
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-recording-rule-write
+      description: Grafana Get Recording Rule Write Target
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-recording.getrecordingrulewritetarget
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-create-recording-rule-write
+      description: Grafana Create Recording Rule Write Target
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-recording.createrecordingrulewritetarget
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-delete-recording-rule-write
+      description: Grafana Delete Recording Rule Write Target
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-recording.deleterecordingrulewritetarget
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-delete-recording-rule
+      description: Grafana Delete Recording Rule
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-recording.deleterecordingrule
+      with:
+        recordingRuleID: tools.recordingRuleID
+      outputParameters:
+      - type: object
+        mapping: $.

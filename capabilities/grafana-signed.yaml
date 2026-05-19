@@ -1,0 +1,171 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Signed
+  description: 'Grafana — Signed. 4 operations. Lead operation: Grafana Get Signed In User. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Signed
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-signed
+    baseUri: http://{defaultHost}
+    description: Grafana — Signed business capability. Self-contained, no shared references.
+    resources:
+    - name: user
+      path: /user
+      operations:
+      - name: getsignedinuser
+        method: GET
+        description: Grafana Get Signed In User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatesignedinuser
+        method: PUT
+        description: Grafana Update Signed In User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: user-orgs
+      path: /user/orgs
+      operations:
+      - name: getsignedinuserorglist
+        method: GET
+        description: Grafana Get Signed In User Org List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: user-teams
+      path: /user/teams
+      operations:
+      - name: getsignedinuserteamlist
+        method: GET
+        description: Grafana Get Signed In User Team List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-signed-rest
+    port: 8080
+    description: REST adapter for Grafana — Signed. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/user
+      name: user
+      description: REST surface for user.
+      operations:
+      - method: GET
+        name: getsignedinuser
+        description: Grafana Get Signed In User
+        call: grafana-signed.getsignedinuser
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updatesignedinuser
+        description: Grafana Update Signed In User
+        call: grafana-signed.updatesignedinuser
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user/orgs
+      name: user-orgs
+      description: REST surface for user-orgs.
+      operations:
+      - method: GET
+        name: getsignedinuserorglist
+        description: Grafana Get Signed In User Org List
+        call: grafana-signed.getsignedinuserorglist
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/user/teams
+      name: user-teams
+      description: REST surface for user-teams.
+      operations:
+      - method: GET
+        name: getsignedinuserteamlist
+        description: Grafana Get Signed In User Team List
+        call: grafana-signed.getsignedinuserteamlist
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-signed-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Signed. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-get-signed-user
+      description: Grafana Get Signed In User
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-signed.getsignedinuser
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-signed-user
+      description: Grafana Update Signed In User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-signed.updatesignedinuser
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-signed-user-org
+      description: Grafana Get Signed In User Org List
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-signed.getsignedinuserorglist
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-signed-user-team
+      description: Grafana Get Signed In User Team List
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-signed.getsignedinuserteamlist
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,138 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Cloud
+  description: 'Grafana — Cloud. 3 operations. Lead operation: Grafana Get Cloud Migration Token. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Cloud
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-cloud
+    baseUri: http://{defaultHost}
+    description: Grafana — Cloud business capability. Self-contained, no shared references.
+    resources:
+    - name: cloudmigration-token
+      path: /cloudmigration/token
+      operations:
+      - name: getcloudmigrationtoken
+        method: GET
+        description: Grafana Get Cloud Migration Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createcloudmigrationtoken
+        method: POST
+        description: Grafana Create Cloud Migration Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: cloudmigration-token-uid
+      path: /cloudmigration/token/{uid}
+      operations:
+      - name: deletecloudmigrationtoken
+        method: DELETE
+        description: Grafana Delete Cloud Migration Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          description: UID of a cloud migration token
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-cloud-rest
+    port: 8080
+    description: REST adapter for Grafana — Cloud. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/cloudmigration/token
+      name: cloudmigration-token
+      description: REST surface for cloudmigration-token.
+      operations:
+      - method: GET
+        name: getcloudmigrationtoken
+        description: Grafana Get Cloud Migration Token
+        call: grafana-cloud.getcloudmigrationtoken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createcloudmigrationtoken
+        description: Grafana Create Cloud Migration Token
+        call: grafana-cloud.createcloudmigrationtoken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cloudmigration/token/{uid}
+      name: cloudmigration-token-uid
+      description: REST surface for cloudmigration-token-uid.
+      operations:
+      - method: DELETE
+        name: deletecloudmigrationtoken
+        description: Grafana Delete Cloud Migration Token
+        call: grafana-cloud.deletecloudmigrationtoken
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-cloud-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Cloud. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-get-cloud-migration-token
+      description: Grafana Get Cloud Migration Token
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-cloud.getcloudmigrationtoken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-create-cloud-migration-token
+      description: Grafana Create Cloud Migration Token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-cloud.createcloudmigrationtoken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-delete-cloud-migration-token
+      description: Grafana Delete Cloud Migration Token
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-cloud.deletecloudmigrationtoken
+      with:
+        uid: tools.uid
+      outputParameters:
+      - type: object
+        mapping: $.

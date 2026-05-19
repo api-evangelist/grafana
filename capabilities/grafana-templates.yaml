@@ -1,0 +1,202 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Templates
+  description: 'Grafana — Templates. 4 operations. Lead operation: Grafana Route Get Templates. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Templates
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-templates
+    baseUri: http://{defaultHost}
+    description: Grafana — Templates business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-provisioning-templates
+      path: /v1/provisioning/templates
+      operations:
+      - name: routegettemplates
+        method: GET
+        description: Grafana Route Get Templates
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-provisioning-templates-name
+      path: /v1/provisioning/templates/{name}
+      operations:
+      - name: routegettemplate
+        method: GET
+        description: Grafana Route Get Template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: path
+          type: string
+          description: Template group name
+          required: true
+      - name: routeputtemplate
+        method: PUT
+        description: Grafana Route Put Template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: path
+          type: string
+          description: Template group name
+          required: true
+        - name: X-Disable-Provenance
+          in: header
+          type: string
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: routedeletetemplate
+        method: DELETE
+        description: Grafana Route Delete Template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: path
+          type: string
+          description: Template group name
+          required: true
+        - name: version
+          in: query
+          type: string
+          description: Version of template to use for optimistic concurrency. Leave empty to disable validation
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-templates-rest
+    port: 8080
+    description: REST adapter for Grafana — Templates. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/v1/provisioning/templates
+      name: v1-provisioning-templates
+      description: REST surface for v1-provisioning-templates.
+      operations:
+      - method: GET
+        name: routegettemplates
+        description: Grafana Route Get Templates
+        call: grafana-templates.routegettemplates
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/provisioning/templates/{name}
+      name: v1-provisioning-templates-name
+      description: REST surface for v1-provisioning-templates-name.
+      operations:
+      - method: GET
+        name: routegettemplate
+        description: Grafana Route Get Template
+        call: grafana-templates.routegettemplate
+        with:
+          name: rest.name
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: routeputtemplate
+        description: Grafana Route Put Template
+        call: grafana-templates.routeputtemplate
+        with:
+          name: rest.name
+          X-Disable-Provenance: rest.X-Disable-Provenance
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: routedeletetemplate
+        description: Grafana Route Delete Template
+        call: grafana-templates.routedeletetemplate
+        with:
+          name: rest.name
+          version: rest.version
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-templates-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Templates. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-route-get-templates
+      description: Grafana Route Get Templates
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-templates.routegettemplates
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-get-template
+      description: Grafana Route Get Template
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-templates.routegettemplate
+      with:
+        name: tools.name
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-put-template
+      description: Grafana Route Put Template
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-templates.routeputtemplate
+      with:
+        name: tools.name
+        X-Disable-Provenance: tools.X-Disable-Provenance
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-route-delete-template
+      description: Grafana Route Delete Template
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-templates.routedeletetemplate
+      with:
+        name: tools.name
+        version: tools.version
+      outputParameters:
+      - type: object
+        mapping: $.

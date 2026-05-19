@@ -1,0 +1,373 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Roles
+  description: 'Grafana — Roles. 8 operations. Lead operation: Grafana List Roles. Self-contained Naftiko capability covering
+    one Grafana business surface.'
+  tags:
+  - Grafana
+  - Roles
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-roles
+    baseUri: http://{defaultHost}
+    description: Grafana — Roles business capability. Self-contained, no shared references.
+    resources:
+    - name: access-control-roles
+      path: /access-control/roles
+      operations:
+      - name: listroles
+        method: GET
+        description: Grafana List Roles
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: delegatable
+          in: query
+          type: boolean
+        - name: includeHidden
+          in: query
+          type: boolean
+    - name: access-control-teams-roles-search
+      path: /access-control/teams/roles/search
+      operations:
+      - name: listteamsroles
+        method: POST
+        description: Grafana List Teams Roles
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: access-control-teams-teamId-roles
+      path: /access-control/teams/{teamId}/roles
+      operations:
+      - name: listteamroles
+        method: GET
+        description: Grafana List Team Roles
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: integer
+          required: true
+      - name: setteamroles
+        method: PUT
+        description: Grafana Set Team Roles
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: access-control-users-roles-search
+      path: /access-control/users/roles/search
+      operations:
+      - name: listusersroles
+        method: POST
+        description: Grafana List Users Roles
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: access-control-users-userId-roles
+      path: /access-control/users/{userId}/roles
+      operations:
+      - name: listuserroles
+        method: GET
+        description: Grafana List User Roles
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: userId
+          in: path
+          type: integer
+          required: true
+      - name: setuserroles
+        method: PUT
+        description: Grafana Set User Roles
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: userId
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: groupsync-groups-group_id-roles
+      path: /groupsync/groups/{group_id}/roles
+      operations:
+      - name: getgrouproles
+        method: GET
+        description: Grafana Get Group Roles
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: group_id
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-roles-rest
+    port: 8080
+    description: REST adapter for Grafana — Roles. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/access-control/roles
+      name: access-control-roles
+      description: REST surface for access-control-roles.
+      operations:
+      - method: GET
+        name: listroles
+        description: Grafana List Roles
+        call: grafana-roles.listroles
+        with:
+          delegatable: rest.delegatable
+          includeHidden: rest.includeHidden
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/teams/roles/search
+      name: access-control-teams-roles-search
+      description: REST surface for access-control-teams-roles-search.
+      operations:
+      - method: POST
+        name: listteamsroles
+        description: Grafana List Teams Roles
+        call: grafana-roles.listteamsroles
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/teams/{teamid}/roles
+      name: access-control-teams-teamid-roles
+      description: REST surface for access-control-teams-teamId-roles.
+      operations:
+      - method: GET
+        name: listteamroles
+        description: Grafana List Team Roles
+        call: grafana-roles.listteamroles
+        with:
+          teamId: rest.teamId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: setteamroles
+        description: Grafana Set Team Roles
+        call: grafana-roles.setteamroles
+        with:
+          teamId: rest.teamId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/users/roles/search
+      name: access-control-users-roles-search
+      description: REST surface for access-control-users-roles-search.
+      operations:
+      - method: POST
+        name: listusersroles
+        description: Grafana List Users Roles
+        call: grafana-roles.listusersroles
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/users/{userid}/roles
+      name: access-control-users-userid-roles
+      description: REST surface for access-control-users-userId-roles.
+      operations:
+      - method: GET
+        name: listuserroles
+        description: Grafana List User Roles
+        call: grafana-roles.listuserroles
+        with:
+          userId: rest.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: setuserroles
+        description: Grafana Set User Roles
+        call: grafana-roles.setuserroles
+        with:
+          userId: rest.userId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groupsync/groups/{group-id}/roles
+      name: groupsync-groups-group-id-roles
+      description: REST surface for groupsync-groups-group_id-roles.
+      operations:
+      - method: GET
+        name: getgrouproles
+        description: Grafana Get Group Roles
+        call: grafana-roles.getgrouproles
+        with:
+          group_id: rest.group_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-roles-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Roles. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-list-roles
+      description: Grafana List Roles
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-roles.listroles
+      with:
+        delegatable: tools.delegatable
+        includeHidden: tools.includeHidden
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-list-teams-roles
+      description: Grafana List Teams Roles
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: grafana-roles.listteamsroles
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-list-team-roles
+      description: Grafana List Team Roles
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-roles.listteamroles
+      with:
+        teamId: tools.teamId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-set-team-roles
+      description: Grafana Set Team Roles
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-roles.setteamroles
+      with:
+        teamId: tools.teamId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-list-users-roles
+      description: Grafana List Users Roles
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: grafana-roles.listusersroles
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-list-user-roles
+      description: Grafana List User Roles
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-roles.listuserroles
+      with:
+        userId: tools.userId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-set-user-roles
+      description: Grafana Set User Roles
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-roles.setuserroles
+      with:
+        userId: tools.userId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-group-roles
+      description: Grafana Get Group Roles
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-roles.getgrouproles
+      with:
+        group_id: tools.group_id
+      outputParameters:
+      - type: object
+        mapping: $.

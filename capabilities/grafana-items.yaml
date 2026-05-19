@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Items
+  description: 'Grafana — Items. 1 operations. Lead operation: Grafana Get Playlist Items. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Items
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-items
+    baseUri: http://{defaultHost}
+    description: Grafana — Items business capability. Self-contained, no shared references.
+    resources:
+    - name: playlists-uid-items
+      path: /playlists/{uid}/items
+      operations:
+      - name: getplaylistitems
+        method: GET
+        description: Grafana Get Playlist Items
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-items-rest
+    port: 8080
+    description: REST adapter for Grafana — Items. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/playlists/{uid}/items
+      name: playlists-uid-items
+      description: REST surface for playlists-uid-items.
+      operations:
+      - method: GET
+        name: getplaylistitems
+        description: Grafana Get Playlist Items
+        call: grafana-items.getplaylistitems
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-items-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Items. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-get-playlist-items
+      description: Grafana Get Playlist Items
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-items.getplaylistitems
+      with:
+        uid: tools.uid
+      outputParameters:
+      - type: object
+        mapping: $.

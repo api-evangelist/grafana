@@ -1,0 +1,672 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Permissions
+  description: 'Grafana — Permissions. 14 operations. Lead operation: Grafana Get Resource Permissions. Self-contained Naftiko
+    capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Permissions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-permissions
+    baseUri: http://{defaultHost}
+    description: Grafana — Permissions business capability. Self-contained, no shared references.
+    resources:
+    - name: access-control-resource-resourceID
+      path: /access-control/{resource}/{resourceID}
+      operations:
+      - name: getresourcepermissions
+        method: GET
+        description: Grafana Get Resource Permissions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: resource
+          in: path
+          type: string
+          required: true
+        - name: resourceID
+          in: path
+          type: string
+          required: true
+      - name: setresourcepermissions
+        method: POST
+        description: Grafana Set Resource Permissions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: resource
+          in: path
+          type: string
+          required: true
+        - name: resourceID
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: access-control-resource-resourceID-builtInRoles-builtInRole
+      path: /access-control/{resource}/{resourceID}/builtInRoles/{builtInRole}
+      operations:
+      - name: setresourcepermissionsforbuiltinrole
+        method: POST
+        description: Grafana Set Resource Permissions For Built In Role
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: resource
+          in: path
+          type: string
+          required: true
+        - name: resourceID
+          in: path
+          type: string
+          required: true
+        - name: builtInRole
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: access-control-resource-resourceID-teams-teamID
+      path: /access-control/{resource}/{resourceID}/teams/{teamID}
+      operations:
+      - name: setresourcepermissionsforteam
+        method: POST
+        description: Grafana Set Resource Permissions For Team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: resource
+          in: path
+          type: string
+          required: true
+        - name: resourceID
+          in: path
+          type: string
+          required: true
+        - name: teamID
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: access-control-resource-resourceID-users-userID
+      path: /access-control/{resource}/{resourceID}/users/{userID}
+      operations:
+      - name: setresourcepermissionsforuser
+        method: POST
+        description: Grafana Set Resource Permissions For User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: resource
+          in: path
+          type: string
+          required: true
+        - name: resourceID
+          in: path
+          type: string
+          required: true
+        - name: userID
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: admin-users-user_id-permissions
+      path: /admin/users/{user_id}/permissions
+      operations:
+      - name: adminupdateuserpermissions
+        method: PUT
+        description: Grafana Admin Update User Permissions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: dashboards-id-DashboardID-permissions
+      path: /dashboards/id/{DashboardID}/permissions
+      operations:
+      - name: getdashboardpermissionslistbyid
+        method: GET
+        description: Grafana Get Dashboard Permissions List By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: DashboardID
+          in: path
+          type: integer
+          required: true
+      - name: updatedashboardpermissionsbyid
+        method: POST
+        description: Grafana Update Dashboard Permissions By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: DashboardID
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: dashboards-uid-uid-permissions
+      path: /dashboards/uid/{uid}/permissions
+      operations:
+      - name: getdashboardpermissionslistbyuid
+        method: GET
+        description: Grafana Get Dashboard Permissions List By UID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+      - name: updatedashboardpermissionsbyuid
+        method: POST
+        description: Grafana Update Dashboard Permissions By UID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: folders-folder_uid-permissions
+      path: /folders/{folder_uid}/permissions
+      operations:
+      - name: getfolderpermissionlist
+        method: GET
+        description: Grafana Get Folder Permission List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: folder_uid
+          in: path
+          type: string
+          required: true
+      - name: updatefolderpermissions
+        method: POST
+        description: Grafana Update Folder Permissions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: folder_uid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: licensing-custom-permissions
+      path: /licensing/custom-permissions
+      operations:
+      - name: getcustompermissionsreport
+        method: GET
+        description: Grafana Get Custom Permissions Report
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: licensing-custom-permissions-csv
+      path: /licensing/custom-permissions-csv
+      operations:
+      - name: getcustompermissionscsv
+        method: GET
+        description: Grafana Get Custom Permissions CSV
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-permissions-rest
+    port: 8080
+    description: REST adapter for Grafana — Permissions. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/access-control/{resource}/{resourceid}
+      name: access-control-resource-resourceid
+      description: REST surface for access-control-resource-resourceID.
+      operations:
+      - method: GET
+        name: getresourcepermissions
+        description: Grafana Get Resource Permissions
+        call: grafana-permissions.getresourcepermissions
+        with:
+          resource: rest.resource
+          resourceID: rest.resourceID
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: setresourcepermissions
+        description: Grafana Set Resource Permissions
+        call: grafana-permissions.setresourcepermissions
+        with:
+          resource: rest.resource
+          resourceID: rest.resourceID
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/{resource}/{resourceid}/builtinroles/{builtinrole}
+      name: access-control-resource-resourceid-builtinroles-builtinrole
+      description: REST surface for access-control-resource-resourceID-builtInRoles-builtInRole.
+      operations:
+      - method: POST
+        name: setresourcepermissionsforbuiltinrole
+        description: Grafana Set Resource Permissions For Built In Role
+        call: grafana-permissions.setresourcepermissionsforbuiltinrole
+        with:
+          resource: rest.resource
+          resourceID: rest.resourceID
+          builtInRole: rest.builtInRole
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/{resource}/{resourceid}/teams/{teamid}
+      name: access-control-resource-resourceid-teams-teamid
+      description: REST surface for access-control-resource-resourceID-teams-teamID.
+      operations:
+      - method: POST
+        name: setresourcepermissionsforteam
+        description: Grafana Set Resource Permissions For Team
+        call: grafana-permissions.setresourcepermissionsforteam
+        with:
+          resource: rest.resource
+          resourceID: rest.resourceID
+          teamID: rest.teamID
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/access-control/{resource}/{resourceid}/users/{userid}
+      name: access-control-resource-resourceid-users-userid
+      description: REST surface for access-control-resource-resourceID-users-userID.
+      operations:
+      - method: POST
+        name: setresourcepermissionsforuser
+        description: Grafana Set Resource Permissions For User
+        call: grafana-permissions.setresourcepermissionsforuser
+        with:
+          resource: rest.resource
+          resourceID: rest.resourceID
+          userID: rest.userID
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/users/{user-id}/permissions
+      name: admin-users-user-id-permissions
+      description: REST surface for admin-users-user_id-permissions.
+      operations:
+      - method: PUT
+        name: adminupdateuserpermissions
+        description: Grafana Admin Update User Permissions
+        call: grafana-permissions.adminupdateuserpermissions
+        with:
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/dashboards/id/{dashboardid}/permissions
+      name: dashboards-id-dashboardid-permissions
+      description: REST surface for dashboards-id-DashboardID-permissions.
+      operations:
+      - method: GET
+        name: getdashboardpermissionslistbyid
+        description: Grafana Get Dashboard Permissions List By ID
+        call: grafana-permissions.getdashboardpermissionslistbyid
+        with:
+          DashboardID: rest.DashboardID
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatedashboardpermissionsbyid
+        description: Grafana Update Dashboard Permissions By ID
+        call: grafana-permissions.updatedashboardpermissionsbyid
+        with:
+          DashboardID: rest.DashboardID
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/dashboards/uid/{uid}/permissions
+      name: dashboards-uid-uid-permissions
+      description: REST surface for dashboards-uid-uid-permissions.
+      operations:
+      - method: GET
+        name: getdashboardpermissionslistbyuid
+        description: Grafana Get Dashboard Permissions List By UID
+        call: grafana-permissions.getdashboardpermissionslistbyuid
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatedashboardpermissionsbyuid
+        description: Grafana Update Dashboard Permissions By UID
+        call: grafana-permissions.updatedashboardpermissionsbyuid
+        with:
+          uid: rest.uid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/folders/{folder-uid}/permissions
+      name: folders-folder-uid-permissions
+      description: REST surface for folders-folder_uid-permissions.
+      operations:
+      - method: GET
+        name: getfolderpermissionlist
+        description: Grafana Get Folder Permission List
+        call: grafana-permissions.getfolderpermissionlist
+        with:
+          folder_uid: rest.folder_uid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatefolderpermissions
+        description: Grafana Update Folder Permissions
+        call: grafana-permissions.updatefolderpermissions
+        with:
+          folder_uid: rest.folder_uid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/licensing/custom-permissions
+      name: licensing-custom-permissions
+      description: REST surface for licensing-custom-permissions.
+      operations:
+      - method: GET
+        name: getcustompermissionsreport
+        description: Grafana Get Custom Permissions Report
+        call: grafana-permissions.getcustompermissionsreport
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/licensing/custom-permissions-csv
+      name: licensing-custom-permissions-csv
+      description: REST surface for licensing-custom-permissions-csv.
+      operations:
+      - method: GET
+        name: getcustompermissionscsv
+        description: Grafana Get Custom Permissions CSV
+        call: grafana-permissions.getcustompermissionscsv
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-permissions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Permissions. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-get-resource-permissions
+      description: Grafana Get Resource Permissions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-permissions.getresourcepermissions
+      with:
+        resource: tools.resource
+        resourceID: tools.resourceID
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-set-resource-permissions
+      description: Grafana Set Resource Permissions
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-permissions.setresourcepermissions
+      with:
+        resource: tools.resource
+        resourceID: tools.resourceID
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-set-resource-permissions-built
+      description: Grafana Set Resource Permissions For Built In Role
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-permissions.setresourcepermissionsforbuiltinrole
+      with:
+        resource: tools.resource
+        resourceID: tools.resourceID
+        builtInRole: tools.builtInRole
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-set-resource-permissions-team
+      description: Grafana Set Resource Permissions For Team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-permissions.setresourcepermissionsforteam
+      with:
+        resource: tools.resource
+        resourceID: tools.resourceID
+        teamID: tools.teamID
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-set-resource-permissions-user
+      description: Grafana Set Resource Permissions For User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-permissions.setresourcepermissionsforuser
+      with:
+        resource: tools.resource
+        resourceID: tools.resourceID
+        userID: tools.userID
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-update-user-permissions
+      description: Grafana Admin Update User Permissions
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-permissions.adminupdateuserpermissions
+      with:
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-dashboard-permissions-list
+      description: Grafana Get Dashboard Permissions List By ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-permissions.getdashboardpermissionslistbyid
+      with:
+        DashboardID: tools.DashboardID
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-dashboard-permissions-id
+      description: Grafana Update Dashboard Permissions By ID
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-permissions.updatedashboardpermissionsbyid
+      with:
+        DashboardID: tools.DashboardID
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-dashboard-permissions-list-2
+      description: Grafana Get Dashboard Permissions List By UID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-permissions.getdashboardpermissionslistbyuid
+      with:
+        uid: tools.uid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-dashboard-permissions-uid
+      description: Grafana Update Dashboard Permissions By UID
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-permissions.updatedashboardpermissionsbyuid
+      with:
+        uid: tools.uid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-folder-permission-list
+      description: Grafana Get Folder Permission List
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-permissions.getfolderpermissionlist
+      with:
+        folder_uid: tools.folder_uid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-folder-permissions
+      description: Grafana Update Folder Permissions
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-permissions.updatefolderpermissions
+      with:
+        folder_uid: tools.folder_uid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-custom-permissions-report
+      description: Grafana Get Custom Permissions Report
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-permissions.getcustompermissionsreport
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-custom-permissions-csv
+      description: Grafana Get Custom Permissions CSV
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-permissions.getcustompermissionscsv
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,237 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Names
+  description: 'Grafana — Names. 5 operations. Lead operation: Grafana Get Data Source Id By Name. Self-contained Naftiko
+    capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Names
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-names
+    baseUri: http://{defaultHost}
+    description: Grafana — Names business capability. Self-contained, no shared references.
+    resources:
+    - name: datasources-id-name
+      path: /datasources/id/{name}
+      operations:
+      - name: getdatasourceidbyname
+        method: GET
+        description: Grafana Get Data Source Id By Name
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: path
+          type: string
+          required: true
+    - name: datasources-name-name
+      path: /datasources/name/{name}
+      operations:
+      - name: getdatasourcebyname
+        method: GET
+        description: Grafana Get Data Source By Name
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: path
+          type: string
+          required: true
+      - name: deletedatasourcebyname
+        method: DELETE
+        description: Grafana Delete Data Source By Name
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: path
+          type: string
+          required: true
+    - name: library-elements-name-library_element_name
+      path: /library-elements/name/{library_element_name}
+      operations:
+      - name: getlibraryelementbyname
+        method: GET
+        description: Grafana Get Library Element By Name
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: library_element_name
+          in: path
+          type: string
+          required: true
+    - name: orgs-name-org_name
+      path: /orgs/name/{org_name}
+      operations:
+      - name: getorgbyname
+        method: GET
+        description: Grafana Get Org By Name
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: org_name
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-names-rest
+    port: 8080
+    description: REST adapter for Grafana — Names. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/datasources/id/{name}
+      name: datasources-id-name
+      description: REST surface for datasources-id-name.
+      operations:
+      - method: GET
+        name: getdatasourceidbyname
+        description: Grafana Get Data Source Id By Name
+        call: grafana-names.getdatasourceidbyname
+        with:
+          name: rest.name
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/datasources/name/{name}
+      name: datasources-name-name
+      description: REST surface for datasources-name-name.
+      operations:
+      - method: GET
+        name: getdatasourcebyname
+        description: Grafana Get Data Source By Name
+        call: grafana-names.getdatasourcebyname
+        with:
+          name: rest.name
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletedatasourcebyname
+        description: Grafana Delete Data Source By Name
+        call: grafana-names.deletedatasourcebyname
+        with:
+          name: rest.name
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/library-elements/name/{library-element-name}
+      name: library-elements-name-library-element-name
+      description: REST surface for library-elements-name-library_element_name.
+      operations:
+      - method: GET
+        name: getlibraryelementbyname
+        description: Grafana Get Library Element By Name
+        call: grafana-names.getlibraryelementbyname
+        with:
+          library_element_name: rest.library_element_name
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/orgs/name/{org-name}
+      name: orgs-name-org-name
+      description: REST surface for orgs-name-org_name.
+      operations:
+      - method: GET
+        name: getorgbyname
+        description: Grafana Get Org By Name
+        call: grafana-names.getorgbyname
+        with:
+          org_name: rest.org_name
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-names-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Names. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-get-data-source-id
+      description: Grafana Get Data Source Id By Name
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-names.getdatasourceidbyname
+      with:
+        name: tools.name
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-data-source-name
+      description: Grafana Get Data Source By Name
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-names.getdatasourcebyname
+      with:
+        name: tools.name
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-delete-data-source-name
+      description: Grafana Delete Data Source By Name
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-names.deletedatasourcebyname
+      with:
+        name: tools.name
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-library-element-name
+      description: Grafana Get Library Element By Name
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-names.getlibraryelementbyname
+      with:
+        library_element_name: tools.library_element_name
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-org-name
+      description: Grafana Get Org By Name
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-names.getorgbyname
+      with:
+        org_name: tools.org_name
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,198 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Account
+  description: 'Grafana — Account. 4 operations. Lead operation: Grafana Create Service Account. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Account
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-account
+    baseUri: http://{defaultHost}
+    description: Grafana — Account business capability. Self-contained, no shared references.
+    resources:
+    - name: serviceaccounts
+      path: /serviceaccounts
+      operations:
+      - name: createserviceaccount
+        method: POST
+        description: Grafana Create Service Account
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: serviceaccounts-serviceAccountId
+      path: /serviceaccounts/{serviceAccountId}
+      operations:
+      - name: retrieveserviceaccount
+        method: GET
+        description: Grafana Retrieve Service Account
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: serviceAccountId
+          in: path
+          type: integer
+          required: true
+      - name: deleteserviceaccount
+        method: DELETE
+        description: Grafana Delete Service Account
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: serviceAccountId
+          in: path
+          type: integer
+          required: true
+      - name: updateserviceaccount
+        method: PATCH
+        description: Grafana Update Service Account
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: serviceAccountId
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-account-rest
+    port: 8080
+    description: REST adapter for Grafana — Account. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/serviceaccounts
+      name: serviceaccounts
+      description: REST surface for serviceaccounts.
+      operations:
+      - method: POST
+        name: createserviceaccount
+        description: Grafana Create Service Account
+        call: grafana-account.createserviceaccount
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serviceaccounts/{serviceaccountid}
+      name: serviceaccounts-serviceaccountid
+      description: REST surface for serviceaccounts-serviceAccountId.
+      operations:
+      - method: GET
+        name: retrieveserviceaccount
+        description: Grafana Retrieve Service Account
+        call: grafana-account.retrieveserviceaccount
+        with:
+          serviceAccountId: rest.serviceAccountId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteserviceaccount
+        description: Grafana Delete Service Account
+        call: grafana-account.deleteserviceaccount
+        with:
+          serviceAccountId: rest.serviceAccountId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateserviceaccount
+        description: Grafana Update Service Account
+        call: grafana-account.updateserviceaccount
+        with:
+          serviceAccountId: rest.serviceAccountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-account-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Account. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-create-service-account
+      description: Grafana Create Service Account
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-account.createserviceaccount
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-retrieve-service-account
+      description: Grafana Retrieve Service Account
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-account.retrieveserviceaccount
+      with:
+        serviceAccountId: tools.serviceAccountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-delete-service-account
+      description: Grafana Delete Service Account
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-account.deleteserviceaccount
+      with:
+        serviceAccountId: tools.serviceAccountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-service-account
+      description: Grafana Update Service Account
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-account.updateserviceaccount
+      with:
+        serviceAccountId: tools.serviceAccountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,104 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Devices
+  description: 'Grafana — Devices. 2 operations. Lead operation: Grafana List Devices. Self-contained Naftiko capability covering
+    one Grafana business surface.'
+  tags:
+  - Grafana
+  - Devices
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-devices
+    baseUri: http://{defaultHost}
+    description: Grafana — Devices business capability. Self-contained, no shared references.
+    resources:
+    - name: anonymous-devices
+      path: /anonymous/devices
+      operations:
+      - name: listdevices
+        method: GET
+        description: Grafana List Devices
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: anonymous-search
+      path: /anonymous/search
+      operations:
+      - name: searchdevices
+        method: GET
+        description: Grafana Search Devices
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-devices-rest
+    port: 8080
+    description: REST adapter for Grafana — Devices. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/anonymous/devices
+      name: anonymous-devices
+      description: REST surface for anonymous-devices.
+      operations:
+      - method: GET
+        name: listdevices
+        description: Grafana List Devices
+        call: grafana-devices.listdevices
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/anonymous/search
+      name: anonymous-search
+      description: REST surface for anonymous-search.
+      operations:
+      - method: GET
+        name: searchdevices
+        description: Grafana Search Devices
+        call: grafana-devices.searchdevices
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-devices-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Devices. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-list-devices
+      description: Grafana List Devices
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-devices.listdevices
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-search-devices
+      description: Grafana Search Devices
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-devices.searchdevices
+      outputParameters:
+      - type: object
+        mapping: $.

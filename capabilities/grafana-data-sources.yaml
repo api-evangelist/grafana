@@ -1,0 +1,262 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana HTTP API — Data Sources
+  description: 'Grafana HTTP API — Data Sources. 6 operations. Lead operation: List all data sources. Self-contained Naftiko
+    capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Data Sources
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-data-sources
+    baseUri: https://{instance}.grafana.net/api
+    description: Grafana HTTP API — Data Sources business capability. Self-contained, no shared references.
+    resources:
+    - name: datasources
+      path: /datasources
+      operations:
+      - name: getdatasources
+        method: GET
+        description: List all data sources
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createdatasource
+        method: POST
+        description: Create a data source
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: datasources-uid-uid
+      path: /datasources/uid/{uid}
+      operations:
+      - name: getdatasourcebyuid
+        method: GET
+        description: Get data source by UID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          required: true
+    - name: datasources-id
+      path: /datasources/{id}
+      operations:
+      - name: getdatasourcebyid
+        method: GET
+        description: Get data source by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+      - name: updatedatasource
+        method: PUT
+        description: Update data source by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletedatasourcebyid
+        method: DELETE
+        description: Delete data source by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.GRAFANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: grafana-data-sources-rest
+    port: 8080
+    description: REST adapter for Grafana HTTP API — Data Sources. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/datasources
+      name: datasources
+      description: REST surface for datasources.
+      operations:
+      - method: GET
+        name: getdatasources
+        description: List all data sources
+        call: grafana-data-sources.getdatasources
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createdatasource
+        description: Create a data source
+        call: grafana-data-sources.createdatasource
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/datasources/uid/{uid}
+      name: datasources-uid-uid
+      description: REST surface for datasources-uid-uid.
+      operations:
+      - method: GET
+        name: getdatasourcebyuid
+        description: Get data source by UID
+        call: grafana-data-sources.getdatasourcebyuid
+        with:
+          uid: rest.uid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/datasources/{id}
+      name: datasources-id
+      description: REST surface for datasources-id.
+      operations:
+      - method: GET
+        name: getdatasourcebyid
+        description: Get data source by ID
+        call: grafana-data-sources.getdatasourcebyid
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updatedatasource
+        description: Update data source by ID
+        call: grafana-data-sources.updatedatasource
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletedatasourcebyid
+        description: Delete data source by ID
+        call: grafana-data-sources.deletedatasourcebyid
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-data-sources-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana HTTP API — Data Sources. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: list-all-data-sources
+      description: List all data sources
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-data-sources.getdatasources
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-data-source
+      description: Create a data source
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-data-sources.createdatasource
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-data-source-uid
+      description: Get data source by UID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-data-sources.getdatasourcebyuid
+      with:
+        uid: tools.uid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-data-source-id
+      description: Get data source by ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-data-sources.getdatasourcebyid
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-data-source-id
+      description: Update data source by ID
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-data-sources.updatedatasource
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-data-source-id
+      description: Delete data source by ID
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-data-sources.deletedatasourcebyid
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.

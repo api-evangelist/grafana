@@ -1,0 +1,87 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Move
+  description: 'Grafana — Move. 1 operations. Lead operation: Grafana Move Folder. Self-contained Naftiko capability covering
+    one Grafana business surface.'
+  tags:
+  - Grafana
+  - Move
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-move
+    baseUri: http://{defaultHost}
+    description: Grafana — Move business capability. Self-contained, no shared references.
+    resources:
+    - name: folders-folder_uid-move
+      path: /folders/{folder_uid}/move
+      operations:
+      - name: movefolder
+        method: POST
+        description: Grafana Move Folder
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: folder_uid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-move-rest
+    port: 8080
+    description: REST adapter for Grafana — Move. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/folders/{folder-uid}/move
+      name: folders-folder-uid-move
+      description: REST surface for folders-folder_uid-move.
+      operations:
+      - method: POST
+        name: movefolder
+        description: Grafana Move Folder
+        call: grafana-move.movefolder
+        with:
+          folder_uid: rest.folder_uid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-move-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Move. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-move-folder
+      description: Grafana Move Folder
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-move.movefolder
+      with:
+        folder_uid: tools.folder_uid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

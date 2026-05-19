@@ -1,0 +1,71 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Clear
+  description: 'Grafana — Clear. 1 operations. Lead operation: Grafana Clear Help Flags. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Clear
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-clear
+    baseUri: http://{defaultHost}
+    description: Grafana — Clear business capability. Self-contained, no shared references.
+    resources:
+    - name: user-helpflags-clear
+      path: /user/helpflags/clear
+      operations:
+      - name: clearhelpflags
+        method: GET
+        description: Grafana Clear Help Flags
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-clear-rest
+    port: 8080
+    description: REST adapter for Grafana — Clear. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/user/helpflags/clear
+      name: user-helpflags-clear
+      description: REST surface for user-helpflags-clear.
+      operations:
+      - method: GET
+        name: clearhelpflags
+        description: Grafana Clear Help Flags
+        call: grafana-clear.clearhelpflags
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-clear-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Clear. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-clear-help-flags
+      description: Grafana Clear Help Flags
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-clear.clearhelpflags
+      outputParameters:
+      - type: object
+        mapping: $.

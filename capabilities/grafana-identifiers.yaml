@@ -1,0 +1,767 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Identifiers
+  description: 'Grafana — Identifiers. 18 operations. Lead operation: Grafana Get Annotation By ID. Self-contained Naftiko
+    capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Identifiers
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-identifiers
+    baseUri: http://{defaultHost}
+    description: Grafana — Identifiers business capability. Self-contained, no shared references.
+    resources:
+    - name: annotations-annotation_id
+      path: /annotations/{annotation_id}
+      operations:
+      - name: getannotationbyid
+        method: GET
+        description: Grafana Get Annotation By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: annotation_id
+          in: path
+          type: string
+          required: true
+      - name: deleteannotationbyid
+        method: DELETE
+        description: Grafana Delete Annotation By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: annotation_id
+          in: path
+          type: string
+          required: true
+    - name: dashboards-id-DashboardID-permissions
+      path: /dashboards/id/{DashboardID}/permissions
+      operations:
+      - name: getdashboardpermissionslistbyid
+        method: GET
+        description: Grafana Get Dashboard Permissions List By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: DashboardID
+          in: path
+          type: integer
+          required: true
+      - name: updatedashboardpermissionsbyid
+        method: POST
+        description: Grafana Update Dashboard Permissions By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: DashboardID
+          in: path
+          type: integer
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: dashboards-id-DashboardID-versions
+      path: /dashboards/id/{DashboardID}/versions
+      operations:
+      - name: getdashboardversionsbyid
+        method: GET
+        description: Grafana Get Dashboard Versions By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: DashboardID
+          in: path
+          type: integer
+          required: true
+    - name: dashboards-id-DashboardID-versions-DashboardVersionID
+      path: /dashboards/id/{DashboardID}/versions/{DashboardVersionID}
+      operations:
+      - name: getdashboardversionbyid
+        method: GET
+        description: Grafana Get Dashboard Version By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: DashboardID
+          in: path
+          type: integer
+          required: true
+        - name: DashboardVersionID
+          in: path
+          type: integer
+          required: true
+    - name: datasources-id-name
+      path: /datasources/id/{name}
+      operations:
+      - name: getdatasourceidbyname
+        method: GET
+        description: Grafana Get Data Source Id By Name
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: path
+          type: string
+          required: true
+    - name: datasources-id
+      path: /datasources/{id}
+      operations:
+      - name: getdatasourcebyid
+        method: GET
+        description: Grafana Get Data Source By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+      - name: updatedatasourcebyid
+        method: PUT
+        description: Grafana Update Data Source By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletedatasourcebyid
+        method: DELETE
+        description: Grafana Delete Data Source By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+    - name: datasources-id-health
+      path: /datasources/{id}/health
+      operations:
+      - name: checkdatasourcehealthbyid
+        method: GET
+        description: Grafana Check Datasource Health By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+    - name: datasources-id-resources-datasource_proxy_route
+      path: /datasources/{id}/resources/{datasource_proxy_route}
+      operations:
+      - name: calldatasourceresourcebyid
+        method: GET
+        description: Grafana Call Datasource Resource By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: datasource_proxy_route
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+    - name: folders-id-folder_id
+      path: /folders/id/{folder_id}
+      operations:
+      - name: getfolderbyid
+        method: GET
+        description: Grafana Get Folder By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: folder_id
+          in: path
+          type: integer
+          required: true
+    - name: orgs-org_id
+      path: /orgs/{org_id}
+      operations:
+      - name: getorgbyid
+        method: GET
+        description: Grafana Get Org By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: org_id
+          in: path
+          type: integer
+          required: true
+      - name: deleteorgbyid
+        method: DELETE
+        description: Grafana Delete Org By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: org_id
+          in: path
+          type: integer
+          required: true
+    - name: teams-team_id
+      path: /teams/{team_id}
+      operations:
+      - name: getteambyid
+        method: GET
+        description: Grafana Get Team By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_id
+          in: path
+          type: string
+          required: true
+        - name: accesscontrol
+          in: query
+          type: boolean
+      - name: deleteteambyid
+        method: DELETE
+        description: Grafana Delete Team By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_id
+          in: path
+          type: string
+          required: true
+    - name: users-user_id
+      path: /users/{user_id}
+      operations:
+      - name: getuserbyid
+        method: GET
+        description: Grafana Get User By ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-identifiers-rest
+    port: 8080
+    description: REST adapter for Grafana — Identifiers. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/annotations/{annotation-id}
+      name: annotations-annotation-id
+      description: REST surface for annotations-annotation_id.
+      operations:
+      - method: GET
+        name: getannotationbyid
+        description: Grafana Get Annotation By ID
+        call: grafana-identifiers.getannotationbyid
+        with:
+          annotation_id: rest.annotation_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteannotationbyid
+        description: Grafana Delete Annotation By ID
+        call: grafana-identifiers.deleteannotationbyid
+        with:
+          annotation_id: rest.annotation_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/dashboards/id/{dashboardid}/permissions
+      name: dashboards-id-dashboardid-permissions
+      description: REST surface for dashboards-id-DashboardID-permissions.
+      operations:
+      - method: GET
+        name: getdashboardpermissionslistbyid
+        description: Grafana Get Dashboard Permissions List By ID
+        call: grafana-identifiers.getdashboardpermissionslistbyid
+        with:
+          DashboardID: rest.DashboardID
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatedashboardpermissionsbyid
+        description: Grafana Update Dashboard Permissions By ID
+        call: grafana-identifiers.updatedashboardpermissionsbyid
+        with:
+          DashboardID: rest.DashboardID
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/dashboards/id/{dashboardid}/versions
+      name: dashboards-id-dashboardid-versions
+      description: REST surface for dashboards-id-DashboardID-versions.
+      operations:
+      - method: GET
+        name: getdashboardversionsbyid
+        description: Grafana Get Dashboard Versions By ID
+        call: grafana-identifiers.getdashboardversionsbyid
+        with:
+          DashboardID: rest.DashboardID
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/dashboards/id/{dashboardid}/versions/{dashboardversionid}
+      name: dashboards-id-dashboardid-versions-dashboardversionid
+      description: REST surface for dashboards-id-DashboardID-versions-DashboardVersionID.
+      operations:
+      - method: GET
+        name: getdashboardversionbyid
+        description: Grafana Get Dashboard Version By ID
+        call: grafana-identifiers.getdashboardversionbyid
+        with:
+          DashboardID: rest.DashboardID
+          DashboardVersionID: rest.DashboardVersionID
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/datasources/id/{name}
+      name: datasources-id-name
+      description: REST surface for datasources-id-name.
+      operations:
+      - method: GET
+        name: getdatasourceidbyname
+        description: Grafana Get Data Source Id By Name
+        call: grafana-identifiers.getdatasourceidbyname
+        with:
+          name: rest.name
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/datasources/{id}
+      name: datasources-id
+      description: REST surface for datasources-id.
+      operations:
+      - method: GET
+        name: getdatasourcebyid
+        description: Grafana Get Data Source By ID
+        call: grafana-identifiers.getdatasourcebyid
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updatedatasourcebyid
+        description: Grafana Update Data Source By ID
+        call: grafana-identifiers.updatedatasourcebyid
+        with:
+          id: rest.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletedatasourcebyid
+        description: Grafana Delete Data Source By ID
+        call: grafana-identifiers.deletedatasourcebyid
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/datasources/{id}/health
+      name: datasources-id-health
+      description: REST surface for datasources-id-health.
+      operations:
+      - method: GET
+        name: checkdatasourcehealthbyid
+        description: Grafana Check Datasource Health By ID
+        call: grafana-identifiers.checkdatasourcehealthbyid
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/datasources/{id}/resources/{datasource-proxy-route}
+      name: datasources-id-resources-datasource-proxy-route
+      description: REST surface for datasources-id-resources-datasource_proxy_route.
+      operations:
+      - method: GET
+        name: calldatasourceresourcebyid
+        description: Grafana Call Datasource Resource By ID
+        call: grafana-identifiers.calldatasourceresourcebyid
+        with:
+          datasource_proxy_route: rest.datasource_proxy_route
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/folders/id/{folder-id}
+      name: folders-id-folder-id
+      description: REST surface for folders-id-folder_id.
+      operations:
+      - method: GET
+        name: getfolderbyid
+        description: Grafana Get Folder By ID
+        call: grafana-identifiers.getfolderbyid
+        with:
+          folder_id: rest.folder_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/orgs/{org-id}
+      name: orgs-org-id
+      description: REST surface for orgs-org_id.
+      operations:
+      - method: GET
+        name: getorgbyid
+        description: Grafana Get Org By ID
+        call: grafana-identifiers.getorgbyid
+        with:
+          org_id: rest.org_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteorgbyid
+        description: Grafana Delete Org By ID
+        call: grafana-identifiers.deleteorgbyid
+        with:
+          org_id: rest.org_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}
+      name: teams-team-id
+      description: REST surface for teams-team_id.
+      operations:
+      - method: GET
+        name: getteambyid
+        description: Grafana Get Team By ID
+        call: grafana-identifiers.getteambyid
+        with:
+          team_id: rest.team_id
+          accesscontrol: rest.accesscontrol
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteteambyid
+        description: Grafana Delete Team By ID
+        call: grafana-identifiers.deleteteambyid
+        with:
+          team_id: rest.team_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}
+      name: users-user-id
+      description: REST surface for users-user_id.
+      operations:
+      - method: GET
+        name: getuserbyid
+        description: Grafana Get User By ID
+        call: grafana-identifiers.getuserbyid
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-identifiers-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Identifiers. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-get-annotation-id
+      description: Grafana Get Annotation By ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-identifiers.getannotationbyid
+      with:
+        annotation_id: tools.annotation_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-delete-annotation-id
+      description: Grafana Delete Annotation By ID
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-identifiers.deleteannotationbyid
+      with:
+        annotation_id: tools.annotation_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-dashboard-permissions-list
+      description: Grafana Get Dashboard Permissions List By ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-identifiers.getdashboardpermissionslistbyid
+      with:
+        DashboardID: tools.DashboardID
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-dashboard-permissions-id
+      description: Grafana Update Dashboard Permissions By ID
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-identifiers.updatedashboardpermissionsbyid
+      with:
+        DashboardID: tools.DashboardID
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-dashboard-versions-id
+      description: Grafana Get Dashboard Versions By ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-identifiers.getdashboardversionsbyid
+      with:
+        DashboardID: tools.DashboardID
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-dashboard-version-id
+      description: Grafana Get Dashboard Version By ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-identifiers.getdashboardversionbyid
+      with:
+        DashboardID: tools.DashboardID
+        DashboardVersionID: tools.DashboardVersionID
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-data-source-id
+      description: Grafana Get Data Source Id By Name
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-identifiers.getdatasourceidbyname
+      with:
+        name: tools.name
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-data-source-id-2
+      description: Grafana Get Data Source By ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-identifiers.getdatasourcebyid
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-update-data-source-id
+      description: Grafana Update Data Source By ID
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-identifiers.updatedatasourcebyid
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-delete-data-source-id
+      description: Grafana Delete Data Source By ID
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-identifiers.deletedatasourcebyid
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-check-datasource-health-id
+      description: Grafana Check Datasource Health By ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-identifiers.checkdatasourcehealthbyid
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-call-datasource-resource-id
+      description: Grafana Call Datasource Resource By ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-identifiers.calldatasourceresourcebyid
+      with:
+        datasource_proxy_route: tools.datasource_proxy_route
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-folder-id
+      description: Grafana Get Folder By ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-identifiers.getfolderbyid
+      with:
+        folder_id: tools.folder_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-org-id
+      description: Grafana Get Org By ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-identifiers.getorgbyid
+      with:
+        org_id: tools.org_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-delete-org-id
+      description: Grafana Delete Org By ID
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-identifiers.deleteorgbyid
+      with:
+        org_id: tools.org_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-team-id
+      description: Grafana Get Team By ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-identifiers.getteambyid
+      with:
+        team_id: tools.team_id
+        accesscontrol: tools.accesscontrol
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-delete-team-id
+      description: Grafana Delete Team By ID
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-identifiers.deleteteambyid
+      with:
+        team_id: tools.team_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-get-user-id
+      description: Grafana Get User By ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-identifiers.getuserbyid
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.

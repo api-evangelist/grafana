@@ -1,0 +1,123 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Tests
+  description: 'Grafana — Tests. 2 operations. Lead operation: Grafana Test Create Recording Rule. Self-contained Naftiko
+    capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Tests
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-tests
+    baseUri: http://{defaultHost}
+    description: Grafana — Tests business capability. Self-contained, no shared references.
+    resources:
+    - name: recording-rules-test
+      path: /recording-rules/test
+      operations:
+      - name: testcreaterecordingrule
+        method: POST
+        description: Grafana Test Create Recording Rule
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: reports-test-email
+      path: /reports/test-email
+      operations:
+      - name: sendtestemail
+        method: POST
+        description: Grafana Send Test Email
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-tests-rest
+    port: 8080
+    description: REST adapter for Grafana — Tests. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/recording-rules/test
+      name: recording-rules-test
+      description: REST surface for recording-rules-test.
+      operations:
+      - method: POST
+        name: testcreaterecordingrule
+        description: Grafana Test Create Recording Rule
+        call: grafana-tests.testcreaterecordingrule
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/reports/test-email
+      name: reports-test-email
+      description: REST surface for reports-test-email.
+      operations:
+      - method: POST
+        name: sendtestemail
+        description: Grafana Send Test Email
+        call: grafana-tests.sendtestemail
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-tests-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Tests. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-test-create-recording-rule
+      description: Grafana Test Create Recording Rule
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: grafana-tests.testcreaterecordingrule
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-send-test-email
+      description: Grafana Send Test Email
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: grafana-tests.sendtestemail
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

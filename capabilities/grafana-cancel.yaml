@@ -1,0 +1,89 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Cancel
+  description: 'Grafana — Cancel. 1 operations. Lead operation: Grafana Cancel Snapshot. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Cancel
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-cancel
+    baseUri: http://{defaultHost}
+    description: Grafana — Cancel business capability. Self-contained, no shared references.
+    resources:
+    - name: cloudmigration-migration-uid-snapshot-snapshotUid-cancel
+      path: /cloudmigration/migration/{uid}/snapshot/{snapshotUid}/cancel
+      operations:
+      - name: cancelsnapshot
+        method: POST
+        description: Grafana Cancel Snapshot
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: uid
+          in: path
+          type: string
+          description: Session UID of a session
+          required: true
+        - name: snapshotUid
+          in: path
+          type: string
+          description: UID of a snapshot
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-cancel-rest
+    port: 8080
+    description: REST adapter for Grafana — Cancel. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/cloudmigration/migration/{uid}/snapshot/{snapshotuid}/cancel
+      name: cloudmigration-migration-uid-snapshot-snapshotuid-cancel
+      description: REST surface for cloudmigration-migration-uid-snapshot-snapshotUid-cancel.
+      operations:
+      - method: POST
+        name: cancelsnapshot
+        description: Grafana Cancel Snapshot
+        call: grafana-cancel.cancelsnapshot
+        with:
+          uid: rest.uid
+          snapshotUid: rest.snapshotUid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-cancel-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Cancel. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-cancel-snapshot
+      description: Grafana Cancel Snapshot
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-cancel.cancelsnapshot
+      with:
+        uid: tools.uid
+        snapshotUid: tools.snapshotUid
+      outputParameters:
+      - type: object
+        mapping: $.

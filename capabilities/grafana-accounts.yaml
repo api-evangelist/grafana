@@ -1,0 +1,103 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Accounts
+  description: 'Grafana — Accounts. 1 operations. Lead operation: Grafana Search Org Service Accounts With Paging. Self-contained
+    Naftiko capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Accounts
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-accounts
+    baseUri: http://{defaultHost}
+    description: Grafana — Accounts business capability. Self-contained, no shared references.
+    resources:
+    - name: serviceaccounts-search
+      path: /serviceaccounts/search
+      operations:
+      - name: searchorgserviceaccountswithpaging
+        method: GET
+        description: Grafana Search Org Service Accounts With Paging
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Disabled
+          in: query
+          type: boolean
+        - name: expiredTokens
+          in: query
+          type: boolean
+        - name: query
+          in: query
+          type: string
+          description: It will return results where the query value is contained in one of the name.
+        - name: perpage
+          in: query
+          type: integer
+          description: The default value is 1000.
+        - name: page
+          in: query
+          type: integer
+          description: The default value is 1.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-accounts-rest
+    port: 8080
+    description: REST adapter for Grafana — Accounts. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/serviceaccounts/search
+      name: serviceaccounts-search
+      description: REST surface for serviceaccounts-search.
+      operations:
+      - method: GET
+        name: searchorgserviceaccountswithpaging
+        description: Grafana Search Org Service Accounts With Paging
+        call: grafana-accounts.searchorgserviceaccountswithpaging
+        with:
+          Disabled: rest.Disabled
+          expiredTokens: rest.expiredTokens
+          query: rest.query
+          perpage: rest.perpage
+          page: rest.page
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-accounts-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Accounts. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-search-org-service-accounts
+      description: Grafana Search Org Service Accounts With Paging
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-accounts.searchorgserviceaccountswithpaging
+      with:
+        Disabled: tools.Disabled
+        expiredTokens: tools.expiredTokens
+        query: tools.query
+        perpage: tools.perpage
+        page: tools.page
+      outputParameters:
+      - type: object
+        mapping: $.

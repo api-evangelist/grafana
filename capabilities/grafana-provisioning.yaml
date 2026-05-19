@@ -1,0 +1,168 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Provisioning
+  description: 'Grafana — Provisioning. 4 operations. Lead operation: Grafana Admin Provisioning Reload Access Control. Self-contained
+    Naftiko capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Provisioning
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-provisioning
+    baseUri: http://{defaultHost}
+    description: Grafana — Provisioning business capability. Self-contained, no shared references.
+    resources:
+    - name: admin-provisioning-access-control-reload
+      path: /admin/provisioning/access-control/reload
+      operations:
+      - name: adminprovisioningreloadaccesscontrol
+        method: POST
+        description: Grafana Admin Provisioning Reload Access Control
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-provisioning-dashboards-reload
+      path: /admin/provisioning/dashboards/reload
+      operations:
+      - name: adminprovisioningreloaddashboards
+        method: POST
+        description: Grafana Admin Provisioning Reload Dashboards
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-provisioning-datasources-reload
+      path: /admin/provisioning/datasources/reload
+      operations:
+      - name: adminprovisioningreloaddatasources
+        method: POST
+        description: Grafana Admin Provisioning Reload Datasources
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-provisioning-plugins-reload
+      path: /admin/provisioning/plugins/reload
+      operations:
+      - name: adminprovisioningreloadplugins
+        method: POST
+        description: Grafana Admin Provisioning Reload Plugins
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-provisioning-rest
+    port: 8080
+    description: REST adapter for Grafana — Provisioning. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/admin/provisioning/access-control/reload
+      name: admin-provisioning-access-control-reload
+      description: REST surface for admin-provisioning-access-control-reload.
+      operations:
+      - method: POST
+        name: adminprovisioningreloadaccesscontrol
+        description: Grafana Admin Provisioning Reload Access Control
+        call: grafana-provisioning.adminprovisioningreloadaccesscontrol
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/provisioning/dashboards/reload
+      name: admin-provisioning-dashboards-reload
+      description: REST surface for admin-provisioning-dashboards-reload.
+      operations:
+      - method: POST
+        name: adminprovisioningreloaddashboards
+        description: Grafana Admin Provisioning Reload Dashboards
+        call: grafana-provisioning.adminprovisioningreloaddashboards
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/provisioning/datasources/reload
+      name: admin-provisioning-datasources-reload
+      description: REST surface for admin-provisioning-datasources-reload.
+      operations:
+      - method: POST
+        name: adminprovisioningreloaddatasources
+        description: Grafana Admin Provisioning Reload Datasources
+        call: grafana-provisioning.adminprovisioningreloaddatasources
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/provisioning/plugins/reload
+      name: admin-provisioning-plugins-reload
+      description: REST surface for admin-provisioning-plugins-reload.
+      operations:
+      - method: POST
+        name: adminprovisioningreloadplugins
+        description: Grafana Admin Provisioning Reload Plugins
+        call: grafana-provisioning.adminprovisioningreloadplugins
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-provisioning-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Provisioning. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-admin-provisioning-reload-access
+      description: Grafana Admin Provisioning Reload Access Control
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-provisioning.adminprovisioningreloadaccesscontrol
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-provisioning-reload-dashboards
+      description: Grafana Admin Provisioning Reload Dashboards
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-provisioning.adminprovisioningreloaddashboards
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-provisioning-reload-datasources
+      description: Grafana Admin Provisioning Reload Datasources
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-provisioning.adminprovisioningreloaddatasources
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-admin-provisioning-reload-plugins
+      description: Grafana Admin Provisioning Reload Plugins
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grafana-provisioning.adminprovisioningreloadplugins
+      outputParameters:
+      - type: object
+        mapping: $.

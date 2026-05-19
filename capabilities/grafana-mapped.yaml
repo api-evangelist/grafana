@@ -1,0 +1,72 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Mapped
+  description: 'Grafana — Mapped. 1 operations. Lead operation: Grafana Get Mapped Groups. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Mapped
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-mapped
+    baseUri: http://{defaultHost}
+    description: Grafana — Mapped business capability. Self-contained, no shared references.
+    resources:
+    - name: groupsync-groups
+      path: /groupsync/groups
+      operations:
+      - name: getmappedgroups
+        method: GET
+        description: Grafana Get Mapped Groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-mapped-rest
+    port: 8080
+    description: REST adapter for Grafana — Mapped. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/groupsync/groups
+      name: groupsync-groups
+      description: REST surface for groupsync-groups.
+      operations:
+      - method: GET
+        name: getmappedgroups
+        description: Grafana Get Mapped Groups
+        call: grafana-mapped.getmappedgroups
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-mapped-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Mapped. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-get-mapped-groups
+      description: Grafana Get Mapped Groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-mapped.getmappedgroups
+      outputParameters:
+      - type: object
+        mapping: $.

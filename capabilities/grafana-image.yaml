@@ -1,0 +1,71 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Image
+  description: 'Grafana — Image. 1 operations. Lead operation: Grafana Get Settings Image. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Image
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-image
+    baseUri: http://{defaultHost}
+    description: Grafana — Image business capability. Self-contained, no shared references.
+    resources:
+    - name: reports-images-:image
+      path: /reports/images/:image
+      operations:
+      - name: getsettingsimage
+        method: GET
+        description: Grafana Get Settings Image
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-image-rest
+    port: 8080
+    description: REST adapter for Grafana — Image. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/reports/images/image
+      name: reports-images-image
+      description: REST surface for reports-images-:image.
+      operations:
+      - method: GET
+        name: getsettingsimage
+        description: Grafana Get Settings Image
+        call: grafana-image.getsettingsimage
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-image-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Image. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-get-settings-image
+      description: Grafana Get Settings Image
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-image.getsettingsimage
+      outputParameters:
+      - type: object
+        mapping: $.

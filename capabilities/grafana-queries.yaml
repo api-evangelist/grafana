@@ -1,0 +1,450 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Queries
+  description: 'Grafana — Queries. 9 operations. Lead operation: Grafana Query Metrics With Expressions. Self-contained Naftiko
+    capability covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Queries
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-queries
+    baseUri: http://{defaultHost}
+    description: Grafana — Queries business capability. Self-contained, no shared references.
+    resources:
+    - name: ds-query
+      path: /ds/query
+      operations:
+      - name: querymetricswithexpressions
+        method: POST
+        description: Grafana Query Metrics With Expressions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: public-dashboards-accessToken-panels-panelId-query
+      path: /public/dashboards/{accessToken}/panels/{panelId}/query
+      operations:
+      - name: querypublicdashboard
+        method: POST
+        description: Grafana Query Public Dashboard
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accessToken
+          in: path
+          type: string
+          required: true
+        - name: panelId
+          in: path
+          type: integer
+          required: true
+    - name: query-history
+      path: /query-history
+      operations:
+      - name: searchqueries
+        method: GET
+        description: Grafana Search Queries
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: datasourceUid
+          in: query
+          type: array
+          description: List of data source UIDs to search for
+        - name: searchString
+          in: query
+          type: string
+          description: Text inside query or comments that is searched for
+        - name: onlyStarred
+          in: query
+          type: boolean
+          description: Flag indicating if only starred queries should be returned
+        - name: sort
+          in: query
+          type: string
+          description: Sort method
+        - name: page
+          in: query
+          type: integer
+          description: Use this parameter to access hits beyond limit. Numbering starts at 1. limit param acts as page size.
+        - name: limit
+          in: query
+          type: integer
+          description: Limit the number of returned results
+        - name: from
+          in: query
+          type: integer
+          description: From range for the query history search
+        - name: to
+          in: query
+          type: integer
+          description: To range for the query history search
+      - name: createquery
+        method: POST
+        description: Grafana Create Query
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: query-history-star-query_history_uid
+      path: /query-history/star/{query_history_uid}
+      operations:
+      - name: starquery
+        method: POST
+        description: Grafana Star Query
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: query_history_uid
+          in: path
+          type: string
+          required: true
+      - name: unstarquery
+        method: DELETE
+        description: Grafana Unstar Query
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: query_history_uid
+          in: path
+          type: string
+          required: true
+    - name: query-history-query_history_uid
+      path: /query-history/{query_history_uid}
+      operations:
+      - name: deletequery
+        method: DELETE
+        description: Grafana Delete Query
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: query_history_uid
+          in: path
+          type: string
+          required: true
+      - name: patchquerycomment
+        method: PATCH
+        description: Grafana Patch Query Comment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: query_history_uid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-teamId-groups
+      path: /teams/{teamId}/groups
+      operations:
+      - name: removeteamgroupapiquery
+        method: DELETE
+        description: Grafana Remove Team Group Api Query
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: groupId
+          in: query
+          type: string
+        - name: teamId
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-queries-rest
+    port: 8080
+    description: REST adapter for Grafana — Queries. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/ds/query
+      name: ds-query
+      description: REST surface for ds-query.
+      operations:
+      - method: POST
+        name: querymetricswithexpressions
+        description: Grafana Query Metrics With Expressions
+        call: grafana-queries.querymetricswithexpressions
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/public/dashboards/{accesstoken}/panels/{panelid}/query
+      name: public-dashboards-accesstoken-panels-panelid-query
+      description: REST surface for public-dashboards-accessToken-panels-panelId-query.
+      operations:
+      - method: POST
+        name: querypublicdashboard
+        description: Grafana Query Public Dashboard
+        call: grafana-queries.querypublicdashboard
+        with:
+          accessToken: rest.accessToken
+          panelId: rest.panelId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/query-history
+      name: query-history
+      description: REST surface for query-history.
+      operations:
+      - method: GET
+        name: searchqueries
+        description: Grafana Search Queries
+        call: grafana-queries.searchqueries
+        with:
+          datasourceUid: rest.datasourceUid
+          searchString: rest.searchString
+          onlyStarred: rest.onlyStarred
+          sort: rest.sort
+          page: rest.page
+          limit: rest.limit
+          from: rest.from
+          to: rest.to
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createquery
+        description: Grafana Create Query
+        call: grafana-queries.createquery
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/query-history/star/{query-history-uid}
+      name: query-history-star-query-history-uid
+      description: REST surface for query-history-star-query_history_uid.
+      operations:
+      - method: POST
+        name: starquery
+        description: Grafana Star Query
+        call: grafana-queries.starquery
+        with:
+          query_history_uid: rest.query_history_uid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: unstarquery
+        description: Grafana Unstar Query
+        call: grafana-queries.unstarquery
+        with:
+          query_history_uid: rest.query_history_uid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/query-history/{query-history-uid}
+      name: query-history-query-history-uid
+      description: REST surface for query-history-query_history_uid.
+      operations:
+      - method: DELETE
+        name: deletequery
+        description: Grafana Delete Query
+        call: grafana-queries.deletequery
+        with:
+          query_history_uid: rest.query_history_uid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchquerycomment
+        description: Grafana Patch Query Comment
+        call: grafana-queries.patchquerycomment
+        with:
+          query_history_uid: rest.query_history_uid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{teamid}/groups
+      name: teams-teamid-groups
+      description: REST surface for teams-teamId-groups.
+      operations:
+      - method: DELETE
+        name: removeteamgroupapiquery
+        description: Grafana Remove Team Group Api Query
+        call: grafana-queries.removeteamgroupapiquery
+        with:
+          groupId: rest.groupId
+          teamId: rest.teamId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-queries-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Queries. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-query-metrics-expressions
+      description: Grafana Query Metrics With Expressions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: grafana-queries.querymetricswithexpressions
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-query-public-dashboard
+      description: Grafana Query Public Dashboard
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: grafana-queries.querypublicdashboard
+      with:
+        accessToken: tools.accessToken
+        panelId: tools.panelId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-search-queries
+      description: Grafana Search Queries
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-queries.searchqueries
+      with:
+        datasourceUid: tools.datasourceUid
+        searchString: tools.searchString
+        onlyStarred: tools.onlyStarred
+        sort: tools.sort
+        page: tools.page
+        limit: tools.limit
+        from: tools.from
+        to: tools.to
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-create-query
+      description: Grafana Create Query
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: grafana-queries.createquery
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-star-query
+      description: Grafana Star Query
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: grafana-queries.starquery
+      with:
+        query_history_uid: tools.query_history_uid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-unstar-query
+      description: Grafana Unstar Query
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-queries.unstarquery
+      with:
+        query_history_uid: tools.query_history_uid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-delete-query
+      description: Grafana Delete Query
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-queries.deletequery
+      with:
+        query_history_uid: tools.query_history_uid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-patch-query-comment
+      description: Grafana Patch Query Comment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grafana-queries.patchquerycomment
+      with:
+        query_history_uid: tools.query_history_uid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: grafana-remove-team-group-api
+      description: Grafana Remove Team Group Api Query
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grafana-queries.removeteamgroupapiquery
+      with:
+        groupId: tools.groupId
+        teamId: tools.teamId
+      outputParameters:
+      - type: object
+        mapping: $.

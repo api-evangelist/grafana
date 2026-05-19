@@ -1,0 +1,81 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Grafana — Members
+  description: 'Grafana — Members. 1 operations. Lead operation: Grafana Get Team Members. Self-contained Naftiko capability
+    covering one Grafana business surface.'
+  tags:
+  - Grafana
+  - Members
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    GRAFANA_API_KEY: GRAFANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grafana-members
+    baseUri: http://{defaultHost}
+    description: Grafana — Members business capability. Self-contained, no shared references.
+    resources:
+    - name: teams-team_id-members
+      path: /teams/{team_id}/members
+      operations:
+      - name: getteammembers
+        method: GET
+        description: Grafana Get Team Members
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_id
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.GRAFANA_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: grafana-members-rest
+    port: 8080
+    description: REST adapter for Grafana — Members. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/teams/{team-id}/members
+      name: teams-team-id-members
+      description: REST surface for teams-team_id-members.
+      operations:
+      - method: GET
+        name: getteammembers
+        description: Grafana Get Team Members
+        call: grafana-members.getteammembers
+        with:
+          team_id: rest.team_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grafana-members-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Grafana — Members. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: grafana-get-team-members
+      description: Grafana Get Team Members
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grafana-members.getteammembers
+      with:
+        team_id: tools.team_id
+      outputParameters:
+      - type: object
+        mapping: $.
