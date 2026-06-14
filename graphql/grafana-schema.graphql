@@ -1,0 +1,1570 @@
+"""
+Grafana GraphQL Schema
+
+Derived from the Grafana HTTP API and data model.
+Source: https://grafana.com/docs/grafana/latest/developers/http_api/
+GitHub: https://github.com/grafana/grafana
+"""
+
+scalar DateTime
+scalar JSON
+scalar Duration
+
+# ─── Enumerations ────────────────────────────────────────────────────────────
+
+enum DatasourceType {
+  PROMETHEUS
+  LOKI
+  TEMPO
+  INFLUXDB
+  ELASTICSEARCH
+  CLOUDWATCH
+  AZURE_MONITOR
+  MYSQL
+  POSTGRES
+  MSSQL
+  GRAPHITE
+  OPENTSDB
+  JAEGER
+  ZIPKIN
+  PYROSCOPE
+  DATADOG
+  SPLUNK
+  DYNATRACE
+}
+
+enum AlertState {
+  PENDING
+  FIRING
+  RESOLVED
+  INACTIVE
+  NODATA
+  ERROR
+}
+
+enum OrgRole {
+  ADMIN
+  EDITOR
+  VIEWER
+  NONE
+}
+
+enum NotifierType {
+  EMAIL
+  SLACK
+  PAGERDUTY
+  OPSGENIE
+  VICTOROPS
+  WEBHOOK
+  GOOGLECHAT
+  TELEGRAM
+  LINE
+  DISCORD
+  TEAMS
+  HIPCHAT
+  PUSHOVER
+  SENSUGO
+  THREEMA
+  KAFKA
+  SNS
+}
+
+enum PermissionLevel {
+  ADMIN
+  EDIT
+  VIEW
+}
+
+enum PanelType {
+  TIMESERIES
+  BARCHART
+  STAT
+  GAUGE
+  TABLE
+  TEXT
+  PIECHART
+  GEOMAP
+  HEATMAP
+  HISTOGRAM
+  LOGS
+  TRACES
+  FLAMEGRAPH
+  CANVAS
+  DATAGRID
+  NEWS
+  ALERTLIST
+  DASHBOARDLIST
+  PLUGINLIST
+  ANNOLIST
+  XYCHART
+}
+
+enum VariableType {
+  QUERY
+  CUSTOM
+  TEXTBOX
+  CONSTANT
+  DATASOURCE
+  INTERVAL
+  ADHOC
+}
+
+enum SLOObjectiveType {
+  RATIO
+  THRESHOLD
+}
+
+enum IncidentSeverity {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum IncidentStatus {
+  ACTIVE
+  RESOLVED
+}
+
+# ─── Common ───────────────────────────────────────────────────────────────────
+
+"""Time range for queries and visualizations."""
+type TimeRange {
+  from: String!
+  to: String!
+  raw: RawTimeRange
+}
+
+type RawTimeRange {
+  from: String!
+  to: String!
+}
+
+"""Server health and build information."""
+type HealthStatus {
+  commit: String!
+  database: String!
+  version: String!
+}
+
+"""Aggregated server-wide usage statistics."""
+type Stats {
+  activeAdminCount: Int!
+  activeEditorCount: Int!
+  activeViewerCount: Int!
+  activeUserCount: Int!
+  alertCount: Int!
+  dashboardCount: Int!
+  dataSourceCount: Int!
+  orgCount: Int!
+  playlistCount: Int!
+  snapshotCount: Int!
+  starredDbCount: Int!
+  tagCount: Int!
+  teamCount: Int!
+  userCount: Int!
+}
+
+"""Generic search result for dashboards, folders, or library panels."""
+type SearchResult {
+  id: Int!
+  uid: String
+  title: String!
+  uri: String
+  url: String
+  slug: String
+  type: String!
+  tags: [String!]!
+  isStarred: Boolean!
+  folderId: Int
+  folderUid: String
+  folderTitle: String
+  folderUrl: String
+  sortMeta: Int
+}
+
+# ─── Organization ─────────────────────────────────────────────────────────────
+
+"""A Grafana organization (tenant)."""
+type Organization {
+  id: Int!
+  name: String!
+  address: OrgAddress
+  createdAt: DateTime
+  updatedAt: DateTime
+  users: [OrgUser!]
+}
+
+type OrgAddress {
+  address1: String
+  address2: String
+  city: String
+  zipCode: String
+  state: String
+  country: String
+}
+
+"""A user's membership in an organization with a role."""
+type OrgUser {
+  orgId: Int!
+  userId: Int!
+  email: String!
+  login: String!
+  name: String
+  avatarUrl: String
+  role: OrgRole!
+  lastSeenAt: DateTime
+  lastSeenAtAge: String
+}
+
+# ─── User ─────────────────────────────────────────────────────────────────────
+
+"""A Grafana user account."""
+type User {
+  id: Int!
+  uid: String
+  email: String!
+  name: String
+  login: String!
+  avatarUrl: String
+  isAdmin: Boolean!
+  isDisabled: Boolean!
+  isExternal: Boolean
+  lastSeenAt: DateTime
+  lastSeenAtAge: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  authLabels: [String!]
+  orgs: [OrgUser!]
+  preferences: UserPreferences
+}
+
+"""Personal display preferences for a Grafana user."""
+type UserPreferences {
+  theme: String
+  homeDashboardId: Int
+  homeDashboardUID: String
+  timezone: String
+  weekStart: String
+  locale: String
+  queryHistory: QueryHistoryPreference
+}
+
+type QueryHistoryPreference {
+  homeTab: String
+}
+
+# ─── Team ─────────────────────────────────────────────────────────────────────
+
+"""A team grouping users within an organization."""
+type Team {
+  id: Int!
+  orgId: Int!
+  name: String!
+  email: String
+  avatarUrl: String
+  memberCount: Int!
+  permission: PermissionLevel
+  createdAt: DateTime
+  updatedAt: DateTime
+  members: [TeamMember!]
+}
+
+"""A user member of a team."""
+type TeamMember {
+  orgId: Int!
+  teamId: Int!
+  userId: Int!
+  email: String!
+  login: String!
+  name: String
+  avatarUrl: String
+  permission: PermissionLevel!
+}
+
+"""A permission level granted to a team on a resource."""
+type TeamPermission {
+  teamId: Int!
+  teamUid: String
+  team: String!
+  permission: PermissionLevel!
+}
+
+# ─── Service Account & Token ──────────────────────────────────────────────────
+
+"""A non-human service account used for API access."""
+type ServiceAccount {
+  id: Int!
+  uid: String!
+  name: String!
+  login: String!
+  orgId: Int!
+  isDisabled: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  avatarUrl: String
+  role: OrgRole!
+  tokens: Int
+  accessControl: JSON
+}
+
+"""An API token associated with a user or service account."""
+type Token {
+  id: Int!
+  name: String!
+  key: String
+  role: OrgRole
+  created: DateTime!
+  expiration: DateTime
+  secondsToLive: Int
+  hasExpired: Boolean!
+  isRevoked: Boolean
+}
+
+# ─── RBAC ─────────────────────────────────────────────────────────────────────
+
+"""An RBAC role definition."""
+type Role {
+  uid: String!
+  name: String!
+  displayName: String
+  description: String
+  group: String
+  version: Int!
+  global: Boolean!
+  permissions: [RolePermission!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type RolePermission {
+  action: String!
+  scope: String
+  createdAt: DateTime!
+}
+
+"""An assignment of an RBAC role to a user, team, or service account."""
+type RoleAssignment {
+  roleUid: String!
+  userId: Int
+  teamId: Int
+  serviceAccountId: Int
+  global: Boolean!
+  orgId: Int!
+  createdAt: DateTime!
+}
+
+# ─── Folder ───────────────────────────────────────────────────────────────────
+
+"""A folder that organizes dashboards and alerts."""
+type Folder {
+  id: Int!
+  uid: String!
+  title: String!
+  url: String!
+  hasAcl: Boolean!
+  canSave: Boolean
+  canEdit: Boolean
+  canAdmin: Boolean
+  canDelete: Boolean
+  createdBy: String
+  created: DateTime!
+  updatedBy: String
+  updated: DateTime!
+  version: Int!
+  permissions: [FolderPermission!]
+}
+
+"""An access control entry on a folder."""
+type FolderPermission {
+  id: Int!
+  folderId: Int!
+  created: DateTime!
+  updated: DateTime!
+  userId: Int
+  userLogin: String
+  userEmail: String
+  teamId: Int
+  team: String
+  teamEmail: String
+  role: OrgRole
+  permission: PermissionLevel!
+  permissionName: String!
+  uid: String
+  title: String
+  slug: String
+  isFolder: Boolean
+  url: String
+}
+
+# ─── Data Source ──────────────────────────────────────────────────────────────
+
+"""A configured data source connection in Grafana."""
+type DataSource {
+  id: Int!
+  uid: String!
+  orgId: Int!
+  name: String!
+  type: DatasourceType!
+  typeName: String
+  typeLogoUrl: String
+  access: String!
+  url: String!
+  user: String
+  database: String
+  basicAuth: Boolean!
+  basicAuthUser: String
+  withCredentials: Boolean!
+  isDefault: Boolean!
+  jsonData: JSON
+  readOnly: Boolean!
+  version: Int
+  secureJsonFields: JSON
+  health: DatasourceHealth
+}
+
+"""Health check result for a data source."""
+type DatasourceHealth {
+  status: String!
+  message: String!
+  details: JSON
+}
+
+"""Metadata for an installed data source plugin."""
+type DataSourcePlugin {
+  id: String!
+  type: String!
+  name: String!
+  info: PluginInfo!
+  module: String
+  baseUrl: String
+}
+
+type PluginInfo {
+  author: PluginAuthor
+  description: String
+  links: [PluginLink!]
+  logos: PluginLogos
+  version: String!
+  updated: String
+}
+
+type PluginAuthor {
+  name: String!
+  url: String
+}
+
+type PluginLink {
+  name: String!
+  url: String!
+}
+
+type PluginLogos {
+  small: String!
+  large: String!
+}
+
+# ─── Dashboard & Panel ────────────────────────────────────────────────────────
+
+"""A Grafana dashboard containing panels and variables."""
+type Dashboard {
+  id: Int
+  uid: String!
+  title: String!
+  description: String
+  tags: [String!]!
+  timezone: String!
+  schemaVersion: Int!
+  version: Int!
+  editable: Boolean!
+  fiscalYearStartMonth: Int
+  graphTooltip: Int
+  time: TimeRange
+  timepicker: JSON
+  refresh: String
+  panels: [Panel!]
+  templating: DashboardTemplating
+  annotations: DashboardAnnotations
+  links: [DashboardLink!]
+  liveNow: Boolean
+  weekStart: String
+  style: String
+  meta: DashboardMeta
+}
+
+type DashboardMeta {
+  isStarred: Boolean!
+  isSnapshot: Boolean!
+  type: String
+  canSave: Boolean!
+  canEdit: Boolean!
+  canAdmin: Boolean!
+  canStar: Boolean!
+  canDelete: Boolean!
+  slug: String
+  url: String
+  expires: DateTime
+  created: DateTime
+  updated: DateTime
+  updatedBy: String
+  createdBy: String
+  version: Int!
+  folderId: Int
+  folderUid: String
+  folderTitle: String
+  folderUrl: String
+  provisioned: Boolean
+  provisionedExternalId: String
+}
+
+type DashboardTemplating {
+  list: [Variable!]!
+}
+
+type DashboardAnnotations {
+  list: [AnnotationQuery!]!
+}
+
+type AnnotationQuery {
+  datasource: DataSourceRef
+  enable: Boolean!
+  hide: Boolean
+  iconColor: String
+  name: String!
+  type: String!
+  builtIn: Int
+  expr: String
+  step: String
+  titleFormat: String
+  textFormat: String
+  tagKeys: String
+  tags: [String!]
+}
+
+type DataSourceRef {
+  type: String
+  uid: String
+}
+
+type DashboardLink {
+  asDropdown: Boolean
+  icon: String
+  includeVars: Boolean
+  keepTime: Boolean
+  tags: [String!]
+  targetBlank: Boolean
+  title: String!
+  tooltip: String
+  type: String!
+  url: String
+}
+
+"""An access control entry on a dashboard."""
+type DashboardPermission {
+  dashboardId: Int!
+  dashboardUid: String!
+  created: DateTime!
+  updated: DateTime!
+  userId: Int
+  userLogin: String
+  userEmail: String
+  teamId: Int
+  team: String
+  teamEmail: String
+  role: OrgRole
+  permission: PermissionLevel!
+  permissionName: String!
+  isFolder: Boolean
+  url: String
+  slug: String
+  title: String
+}
+
+# ─── Panel ────────────────────────────────────────────────────────────────────
+
+"""A visualization panel within a dashboard."""
+type Panel {
+  id: Int!
+  type: PanelType!
+  title: String!
+  description: String
+  datasource: DataSourceRef
+  fieldConfig: JSON
+  gridPos: GridPosition!
+  options: JSON
+  targets: [PanelTarget!]
+  transformations: [JSON!]
+  transparent: Boolean
+  pluginVersion: String
+  links: [PanelLink!]
+  repeat: String
+  repeatDirection: String
+  maxDataPoints: Int
+  interval: String
+  timeFrom: String
+  timeShift: String
+  hideTimeOverride: Boolean
+  libraryPanel: LibraryPanelRef
+}
+
+type GridPosition {
+  h: Int!
+  w: Int!
+  x: Int!
+  y: Int!
+}
+
+type PanelLink {
+  title: String!
+  url: String!
+  targetBlank: Boolean
+  includeVars: Boolean
+  keepTime: Boolean
+}
+
+"""A query target bound to a panel."""
+type PanelTarget {
+  datasource: DataSourceRef
+  refId: String!
+  expr: String
+  query: String
+  rawSql: String
+  format: String
+  legendFormat: String
+  interval: String
+  instant: Boolean
+  range: Boolean
+  hide: Boolean
+  queryType: String
+  exemplar: Boolean
+  editorMode: String
+}
+
+# ─── Library Panel ────────────────────────────────────────────────────────────
+
+"""A reusable panel definition shared across dashboards."""
+type LibraryPanel {
+  id: Int!
+  orgId: Int!
+  folderId: Int!
+  uid: String!
+  name: String!
+  kind: Int!
+  model: JSON!
+  version: Int!
+  meta: LibraryPanelMeta!
+  type: String!
+  description: String
+}
+
+type LibraryPanelMeta {
+  folderName: String!
+  folderUid: String!
+  connectedDashboards: Int!
+  created: DateTime!
+  updated: DateTime!
+  createdBy: LibraryPanelUser!
+  updatedBy: LibraryPanelUser!
+}
+
+type LibraryPanelUser {
+  id: Int!
+  name: String!
+  avatarUrl: String!
+}
+
+type LibraryPanelRef {
+  name: String!
+  uid: String!
+}
+
+# ─── Variable ─────────────────────────────────────────────────────────────────
+
+"""A dashboard template variable."""
+type Variable {
+  id: Int
+  name: String!
+  label: String
+  description: String
+  type: VariableType!
+  datasource: DataSourceRef
+  query: JSON
+  queryValue: String
+  current: VariableOption
+  options: [VariableOption!]
+  refresh: Int
+  sort: Int
+  regex: String
+  multi: Boolean
+  includeAll: Boolean
+  allValue: String
+  hide: Int
+  skipUrlSync: Boolean
+}
+
+type VariableOption {
+  selected: Boolean!
+  text: JSON!
+  value: JSON!
+}
+
+# ─── Query Types ──────────────────────────────────────────────────────────────
+
+"""A generic data query executed against a Grafana data source."""
+type Query {
+  refId: String!
+  datasource: DataSourceRef!
+  intervalMs: Int
+  maxDataPoints: Int
+  timeRange: TimeRange
+  queryType: String
+  hide: Boolean
+}
+
+"""A Tempo distributed tracing query."""
+type TempoQuery {
+  refId: String!
+  datasource: DataSourceRef
+  query: String
+  queryType: String
+  serviceMapQuery: String
+  filters: [TempoFilter!]
+  limit: Int
+  spss: Int
+  tableType: String
+}
+
+type TempoFilter {
+  id: String!
+  tag: String
+  operator: String
+  value: [String!]
+  scope: String
+  valueType: String
+}
+
+"""A Loki log query using LogQL."""
+type LokiQuery {
+  refId: String!
+  datasource: DataSourceRef
+  expr: String!
+  queryType: String
+  instant: Boolean
+  range: Boolean
+  legendFormat: String
+  maxLines: Int
+  resolution: Int
+  step: String
+}
+
+"""A Prometheus or Mimir metrics query using PromQL."""
+type PromQuery {
+  refId: String!
+  datasource: DataSourceRef
+  expr: String!
+  instant: Boolean
+  range: Boolean
+  exemplar: Boolean
+  legendFormat: String
+  interval: String
+  intervalFactor: Int
+  step: String
+  format: String
+  editorMode: String
+}
+
+"""An InfluxDB query using Flux or InfluxQL."""
+type InfluxQuery {
+  refId: String!
+  datasource: DataSourceRef
+  query: String
+  rawQuery: Boolean
+  resultFormat: String
+  tags: [InfluxTag!]
+  groupBy: [InfluxGroupBy!]
+  select: [[InfluxSelect!]!]
+  policy: String
+  measurement: String
+  orderByTime: String
+  limit: Int
+  slimit: Int
+  tz: String
+}
+
+type InfluxTag {
+  key: String!
+  operator: String!
+  value: String!
+}
+
+type InfluxGroupBy {
+  type: String!
+  params: [String!]
+}
+
+type InfluxSelect {
+  type: String!
+  params: [String!]
+}
+
+"""An Elasticsearch or OpenSearch query."""
+type ElasticsearchQuery {
+  refId: String!
+  datasource: DataSourceRef
+  query: String
+  alias: String
+  metrics: [JSON!]
+  bucketAggs: [JSON!]
+  timeField: String
+  luceneQueryType: String
+  queryType: String
+}
+
+"""An AWS CloudWatch metrics or Logs Insights query."""
+type CloudWatchQuery {
+  refId: String!
+  datasource: DataSourceRef
+  queryMode: String!
+  namespace: String
+  metricName: String
+  dimensions: JSON
+  expression: String
+  sqlExpression: String
+  statistics: [String!]
+  period: String
+  region: String!
+  id: String
+  alias: String
+  logGroups: [CloudWatchLogGroup!]
+  logGroupNames: [String!]
+  matchExact: Boolean
+  highResolution: Boolean
+  hide: Boolean
+}
+
+type CloudWatchLogGroup {
+  arn: String!
+  name: String!
+  accountId: String
+  accountLabel: String
+}
+
+"""An Azure Monitor metrics, logs, or Application Insights query."""
+type AzureMonitorQuery {
+  refId: String!
+  datasource: DataSourceRef
+  queryType: String!
+  azureMonitor: AzureMetricQuery
+  azureLogAnalytics: AzureLogsQuery
+  azureResourceGraph: AzureResourceGraphQuery
+  subscription: String
+  subscriptions: [String!]
+}
+
+type AzureMetricQuery {
+  resourceUri: String
+  resourceGroup: String
+  resourceName: String
+  metricNamespace: String
+  metricName: String
+  timeGrain: String
+  aggregation: String
+  dimensionFilters: [AzureDimensionFilter!]
+  alias: String
+  top: String
+}
+
+type AzureLogsQuery {
+  query: String
+  resultFormat: String
+  resource: String
+  resources: [String!]
+  workspace: String
+  intersectTime: Boolean
+}
+
+type AzureResourceGraphQuery {
+  query: String
+  resultFormat: String
+}
+
+type AzureDimensionFilter {
+  dimension: String!
+  operator: String!
+  filters: [String!]
+}
+
+# ─── Annotation ───────────────────────────────────────────────────────────────
+
+"""A time-range annotation displayed on a dashboard."""
+type Annotation {
+  id: Int!
+  alertId: Int
+  alertName: String
+  dashboardId: Int!
+  dashboardUID: String
+  panelId: Int
+  userId: Int
+  newState: String
+  prevState: String
+  created: DateTime!
+  updated: DateTime!
+  time: Float!
+  timeEnd: Float
+  text: String!
+  tags: [String!]!
+  login: String
+  email: String
+  avatarUrl: String
+  data: JSON
+}
+
+# ─── Alert ────────────────────────────────────────────────────────────────────
+
+"""A Grafana Unified Alerting rule."""
+type AlertRule {
+  uid: String!
+  orgID: Int!
+  folderUID: String!
+  ruleGroup: String!
+  title: String!
+  condition: String!
+  data: [AlertQuery!]!
+  updated: DateTime!
+  noDataState: String!
+  execErrState: String!
+  for: Duration!
+  annotations: JSON
+  labels: JSON
+  isPaused: Boolean!
+  notificationSettings: AlertNotificationSettings
+  record: AlertRecord
+}
+
+type AlertQuery {
+  refId: String!
+  queryType: String
+  relativeTimeRange: RelativeTimeRange
+  datasourceUid: String!
+  model: JSON!
+}
+
+type RelativeTimeRange {
+  from: Int!
+  to: Int!
+}
+
+type AlertNotificationSettings {
+  receiver: String!
+  groupBy: [String!]
+  groupWait: Duration
+  groupInterval: Duration
+  repeatInterval: Duration
+  muteTimeIntervals: [String!]
+}
+
+type AlertRecord {
+  metric: String!
+  from: String!
+}
+
+"""A firing or resolved alert instance."""
+type AlertInstance {
+  schemaVersion: Int
+  fingerprint: String!
+  labels: JSON!
+  annotations: JSON
+  state: AlertState!
+  activeAt: DateTime
+  value: String
+  generatorURL: String
+  silenceURLs: [String!]
+  dashboardURL: String
+  panelURL: String
+  receivers: [AlertReceiverRef!]
+}
+
+type AlertReceiverRef {
+  name: String!
+  active: [JSON!]
+  integrations: [JSON!]
+  notifiers: [JSON!]
+}
+
+"""A group of alert rules sharing an evaluation interval."""
+type AlertGroup {
+  name: String!
+  file: String!
+  rules: [AlertGroupRule!]!
+  interval: Float!
+  evaluationTime: Float
+  lastEvaluation: DateTime
+}
+
+type AlertGroupRule {
+  state: AlertState
+  name: String!
+  query: String!
+  duration: Float
+  labels: JSON
+  annotations: JSON
+  health: String
+  lastError: String
+  evaluationTime: Float
+  lastEvaluation: DateTime
+  type: String!
+  alerts: [AlertInstance!]
+}
+
+"""A notification contact point for alert routing."""
+type AlertContact {
+  uid: String!
+  name: String!
+  type: NotifierType!
+  disableResolveMessage: Boolean!
+  settings: JSON!
+  secureSettings: JSON
+  provenance: String
+}
+
+"""A notification policy node in the routing tree."""
+type Notification {
+  receiver: String!
+  groupBy: [String!]
+  groupWait: Duration
+  groupInterval: Duration
+  repeatInterval: Duration
+  matchers: [Matcher!]
+  muteTimeIntervals: [String!]
+  activeTimeIntervals: [String!]
+  continue: Boolean
+  routes: [Notification!]
+}
+
+type Matcher {
+  name: String!
+  value: String!
+  isRegex: Boolean!
+  isEqual: Boolean!
+}
+
+# ─── Playlist ─────────────────────────────────────────────────────────────────
+
+"""A rotating sequence of dashboards displayed automatically."""
+type Playlist {
+  uid: String!
+  name: String!
+  interval: String!
+  items: [PlaylistItem!]!
+}
+
+type PlaylistItem {
+  id: Int
+  playlistId: Int
+  type: String!
+  value: String!
+  order: Int!
+  title: String
+}
+
+# ─── Snapshot ─────────────────────────────────────────────────────────────────
+
+"""A point-in-time immutable snapshot of a dashboard with its data."""
+type Snapshot {
+  id: Int!
+  name: String!
+  key: String!
+  deleteKey: String
+  orgId: Int!
+  userId: Int!
+  external: Boolean!
+  externalUrl: String
+  url: String
+  expires: DateTime!
+  created: DateTime!
+  updated: DateTime!
+  dashboard: Dashboard
+}
+
+# ─── Plugin Settings ──────────────────────────────────────────────────────────
+
+"""Configuration settings for a Grafana plugin."""
+type PluginSettings {
+  id: Int!
+  orgId: Int!
+  type: String!
+  pluginId: String!
+  enabled: Boolean!
+  pinned: Boolean!
+  info: PluginInfo
+  jsonData: JSON
+  secureJsonFields: JSON
+}
+
+# ─── Correlation ──────────────────────────────────────────────────────────────
+
+"""A correlation linking query results across two data sources."""
+type CorrelationConfig {
+  uid: String!
+  sourceUID: String!
+  targetUID: String!
+  label: String
+  description: String
+  config: CorrelationConfigDetails
+  provisioned: Boolean!
+  orgId: Int!
+}
+
+type CorrelationConfigDetails {
+  type: String!
+  field: String
+  target: JSON
+  transformations: [CorrelationTransformation!]
+}
+
+type CorrelationTransformation {
+  type: String!
+  field: String
+  expression: String
+  mapValue: String
+}
+
+# ─── Report ───────────────────────────────────────────────────────────────────
+
+"""A scheduled dashboard report delivered as PDF or PNG."""
+type Report {
+  id: Int!
+  orgId: Int!
+  userId: Int!
+  name: String!
+  recipients: String!
+  replyTo: String
+  message: String
+  schedule: ReportSchedule!
+  options: ReportOptions!
+  dashboards: [ReportDashboard!]!
+  enableDashboardUrl: Boolean
+  state: String
+  created: DateTime!
+  updated: DateTime!
+}
+
+type ReportSchedule {
+  frequency: String!
+  intervalFrequency: String
+  intervalAmount: Int
+  workdaysOnly: Boolean
+  startDate: DateTime
+  endDate: DateTime
+  dayOfMonth: String
+  hour: Int
+  minute: Int
+  timeZone: String
+}
+
+type ReportOptions {
+  orientation: String!
+  layout: String!
+  timeRange: TimeRange
+}
+
+type ReportDashboard {
+  dashboard: DashboardRef!
+  timeRange: TimeRange
+  reportVariables: JSON
+}
+
+type DashboardRef {
+  id: Int!
+  uid: String!
+  name: String!
+}
+
+# ─── Public Dashboard ─────────────────────────────────────────────────────────
+
+"""A publicly shareable dashboard with configurable access controls."""
+type PublicDashboard {
+  uid: String!
+  dashboardUid: String!
+  orgId: Int!
+  isEnabled: Boolean!
+  annotationsEnabled: Boolean!
+  timeSelectionEnabled: Boolean!
+  accessToken: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: Int!
+  updatedBy: Int!
+}
+
+# ─── SLO ──────────────────────────────────────────────────────────────────────
+
+"""A Service Level Objective definition managed by Grafana SLO."""
+type SLO {
+  uuid: String!
+  name: String!
+  description: String
+  labels: [LabelEntry!]
+  objectives: [SLOObjective!]!
+  query: SLOQuery!
+  alerting: SLOAlerting
+  folder: FolderRef
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type LabelEntry {
+  key: String!
+  value: String!
+}
+
+type SLOObjective {
+  window: Duration!
+  value: Float!
+  objectiveType: SLOObjectiveType!
+}
+
+type SLOQuery {
+  type: String!
+  freeform: SLOFreeformQuery
+  ratio: SLORatioQuery
+  threshold: SLOThresholdQuery
+}
+
+type SLOFreeformQuery {
+  query: String!
+}
+
+type SLORatioQuery {
+  groupByLabels: [String!]
+  successMetric: SLOMetricDef!
+  totalMetric: SLOMetricDef!
+}
+
+type SLOMetricDef {
+  prometheusMetric: String!
+  type: String
+}
+
+type SLOThresholdQuery {
+  groupByLabels: [String!]
+  metric: SLOMetricDef!
+  thresholdExpression: String!
+}
+
+type SLOAlerting {
+  fastBurn: SLOAlertCondition
+  slowBurn: SLOAlertCondition
+  annotations: [LabelEntry!]
+  labels: [LabelEntry!]
+}
+
+type SLOAlertCondition {
+  burnRateAlertingRules: [BurnRateAlertingRule!]!
+}
+
+type BurnRateAlertingRule {
+  burnRateThreshold: Float!
+  for: Duration!
+}
+
+type FolderRef {
+  uid: String!
+}
+
+# ─── Incident ─────────────────────────────────────────────────────────────────
+
+"""A Grafana Incident record."""
+type Incident {
+  incidentID: String!
+  title: String!
+  description: String
+  severity: IncidentSeverity!
+  status: IncidentStatus!
+  labels: [LabelEntry!]
+  createdTime: DateTime!
+  modifiedTime: DateTime!
+  closedTime: DateTime
+  createdByUser: IncidentUser
+  incidentStart: DateTime
+  incidentEnd: DateTime
+  isDrill: Boolean!
+  taskList: IncidentTaskList
+}
+
+type IncidentUser {
+  userID: String!
+  name: String!
+  photoURL: String
+}
+
+type IncidentTaskList {
+  tasks: [IncidentTask!]!
+  todoCount: Int!
+  doneCount: Int!
+}
+
+type IncidentTask {
+  taskID: String!
+  title: String!
+  status: String!
+  assignedUser: IncidentUser
+  createdTime: DateTime!
+  modifiedTime: DateTime!
+  immutable: Boolean!
+}
+
+# ─── OnCall ───────────────────────────────────────────────────────────────────
+
+"""An on-call schedule configuration."""
+type OnCall {
+  id: String!
+  teamId: String!
+  name: String!
+  type: String!
+  timeZone: String!
+  slack: OnCallSlackConfig
+  ical: OnCallICalConfig
+  shifts: [String!]
+}
+
+type OnCallSlackConfig {
+  channelId: String!
+  userGroupId: String
+}
+
+type OnCallICalConfig {
+  icalUrlPrimary: String!
+  icalUrlOverrides: String
+}
+
+"""An escalation chain for routing alerts to on-call responders."""
+type EscalationChain {
+  id: String!
+  name: String!
+  teamId: String!
+  steps: [EscalationStep!]
+}
+
+type EscalationStep {
+  id: String!
+  escalationPolicyId: String!
+  order: Int!
+  type: String!
+  duration: Int
+  personsList: [String!]
+  notifyOnCallFromSchedule: String
+  groupToNotify: String
+  actionToTrigger: String
+  important: Boolean
+}
+
+"""An alerting integration with an external system in Grafana OnCall."""
+type Integration {
+  id: String!
+  teamId: String!
+  name: String!
+  link: String!
+  incidentsCount: Int!
+  type: String!
+  defaultRoute: IntegrationRoute
+  templates: JSON
+}
+
+type IntegrationRoute {
+  id: String!
+  escalationChainId: String
+  slackChannel: SlackChannelRef
+  telegram: TelegramChannelRef
+  msteams: MsTeamsRef
+}
+
+type SlackChannelRef {
+  channelId: String!
+  enabled: Boolean!
+}
+
+type TelegramChannelRef {
+  id: String!
+  enabled: Boolean!
+}
+
+type MsTeamsRef {
+  id: String!
+  enabled: Boolean!
+}
+
+# ─── Root Operations ──────────────────────────────────────────────────────────
+
+type RootQuery {
+  health: HealthStatus!
+  stats: Stats!
+
+  # Dashboard
+  dashboard(uid: String!): Dashboard
+  dashboards(query: String, tags: [String!], folderIds: [Int!], limit: Int, page: Int): [SearchResult!]!
+  dashboardPermissions(uid: String!): [DashboardPermission!]!
+
+  # Folder
+  folder(uid: String!): Folder
+  folders(limit: Int, page: Int): [Folder!]!
+  folderPermissions(uid: String!): [FolderPermission!]!
+
+  # DataSource
+  dataSource(uid: String!): DataSource
+  dataSources: [DataSource!]!
+  dataSourceByName(name: String!): DataSource
+
+  # Annotation
+  annotations(from: Float, to: Float, dashboardUID: String, panelId: Int, tags: [String!], limit: Int): [Annotation!]!
+
+  # Alert
+  alertRules(folderUID: String, ruleGroup: String): [AlertRule!]!
+  alertRule(uid: String!): AlertRule
+  alertInstances(state: AlertState): [AlertInstance!]!
+  alertGroups(datasource: String): [AlertGroup!]!
+  alertContacts: [AlertContact!]!
+  notificationPolicy: Notification
+
+  # User
+  currentUser: User!
+  user(id: Int!): User
+  users(query: String, limit: Int, page: Int): [User!]!
+
+  # Organization
+  currentOrg: Organization!
+  org(id: Int!): Organization
+  orgs: [Organization!]!
+
+  # Team
+  team(id: Int!): Team
+  teams(query: String, limit: Int, page: Int): [Team!]!
+
+  # Service Account
+  serviceAccount(id: Int!): ServiceAccount
+  serviceAccounts(query: String, disabled: Boolean): [ServiceAccount!]!
+  serviceAccountTokens(serviceAccountId: Int!): [Token!]!
+
+  # RBAC
+  role(uid: String!): Role
+  roles: [Role!]!
+  userRoles(userId: Int!): [Role!]!
+  teamRoles(teamId: Int!): [Role!]!
+
+  # Playlist
+  playlist(uid: String!): Playlist
+  playlists(query: String, limit: Int): [Playlist!]!
+
+  # Library Panel
+  libraryPanel(uid: String!): LibraryPanel
+  libraryPanels(searchString: String, kind: Int, typeFilter: String, folderFilterUID: String): [LibraryPanel!]!
+
+  # Snapshot
+  snapshot(key: String!): Snapshot
+  snapshots(query: String, limit: Int): [Snapshot!]!
+
+  # Correlation
+  correlation(uid: String!, sourceUID: String!): CorrelationConfig
+  correlations(sourceUID: String): [CorrelationConfig!]!
+
+  # Plugin
+  pluginSettings(pluginId: String!): PluginSettings
+  plugins: [PluginSettings!]!
+
+  # Report
+  report(id: Int!): Report
+  reports: [Report!]!
+
+  # Public Dashboard
+  publicDashboard(uid: String!): PublicDashboard
+  publicDashboards: [PublicDashboard!]!
+
+  # SLO
+  slo(uuid: String!): SLO
+  slos: [SLO!]!
+
+  # Incident
+  incident(incidentID: String!): Incident
+  incidents(status: IncidentStatus, severity: IncidentSeverity, limit: Int): [Incident!]!
+
+  # OnCall
+  onCallSchedule(id: String!): OnCall
+  onCallSchedules: [OnCall!]!
+  escalationChain(id: String!): EscalationChain
+  escalationChains: [EscalationChain!]!
+  integration(id: String!): Integration
+  integrations: [Integration!]!
+}
+
+type Mutation {
+  # Dashboard
+  createDashboard(dashboard: JSON!, folderId: Int, folderUid: String, overwrite: Boolean): Dashboard!
+  updateDashboard(dashboard: JSON!, folderId: Int, folderUid: String, overwrite: Boolean): Dashboard!
+  deleteDashboard(uid: String!): Boolean!
+  starDashboard(uid: String!): Boolean!
+  unstarDashboard(uid: String!): Boolean!
+
+  # Folder
+  createFolder(title: String!, uid: String): Folder!
+  updateFolder(uid: String!, title: String!): Folder!
+  deleteFolder(uid: String!): Boolean!
+
+  # DataSource
+  createDataSource(name: String!, type: DatasourceType!, url: String!, access: String!, jsonData: JSON): DataSource!
+  updateDataSource(id: Int!, name: String, url: String, jsonData: JSON): DataSource!
+  deleteDataSource(id: Int!): Boolean!
+
+  # Annotation
+  createAnnotation(dashboardUID: String, panelId: Int, time: Float!, timeEnd: Float, text: String!, tags: [String!]): Annotation!
+  updateAnnotation(id: Int!, text: String, tags: [String!]): Annotation!
+  deleteAnnotation(id: Int!): Boolean!
+
+  # Alert
+  createAlertRule(rule: JSON!): AlertRule!
+  updateAlertRule(uid: String!, rule: JSON!): AlertRule!
+  deleteAlertRule(uid: String!): Boolean!
+  pauseAlertRule(uid: String!, isPaused: Boolean!): AlertRule!
+
+  # User
+  createUser(name: String!, email: String!, login: String!, password: String!): User!
+  updateUser(id: Int!, name: String, email: String, login: String): User!
+  deleteUser(id: Int!): Boolean!
+
+  # Team
+  createTeam(name: String!, email: String): Team!
+  updateTeam(id: Int!, name: String!, email: String): Team!
+  deleteTeam(id: Int!): Boolean!
+  addTeamMember(teamId: Int!, userId: Int!): Boolean!
+  removeTeamMember(teamId: Int!, userId: Int!): Boolean!
+
+  # Service Account
+  createServiceAccount(name: String!, role: OrgRole!, isDisabled: Boolean): ServiceAccount!
+  updateServiceAccount(id: Int!, name: String, role: OrgRole, isDisabled: Boolean): ServiceAccount!
+  deleteServiceAccount(id: Int!): Boolean!
+  createServiceAccountToken(serviceAccountId: Int!, name: String!, secondsToLive: Int): Token!
+  deleteServiceAccountToken(serviceAccountId: Int!, tokenId: Int!): Boolean!
+
+  # Playlist
+  createPlaylist(name: String!, interval: String!, items: [JSON!]!): Playlist!
+  updatePlaylist(uid: String!, name: String!, interval: String!, items: [JSON!]!): Playlist!
+  deletePlaylist(uid: String!): Boolean!
+
+  # Snapshot
+  createSnapshot(dashboard: JSON!, name: String, expires: Int): Snapshot!
+  deleteSnapshot(key: String!): Boolean!
+
+  # Correlation
+  createCorrelation(sourceUID: String!, targetUID: String!, label: String, description: String, config: JSON): CorrelationConfig!
+  updateCorrelation(uid: String!, sourceUID: String!, label: String, description: String, config: JSON): CorrelationConfig!
+  deleteCorrelation(uid: String!, sourceUID: String!): Boolean!
+
+  # Public Dashboard
+  createPublicDashboard(dashboardUid: String!, isEnabled: Boolean!, annotationsEnabled: Boolean!, timeSelectionEnabled: Boolean!): PublicDashboard!
+  updatePublicDashboard(uid: String!, dashboardUid: String!, isEnabled: Boolean, annotationsEnabled: Boolean, timeSelectionEnabled: Boolean): PublicDashboard!
+  deletePublicDashboard(uid: String!, dashboardUid: String!): Boolean!
+}
+
+schema {
+  query: RootQuery
+  mutation: Mutation
+}
