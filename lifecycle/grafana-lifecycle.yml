@@ -1,0 +1,29 @@
+generated: '2026-06-20'
+method: searched
+source: https://grafana.com/docs/grafana/latest/whatsnew/ , https://github.com/grafana/grafana/releases
+versioning:
+  scheme: semver
+  current: '13.1'
+  api_versioning: >-
+    The core Grafana HTTP API is not URL-versioned (paths are unversioned under /api); it evolves
+    with the Grafana server release. Newer Kubernetes-style APIs use /apis/<group>/<version> paths.
+  docs: https://grafana.com/docs/grafana/latest/developers/http_api/
+deprecation:
+  policy_url: https://grafana.com/docs/grafana/latest/upgrade-guide/
+  sunset_header: false
+  deprecation_header: false
+  notes: >-
+    Deprecations are announced in the per-release "What's new"/"Breaking changes" pages and the
+    GitHub CHANGELOG rather than via RFC 8594 Sunset/Deprecation headers. Field-level example:
+    dashboard folderId is deprecated in favor of folderUid.
+release_cadence: >-
+  Minor releases roughly every 1-2 months; major releases (v12, v13) annually. Self-managed
+  upgrade guidance published per version.
+sla:
+  url: https://grafana.com/docs/grafana-cloud/cost-management-and-billing/
+  note: Grafana Cloud SLAs are contract/tier dependent; no single public uptime target for the OSS HTTP API.
+status_page: https://status.grafana.com/
+deprecated_operations: []
+deprecated_fields:
+- openapi/grafana-api.yml#SaveDashboardCommand/folderId (use folderUid)
+- openapi/grafana-api.yml#DashboardMeta/folderId (use folderUid)

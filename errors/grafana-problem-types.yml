@@ -1,0 +1,44 @@
+generated: '2026-06-20'
+method: derived
+source: openapi/grafana-api.yml
+format: custom
+envelope:
+  media_type: application/json
+  shape: '{ "message": string, "status": string }'
+  schema_ref: openapi/grafana-api.yml#/components/schemas/ErrorResponse
+  note: >-
+    Grafana returns a plain JSON error object with a human-readable "message" and a short "status"
+    slug (e.g. "not-found"). It is NOT RFC 9457 application/problem+json. Some endpoints also
+    return traceID / messageId fields.
+problems:
+- status: 400
+  title: Bad Request
+  meaning: Malformed request body or invalid parameters.
+  remediation: Validate the request payload/query parameters against the OpenAPI schema.
+- status: 401
+  title: Unauthorized
+  meaning: Invalid or missing authentication (API key / service-account token / basic credentials).
+  remediation: Send a valid token in the Authorization header (Bearer <token>).
+  source_operation: openapi/grafana-api.yml (Unauthorized response)
+- status: 403
+  title: Forbidden
+  meaning: Authenticated but the identity lacks the required permission/role for the resource.
+  remediation: Grant the service account/user the needed RBAC permission or org role.
+  source_operation: openapi/grafana-api.yml (Forbidden response)
+- status: 404
+  title: Not Found
+  meaning: The referenced resource (dashboard, folder, datasource, user, team, org) does not exist.
+  remediation: Verify the uid/id; the resource may have been deleted or belong to another org.
+  source_operation: openapi/grafana-api.yml (NotFound response)
+- status: 409
+  title: Conflict
+  meaning: Resource already exists or a version conflict (e.g. dashboard saved with a stale version).
+  remediation: Use overwrite=true or re-fetch the current version before saving.
+- status: 412
+  title: Precondition Failed
+  meaning: A version/precondition check failed on save (dashboard optimistic concurrency).
+  remediation: Re-read the resource, merge changes, and retry with the current version.
+- status: 500
+  title: Internal Server Error
+  meaning: Unexpected server-side error.
+  remediation: Retry with backoff; check Grafana server logs and status.grafana.com.

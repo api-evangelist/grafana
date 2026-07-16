@@ -1,0 +1,41 @@
+generated: '2026-06-20'
+method: derived
+source: openapi/grafana-api.yml, docs, authentication/grafana-authentication.yml, errors/grafana-problem-types.yml
+authentication:
+  styles: [http-bearer, http-basic, api-key]
+  header: 'Authorization: Bearer <service-account-token | api-key>'
+  detail: >-
+    Preferred is a service-account token (or legacy API key) sent as a Bearer token. Basic auth
+    (admin:password) is also accepted for some admin endpoints. See authentication/grafana-authentication.yml.
+  ref: authentication/grafana-authentication.yml
+pagination:
+  style: page-number
+  params: [page, perpage, limit]
+  detail: >-
+    Search/list endpoints accept page (1-based) and perpage or limit to size the page; some search
+    endpoints return a totalCount alongside the results array.
+idempotency:
+  supported: false
+  detail: No Idempotency-Key header. Writes are addressed by resource uid/id; dashboard saves use overwrite + version for optimistic concurrency.
+versioning:
+  style: server-release
+  detail: The /api surface is unversioned and tracks the Grafana server version (semver). Newer resources use Kubernetes-style /apis/<group>/<version> paths.
+  ref: lifecycle/grafana-lifecycle.yml
+error_envelope:
+  media_type: application/json
+  shape: '{ "message": string, "status": string }'
+  ref: errors/grafana-problem-types.yml
+request_tracing:
+  detail: Grafana emits internal traceIDs; no documented client-supplied request-id header contract on the core API.
+rate_limiting:
+  detail: >-
+    OSS Grafana does not rate-limit the HTTP API by default. Grafana Cloud enforces per-tier limits
+    at the gateway. See rate-limits/grafana-rate-limits.yml.
+  ref: rate-limits/grafana-rate-limits.yml
+content_type:
+  request: application/json
+  response: application/json
+org_scoping:
+  detail: >-
+    Requests operate within the org of the authenticating identity; the X-Grafana-Org-Id header can
+    switch org context for admin/basic-auth requests.

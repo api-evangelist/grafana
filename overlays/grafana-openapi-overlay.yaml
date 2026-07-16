@@ -1,0 +1,21 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Grafana (full OpenAPI)
+  version: 1.0.0
+extends: openapi/grafana-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: grafana
+    x-apievangelist-artifacts:
+      authentication: authentication/grafana-authentication.yml
+      conventions: conventions/grafana-conventions.yml
+      errors: errors/grafana-problem-types.yml
+      mcp: mcp/grafana-mcp.yml
+      packages: packages/grafana-packages.yml
+- target: $.info
+  update:
+    x-apievangelist-note: >-
+      Broad generated spec of the Grafana HTTP API. Server URLs use example placeholders;
+      real hosts are a self-managed instance or https://<instance>.grafana.net/api.
+    x-apievangelist-agent-ready: true

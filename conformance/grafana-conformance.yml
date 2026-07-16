@@ -1,0 +1,37 @@
+generated: '2026-06-20'
+method: derived
+source: openapi/grafana-api.yml, openapi/grafana-openapi.yml, docs
+standards:
+- id: openapi-3
+  conforms: true
+  evidence: Captured OpenAPI 3.0.3 (grafana-api.yml) and 3.1.0 (grafana-openapi.yml); Grafana publishes its own OpenAPI spec.
+- id: http-bearer-auth
+  conforms: true
+  evidence: securitySchemes include http bearer (service account token / API key) per RFC 6750/7235.
+- id: http-basic-auth
+  conforms: true
+  evidence: securitySchemes include http basic.
+- id: oauth2
+  conforms: false
+  evidence: Core HTTP API authenticates via API keys / service-account tokens and basic auth; no oauth2 securityScheme (Grafana can be an OAuth client for login, but the API itself is token/key based).
+- id: oidc
+  conforms: false
+  evidence: OIDC is a login/SSO option on a Grafana instance, not a property of the HTTP API surface.
+- id: scim2
+  conforms: true
+  evidence: Grafana Cloud/Enterprise supports SCIM 2.0 user/team provisioning from a SAML IdP (v12+).
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: Errors use a custom envelope {message, status} with application/json, not application/problem+json.
+- id: pagination
+  conforms: true
+  evidence: List/search operations expose page + perpage/limit query parameters.
+- id: idempotency-key
+  conforms: false
+  evidence: No Idempotency-Key header documented; writes are keyed by resource uid/id.
+- id: json-api
+  conforms: false
+  evidence: Responses are plain resource JSON, not JSON:API documents.
+- id: rfc8594-sunset
+  conforms: false
+  evidence: Deprecations announced in release notes, not via Sunset/Deprecation headers.

@@ -1,0 +1,125 @@
+generated: '2026-06-20'
+method: derived
+source: openapi/grafana-api.yml (component schemas + id-reference fields)
+description: >-
+  Entity-relationship graph derived from the Grafana HTTP API component schemas and the id/uid
+  reference fields between them. Grafana's core domain is organizations containing folders,
+  dashboards, data sources, alert rules, teams and users.
+entities:
+- name: Organization
+  id_field: id
+  key_fields: [id, name]
+  summary: Top-level tenant boundary; owns folders, dashboards, data sources, teams and org users.
+- name: User
+  id_field: id
+  key_fields: [id, login, email]
+  summary: A Grafana user; joins organizations as an OrgUser with a role.
+- name: OrgUser
+  id_field: userId
+  key_fields: [orgId, userId, role]
+  summary: Membership join between User and Organization carrying the org role.
+- name: Team
+  id_field: id
+  key_fields: [id, orgId, name]
+  summary: A group of users within an organization; has TeamMembers.
+- name: TeamMember
+  id_field: userId
+  key_fields: [teamId, userId]
+  summary: Membership join between User and Team.
+- name: Folder
+  id_field: uid
+  key_fields: [uid, id, title]
+  summary: Container for dashboards; folderUid is the current reference (folderId deprecated).
+- name: Dashboard
+  id_field: uid
+  key_fields: [uid, id, title, version]
+  summary: A dashboard definition; belongs to a Folder and contains Panels.
+- name: Panel
+  id_field: id
+  key_fields: [id, type, title]
+  summary: A visualization within a Dashboard; has Targets bound to a DataSource.
+- name: Target
+  id_field: refId
+  key_fields: [refId, datasource]
+  summary: A query within a Panel, executed against a DataSource.
+- name: DataSource
+  id_field: uid
+  key_fields: [uid, id, name, type]
+  summary: A configured data source (Prometheus, Loki, etc.) queried by Panel targets.
+- name: AlertRule
+  id_field: uid
+  key_fields: [uid, title]
+  summary: An alerting rule; references data sources and routes to ContactPoints.
+- name: ContactPoint
+  id_field: uid
+  key_fields: [uid, name, type]
+  summary: A notification destination for alerting.
+- name: Annotation
+  id_field: id
+  key_fields: [id, dashboardId, panelId]
+  summary: A time-anchored note attached to a dashboard/panel.
+relationships:
+- from: Organization
+  to: Folder
+  type: has_many
+  via: orgId
+- from: Organization
+  to: DataSource
+  type: has_many
+  via: orgId
+- from: Organization
+  to: OrgUser
+  type: has_many
+  via: orgId
+- from: Organization
+  to: Team
+  type: has_many
+  via: orgId
+- from: OrgUser
+  to: Organization
+  type: belongs_to
+  via: orgId
+- from: OrgUser
+  to: User
+  type: belongs_to
+  via: userId
+- from: Team
+  to: TeamMember
+  type: has_many
+  via: teamId
+- from: TeamMember
+  to: User
+  type: belongs_to
+  via: userId
+- from: Folder
+  to: Dashboard
+  type: has_many
+  via: folderUid
+- from: Dashboard
+  to: Folder
+  type: belongs_to
+  via: folderUid
+- from: Dashboard
+  to: Panel
+  type: has_many
+  via: panels
+- from: Panel
+  to: Target
+  type: has_many
+  via: targets
+- from: Target
+  to: DataSource
+  type: belongs_to
+  via: datasource
+- from: Annotation
+  to: Dashboard
+  type: belongs_to
+  via: dashboardId
+- from: Annotation
+  to: Panel
+  type: belongs_to
+  via: panelId
+- from: AlertRule
+  to: ContactPoint
+  type: has_many
+  via: notification routing

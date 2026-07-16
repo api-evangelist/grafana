@@ -1,0 +1,25 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Grafana HTTP API
+  version: 1.0.0
+extends: openapi/grafana-api.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: grafana
+    x-apievangelist-artifacts:
+      authentication: authentication/grafana-authentication.yml
+      conventions: conventions/grafana-conventions.yml
+      errors: errors/grafana-problem-types.yml
+      data-model: data-model/grafana-data-model.yml
+      lifecycle: lifecycle/grafana-lifecycle.yml
+      mcp: mcp/grafana-mcp.yml
+      packages: packages/grafana-packages.yml
+- target: $.info
+  update:
+    x-apievangelist-error-envelope: '{ message, status } (application/json, not RFC 9457)'
+    x-apievangelist-pagination: page + perpage/limit
+- target: $.info
+  update:
+    x-apievangelist-agent-ready: true
+    x-apievangelist-mcp-server: https://github.com/grafana/mcp-grafana
