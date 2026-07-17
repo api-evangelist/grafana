@@ -1,0 +1,130 @@
+arazzo: 1.0.1
+info:
+  title: Grafana Provision a Data Source
+  summary: Create a data source, read it back by UID, and confirm Grafana can reach it.
+  description: >-
+    The first thing any Grafana automation does is wire up a data source. This
+    workflow creates the data source, reads it back by its UID to capture the
+    server-assigned identifiers, and then runs Grafana's own health check
+    against it so the pipeline fails loudly when credentials or the URL are
+    wrong instead of leaving a broken panel for someone to find later. Every
+    step spells out its request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: grafanaApi
+  url: ../openapi/grafana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: provision-datasource
+  summary: Create a Grafana data source and verify it is healthy.
+  description: >-
+    Registers a new data source in the current organization, confirms it exists
+    by reading it back with its UID, and asks Grafana to test the connection.
+  inputs:
+    type: object
+    required:
+    - name
+    - type
+    - url
+    properties:
+      name:
+        type: string
+        description: Display name for the data source (e.g. "Prometheus - Prod").
+      type:
+        type: string
+        description: Data source plugin id (e.g. prometheus, loki, elasticsearch, postgres).
+      url:
+        type: string
+        description: The URL Grafana uses to reach the data source backend.
+      access:
+        type: string
+        description: How Grafana reaches the source; "proxy" (server side) or "direct".
+        default: proxy
+      uid:
+        type: string
+        description: >-
+          Optional stable UID to assign. Supplying your own UID keeps dashboards
+          portable across Grafana instances.
+      isDefault:
+        type: boolean
+        description: Whether this becomes the organization's default data source.
+        default: false
+      basicAuth:
+        type: boolean
+        description: Whether to send HTTP basic auth to the data source backend.
+        default: false
+      basicAuthUser:
+        type: string
+        description: Basic auth username, when basicAuth is enabled.
+      jsonData:
+        type: object
+        description: Non-secret plugin settings (e.g. httpMethod, timeInterval).
+      secureJsonData:
+        type: object
+        description: >-
+          Secret plugin settings (e.g. basicAuthPassword, apiKey). Grafana stores
+          these encrypted and never returns them on read.
+  steps:
+  - stepId: createDataSource
+    description: >-
+      Register the data source with the current organization. Grafana assigns an
+      id and, when no UID is supplied, generates one.
+    operationId: addDataSource
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.name
+        type: $inputs.type
+        url: $inputs.url
+        access: $inputs.access
+        uid: $inputs.uid
+        isDefault: $inputs.isDefault
+        basicAuth: $inputs.basicAuth
+        basicAuthUser: $inputs.basicAuthUser
+        jsonData: $inputs.jsonData
+        secureJsonData: $inputs.secureJsonData
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      datasourceId: $response.body#/id
+      datasourceName: $response.body#/name
+      datasourceUid: $response.body#/datasource/uid
+      datasourceType: $response.body#/datasource/type
+  - stepId: readBackDataSource
+    description: >-
+      Read the data source back by UID to confirm it persisted and to capture the
+      settings Grafana actually stored, which is what dashboards will reference.
+    operationId: getDataSourceByUID
+    parameters:
+    - name: uid
+      in: path
+      value: $steps.createDataSource.outputs.datasourceUid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      uid: $response.body#/uid
+      name: $response.body#/name
+      type: $response.body#/type
+      url: $response.body#/url
+      isDefault: $response.body#/isDefault
+      readOnly: $response.body#/readOnly
+  - stepId: checkHealth
+    description: >-
+      Ask Grafana to test the connection to the data source backend. This is the
+      same check the Save & Test button runs in the UI, and it is what turns a
+      silent misconfiguration into a failed pipeline step.
+    operationId: checkDatasourceHealthWithUID
+    parameters:
+    - name: uid
+      in: path
+      value: $steps.readBackDataSource.outputs.uid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      healthMessage: $response.body#/message
+  outputs:
+    datasourceId: $steps.createDataSource.outputs.datasourceId
+    datasourceUid: $steps.readBackDataSource.outputs.uid
+    datasourceName: $steps.readBackDataSource.outputs.name
+    healthMessage: $steps.checkHealth.outputs.healthMessage

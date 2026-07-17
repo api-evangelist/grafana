@@ -1,0 +1,168 @@
+arazzo: 1.0.1
+info:
+  title: Grafana Assign a Custom RBAC Role to a Team
+  summary: Create a custom role with explicit permissions, resolve a team by name, and assign the role to it.
+  description: >-
+    Grafana's built-in Viewer/Editor/Admin roles run out of road quickly, and the
+    usual next move is to make everyone an Admin. Custom RBAC roles are the
+    alternative: name a set of actions and scopes, then bind it to a team rather
+    than to people, so access follows team membership and leaving the team
+    removes it. This workflow creates the role, reads it back, resolves the team
+    by name, assigns the role, and lists the team's roles to prove the grant.
+    Custom roles are a Grafana Enterprise and Grafana Cloud capability. Every
+    step spells out its request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: grafanaApi
+  url: ../openapi/grafana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: assign-custom-role-to-team
+  summary: Create a custom RBAC role and bind it to a team.
+  description: >-
+    Creates the role with its permission list, verifies it, resolves the target
+    team by name, sets the team's roles, and reads the assignment back.
+  inputs:
+    type: object
+    required:
+    - roleName
+    - permissions
+    - teamName
+    properties:
+      roleName:
+        type: string
+        description: >-
+          Role name. Custom roles are conventionally prefixed with "custom:"
+          (e.g. "custom:dashboards.reader").
+      displayName:
+        type: string
+        description: Human-friendly name shown in the UI.
+      description:
+        type: string
+        description: What the role is for, which future-you will want.
+      group:
+        type: string
+        description: Group the role is listed under in the UI (e.g. "Dashboards").
+      permissions:
+        type: array
+        description: >-
+          The actions and scopes the role grants, each an object with an "action"
+          and an optional "scope" (e.g. {"action": "dashboards:read", "scope":
+          "dashboards:*"}).
+        items:
+          type: object
+      uid:
+        type: string
+        description: Optional stable UID for the role.
+      global:
+        type: boolean
+        description: >-
+          Create the role across all organizations rather than only the current
+          one.
+        default: false
+      version:
+        type: integer
+        description: Version number for the role definition.
+        default: 1
+      teamName:
+        type: string
+        description: Name of the team to assign the role to.
+      includeHidden:
+        type: boolean
+        description: Include hidden roles when replacing the team's role set.
+        default: false
+  steps:
+  - stepId: createRole
+    description: >-
+      Create the custom role with an explicit list of actions and scopes. Keep
+      the permission list narrow; this is the whole reason for not handing out
+      Admin.
+    operationId: createRole
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.roleName
+        displayName: $inputs.displayName
+        description: $inputs.description
+        group: $inputs.group
+        permissions: $inputs.permissions
+        uid: $inputs.uid
+        global: $inputs.global
+        version: $inputs.version
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      roleUid: $response.body#/uid
+      roleName: $response.body#/name
+      roleVersion: $response.body#/version
+  - stepId: verifyRole
+    description: >-
+      Read the role back by UID to confirm the permissions Grafana actually
+      stored, which is not always the list you sent if an action name was wrong.
+    operationId: getRole
+    parameters:
+    - name: roleUID
+      in: path
+      value: $steps.createRole.outputs.roleUid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      storedPermissions: $response.body#/permissions
+      storedName: $response.body#/name
+      delegatable: $response.body#/delegatable
+  - stepId: findTeam
+    description: >-
+      Resolve the team by name, since role assignment addresses teams by a
+      numeric id that differs between instances.
+    operationId: searchTeams
+    parameters:
+    - name: name
+      in: query
+      value: $inputs.teamName
+    - name: perpage
+      in: query
+      value: 1
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.teams.length > 0
+      type: jsonpath
+    outputs:
+      teamId: $response.body#/teams/0/id
+      teamName: $response.body#/teams/0/name
+  - stepId: assignRoleToTeam
+    description: >-
+      Set the team's roles. This replaces the team's custom role assignments with
+      the supplied list rather than appending to them, so send the full set you
+      want the team to end up with.
+    operationId: setTeamRoles
+    parameters:
+    - name: teamId
+      in: path
+      value: $steps.findTeam.outputs.teamId
+    requestBody:
+      contentType: application/json
+      payload:
+        roleUids:
+        - $steps.createRole.outputs.roleUid
+        includeHidden: $inputs.includeHidden
+    successCriteria:
+    - condition: $statusCode == 200
+  - stepId: verifyAssignment
+    description: >-
+      List the team's roles to prove the binding exists. Everyone on the team now
+      holds these permissions, and anyone who leaves the team loses them.
+    operationId: listTeamRoles
+    parameters:
+    - name: teamId
+      in: path
+      value: $steps.findTeam.outputs.teamId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      teamRoles: $response.body
+  outputs:
+    roleUid: $steps.createRole.outputs.roleUid
+    teamId: $steps.findTeam.outputs.teamId
+    teamRoles: $steps.verifyAssignment.outputs.teamRoles

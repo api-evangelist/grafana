@@ -1,0 +1,244 @@
+arazzo: 1.0.1
+info:
+  title: Grafana Provision Alerting End to End
+  summary: Create a contact point, route to it in the notification policy tree, then create the alert rule.
+  description: >-
+    Alerting only works when three things line up, and this workflow does them in
+    the order that keeps them lined up. The contact point is created first
+    because a policy that routes to a receiver that does not exist is rejected;
+    the policy tree is then updated to route the rule's labels to that receiver;
+    and only then is the alert rule created, so it never fires into a void. The
+    rule is read back at the end to confirm the provisioned state. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: grafanaApi
+  url: ../openapi/grafana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: provision-alerting
+  summary: Stand up a contact point, a routing policy, and an alert rule together.
+  description: >-
+    Creates the receiver, confirms it exists, routes matching labels to it in the
+    notification policy tree, creates the alert rule that carries those labels,
+    and reads the rule back.
+  inputs:
+    type: object
+    required:
+    - contactPointName
+    - contactPointType
+    - contactPointSettings
+    - defaultReceiver
+    - routeLabel
+    - routeValue
+    - ruleTitle
+    - folderUid
+    - ruleGroup
+    - orgId
+    - alertData
+    properties:
+      contactPointName:
+        type: string
+        description: Name of the contact point (e.g. "platform-oncall-slack").
+      contactPointType:
+        type: string
+        description: >-
+          Integration type for the receiver (e.g. slack, email, pagerduty,
+          webhook, opsgenie).
+      contactPointSettings:
+        type: object
+        description: >-
+          Type-specific settings for the integration (e.g. {"url": "..."} for
+          slack, {"addresses": "..."} for email).
+      disableResolveMessage:
+        type: boolean
+        description: Suppress the follow-up notification when the alert resolves.
+        default: false
+      defaultReceiver:
+        type: string
+        description: >-
+          Name of the receiver at the root of the policy tree, which catches
+          anything the child route below does not match.
+      routeLabel:
+        type: string
+        description: Label name the child route matches on (e.g. "team").
+      routeValue:
+        type: string
+        description: Label value the child route matches on (e.g. "platform").
+      groupBy:
+        type: array
+        description: Labels to group notifications by before sending.
+        items:
+          type: string
+        default:
+        - alertname
+        - grafana_folder
+      groupWait:
+        type: string
+        description: How long to wait to buffer the first notification for a group.
+        default: 30s
+      groupInterval:
+        type: string
+        description: How long to wait before sending a notification about new alerts in a group.
+        default: 5m
+      repeatInterval:
+        type: string
+        description: How long to wait before re-sending a notification that has already fired.
+        default: 4h
+      ruleTitle:
+        type: string
+        description: Title of the alert rule.
+      folderUid:
+        type: string
+        description: UID of the folder the alert rule lives in.
+      ruleGroup:
+        type: string
+        description: Name of the evaluation group the rule belongs to.
+      orgId:
+        type: integer
+        description: Organization id that owns the rule.
+      alertData:
+        type: array
+        description: >-
+          The rule's query and expression stages. Each entry carries a
+          datasourceUid, a refId, a relativeTimeRange, and a datasource-specific
+          model; use the reserved uid "__expr__" for server-side expressions.
+        items:
+          type: object
+      condition:
+        type: string
+        description: The refId from alertData whose result decides the alert state.
+        default: A
+      for:
+        type: string
+        description: How long the condition must hold before the rule fires.
+        default: 5m
+      labels:
+        type: object
+        description: >-
+          Labels attached to the rule. These must include the routeLabel and
+          routeValue above for the policy route to match.
+      annotations:
+        type: object
+        description: Annotations on the rule (e.g. summary, description, runbook_url).
+      noDataState:
+        type: string
+        description: State to enter when the query returns no data; NoData, Alerting, OK, or KeepLast.
+        default: NoData
+      execErrState:
+        type: string
+        description: State to enter when the query errors; Alerting, Error, OK, or KeepLast.
+        default: Alerting
+      isPaused:
+        type: boolean
+        description: Create the rule paused so it is provisioned but not yet evaluating.
+        default: false
+  steps:
+  - stepId: createContactPoint
+    description: >-
+      Create the contact point first. The notification policy in the next step
+      routes to a receiver by name, and Grafana rejects a tree that references a
+      receiver that does not exist yet.
+    operationId: routePostContactpoints
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.contactPointName
+        type: $inputs.contactPointType
+        settings: $inputs.contactPointSettings
+        disableResolveMessage: $inputs.disableResolveMessage
+    successCriteria:
+    - condition: $statusCode == 202
+    outputs:
+      contactPointUid: $response.body#/uid
+      contactPointName: $response.body#/name
+  - stepId: verifyContactPoint
+    description: >-
+      Read the contact point back by name to confirm it is registered before the
+      policy tree is rewritten to depend on it.
+    operationId: routeGetContactpoints
+    parameters:
+    - name: name
+      in: query
+      value: $inputs.contactPointName
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.length > 0
+      type: jsonpath
+    outputs:
+      receiverName: $response.body#/0/name
+      receiverType: $response.body#/0/type
+  - stepId: routeToContactPoint
+    description: >-
+      Replace the notification policy tree with one that routes alerts carrying
+      the given label to the new receiver, falling through to the default
+      receiver for everything else. This is a whole-tree PUT, so the payload must
+      describe the routing you want to end up with, not just the delta.
+    operationId: routePutPolicyTree
+    requestBody:
+      contentType: application/json
+      payload:
+        receiver: $inputs.defaultReceiver
+        group_by: $inputs.groupBy
+        group_wait: $inputs.groupWait
+        group_interval: $inputs.groupInterval
+        repeat_interval: $inputs.repeatInterval
+        routes:
+        - receiver: $steps.verifyContactPoint.outputs.receiverName
+          object_matchers:
+          - - $inputs.routeLabel
+            - "="
+            - $inputs.routeValue
+          group_by: $inputs.groupBy
+          continue: false
+    successCriteria:
+    - condition: $statusCode == 202
+  - stepId: createAlertRule
+    description: >-
+      Create the alert rule last, now that a receiver exists and the tree routes
+      to it. The rule's labels must match the route's object_matchers or the
+      notification falls through to the default receiver.
+    operationId: routePostAlertRule
+    requestBody:
+      contentType: application/json
+      payload:
+        title: $inputs.ruleTitle
+        folderUID: $inputs.folderUid
+        ruleGroup: $inputs.ruleGroup
+        orgID: $inputs.orgId
+        condition: $inputs.condition
+        data: $inputs.alertData
+        for: $inputs.for
+        labels: $inputs.labels
+        annotations: $inputs.annotations
+        noDataState: $inputs.noDataState
+        execErrState: $inputs.execErrState
+        isPaused: $inputs.isPaused
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      ruleUid: $response.body#/uid
+      ruleTitle: $response.body#/title
+      provenance: $response.body#/provenance
+      updated: $response.body#/updated
+  - stepId: verifyAlertRule
+    description: >-
+      Read the provisioned rule back by UID to confirm the stored definition,
+      including the labels the policy tree depends on.
+    operationId: routeGetAlertRule
+    parameters:
+    - name: UID
+      in: path
+      value: $steps.createAlertRule.outputs.ruleUid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      storedRule: $response.body
+      storedLabels: $response.body#/labels
+      isPaused: $response.body#/isPaused
+  outputs:
+    contactPointUid: $steps.createContactPoint.outputs.contactPointUid
+    ruleUid: $steps.createAlertRule.outputs.ruleUid
+    storedRule: $steps.verifyAlertRule.outputs.storedRule

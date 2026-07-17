@@ -1,0 +1,116 @@
+arazzo: 1.0.1
+info:
+  title: Grafana Publish a Public Dashboard
+  summary: Make a dashboard publicly shareable, read its access token, and query a panel as an anonymous viewer.
+  description: >-
+    A public dashboard stays live against its data source, unlike a snapshot,
+    which makes it the right tool for a status page and the wrong tool for
+    anything with a tenant filter in the query. This workflow enables public
+    sharing on a dashboard, reads back the access token that forms the public
+    URL, and then queries a panel through the public endpoint to prove what an
+    anonymous visitor actually gets — the check worth running before the link
+    goes out. Every step spells out its request inline so the flow can be read
+    and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: grafanaApi
+  url: ../openapi/grafana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: publish-public-dashboard
+  summary: Enable public sharing on a dashboard and verify the anonymous view.
+  description: >-
+    Creates the public dashboard configuration, reads back its access token, and
+    exercises the public query endpoint for a panel.
+  inputs:
+    type: object
+    required:
+    - dashboardUid
+    - panelId
+    properties:
+      dashboardUid:
+        type: string
+        description: UID of the dashboard to publish.
+      panelId:
+        type: integer
+        description: Id of a panel on the dashboard, used to verify the public query path.
+      isEnabled:
+        type: boolean
+        description: Whether public sharing is live on creation.
+        default: true
+      annotationsEnabled:
+        type: boolean
+        description: Show dashboard annotations to anonymous viewers.
+        default: false
+      timeSelectionEnabled:
+        type: boolean
+        description: Let anonymous viewers change the dashboard's time range.
+        default: false
+      share:
+        type: string
+        description: Sharing mode for the public dashboard (e.g. public).
+        default: public
+  steps:
+  - stepId: createPublicDashboard
+    description: >-
+      Enable public sharing on the dashboard. Everything queried by every panel
+      becomes readable by anyone holding the resulting link, so confirm the
+      dashboard's queries carry no tenant or user scoping before running this.
+    operationId: createPublicDashboard
+    parameters:
+    - name: dashboardUid
+      in: path
+      value: $inputs.dashboardUid
+    requestBody:
+      contentType: application/json
+      payload:
+        isEnabled: $inputs.isEnabled
+        annotationsEnabled: $inputs.annotationsEnabled
+        timeSelectionEnabled: $inputs.timeSelectionEnabled
+        share: $inputs.share
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      publicDashboardUid: $response.body#/uid
+      accessToken: $response.body#/accessToken
+      isEnabled: $response.body#/isEnabled
+      createdAt: $response.body#/createdAt
+  - stepId: readPublicDashboard
+    description: >-
+      Read the public dashboard configuration back to confirm it is enabled and
+      to capture the access token that forms the public URL.
+    operationId: getPublicDashboard
+    parameters:
+    - name: dashboardUid
+      in: path
+      value: $inputs.dashboardUid
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.isEnabled == true
+      type: jsonpath
+    outputs:
+      accessToken: $response.body#/accessToken
+      isEnabled: $response.body#/isEnabled
+      timeSelectionEnabled: $response.body#/timeSelectionEnabled
+  - stepId: verifyPublicQuery
+    description: >-
+      Query a panel through the public endpoint using the access token, exactly
+      as an anonymous browser would. If this returns data you did not intend to
+      publish, disable the public dashboard before sharing the link.
+    operationId: queryPublicDashboard
+    parameters:
+    - name: accessToken
+      in: path
+      value: $steps.readPublicDashboard.outputs.accessToken
+    - name: panelId
+      in: path
+      value: $inputs.panelId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      results: $response.body#/results
+  outputs:
+    publicDashboardUid: $steps.createPublicDashboard.outputs.publicDashboardUid
+    accessToken: $steps.readPublicDashboard.outputs.accessToken
+    results: $steps.verifyPublicQuery.outputs.results

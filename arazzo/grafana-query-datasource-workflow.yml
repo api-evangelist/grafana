@@ -1,0 +1,109 @@
+arazzo: 1.0.1
+info:
+  title: Grafana Query a Data Source Through Grafana
+  summary: Resolve a data source by name, then run a time-range query against it via Grafana's query endpoint.
+  description: >-
+    Grafana is not only a place to draw graphs; it is a proxy that already holds
+    every credential and every data source URL you would otherwise have to
+    duplicate. Querying through Grafana means an agent or a script asks one
+    endpoint, with one token, for data from Prometheus, Loki, or a SQL database
+    alike. This workflow resolves the data source by its human name to get the
+    UID the query needs, then posts the query. The query model itself is
+    datasource-specific and is passed through by Grafana unchanged. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: grafanaApi
+  url: ../openapi/grafana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: query-datasource
+  summary: Run a query against a named Grafana data source over a relative time range.
+  description: >-
+    Looks the data source up by name to get its UID and type, then submits a
+    query for the requested time range through Grafana's shared query endpoint.
+  inputs:
+    type: object
+    required:
+    - datasourceName
+    - query
+    properties:
+      datasourceName:
+        type: string
+        description: Name of the data source as it appears in Grafana (e.g. "Prometheus - Prod").
+      query:
+        type: object
+        description: >-
+          The datasource-specific query model, minus the datasource and refId
+          fields which this workflow fills in (e.g. {"expr": "up", "instant":
+          true} for Prometheus, {"rawSql": "select 1"} for a SQL source).
+      from:
+        type: string
+        description: >-
+          Start of the query range, as epoch milliseconds or a relative
+          expression like "now-6h".
+        default: now-6h
+      to:
+        type: string
+        description: End of the query range, as epoch milliseconds or "now".
+        default: now
+      maxDataPoints:
+        type: integer
+        description: Upper bound on points returned per series.
+        default: 1000
+      intervalMs:
+        type: integer
+        description: Suggested step between points, in milliseconds.
+        default: 60000
+      debug:
+        type: boolean
+        description: Ask Grafana to include debugging detail in the response.
+        default: false
+  steps:
+  - stepId: resolveDataSource
+    description: >-
+      Resolve the data source by name. The query endpoint addresses sources by
+      UID, and UIDs differ between instances while names usually do not, so
+      resolving here keeps the workflow portable across dev and prod.
+    operationId: getDataSourceByName
+    parameters:
+    - name: name
+      in: path
+      value: $inputs.datasourceName
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      datasourceUid: $response.body#/uid
+      datasourceType: $response.body#/type
+      datasourceId: $response.body#/id
+  - stepId: runQuery
+    description: >-
+      Submit the query through Grafana, which proxies it to the data source using
+      the credentials it already holds. The caller never sees or handles the
+      backend's credentials.
+    operationId: queryMetricsWithExpressions
+    requestBody:
+      contentType: application/json
+      payload:
+        from: $inputs.from
+        to: $inputs.to
+        debug: $inputs.debug
+        queries:
+        - refId: A
+          datasource:
+            uid: $steps.resolveDataSource.outputs.datasourceUid
+            type: $steps.resolveDataSource.outputs.datasourceType
+          datasourceId: $steps.resolveDataSource.outputs.datasourceId
+          maxDataPoints: $inputs.maxDataPoints
+          intervalMs: $inputs.intervalMs
+          model: $inputs.query
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      results: $response.body#/results
+      frames: $response.body#/results/A/frames
+  outputs:
+    datasourceUid: $steps.resolveDataSource.outputs.datasourceUid
+    datasourceType: $steps.resolveDataSource.outputs.datasourceType
+    results: $steps.runQuery.outputs.results

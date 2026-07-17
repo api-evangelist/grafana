@@ -1,0 +1,104 @@
+arazzo: 1.0.1
+info:
+  title: Grafana Export Alerting as Code
+  summary: Export contact points, the notification policy tree, and alert rules as provisioning files.
+  description: >-
+    Most Grafana alerting is clicked into existence and then lives nowhere but
+    the database. This workflow pulls the three halves of an alerting setup —
+    contact points, the notification policy tree, and the alert rules — out in
+    Grafana's own provisioning file format, so a running instance can be committed
+    to a repository and the drift between what is deployed and what is reviewed
+    becomes visible. Run it on a schedule and diff the output. Every step spells
+    out its request inline so the flow can be read and executed without opening
+    the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: grafanaApi
+  url: ../openapi/grafana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: export-alerting-as-code
+  summary: Snapshot a Grafana instance's alerting configuration into provisioning YAML.
+  description: >-
+    Exports contact points, then the routing tree, then the alert rules, each in
+    provisioning file format ready to commit.
+  inputs:
+    type: object
+    properties:
+      format:
+        type: string
+        description: Export format; yaml, json, or hcl.
+        default: yaml
+      folderUid:
+        type: string
+        description: >-
+          Limit the alert rule export to a single folder. Omit to export every
+          rule the caller can see.
+      group:
+        type: string
+        description: >-
+          Limit the alert rule export to one evaluation group within the folder.
+          Requires folderUid.
+      decrypt:
+        type: boolean
+        description: >-
+          Include contact point secrets in plaintext. Requires admin permission,
+          and anything exported this way must be treated as a secret — leave it
+          false unless the destination is a secret store.
+        default: false
+  steps:
+  - stepId: exportContactPoints
+    description: >-
+      Export the contact points. Secrets are redacted unless decrypt is set, so
+      the default output is safe to commit to a repository.
+    operationId: routeGetContactpointsExport
+    parameters:
+    - name: format
+      in: query
+      value: $inputs.format
+    - name: decrypt
+      in: query
+      value: $inputs.decrypt
+    - name: download
+      in: query
+      value: false
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      contactPoints: $response.body
+  - stepId: exportPolicyTree
+    description: >-
+      Export the notification policy tree. This is the routing that binds alert
+      labels to the contact points exported above, and it is meaningless without
+      them, which is why the two are captured in the same run.
+    operationId: routeGetPolicyTreeExport
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      policyTree: $response.body
+  - stepId: exportAlertRules
+    description: >-
+      Export the alert rules, optionally scoped to one folder or evaluation
+      group, in provisioning file format.
+    operationId: routeGetAlertRulesExport
+    parameters:
+    - name: format
+      in: query
+      value: $inputs.format
+    - name: folderUid
+      in: query
+      value: $inputs.folderUid
+    - name: group
+      in: query
+      value: $inputs.group
+    - name: download
+      in: query
+      value: false
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      alertRules: $response.body
+  outputs:
+    contactPoints: $steps.exportContactPoints.outputs.contactPoints
+    policyTree: $steps.exportPolicyTree.outputs.policyTree
+    alertRules: $steps.exportAlertRules.outputs.alertRules

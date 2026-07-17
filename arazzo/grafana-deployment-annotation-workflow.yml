@@ -1,0 +1,136 @@
+arazzo: 1.0.1
+info:
+  title: Grafana Mark a Deployment on a Dashboard
+  summary: Find a dashboard by title, post a deployment annotation to it, and read it back.
+  description: >-
+    The annotation is the cheapest observability win there is: a vertical line on
+    every graph that says "this is when we shipped". This workflow searches for
+    the target dashboard by title so the caller does not have to hard-code a UID
+    into a CI pipeline, posts a tagged region annotation covering the deploy
+    window, and reads the annotations back to confirm it landed where the graphs
+    will show it. Every step spells out its request inline so the flow can be
+    read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: grafanaApi
+  url: ../openapi/grafana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: mark-deployment
+  summary: Annotate a dashboard with a deployment marker from a CI pipeline.
+  description: >-
+    Resolves the dashboard UID by searching on title, creates an annotation on
+    that dashboard for the deploy window, and verifies it by listing the
+    dashboard's annotations for the same tags.
+  inputs:
+    type: object
+    required:
+    - dashboardTitle
+    - text
+    - time
+    properties:
+      dashboardTitle:
+        type: string
+        description: Title (or partial title) of the dashboard to annotate.
+      text:
+        type: string
+        description: >-
+          Annotation body, shown on hover (e.g. "Deployed checkout v4.2.1 - build
+          #881"). Supports HTML.
+      time:
+        type: integer
+        description: Start of the deploy, as epoch milliseconds.
+      timeEnd:
+        type: integer
+        description: >-
+          End of the deploy, as epoch milliseconds. Supply it to record a region
+          annotation spanning the rollout; omit it for a single point in time.
+      tags:
+        type: array
+        description: Tags used to find and filter this annotation later.
+        items:
+          type: string
+        default:
+        - deployment
+      panelId:
+        type: integer
+        description: >-
+          Optional panel id to pin the annotation to a single panel. Omit to
+          annotate every panel on the dashboard.
+      limit:
+        type: integer
+        description: How many annotations to read back for verification.
+        default: 10
+  steps:
+  - stepId: findDashboard
+    description: >-
+      Search for the dashboard by title so CI pipelines can reference a stable
+      human name instead of embedding a UID that changes between environments.
+    operationId: search
+    parameters:
+    - name: query
+      in: query
+      value: $inputs.dashboardTitle
+    - name: type
+      in: query
+      value: dash-db
+    - name: limit
+      in: query
+      value: 1
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.length > 0
+      type: jsonpath
+    outputs:
+      dashboardUid: $response.body#/0/uid
+      dashboardTitle: $response.body#/0/title
+      dashboardUrl: $response.body#/0/url
+      folderTitle: $response.body#/0/folderTitle
+  - stepId: postAnnotation
+    description: >-
+      Create the annotation on the resolved dashboard. Tagging it makes the
+      marker filterable by an annotation query on any other dashboard, which is
+      how one deploy line ends up on every relevant graph.
+    operationId: postAnnotation
+    requestBody:
+      contentType: application/json
+      payload:
+        dashboardUID: $steps.findDashboard.outputs.dashboardUid
+        panelId: $inputs.panelId
+        text: $inputs.text
+        time: $inputs.time
+        timeEnd: $inputs.timeEnd
+        tags: $inputs.tags
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      annotationId: $response.body#/id
+      message: $response.body#/message
+  - stepId: verifyAnnotation
+    description: >-
+      List annotations on the dashboard filtered to the same tags, confirming the
+      marker is visible to the same query the dashboard itself will run.
+    operationId: getAnnotations
+    parameters:
+    - name: dashboardUID
+      in: query
+      value: $steps.findDashboard.outputs.dashboardUid
+    - name: tags
+      in: query
+      value: $inputs.tags
+    - name: type
+      in: query
+      value: annotation
+    - name: limit
+      in: query
+      value: $inputs.limit
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      annotations: $response.body
+  outputs:
+    dashboardUid: $steps.findDashboard.outputs.dashboardUid
+    dashboardUrl: $steps.findDashboard.outputs.dashboardUrl
+    annotationId: $steps.postAnnotation.outputs.annotationId
+    annotations: $steps.verifyAnnotation.outputs.annotations

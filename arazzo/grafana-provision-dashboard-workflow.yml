@@ -1,0 +1,118 @@
+arazzo: 1.0.1
+info:
+  title: Grafana Provision a Dashboard into a Folder
+  summary: Create a folder, save a dashboard into it, and read the dashboard back.
+  description: >-
+    The dashboards-as-code pattern. A folder is created to hold the dashboard
+    (folders are how Grafana scopes permissions), the dashboard JSON is saved
+    into that folder, and the saved dashboard is read back by UID so the caller
+    ends up holding the version number and URL Grafana actually assigned rather
+    than the ones it hoped for. Every step spells out its request inline so the
+    flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: grafanaApi
+  url: ../openapi/grafana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: provision-dashboard
+  summary: Create a folder and save a dashboard into it, then verify the save.
+  description: >-
+    Creates the target folder, posts the dashboard JSON into it with an explicit
+    commit message, and reads the stored dashboard back by UID.
+  inputs:
+    type: object
+    required:
+    - folderTitle
+    - dashboard
+    properties:
+      folderTitle:
+        type: string
+        description: Title of the folder to create (e.g. "Platform - Production").
+      folderUid:
+        type: string
+        description: >-
+          Optional stable UID for the folder. Supplying your own UID makes the
+          run idempotent across environments.
+      folderDescription:
+        type: string
+        description: Optional description for the folder.
+      parentUid:
+        type: string
+        description: Optional parent folder UID, when using nested folders.
+      dashboard:
+        type: object
+        description: >-
+          The dashboard model as JSON. Omit the "id" field to create a new
+          dashboard; include a stable "uid" to make repeat runs update in place.
+      message:
+        type: string
+        description: Commit message recorded against this dashboard version.
+        default: Provisioned via Arazzo workflow
+      overwrite:
+        type: boolean
+        description: >-
+          Overwrite an existing dashboard with the same UID or title. Leave false
+          to have Grafana reject a colliding save with a 412.
+        default: false
+  steps:
+  - stepId: createFolder
+    description: >-
+      Create the folder that will own the dashboard. Folders are the unit that
+      Grafana attaches permissions to, so provisioning one per team or per
+      service is what makes access control manageable later.
+    operationId: createFolder
+    requestBody:
+      contentType: application/json
+      payload:
+        title: $inputs.folderTitle
+        uid: $inputs.folderUid
+        description: $inputs.folderDescription
+        parentUid: $inputs.parentUid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      folderUid: $response.body#/uid
+      folderId: $response.body#/id
+      folderTitle: $response.body#/title
+      folderUrl: $response.body#/url
+  - stepId: saveDashboard
+    description: >-
+      Save the dashboard JSON into the folder created above. Grafana returns the
+      assigned UID, the version number, and the URL to reach it.
+    operationId: postDashboard
+    requestBody:
+      contentType: application/json
+      payload:
+        dashboard: $inputs.dashboard
+        folderUid: $steps.createFolder.outputs.folderUid
+        message: $inputs.message
+        overwrite: $inputs.overwrite
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      dashboardUid: $response.body#/uid
+      dashboardId: $response.body#/id
+      dashboardUrl: $response.body#/url
+      version: $response.body#/version
+      status: $response.body#/status
+  - stepId: readBackDashboard
+    description: >-
+      Read the saved dashboard back by UID to confirm it landed in the intended
+      folder and to capture the stored model and metadata.
+    operationId: getDashboardByUID
+    parameters:
+    - name: uid
+      in: path
+      value: $steps.saveDashboard.outputs.dashboardUid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      storedDashboard: $response.body#/dashboard
+      meta: $response.body#/meta
+  outputs:
+    folderUid: $steps.createFolder.outputs.folderUid
+    dashboardUid: $steps.saveDashboard.outputs.dashboardUid
+    dashboardUrl: $steps.saveDashboard.outputs.dashboardUrl
+    version: $steps.saveDashboard.outputs.version

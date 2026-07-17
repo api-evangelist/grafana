@@ -1,0 +1,120 @@
+arazzo: 1.0.1
+info:
+  title: Grafana Roll a Dashboard Back to a Previous Version
+  summary: Inspect a dashboard's version history, review a target version, and restore it.
+  description: >-
+    Someone broke a dashboard and you need the last good one back. This workflow
+    reads the current dashboard, lists its version history, pulls the full model
+    of the target version so the change can be reviewed before it is applied,
+    and then restores it. The review step matters: restoring is itself a new
+    version, so looking before you leap is cheaper than rolling back a rollback.
+    Every step spells out its request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: grafanaApi
+  url: ../openapi/grafana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: rollback-dashboard-version
+  summary: Restore a dashboard to a known-good earlier version.
+  description: >-
+    Reads the dashboard, lists its versions, fetches the target version for
+    review, and restores that version as a new current version.
+  inputs:
+    type: object
+    required:
+    - dashboardUid
+    - targetVersion
+    properties:
+      dashboardUid:
+        type: string
+        description: UID of the dashboard to roll back.
+      targetVersion:
+        type: integer
+        description: The version number to restore the dashboard to.
+      limit:
+        type: integer
+        description: How many versions of history to list.
+        default: 25
+  steps:
+  - stepId: readCurrentDashboard
+    description: >-
+      Read the dashboard as it stands today, capturing the current version so
+      the rollback can be described and, if needed, reversed.
+    operationId: getDashboardByUID
+    parameters:
+    - name: uid
+      in: path
+      value: $inputs.dashboardUid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      currentDashboard: $response.body#/dashboard
+      currentVersion: $response.body#/dashboard/version
+      meta: $response.body#/meta
+  - stepId: listVersions
+    description: >-
+      List the dashboard's version history, newest first, so the target version
+      can be confirmed to exist and its commit message read.
+    operationId: getDashboardVersionsByUID
+    parameters:
+    - name: uid
+      in: path
+      value: $inputs.dashboardUid
+    - name: limit
+      in: query
+      value: $inputs.limit
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.versions.length > 0
+      type: jsonpath
+    outputs:
+      versions: $response.body#/versions
+      latestVersion: $response.body#/versions/0/version
+  - stepId: reviewTargetVersion
+    description: >-
+      Fetch the full stored model of the target version. Read this before
+      restoring so you know exactly what is about to become current.
+    operationId: getDashboardVersionByUID
+    parameters:
+    - name: uid
+      in: path
+      value: $inputs.dashboardUid
+    - name: DashboardVersionID
+      in: path
+      value: $inputs.targetVersion
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      targetData: $response.body#/data
+      targetMessage: $response.body#/message
+      targetCreated: $response.body#/created
+      targetCreatedBy: $response.body#/createdBy
+  - stepId: restoreVersion
+    description: >-
+      Restore the reviewed version. Grafana applies it as a new version on top of
+      the history rather than deleting anything, so the broken version remains in
+      the record.
+    operationId: restoreDashboardVersionByUID
+    parameters:
+    - name: uid
+      in: path
+      value: $inputs.dashboardUid
+    requestBody:
+      contentType: application/json
+      payload:
+        version: $inputs.targetVersion
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      restoredUid: $response.body#/uid
+      restoredVersion: $response.body#/version
+      dashboardUrl: $response.body#/url
+      status: $response.body#/status
+  outputs:
+    previousVersion: $steps.readCurrentDashboard.outputs.currentVersion
+    restoredFromVersion: $steps.reviewTargetVersion.outputs.targetMessage
+    restoredVersion: $steps.restoreVersion.outputs.restoredVersion
+    dashboardUrl: $steps.restoreVersion.outputs.dashboardUrl

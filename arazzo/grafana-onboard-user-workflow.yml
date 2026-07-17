@@ -1,0 +1,152 @@
+arazzo: 1.0.1
+info:
+  title: Grafana Onboard a User into an Org and Team
+  summary: Create a user, add them to an organization with a role, and place them on a team.
+  description: >-
+    Employee onboarding, expressed against Grafana's API. The workflow creates
+    the user account, grants them a role in the target organization, resolves the
+    team they belong to by name rather than by a brittle numeric id, adds them to
+    it, and reads the membership back to prove the grant took. Team membership is
+    the lever that makes folder permissions work, so this is the flow that
+    decides what a new hire can actually see. Every step spells out its request
+    inline so the flow can be read and executed without opening the underlying
+    OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: grafanaApi
+  url: ../openapi/grafana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: onboard-user
+  summary: Create a Grafana user and grant them org and team membership.
+  description: >-
+    Creates the account with admin privileges, adds it to the organization with
+    the requested role, looks the team up by name, adds the user to the team, and
+    verifies membership.
+  inputs:
+    type: object
+    required:
+    - login
+    - email
+    - password
+    - orgId
+    - teamName
+    properties:
+      name:
+        type: string
+        description: Display name of the person (e.g. "Ada Lovelace").
+      login:
+        type: string
+        description: Login username for the account.
+      email:
+        type: string
+        description: Email address for the account.
+      password:
+        type: string
+        description: Initial password for the account.
+      orgId:
+        type: integer
+        description: Organization the user is created in and granted a role on.
+      role:
+        type: string
+        description: Org role to grant; typically Viewer, Editor, or Admin.
+        default: Viewer
+      teamName:
+        type: string
+        description: Name of the existing team to add the user to.
+  steps:
+  - stepId: createUser
+    description: >-
+      Create the user account. This is a Grafana server admin operation and it
+      returns the numeric user id that the team membership step needs.
+    operationId: adminCreateUser
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.name
+        login: $inputs.login
+        email: $inputs.email
+        password: $inputs.password
+        orgId: $inputs.orgId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      userId: $response.body#/id
+      userUid: $response.body#/uid
+      message: $response.body#/message
+  - stepId: grantOrgRole
+    description: >-
+      Add the user to the organization with an explicit role. Grafana identifies
+      the user here by login or email rather than by id, so the login supplied
+      above is reused.
+    operationId: addOrgUser
+    parameters:
+    - name: org_id
+      in: path
+      value: $inputs.orgId
+    requestBody:
+      contentType: application/json
+      payload:
+        loginOrEmail: $inputs.login
+        role: $inputs.role
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      message: $response.body#/message
+  - stepId: findTeam
+    description: >-
+      Resolve the team by name. Teams are referenced by numeric id everywhere
+      else in the API, and those ids differ per instance, so looking the team up
+      by its human name is what makes this workflow portable.
+    operationId: searchTeams
+    parameters:
+    - name: name
+      in: query
+      value: $inputs.teamName
+    - name: perpage
+      in: query
+      value: 1
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.teams.length > 0
+      type: jsonpath
+    outputs:
+      teamId: $response.body#/teams/0/id
+      teamName: $response.body#/teams/0/name
+  - stepId: addToTeam
+    description: >-
+      Add the new user to the resolved team. Team membership is what folder and
+      dashboard permissions are usually granted against, so this is the step that
+      actually gives the user access to anything.
+    operationId: addTeamMember
+    parameters:
+    - name: team_id
+      in: path
+      value: $steps.findTeam.outputs.teamId
+    requestBody:
+      contentType: application/json
+      payload:
+        userId: $steps.createUser.outputs.userId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      message: $response.body#/message
+  - stepId: verifyMembership
+    description: >-
+      List the team's members to prove the user is on it, closing the loop before
+      the onboarding ticket is marked done.
+    operationId: getTeamMembers
+    parameters:
+    - name: team_id
+      in: path
+      value: $steps.findTeam.outputs.teamId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      members: $response.body
+  outputs:
+    userId: $steps.createUser.outputs.userId
+    userUid: $steps.createUser.outputs.userUid
+    teamId: $steps.findTeam.outputs.teamId
+    members: $steps.verifyMembership.outputs.members

@@ -1,0 +1,103 @@
+arazzo: 1.0.1
+info:
+  title: Grafana Share a Dashboard as a Snapshot
+  summary: Read a dashboard, publish it as a point-in-time snapshot, and fetch the shareable result.
+  description: >-
+    A snapshot freezes a dashboard's data at a moment in time and strips the
+    connection to the data source, which makes it the right way to hand an
+    incident timeline to someone who has no Grafana account and should never get
+    one. This workflow reads the live dashboard, publishes it as a snapshot with
+    an expiry, and fetches the snapshot back to confirm what a recipient will
+    see. The delete key returned at creation is the only way to revoke it, so
+    capture it. Every step spells out its request inline so the flow can be read
+    and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: grafanaApi
+  url: ../openapi/grafana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: share-dashboard-snapshot
+  summary: Publish a point-in-time snapshot of an existing dashboard.
+  description: >-
+    Reads the dashboard model by UID, creates a snapshot of it with a bounded
+    lifetime, and retrieves the stored snapshot.
+  inputs:
+    type: object
+    required:
+    - dashboardUid
+    - snapshotName
+    properties:
+      dashboardUid:
+        type: string
+        description: UID of the dashboard to snapshot.
+      snapshotName:
+        type: string
+        description: Name of the snapshot (e.g. "Checkout latency - incident 2291").
+      expires:
+        type: integer
+        description: >-
+          Snapshot lifetime in seconds. Set one; an unexpiring snapshot of
+          production data is a leak with no end date.
+        default: 604800
+      external:
+        type: boolean
+        description: >-
+          Publish to the configured external snapshot server instead of storing
+          locally. Leave false unless you intend the data to leave your instance.
+        default: false
+  steps:
+  - stepId: readDashboard
+    description: >-
+      Read the dashboard model that will be frozen into the snapshot. The
+      snapshot embeds this model, so what is read here is exactly what recipients
+      will see.
+    operationId: getDashboardByUID
+    parameters:
+    - name: uid
+      in: path
+      value: $inputs.dashboardUid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      dashboard: $response.body#/dashboard
+      title: $response.body#/dashboard/title
+  - stepId: createSnapshot
+    description: >-
+      Publish the snapshot. Grafana returns the shareable URL, plus a delete key
+      and delete URL that are the only means of revoking it later — store them
+      with the snapshot record.
+    operationId: createDashboardSnapshot
+    requestBody:
+      contentType: application/json
+      payload:
+        dashboard: $steps.readDashboard.outputs.dashboard
+        name: $inputs.snapshotName
+        expires: $inputs.expires
+        external: $inputs.external
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      snapshotKey: $response.body#/key
+      snapshotUrl: $response.body#/url
+      deleteKey: $response.body#/deleteKey
+      deleteUrl: $response.body#/deleteUrl
+      snapshotId: $response.body#/id
+  - stepId: verifySnapshot
+    description: >-
+      Fetch the snapshot by its key to confirm it resolves and to see the frozen
+      dashboard exactly as a recipient following the share URL would.
+    operationId: getDashboardSnapshot
+    parameters:
+    - name: key
+      in: path
+      value: $steps.createSnapshot.outputs.snapshotKey
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      snapshot: $response.body
+  outputs:
+    snapshotKey: $steps.createSnapshot.outputs.snapshotKey
+    snapshotUrl: $steps.createSnapshot.outputs.snapshotUrl
+    deleteKey: $steps.createSnapshot.outputs.deleteKey
+    deleteUrl: $steps.createSnapshot.outputs.deleteUrl

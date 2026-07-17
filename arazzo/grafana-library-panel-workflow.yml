@@ -1,0 +1,109 @@
+arazzo: 1.0.1
+info:
+  title: Grafana Publish a Reusable Library Panel
+  summary: Create a library panel, read it back by UID, and list the dashboards connected to it.
+  description: >-
+    A library panel is defined once and reused across dashboards, so an edit
+    propagates everywhere instead of leaving thirty copies of a panel that used
+    to agree with each other. This workflow creates the library element, reads it
+    back to capture its assigned UID and version, and lists its connections so
+    the blast radius of any future change is known before it is made. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: grafanaApi
+  url: ../openapi/grafana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: publish-library-panel
+  summary: Create a reusable library panel and inspect what it is connected to.
+  description: >-
+    Creates the library element in a folder, reads it back by UID, and lists the
+    dashboards currently using it.
+  inputs:
+    type: object
+    required:
+    - name
+    - model
+    properties:
+      name:
+        type: string
+        description: Name of the library panel (e.g. "Service SLO burn rate").
+      model:
+        type: object
+        description: >-
+          The panel model as JSON, the same shape as a panel inside a dashboard's
+          panels array.
+      kind:
+        type: integer
+        description: >-
+          Kind of library element; 1 for a library panel. Grafana models this as
+          a numeric kind rather than a string.
+        default: 1
+      folderUid:
+        type: string
+        description: >-
+          UID of the folder the element belongs to. Use an empty string for the
+          General folder.
+      uid:
+        type: string
+        description: >-
+          Optional stable UID to assign, which keeps the panel addressable across
+          instances.
+  steps:
+  - stepId: createLibraryElement
+    description: >-
+      Create the library panel. Dashboards will later reference it by UID rather
+      than embedding a copy of the model, which is the whole point.
+    operationId: createLibraryElement
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.name
+        kind: $inputs.kind
+        model: $inputs.model
+        folderUid: $inputs.folderUid
+        uid: $inputs.uid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      elementUid: $response.body#/result/uid
+      elementId: $response.body#/result/id
+      elementName: $response.body#/result/name
+      version: $response.body#/result/version
+  - stepId: readBackElement
+    description: >-
+      Read the element back by UID to confirm the stored model and version, which
+      is the version number any later update must supply.
+    operationId: getLibraryElementByUID
+    parameters:
+    - name: library_element_uid
+      in: path
+      value: $steps.createLibraryElement.outputs.elementUid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      storedModel: $response.body#/result/model
+      storedVersion: $response.body#/result/version
+      folderUid: $response.body#/result/folderUid
+      meta: $response.body#/result/meta
+  - stepId: listConnections
+    description: >-
+      List the dashboards connected to this library panel. On a new element this
+      is empty; run the same step against an existing element before changing it
+      to see exactly which dashboards the edit will reach.
+    operationId: getLibraryElementConnections
+    parameters:
+    - name: library_element_uid
+      in: path
+      value: $steps.createLibraryElement.outputs.elementUid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      connections: $response.body#/result
+  outputs:
+    elementUid: $steps.createLibraryElement.outputs.elementUid
+    elementName: $steps.createLibraryElement.outputs.elementName
+    storedVersion: $steps.readBackElement.outputs.storedVersion
+    connections: $steps.listConnections.outputs.connections
