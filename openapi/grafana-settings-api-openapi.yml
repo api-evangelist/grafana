@@ -1,0 +1,562 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Settings API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Settings
+paths:
+  /admin/settings:
+    parameters: []
+    get:
+      tags:
+      - Settings
+      summary: Grafana Admin Get Settings
+      description: The Admin Get Settings endpoint in Grafana's Admin API allows administrators with appropriate permissions to retrieve the current configuration settings of the Grafana instance. This GET operation at the /admin/settings path returns a comprehensive view of all server settings, including data source configurations, authentication settings, feature toggles, and other system-wide parameters. The endpoint is typically used for administrative tasks such as auditing configurations, troubleshooting issues, or verifying that settings have been applied correctly. Access to this endpoint requires admin-level privileges as it exposes sensitive configuration information about the Grafana deployment.
+      operationId: adminGetSettings
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /reports/images/:image:
+    parameters: []
+    get:
+      tags:
+      - Settings
+      summary: Grafana Get Settings Image
+      description: This API operation retrieves a specific image that has been uploaded for use in Grafana reports by providing the image identifier in the URL path parameter. When called, it returns the settings and metadata associated with the requested image resource, allowing users to access images that can be embedded in their scheduled reports or exported dashboards. The GET method ensures read-only access to the image data without modifying any existing configurations.
+      operationId: getSettingsImage
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  contentEncoding: int32
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /reports/settings:
+    parameters: []
+    get:
+      tags:
+      - Settings
+      summary: Grafana Get Report Settings
+      description: This API operation retrieves the current report settings configuration from Grafana. It is accessed via a GET request to the /reports/settings endpoint and returns the configured parameters that control how reports are generated and delivered within the Grafana instance. These settings typically include options such as branding configurations, email server settings, report scheduling parameters, and other preferences that affect the overall behavior of the reporting functionality. The operation requires appropriate authentication and authorization to access the reporting configuration data.
+      operationId: getReportSettings
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportSettings'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Settings
+      summary: Grafana Save Report Settings
+      description: Saves the configuration settings for the Grafana reporting feature, allowing administrators to define parameters such as email delivery options, branding preferences, report generation schedules, and output formats. This POST endpoint updates the global report settings that will be applied across all generated reports in the Grafana instance, enabling customization of how reports are created, formatted, and distributed to users.
+      operationId: saveReportSettings
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportSettings'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/sso-settings:
+    parameters: []
+    get:
+      tags:
+      - Settings
+      summary: Grafana List All Providers Settings
+      description: This API operation retrieves the configuration settings for all Single Sign-On (SSO) providers that have been configured in Grafana. When called, it returns a comprehensive list containing the settings and parameters for each SSO provider, such as OAuth, SAML, or other authentication mechanisms that are available in the system. This endpoint is useful for administrators who need to review or audit the current SSO configurations across their Grafana instance, providing visibility into which authentication providers are set up and how they are configured without needing to check each provider individually.
+      operationId: listAllProvidersSettings
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/listSSOSettingsResponse'
+                description: ''
+                contentMediaType: application/json
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/sso-settings/{key}:
+    parameters: []
+    get:
+      tags:
+      - Settings
+      summary: Grafana Get Provider Settings
+      description: Retrieves the configuration settings for a specific Single Sign-On (SSO) provider in Grafana by providing the provider's unique key identifier. This GET operation returns detailed information about the SSO provider's configuration, including authentication parameters, user mapping rules, and other provider-specific settings that control how users authenticate and are provisioned within Grafana through that particular SSO integration.
+      operationId: getProviderSettings
+      parameters:
+      - name: key
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getSSOSettingsResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Settings
+      summary: Grafana Update Provider Settings
+      description: Updates the configuration settings for a specific Single Sign-On (SSO) provider in Grafana identified by the provided key parameter. This PUT operation allows administrators to modify authentication provider settings such as client credentials, authorization endpoints, scopes, and other SSO-related parameters for the specified provider. The request requires the provider's unique key in the URL path and accepts a JSON payload containing the updated configuration values, enabling centralized management of SSO integrations within the Grafana instance.
+      operationId: updateProviderSettings
+      parameters:
+      - name: key
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/body'
+        required: true
+      responses:
+        '204':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Settings
+      summary: Grafana Remove Provider Settings
+      description: This API operation allows you to delete a specific single sign-on (SSO) provider configuration from Grafana by specifying the provider's unique key in the URL path. When executed, it removes all settings and configuration associated with that particular SSO provider, effectively disabling that authentication method for your Grafana instance. This is useful when you need to decommission an SSO integration, clean up unused authentication providers, or reconfigure your authentication setup from scratch. The operation requires the provider key identifier to target the specific SSO configuration you want to remove, and upon successful deletion, the provider will no longer be available as an authentication option for users.
+      operationId: removeProviderSettings
+      parameters:
+      - name: key
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    body:
+      title: body
+      type: object
+      properties:
+        id:
+          type: string
+        provider:
+          type: string
+        settings:
+          type: object
+          additionalProperties: {}
+    listSSOSettingsResponse:
+      title: listSSOSettingsResponse
+      type: object
+      properties:
+        id:
+          type: string
+        provider:
+          type: string
+        settings:
+          type: object
+          additionalProperties: {}
+        source:
+          type: string
+    ReportBrandingOptions:
+      title: ReportBrandingOptions
+      type: object
+      properties:
+        emailFooterLink:
+          type: string
+        emailFooterMode:
+          type: string
+        emailFooterText:
+          type: string
+        emailLogoUrl:
+          type: string
+        reportLogoUrl:
+          type: string
+    ReportSettings:
+      title: ReportSettings
+      type: object
+      properties:
+        branding:
+          $ref: '#/components/schemas/ReportBrandingOptions'
+        embeddedImageTheme:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        orgId:
+          type: integer
+          contentEncoding: int64
+        pdfTheme:
+          type: string
+        userId:
+          type: integer
+          contentEncoding: int64
+    getSSOSettingsResponse:
+      title: getSSOSettingsResponse
+      type: object
+      properties:
+        id:
+          type: string
+        provider:
+          type: string
+        settings:
+          type: object
+          additionalProperties: {}
+        source:
+          type: string
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

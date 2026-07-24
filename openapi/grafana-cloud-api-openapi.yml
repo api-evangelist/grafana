@@ -1,0 +1,228 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Cloud API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Cloud
+paths:
+  /cloudmigration/token:
+    parameters: []
+    get:
+      tags:
+      - Cloud
+      summary: Grafana Get Cloud Migration Token
+      description: Retrieves the cloud migration token for a Grafana instance, which is used to authenticate and authorize the migration of dashboards, data sources, and other resources from a self-hosted or on-premise Grafana installation to Grafana Cloud. This token serves as a secure credential that enables the migration service to access and transfer configuration data between environments, typically generated when initiating a cloud migration process and required for establishing a trusted connection between the source Grafana instance and the destination cloud environment.
+      operationId: getCloudMigrationToken
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAccessTokenResponseDTO'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Cloud
+      summary: Grafana Create Cloud Migration Token
+      description: Creates a new cloud migration token in Grafana that enables secure data transfer and authentication between a self-hosted Grafana instance and Grafana Cloud during migration operations. This endpoint generates a temporary authentication token that authorizes the migration service to access and migrate dashboards, data sources, alerts, and other Grafana resources from the source instance to the cloud destination. The token serves as a security credential to establish a trusted connection and should be handled securely throughout the migration process.
+      operationId: createCloudMigrationToken
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAccessTokenResponseDTO'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /cloudmigration/token/{uid}:
+    parameters: []
+    delete:
+      tags:
+      - Cloud
+      summary: Grafana Delete Cloud Migration Token
+      description: Deletes a specific cloud migration token identified by its unique identifier (UID) from Grafana. This operation permanently removes the authentication token that was previously created to facilitate data migration to Grafana Cloud. Once deleted, the token can no longer be used for migration purposes, and any ongoing migration processes using this token will be invalidated. This is typically used when a migration is complete, a token has been compromised, or when cleaning up unused credentials for security purposes.
+      operationId: deleteCloudMigrationToken
+      parameters:
+      - name: uid
+        in: path
+        description: UID of a cloud migration token
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: (empty)
+          headers: {}
+          content: {}
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    CreateAccessTokenResponseDTO:
+      title: CreateAccessTokenResponseDTO
+      type: object
+      properties:
+        token:
+          type: string
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    GetAccessTokenResponseDTO:
+      title: GetAccessTokenResponseDTO
+      type: object
+      properties:
+        createdAt:
+          type: string
+        displayName:
+          type: string
+        expiresAt:
+          type: string
+        firstUsedAt:
+          type: string
+        id:
+          type: string
+        lastUsedAt:
+          type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

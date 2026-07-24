@@ -1,0 +1,286 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Invites API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Invites
+paths:
+  /org/invites:
+    parameters: []
+    get:
+      tags:
+      - Invites
+      summary: Grafana Get Pending Org Invites
+      description: This API operation retrieves a list of all pending invitations for the current organization in Grafana. When called using a GET request to the /org/invites endpoint, it returns information about users who have been invited to join the organization but have not yet accepted their invitations. The response typically includes details such as the invitee's email address, invitation date, role assigned, and invitation status. This endpoint is useful for organization administrators to monitor outstanding invitations, track who has been invited but hasn't joined, and manage the invitation lifecycle within their Grafana instance.
+      operationId: getPendingOrgInvites
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TempUserDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Invites
+      summary: Grafana Add Org Invite
+      description: This API operation allows you to create and send an invitation for a user to join a specific organization in Grafana. By making a POST request to the /org/invites endpoint, administrators can invite new members by providing details such as the invitee's email address, username, and the role they should have within the organization. The invitation generates a unique token that is sent to the specified user, allowing them to accept the invitation and gain access to the organization with the assigned permissions. This endpoint is typically used for managing team membership and controlling access to Grafana resources at the organization level, requiring appropriate administrative privileges to execute successfully.
+      operationId: addOrgInvite
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddInviteForm'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '412':
+          description: (empty)
+          headers: {}
+          content: {}
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /org/invites/{invitation_code}/revoke:
+    parameters: []
+    delete:
+      tags:
+      - Invites
+      summary: Grafana Revoke Invite
+      description: This API operation revokes a pending organization invitation in Grafana by deleting it using the specified invitation code. When executed via a DELETE request to the endpoint /org/invites/{invitation_code}/revoke, it cancels an outstanding invitation that was previously sent to a user, preventing them from accepting it and joining the organization. The invitation_code path parameter uniquely identifies which pending invite should be revoked, and successful execution removes the invitation from the system entirely, requiring a new invitation to be sent if the user should still be granted access.
+      operationId: revokeInvite
+      parameters:
+      - name: invitation_code
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    Role:
+      title: Role
+      enum:
+      - None
+      - Viewer
+      - Editor
+      - Admin
+      type: string
+    TempUserDTO:
+      title: TempUserDTO
+      type: object
+      properties:
+        code:
+          type: string
+        createdOn:
+          type: string
+          contentEncoding: date-time
+        email:
+          type: string
+        emailSent:
+          type: boolean
+        emailSentOn:
+          type: string
+          contentEncoding: date-time
+        id:
+          type: integer
+          contentEncoding: int64
+        invitedByEmail:
+          type: string
+        invitedByLogin:
+          type: string
+        invitedByName:
+          type: string
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        role:
+          $ref: '#/components/schemas/Role'
+        status:
+          type: string
+        url:
+          type: string
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    AddInviteForm:
+      title: AddInviteForm
+      type: object
+      properties:
+        loginOrEmail:
+          type: string
+        name:
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+        sendEmail:
+          type: boolean
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

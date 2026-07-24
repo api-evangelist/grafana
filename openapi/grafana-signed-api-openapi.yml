@@ -1,0 +1,393 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Signed API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Signed
+paths:
+  /user:
+    parameters: []
+    get:
+      tags:
+      - Signed
+      summary: Grafana Get Signed In User
+      description: Retrieves the currently authenticated user's details in Grafana. This endpoint returns information about the user who is currently signed in based on the authentication credentials provided in the request, including user properties such as ID, login name, email, name, and organizational details. It's commonly used to verify authentication status and display user-specific information in the Grafana interface or when integrating with external applications.
+      operationId: getSignedInUser
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileDTO'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Signed
+      summary: Grafana Update Signed In User
+      description: Updates the profile information for the currently authenticated user in Grafana, allowing modification of fields such as email address, name, login username, and theme preferences. This endpoint requires the user to be signed in and operates on the user's own account, making it a self-service operation for managing personal account details. The request accepts a JSON payload containing the user attributes to be updated, and upon successful execution, returns the updated user information along with a confirmation message.
+      operationId: updateSignedInUser
+      parameters: []
+      requestBody:
+        description: To change the email, name, login, theme, provide another one.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateUserCommand'
+              - description: To change the email, name, login, theme, provide another one.
+              contentMediaType: application/json
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '409':
+          description: ConflictError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/orgs:
+    parameters: []
+    get:
+      tags:
+      - Signed
+      summary: Grafana Get Signed In User Org List
+      description: This API endpoint retrieves a list of all organizations associated with the currently authenticated user in Grafana. When called with a GET request to /user/orgs, it returns information about each organization the signed-in user belongs to, typically including details such as organization ID, name, and the user's role within each organization. This is useful for applications that need to display or process the organizational memberships of the current user, allowing them to understand which organizations they have access to and what permissions they may have in each one.
+      operationId: getSignedInUserOrgList
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserOrgDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/teams:
+    parameters: []
+    get:
+      tags:
+      - Signed
+      summary: Grafana Get Signed In User Team List
+      description: This API operation retrieves a list of all teams that the currently authenticated user is a member of in Grafana. When called, it returns team information associated with the signed-in user's account, allowing applications to determine which teams the user belongs to and potentially their roles or permissions within those teams. This is useful for displaying team memberships in user interfaces, implementing team-based access controls, or filtering content based on team associations.
+      operationId: getSignedInUserTeamList
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    TeamDTO:
+      title: TeamDTO
+      required:
+      - id
+      - isProvisioned
+      - memberCount
+      - name
+      - orgId
+      - uid
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+        avatarUrl:
+          type: string
+        email:
+          type: string
+        externalUID:
+          type: string
+        id:
+          type: integer
+          description: '@deprecated Use UID instead'
+          contentEncoding: int64
+        isProvisioned:
+          type: boolean
+        memberCount:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        permission:
+          type: integer
+          contentEncoding: int64
+        uid:
+          type: string
+    UpdateUserCommand:
+      title: UpdateUserCommand
+      type: object
+      properties:
+        email:
+          type: string
+        login:
+          type: string
+        name:
+          type: string
+        theme:
+          type: string
+    Role:
+      title: Role
+      enum:
+      - None
+      - Viewer
+      - Editor
+      - Admin
+      type: string
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    UserProfileDTO:
+      title: UserProfileDTO
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+        authLabels:
+          type: array
+          items:
+            type: string
+          description: ''
+        avatarUrl:
+          type: string
+        createdAt:
+          type: string
+          contentEncoding: date-time
+        email:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        isDisabled:
+          type: boolean
+        isExternal:
+          type: boolean
+        isExternallySynced:
+          type: boolean
+        isGrafanaAdmin:
+          type: boolean
+        isGrafanaAdminExternallySynced:
+          type: boolean
+        isProvisioned:
+          type: boolean
+        login:
+          type: string
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        theme:
+          type: string
+        uid:
+          type: string
+        updatedAt:
+          type: string
+          contentEncoding: date-time
+    UserOrgDTO:
+      title: UserOrgDTO
+      type: object
+      properties:
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        role:
+          $ref: '#/components/schemas/Role'
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

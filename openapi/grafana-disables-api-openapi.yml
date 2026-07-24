@@ -1,0 +1,197 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Disables API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Disables
+paths:
+  /datasources/{dataSourceUID}/cache/disable:
+    parameters: []
+    post:
+      tags:
+      - Disables
+      summary: Grafana Disable Data Source Cache
+      description: Disables the caching functionality for a specific Grafana data source identified by its unique identifier (dataSourceUID). When executed via a POST request to the endpoint /datasources/{dataSourceUID}/cache/disable, this operation turns off query result caching for the specified data source, causing subsequent queries to fetch fresh data directly from the source rather than serving cached results. This is useful when real-time data accuracy is critical or when troubleshooting data freshness issues, though it may result in increased load on the underlying data source and potentially slower query response times.
+      operationId: disableDataSourceCache
+      parameters:
+      - name: dataSourceUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: CacheConfigResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CacheConfigResponse'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/disable:
+    parameters: []
+    post:
+      tags:
+      - Disables
+      summary: Grafana Admin Disable User
+      description: This API operation allows Grafana administrators to disable a specific user account by sending a POST request to the /admin/users/{user_id}/disable endpoint. The operation requires administrative privileges and targets a user identified by their unique user_id parameter in the URL path. When executed, this endpoint deactivates the specified user account, preventing them from logging in or accessing Grafana resources while preserving their user data and configurations for potential future reactivation. This is a non-destructive administrative action typically used for temporarily suspending user access due to security concerns, policy violations, or when users no longer require access to the system.
+      operationId: adminDisableUser
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    CacheConfigResponse:
+      title: CacheConfigResponse
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        dataSourceID:
+          type: integer
+          description: Fields that can be set by the API caller - read/write
+          contentEncoding: int64
+        dataSourceUID:
+          type: string
+        defaultTTLMs:
+          type: integer
+          description: 'These are returned by the HTTP API, but are managed internally - read-only
+
+            Note: ''created'' and ''updated'' are special properties managed automatically by xorm, but we are setting them manually'
+          contentEncoding: int64
+        enabled:
+          type: boolean
+        message:
+          type: string
+        ttlQueriesMs:
+          type: integer
+          description: TTL MS, or "time to live", is how long a cached item will stay in the cache before it is removed (in milliseconds)
+          contentEncoding: int64
+        ttlResourcesMs:
+          type: integer
+          contentEncoding: int64
+        updated:
+          type: string
+          contentEncoding: date-time
+        useDefaultTTL:
+          type: boolean
+          description: If UseDefaultTTL is enabled, then the TTLQueriesMS and TTLResourcesMS in this object is always sent as the default TTL located in grafana.ini
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

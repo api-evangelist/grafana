@@ -1,0 +1,496 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Account API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Account
+paths:
+  /serviceaccounts:
+    parameters: []
+    post:
+      tags:
+      - Account
+      summary: Grafana Create Service Account
+      description: Creates a new service account in Grafana, which is a special type of user designed for automated tasks and API interactions rather than human login. Service accounts can be assigned specific permissions and roles to programmatically access Grafana resources, making them ideal for integrations, CI/CD pipelines, monitoring scripts, and other automated workflows. The request requires authentication and appropriate administrative permissions, and upon successful creation, returns details about the newly created service account including its unique identifier, which can then be used to generate tokens for API authentication.
+      operationId: createServiceAccount
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateServiceAccountForm'
+        required: false
+      responses:
+        '201':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceAccountDTO'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /serviceaccounts/{serviceAccountId}:
+    parameters: []
+    get:
+      tags:
+      - Account
+      summary: Grafana Retrieve Service Account
+      description: Returns detailed information about a specific Grafana service account by its unique identifier. This operation allows administrators to fetch the complete configuration and metadata of a service account, including its name, role, status, and associated permissions. The service account ID must be provided as a path parameter to identify which service account to retrieve. This is useful for auditing purposes, verifying service account configurations, or retrieving details before performing updates or deletions.
+      operationId: retrieveServiceAccount
+      parameters:
+      - name: serviceAccountId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceAccountDTO'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Account
+      summary: Grafana Delete Service Account
+      description: Deletes a specific service account from Grafana by its unique identifier. This operation permanently removes the service account and revokes all associated tokens and permissions. The service account ID must be provided in the URL path parameter. Once deleted, the service account cannot be recovered and any integrations or automations using this account will cease to function. This is a destructive operation that requires appropriate administrative permissions to execute.
+      operationId: deleteServiceAccount
+      parameters:
+      - name: serviceAccountId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    patch:
+      tags:
+      - Account
+      summary: Grafana Update Service Account
+      description: Updates an existing service account in Grafana by modifying its properties such as name, role, or other configuration settings. This PATCH operation targets a specific service account identified by its unique serviceAccountId in the URL path, allowing administrators to make partial updates to the service account without replacing the entire resource. Service accounts are commonly used for programmatic access to Grafana, enabling applications and automated systems to authenticate and interact with Grafana APIs without requiring a regular user account.
+      operationId: updateServiceAccount
+      parameters:
+      - name: serviceAccountId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateServiceAccountForm'
+        required: false
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/updateServiceAccountResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    UpdateServiceAccountForm:
+      title: UpdateServiceAccountForm
+      type: object
+      properties:
+        isDisabled:
+          type: boolean
+        name:
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+        serviceAccountId:
+          type: integer
+          contentEncoding: int64
+    Role:
+      title: Role
+      enum:
+      - None
+      - Viewer
+      - Editor
+      - Admin
+      type: string
+    updateServiceAccountResponse:
+      title: updateServiceAccountResponse
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+        name:
+          type: string
+        serviceaccount:
+          $ref: '#/components/schemas/ServiceAccountProfileDTO'
+    CreateServiceAccountForm:
+      title: CreateServiceAccountForm
+      type: object
+      properties:
+        isDisabled:
+          type: boolean
+          examples:
+          - false
+        name:
+          type: string
+          examples:
+          - grafana
+        role:
+          allOf:
+          - $ref: '#/components/schemas/Role'
+          - examples:
+            - Admin
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    ServiceAccountProfileDTO:
+      title: ServiceAccountProfileDTO
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+        avatarUrl:
+          type: string
+          examples:
+          - /avatar/8ea890a677d6a223c591a1beea6ea9d2
+        createdAt:
+          type: string
+          contentEncoding: date-time
+          examples:
+          - '2022-03-21T14:35:33.000Z'
+        id:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 2
+        isDisabled:
+          type: boolean
+          examples:
+          - false
+        isExternal:
+          type: boolean
+          examples:
+          - false
+        login:
+          type: string
+          examples:
+          - sa-grafana
+        name:
+          type: string
+          examples:
+          - test
+        orgId:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 1
+        requiredBy:
+          type: string
+          examples:
+          - grafana-app
+        role:
+          type: string
+          examples:
+          - Editor
+        teams:
+          type: array
+          items:
+            type: string
+          description: ''
+          examples:
+          - []
+        tokens:
+          type: integer
+          contentEncoding: int64
+        uid:
+          type: string
+          examples:
+          - fe1xejlha91xce
+        updatedAt:
+          type: string
+          contentEncoding: date-time
+          examples:
+          - '2022-03-21T14:35:33.000Z'
+    ServiceAccountDTO:
+      title: ServiceAccountDTO
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+          examples:
+          - serviceaccounts:delete: true
+            serviceaccounts:read: true
+            serviceaccounts:write: true
+        avatarUrl:
+          type: string
+          examples:
+          - /avatar/85ec38023d90823d3e5b43ef35646af9
+        id:
+          type: integer
+          contentEncoding: int64
+        isDisabled:
+          type: boolean
+          examples:
+          - false
+        isExternal:
+          type: boolean
+          examples:
+          - false
+        login:
+          type: string
+          examples:
+          - sa-grafana
+        name:
+          type: string
+          examples:
+          - grafana
+        orgId:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 1
+        role:
+          type: string
+          examples:
+          - Viewer
+        tokens:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 0
+        uid:
+          type: string
+          examples:
+          - fe1xejlha91xce
+      description: 'swagger: model'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

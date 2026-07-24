@@ -1,0 +1,1387 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Alerts API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Alerts
+  description: Alerting rules and notifications
+paths:
+  /v1/provisioning/alert-rules:
+    parameters: []
+    get:
+      tags:
+      - Alerts
+      operationId: getAlertRules
+      summary: List all alert rules
+      responses:
+        '200':
+          description: Alert rules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AlertRule'
+    post:
+      tags:
+      - Alerts
+      operationId: createAlertRule
+      summary: Create an alert rule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertRule'
+      responses:
+        '201':
+          description: Alert rule created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertRule'
+  /v1/provisioning/alert-rules/{uid}:
+    get:
+      tags:
+      - Alerts
+      operationId: getAlertRule
+      summary: Get alert rule by UID
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Alert rule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertRule'
+    put:
+      tags:
+      - Alerts
+      operationId: updateAlertRule
+      summary: Update alert rule
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertRule'
+      responses:
+        '200':
+          description: Alert rule updated
+    delete:
+      tags:
+      - Alerts
+      operationId: deleteAlertRule
+      summary: Delete alert rule
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Alert rule deleted
+  /v1/provisioning/contact-points:
+    get:
+      tags:
+      - Alerts
+      operationId: getContactPoints
+      summary: List contact points
+      responses:
+        '200':
+          description: Contact points
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContactPoint'
+    post:
+      tags:
+      - Alerts
+      operationId: createContactPoint
+      summary: Create a contact point
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactPoint'
+      responses:
+        '202':
+          description: Contact point created
+  /v1/provisioning/alert-rules/export:
+    parameters: []
+    get:
+      tags:
+      - Alerts
+      summary: Grafana Route Get Alert Rules Export
+      description: This API operation retrieves alert rules from Grafana in an exportable format, allowing administrators to extract alert rule configurations for backup, migration, or version control purposes. The GET endpoint at /v1/provisioning/alert-rules/export provides a way to programmatically access the complete definition of configured alert rules, including their conditions, notification settings, and metadata. This is particularly useful for maintaining infrastructure as code, replicating alert configurations across multiple Grafana instances, or creating snapshots of monitoring setups for disaster recovery scenarios.
+      operationId: routeGetAlertRulesExport
+      parameters:
+      - name: download
+        in: query
+        description: Whether to initiate a download of the file or not.
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: format
+        in: query
+        description: Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.
+        style: form
+        explode: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/format'
+          - description: Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.
+      - name: folderUid
+        in: query
+        description: UIDs of folders from which to export rules
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: group
+        in: query
+        description: Name of group of rules to export. Must be specified only together with a single folder UID
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: ruleUid
+        in: query
+        description: UID of alert rule to export. If specified, parameters folderUid and group must be empty.
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: AlertingFileExport
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertingFileExportisthefullprovisionedfileexport.'
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+            application/terraform+hcl:
+              schema:
+                contentMediaType: application/terraform+hcl
+            text/yaml:
+              schema:
+                contentMediaType: text/yaml
+            text/hcl:
+              schema:
+                contentMediaType: text/hcl
+        '404':
+          description: Not found.
+          headers: {}
+          content: {}
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/alert-rules/{UID}:
+    parameters: []
+    get:
+      tags:
+      - Alerts
+      summary: Grafana Route Get Alert Rule
+      description: This API operation retrieves a specific alert rule from Grafana's provisioning system using the alert rule's unique identifier (UID). When called with a GET request to the endpoint /v1/provisioning/alert-rules/{UID}, it returns the complete configuration details of the specified alert rule, including its conditions, labels, annotations, and evaluation settings. This endpoint is part of Grafana's provisioning API, which allows programmatic management of alert rules outside of the standard UI interface, making it useful for automation, backup purposes, or integrating Grafana alerting into external systems and workflows.
+      operationId: routeGetAlertRule
+      parameters:
+      - name: UID
+        in: path
+        description: Alert rule UID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ProvisionedAlertRule
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisionedAlertRule'
+        '404':
+          description: Not found.
+          headers: {}
+          content: {}
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Alerts
+      summary: Grafana Route Put Alert Rule
+      description: Updates an existing alert rule in Grafana's provisioning API by specifying the rule's unique identifier (UID) in the path. This endpoint allows you to modify all aspects of an alert rule including its condition, evaluation interval, notification settings, labels, and annotations. The request requires a complete alert rule definition in the body, and the UID in the path must match the UID in the request body. This operation is part of Grafana's provisioning capabilities, enabling programmatic management of alerting rules for infrastructure-as-code workflows and automated alert configuration.
+      operationId: routePutAlertRule
+      parameters:
+      - name: UID
+        in: path
+        description: Alert rule UID
+        required: true
+        schema:
+          type: string
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisionedAlertRule'
+        required: false
+      responses:
+        '200':
+          description: ProvisionedAlertRule
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisionedAlertRule'
+        '400':
+          description: ValidationError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Alerts
+      summary: Grafana Route Delete Alert Rule
+      description: Deletes a specific alert rule from Grafana's provisioning system by its unique identifier (UID). This operation permanently removes the alert rule configuration from the system, including all associated settings such as conditions, labels, annotations, and notification policies. The deletion is immediate and cannot be undone, so the UID must be carefully specified to avoid removing the wrong alert rule. This endpoint is part of Grafana's provisioning API, which allows programmatic management of alert rules rather than manual configuration through the UI, making it suitable for infrastructure-as-code workflows and automated alerting management at scale.
+      operationId: routeDeleteAlertRule
+      parameters:
+      - name: UID
+        in: path
+        description: Alert rule UID
+        required: true
+        schema:
+          type: string
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The alert rule was deleted successfully.
+          headers: {}
+          content: {}
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/alert-rules/{UID}/export:
+    parameters: []
+    get:
+      tags:
+      - Alerts
+      summary: Grafana Route Get Alert Rule Export
+      description: The Get Alert Rule Export endpoint allows you to export a specific alert rule configuration from Grafana by providing its unique identifier (UID). This operation retrieves the complete alert rule definition in a format suitable for provisioning, enabling you to back up, version control, or migrate alert rules between Grafana instances. By making a GET request to /v1/provisioning/alert-rules/{UID}/export, you can obtain the alert rule's configuration including its conditions, notification settings, labels, and annotations in a structured format that can be used for declarative configuration management or importing into other Grafana environments.
+      operationId: routeGetAlertRuleExport
+      parameters:
+      - name: download
+        in: query
+        description: Whether to initiate a download of the file or not.
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: format
+        in: query
+        description: Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.
+        style: form
+        explode: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/format'
+          - description: Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.
+      - name: UID
+        in: path
+        description: Alert rule UID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: AlertingFileExport
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertingFileExportisthefullprovisionedfileexport.'
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+            application/terraform+hcl:
+              schema:
+                contentMediaType: application/terraform+hcl
+            text/yaml:
+              schema:
+                contentMediaType: text/yaml
+            text/hcl:
+              schema:
+                contentMediaType: text/hcl
+        '404':
+          description: Not found.
+          headers: {}
+          content: {}
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/folder/{FolderUID}/rule-groups/{Group}:
+    parameters: []
+    get:
+      tags:
+      - Alerts
+      summary: Grafana Route Get Alert Rule Group
+      description: This API operation retrieves a specific alert rule group within a designated folder in Grafana's provisioning system. By providing the folder's unique identifier (FolderUID) and the name of the alert rule group (Group) in the request path, users can fetch the complete configuration and details of that particular rule group. This GET endpoint is part of Grafana's provisioning API, which allows programmatic management of alerting configurations, enabling administrators and automation systems to query existing alert rule groups for monitoring, auditing, or synchronization purposes across different Grafana instances or environments.
+      operationId: routeGetAlertRuleGroup
+      parameters:
+      - name: FolderUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: Group
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: AlertRuleGroup
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertRuleGroup'
+        '404':
+          description: Not found.
+          headers: {}
+          content: {}
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Alerts
+      summary: Grafana Route Put Alert Rule Group
+      description: Updates an existing alert rule group identified by the folder UID and group name in Grafana's provisioning API. This PUT operation allows you to modify the configuration of alert rules within a specific rule group, including updating rule definitions, thresholds, evaluation intervals, and notification settings. The endpoint requires both the FolderUID parameter to identify the containing folder and the Group parameter to specify which alert rule group to update, with the updated configuration provided in the request body following Grafana's alert rule group schema.
+      operationId: routePutAlertRuleGroup
+      parameters:
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      - name: FolderUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: Group
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertRuleGroup'
+        required: false
+      responses:
+        '200':
+          description: AlertRuleGroup
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertRuleGroup'
+        '400':
+          description: ValidationError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Alerts
+      summary: Grafana Route Delete Alert Rule Group
+      description: Deletes a specific alert rule group within a designated folder in Grafana's provisioning API. This operation requires both the folder's unique identifier (FolderUID) and the name of the alert rule group (Group) to be specified in the URL path. When executed, it removes the entire rule group and all alert rules contained within it from the Grafana instance. This is a destructive operation typically used when cleaning up monitoring configurations or reorganizing alert structures, and it requires appropriate permissions to modify provisioning resources in Grafana.
+      operationId: routeDeleteAlertRuleGroup
+      parameters:
+      - name: FolderUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: Group
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The alert rule group was deleted successfully.
+          headers: {}
+          content: {}
+        '403':
+          description: ForbiddenError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: NotFound
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                contentMediaType: application/json
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/folder/{FolderUID}/rule-groups/{Group}/export:
+    parameters: []
+    get:
+      tags:
+      - Alerts
+      summary: Grafana Route Get Alert Rule Group Export
+      description: This API operation retrieves and exports a specific alert rule group from Grafana's provisioning system by providing both the parent folder's unique identifier (FolderUID) and the alert rule group name (Group) as path parameters. It allows users to obtain the complete configuration of an alert rule group in an exportable format, which can be used for backup purposes, migration between Grafana instances, or version control of alerting configurations. The GET method ensures this is a read-only operation that doesn't modify any existing alert rule configurations.
+      operationId: routeGetAlertRuleGroupExport
+      parameters:
+      - name: download
+        in: query
+        description: Whether to initiate a download of the file or not.
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: format
+        in: query
+        description: Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.
+        style: form
+        explode: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/format'
+          - description: Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.
+      - name: FolderUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: Group
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: AlertingFileExport
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertingFileExportisthefullprovisionedfileexport.'
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+            application/terraform+hcl:
+              schema:
+                contentMediaType: application/terraform+hcl
+            text/yaml:
+              schema:
+                contentMediaType: text/yaml
+            text/hcl:
+              schema:
+                contentMediaType: text/hcl
+        '404':
+          description: Not found.
+          headers: {}
+          content: {}
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    RelativeTimeRangeExport:
+      title: RelativeTimeRangeExport
+      type: object
+      properties:
+        from:
+          type: integer
+          contentEncoding: int64
+        to:
+          type: integer
+          contentEncoding: int64
+    ProvisionedAlertRule:
+      title: ProvisionedAlertRule
+      required:
+      - condition
+      - data
+      - execErrState
+      - folderUID
+      - for
+      - noDataState
+      - orgID
+      - ruleGroup
+      - title
+      type: object
+      properties:
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+          examples:
+          - runbook_url: https://supercoolrunbook.com/page/13
+        condition:
+          type: string
+          examples:
+          - A
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.'
+          description: ''
+          examples:
+          - - datasourceUid: __expr__
+              model:
+                conditions:
+                - evaluator:
+                    params:
+                    - 0
+                    - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
+                datasource:
+                  type: __expr__
+                  uid: __expr__
+                expression: 1 == 1
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: A
+                type: math
+              queryType: ''
+              refId: A
+              relativeTimeRange:
+                from: 0
+                to: 0
+        execErrState:
+          $ref: '#/components/schemas/ExecErrState'
+        folderUID:
+          type: string
+          examples:
+          - project_x
+        for:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        isPaused:
+          type: boolean
+          examples:
+          - false
+        keep_firing_for:
+          type: string
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          examples:
+          - team: sre-team-1
+        missingSeriesEvalsToResolve:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 2
+        noDataState:
+          $ref: '#/components/schemas/NoDataState'
+        notification_settings:
+          $ref: '#/components/schemas/AlertRuleNotificationSettings'
+        orgID:
+          type: integer
+          contentEncoding: int64
+        provenance:
+          type: string
+        record:
+          $ref: '#/components/schemas/Record'
+        ruleGroup:
+          maxLength: 190
+          minLength: 1
+          type: string
+          examples:
+          - eval_group_1
+        title:
+          maxLength: 190
+          minLength: 1
+          type: string
+          examples:
+          - Always firing
+        uid:
+          maxLength: 40
+          minLength: 1
+          pattern: ^[a-zA-Z0-9-_]+$
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+          readOnly: true
+    ValidationError:
+      title: ValidationError
+      type: object
+      properties:
+        message:
+          type: string
+          examples:
+          - error message
+    AlertRuleGroupExportistheprovisionedfileexportofAlertRuleGroupV1.:
+      title: AlertRuleGroupExportistheprovisionedfileexportofAlertRuleGroupV1.
+      type: object
+      properties:
+        folder:
+          type: string
+        interval:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertRuleExportistheprovisionedfileexportofmodels.AlertRule.'
+          description: ''
+    ContactPoint:
+      type: object
+      properties:
+        uid:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          description: 'Receiver type: email, slack, pagerduty, webhook, etc.'
+        settings:
+          type: object
+          description: Type-specific configuration
+        disableResolveMessage:
+          type: boolean
+        provenance:
+          type: string
+    AlertRuleNotificationSettings:
+      title: AlertRuleNotificationSettings
+      required:
+      - receiver
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: 'Override the times when notifications should not be muted. These must match the name of a mute time interval defined
+
+            in the alertmanager configuration time_intervals section. All notifications will be suppressed unless they are sent
+
+            at the time that matches any interval.'
+          examples:
+          - - maintenance
+        group_by:
+          type: array
+          items:
+            type: string
+          description: 'Override the labels by which incoming alerts are grouped together. For example, multiple alerts coming in for
+
+            cluster=A and alertname=LatencyHigh would be batched into a single group. To aggregate by all possible labels
+
+            use the special value ''...'' as the sole label name.
+
+            This effectively disables aggregation entirely, passing through all alerts as-is. This is unlikely to be what
+
+            you want, unless you have a very low alert volume or your upstream notification system performs its own grouping.
+
+            Must include ''alertname'' and ''grafana_folder'' if not using ''...''.'
+          default:
+          - alertname
+          - grafana_folder
+          examples:
+          - - alertname
+            - grafana_folder
+            - cluster
+        group_interval:
+          type: string
+          description: 'Override how long to wait before sending a notification about new alerts that are added to a group of alerts for
+
+            which an initial notification has already been sent. (Usually ~5m or more.)'
+          examples:
+          - 5m
+        group_wait:
+          type: string
+          description: 'Override how long to initially wait to send a notification for a group of alerts. Allows to wait for an
+
+            inhibiting alert to arrive or collect more initial alerts for the same group. (Usually ~0s to few minutes.)'
+          examples:
+          - 30s
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: 'Override the times when notifications should be muted. These must match the name of a mute time interval defined
+
+            in the alertmanager configuration time_intervals section. When muted it will not send any notifications, but
+
+            otherwise acts normally.'
+          examples:
+          - - maintenance
+        receiver:
+          type: string
+          description: Name of the receiver to send notifications to.
+          examples:
+          - grafana-default-email
+        repeat_interval:
+          type: string
+          description: 'Override how long to wait before sending a notification again if it has already been sent successfully for an
+
+            alert. (Usually ~3h or more).
+
+            Note that this parameter is implicitly bound by Alertmanager''s `--data.retention` configuration flag.
+
+            Notifications will be resent after either repeat_interval or the data retention period have passed, whichever
+
+            occurs first. `repeat_interval` should not be less than `group_interval`.'
+          examples:
+          - 4h
+    RouteExport:
+      title: RouteExport
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        continue:
+          type: boolean
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        match:
+          type: object
+          additionalProperties:
+            type: string
+          description: Deprecated. Remove before v1.0 release.
+        match_re:
+          type: object
+          additionalProperties:
+            type: string
+        matchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Matchermodelsthematchingofalabel.'
+          description: 'Matchers is a slice of Matchers that is sortable, implements Stringer, and
+
+            provides a Matches method to match a LabelSet against all Matchers in the
+
+            slice. Note that some users of Matchers might require it to be sorted.'
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        object_matchers:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouteExport'
+          description: ''
+      description: 'RouteExport is the provisioned file export of definitions.Route. This is needed to hide fields that aren''t useable in
+
+        provisioning file format. An alternative would be to define a custom MarshalJSON and MarshalYAML that excludes them.'
+    ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.:
+      title: ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.
+      type: object
+      properties:
+        disableResolveMessage:
+          type: boolean
+        settings:
+          type: object
+        type:
+          type: string
+        uid:
+          type: string
+    format:
+      title: format
+      enum:
+      - yaml
+      - json
+      - hcl
+      type: string
+    AlertRuleGroup:
+      title: AlertRuleGroup
+      type: object
+      properties:
+        folderUid:
+          type: string
+        interval:
+          type: integer
+          contentEncoding: int64
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProvisionedAlertRule'
+          description: ''
+        title:
+          type: string
+    NoDataState:
+      title: NoDataState
+      enum:
+      - Alerting
+      - NoData
+      - OK
+      type: string
+    RelativeTimeRange:
+      title: RelativeTimeRange
+      type: object
+      properties:
+        from:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        to:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+      description: 'RelativeTimeRange is the per query start and end time
+
+        for requests.'
+    AlertRuleNotificationSettingsExportistheprovisionedexportofmodels.NotificationSettings.:
+      title: AlertRuleNotificationSettingsExportistheprovisionedexportofmodels.NotificationSettings.
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+    Matchermodelsthematchingofalabel.:
+      title: Matchermodelsthematchingofalabel.
+      type: object
+      properties:
+        Name:
+          type: string
+        Type:
+          type: integer
+          contentEncoding: int64
+        Value:
+          type: string
+    ForbiddenError:
+      title: ForbiddenError
+      type: object
+      properties:
+        body:
+          allOf:
+          - $ref: '#/components/schemas/PublicError'
+          - description: 'PublicError is derived from Error and only contains information
+
+              available to the end user.'
+    NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.:
+      title: NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        continue:
+          type: boolean
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        match:
+          type: object
+          additionalProperties:
+            type: string
+          description: Deprecated. Remove before v1.0 release.
+        match_re:
+          type: object
+          additionalProperties:
+            type: string
+        matchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Matchermodelsthematchingofalabel.'
+          description: 'Matchers is a slice of Matchers that is sortable, implements Stringer, and
+
+            provides a Matches method to match a LabelSet against all Matchers in the
+
+            slice. Note that some users of Matchers might require it to be sorted.'
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        object_matchers:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouteExport'
+          description: ''
+    ExecErrState:
+      title: ExecErrState
+      enum:
+      - OK
+      - Alerting
+      - Error
+      type: string
+    AlertingFileExportisthefullprovisionedfileexport.:
+      title: AlertingFileExportisthefullprovisionedfileexport.
+      type: object
+      properties:
+        apiVersion:
+          type: integer
+          contentEncoding: int64
+        contactPoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.'
+          description: ''
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertRuleGroupExportistheprovisionedfileexportofAlertRuleGroupV1.'
+          description: ''
+        muteTimes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MuteTimeIntervalExport'
+          description: ''
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.'
+          description: ''
+    AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.:
+      title: AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.
+      type: object
+      properties:
+        datasourceUid:
+          type: string
+          description: Grafana data source unique identifier; it should be '__expr__' for a Server Side Expression operation.
+        model:
+          type: object
+          description: JSON is the raw JSON query and includes the above properties as well as custom properties.
+        queryType:
+          type: string
+          description: 'QueryType is an optional identifier for the type of query.
+
+            It can be used to distinguish different types of queries.'
+        refId:
+          type: string
+          description: RefID is the unique identifier of the query, set by the frontend call.
+        relativeTimeRange:
+          allOf:
+          - $ref: '#/components/schemas/RelativeTimeRange'
+          - description: 'RelativeTimeRange is the per query start and end time
+
+              for requests.'
+    ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.:
+      title: ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.
+      type: object
+      properties:
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        receivers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.'
+          description: ''
+    PublicError:
+      title: PublicError
+      type: object
+      properties:
+        extra:
+          type: object
+          additionalProperties: {}
+        message:
+          type: string
+        messageId:
+          type: string
+        statusCode:
+          type: integer
+          contentEncoding: int64
+      description: 'PublicError is derived from Error and only contains information
+
+        available to the end user.'
+    TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.:
+      title: TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.
+      type: object
+      properties:
+        name:
+          type: string
+        time_intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+          description: ''
+    Record:
+      title: Record
+      required:
+      - from
+      - metric
+      type: object
+      properties:
+        from:
+          type: string
+          description: Which expression node should be used as the input for the recorded metric.
+          examples:
+          - A
+        metric:
+          type: string
+          description: Name of the recorded metric.
+          examples:
+          - grafana_alerts_ratio
+        target_datasource_uid:
+          type: string
+          description: Which data source should be used to write the output of the recording rule, specified by UID.
+          examples:
+          - my-prom
+    AlertRuleExportistheprovisionedfileexportofmodels.AlertRule.:
+      title: AlertRuleExportistheprovisionedfileexportofmodels.AlertRule.
+      type: object
+      properties:
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+        condition:
+          type: string
+        dashboardUid:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertQueryExportistheprovisionedexportofmodels.AlertQuery.'
+          description: ''
+        execErrState:
+          $ref: '#/components/schemas/ExecErrState'
+        for:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        isPaused:
+          type: boolean
+        keepFiringFor:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        missing_series_evals_to_resolve:
+          type: integer
+          contentEncoding: int64
+        noDataState:
+          $ref: '#/components/schemas/NoDataState'
+        notification_settings:
+          $ref: '#/components/schemas/AlertRuleNotificationSettingsExportistheprovisionedexportofmodels.NotificationSettings.'
+        panelId:
+          type: integer
+          contentEncoding: int64
+        record:
+          $ref: '#/components/schemas/Recordistheprovisionedexportofmodels.Record.'
+        title:
+          type: string
+        uid:
+          type: string
+    AlertRule:
+      type: object
+      properties:
+        uid:
+          type: string
+        title:
+          type: string
+        orgID:
+          type: integer
+        folderUID:
+          type: string
+        ruleGroup:
+          type: string
+        condition:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              refId:
+                type: string
+              queryType:
+                type: string
+              relativeTimeRange:
+                type: object
+                properties:
+                  from:
+                    type: integer
+                  to:
+                    type: integer
+              datasourceUid:
+                type: string
+              model:
+                type: object
+        noDataState:
+          type: string
+          enum:
+          - Alerting
+          - NoData
+          - OK
+        execErrState:
+          type: string
+          enum:
+          - Alerting
+          - Error
+          - OK
+        for:
+          type: string
+          description: Duration, e.g. 5m, 1h
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        isPaused:
+          type: boolean
+        provenance:
+          type: string
+    Recordistheprovisionedexportofmodels.Record.:
+      title: Recordistheprovisionedexportofmodels.Record.
+      type: object
+      properties:
+        from:
+          type: string
+        metric:
+          type: string
+        targetDatasourceUid:
+          type: string
+    MuteTimeIntervalExport:
+      title: MuteTimeIntervalExport
+      type: object
+      properties:
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        time_intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+          description: ''
+    AlertQueryExportistheprovisionedexportofmodels.AlertQuery.:
+      title: AlertQueryExportistheprovisionedexportofmodels.AlertQuery.
+      type: object
+      properties:
+        datasourceUid:
+          type: string
+        model:
+          type: object
+          additionalProperties: {}
+        queryType:
+          type: string
+        refId:
+          type: string
+        relativeTimeRange:
+          $ref: '#/components/schemas/RelativeTimeRangeExport'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

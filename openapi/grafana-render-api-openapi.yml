@@ -1,0 +1,191 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Render API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Render
+paths:
+  /reports/render/csvs:
+    parameters: []
+    get:
+      tags:
+      - Render
+      summary: Grafana Render Report CS Vs
+      description: This API operation retrieves rendered CSV versions of Grafana reports. When invoked with a GET request to the /reports/render/csvs endpoint, it processes and returns report data in CSV (Comma-Separated Values) format, making it suitable for exporting Grafana dashboard metrics and analytics into spreadsheet applications or for further data processing. This endpoint is particularly useful for users who need to access report information in a structured, tabular format outside of the Grafana interface, enabling integration with external tools, automated data pipelines, or offline analysis workflows.
+      operationId: renderReportCSVs
+      parameters:
+      - name: dashboards
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: title
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/zip:
+              schema:
+                contentMediaType: application/zip
+        '204':
+          description: (empty)
+          headers: {}
+          content:
+            application/zip:
+              schema:
+                contentMediaType: application/zip
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/zip:
+              schema:
+                contentMediaType: application/zip
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/zip:
+              schema:
+                contentMediaType: application/zip
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/zip:
+              schema:
+                contentMediaType: application/zip
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /reports/render/pdfs:
+    parameters: []
+    get:
+      tags:
+      - Render
+      summary: Grafana Render Report PD Fs
+      description: This API operation retrieves rendered PDF versions of reports from Grafana. When invoked with a GET request to the /reports/render/pdfs endpoint, it allows users to access pre-generated or on-demand PDF renderings of Grafana reports, which typically contain dashboards, panels, and visualizations. The operation is useful for exporting report data in a portable, shareable format that can be distributed to stakeholders or archived for record-keeping purposes. Users would typically need appropriate authentication and permissions to access this endpoint, and may be able to specify parameters to control which reports are rendered or retrieved.
+      operationId: renderReportPDFs
+      parameters:
+      - name: dashboards
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: orientation
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: layout
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: title
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: scaleFactor
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: includeTables
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/pdf:
+              schema:
+                contentMediaType: application/pdf
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/pdf:
+              schema:
+                contentMediaType: application/pdf
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/pdf:
+              schema:
+                contentMediaType: application/pdf
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/pdf:
+              schema:
+                contentMediaType: application/pdf
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

@@ -1,0 +1,410 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Calls API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Calls
+paths:
+  /datasources/proxy/uid/{uid}/{datasource_proxy_route}:
+    parameters: []
+    get:
+      tags:
+      - Calls
+      summary: Grafana Datasource Proxy GET By UID Calls
+      description: This API operation performs a GET request to proxy datasource calls through Grafana using a datasource's unique identifier (UID). It forwards requests to the configured datasource via the specified proxy route, allowing Grafana to act as an intermediary between the client and the actual datasource. The operation uses the path pattern '/datasources/proxy/uid/{uid}/{datasource_proxy_route}' where {uid} identifies the specific datasource and {datasource_proxy_route} represents the downstream API path to be called on that datasource. This proxying mechanism enables secure datasource access while maintaining Grafana's authentication and authorization controls, eliminating the need for clients to have direct access to datasource credentials or endpoints.
+      operationId: datasourceProxyGETByUIDcalls
+      parameters:
+      - name: datasource_proxy_route
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content: {}
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Calls
+      summary: Grafana Datasource Proxy POST By UID Calls
+      description: This API operation enables POST requests to be proxied through Grafana to a configured datasource identified by its unique identifier (UID). The endpoint acts as an intermediary, forwarding requests from the Grafana UI to the target datasource using the specified proxy route path. This allows Grafana to securely communicate with various datasources without exposing their direct endpoints to clients, while maintaining authentication and authorization controls. The datasource_proxy_route parameter provides flexibility to target specific endpoints or paths within the datasource's API, making it particularly useful for executing queries, sending data, or performing operations that require POST method semantics through Grafana's unified interface.
+      operationId: datasourceProxyPOSTByUIDcalls
+      parameters:
+      - name: datasource_proxy_route
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          text/plain:
+            schema:
+              contentMediaType: text/plain
+        required: true
+      responses:
+        '201':
+          description: (empty)
+          headers: {}
+          content: {}
+        '202':
+          description: (empty)
+          headers: {}
+          content: {}
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Calls
+      summary: Grafana Datasource Proxy DELETE By UID Calls
+      description: This API operation performs a DELETE request to a Grafana datasource through the proxy endpoint, utilizing the datasource's unique identifier (UID) and a specific proxy route. It allows clients to make DELETE operations against the underlying datasource via Grafana's proxy layer, which handles authentication, authorization, and request routing. The operation is typically invoked by Grafana's user interface to delete resources or data from configured datasources without direct client access to the datasource itself. The UID parameter identifies the specific datasource configuration in Grafana, while the datasource_proxy_route defines the target path within that datasource's API structure.
+      operationId: datasourceProxyDELETEByUIDcalls
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: datasource_proxy_route
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          description: (empty)
+          headers: {}
+          content: {}
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/proxy/{id}/{datasource_proxy_route}:
+    parameters: []
+    get:
+      tags:
+      - Calls
+      summary: Grafana Datasource Proxy GET calls
+      description: This API operation provides a proxy endpoint for executing GET requests against a configured datasource in Grafana. By specifying the datasource ID and a custom proxy route, it allows Grafana to forward requests to the underlying data source while handling authentication, CORS, and other middleware concerns transparently. This is particularly useful for querying data sources that may have complex authentication requirements or need to be accessed from the browser without exposing credentials, as Grafana acts as an intermediary that securely manages the connection to the data source and returns the results to the client.
+      operationId: datasourceProxyGETcalls
+      parameters:
+      - name: datasource_proxy_route
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content: {}
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Calls
+      summary: Grafana Datasource Proxy POST Calls
+      description: The Grafana datasource proxy POST operation allows users to send POST requests to a configured datasource through Grafana's proxy endpoint by specifying the datasource ID and the target route. This API call acts as an intermediary that forwards HTTP POST requests to the underlying datasource while handling authentication, connection management, and security concerns on behalf of the client. The endpoint accepts a datasource identifier in the path along with a dynamic route parameter that determines the specific datasource endpoint to be invoked, enabling users to interact with various datasource APIs such as querying data, executing commands, or performing write operations without directly exposing datasource credentials or connection details to the frontend application.
+      operationId: datasourceProxyPOSTcalls
+      parameters:
+      - name: datasource_proxy_route
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          text/plain:
+            schema:
+              contentMediaType: text/plain
+        required: true
+      responses:
+        '201':
+          description: (empty)
+          headers: {}
+          content: {}
+        '202':
+          description: (empty)
+          headers: {}
+          content: {}
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

@@ -1,0 +1,71 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Reset API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Reset
+paths:
+  /v1/provisioning/policies:
+    parameters: []
+    delete:
+      tags:
+      - Reset
+      summary: Grafana Route Reset Policy Tree
+      description: This API operation resets the notification policy tree in Grafana back to its default state by deleting all custom policy configurations. When invoked via a DELETE request to the /v1/provisioning/policies endpoint, it removes any user-defined notification routing rules, matchers, and nested policy hierarchies that have been configured, effectively reverting the alert notification policies to the system's original configuration. This is particularly useful for cleaning up testing configurations, resolving misconfigured policy trees, or starting fresh with notification policy setup in a Grafana instance.
+      operationId: routeResetPolicyTree
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        schema:
+          const: application/json
+          type: string
+      responses:
+        '202':
+          description: Ack
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                contentMediaType: application/json
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

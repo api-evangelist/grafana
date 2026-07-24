@@ -1,0 +1,232 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Templates API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Templates
+paths:
+  /v1/provisioning/templates:
+    parameters: []
+    get:
+      tags:
+      - Templates
+      summary: Grafana Route Get Templates
+      description: This API operation retrieves provisioning templates from Grafana's alerting system. It is accessed via a GET request to the `/v1/provisioning/templates` endpoint and returns a collection of message templates that can be used for alert notifications. These templates define how alert messages are formatted and presented when notifications are sent through various channels, allowing administrators to standardize and customize the appearance and content of alert messages across their Grafana instance.
+      operationId: routeGetTemplates
+      parameters: []
+      responses:
+        '200':
+          description: NotificationTemplates
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationTemplate'
+                description: ''
+                contentMediaType: application/json
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/templates/{name}:
+    parameters: []
+    get:
+      tags:
+      - Templates
+      summary: Grafana Route Get Template
+      description: The Get Template operation retrieves a specific notification template by its name from Grafana's provisioning API. This endpoint allows users to fetch the complete configuration details of a previously created template, including its content, title, and any associated metadata. By making a GET request to /v1/provisioning/templates/{name} where {name} is the unique identifier of the template, administrators can programmatically access template definitions that are used for formatting alert notifications across various contact points and integrations within Grafana's alerting system.
+      operationId: routeGetTemplate
+      parameters:
+      - name: name
+        in: path
+        description: Template group name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: NotificationTemplate
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationTemplate'
+        '404':
+          description: PublicError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Templates
+      summary: Grafana Route Put Template
+      description: Updates an existing notification template in Grafana's provisioning system by replacing the template configuration identified by the specified name parameter. This PUT operation allows administrators to modify template content, formatting, and other properties used for alert notifications. The route accepts the template name as a path parameter and expects the complete updated template definition in the request body, which will overwrite the existing template configuration while maintaining the same identifier.
+      operationId: routePutTemplate
+      parameters:
+      - name: name
+        in: path
+        description: Template group name
+        required: true
+        schema:
+          type: string
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationTemplateContent'
+        required: false
+      responses:
+        '202':
+          description: NotificationTemplate
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationTemplate'
+        '400':
+          description: PublicError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicError'
+        '409':
+          description: PublicError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Templates
+      summary: Grafana Route Delete Template
+      description: This API operation deletes a specific notification template from Grafana's provisioning system by its name. When called with a DELETE request to the endpoint /v1/provisioning/templates/{name}, where {name} is the unique identifier of the template, it removes the specified template from the system's configuration. This is part of Grafana's provisioning API that allows programmatic management of notification templates, enabling administrators to automate the cleanup and removal of templates that are no longer needed in their alerting and notification workflows.
+      operationId: routeDeleteTemplate
+      parameters:
+      - name: name
+        in: path
+        description: Template group name
+        required: true
+        schema:
+          type: string
+      - name: version
+        in: query
+        description: Version of template to use for optimistic concurrency. Leave empty to disable validation
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The template was deleted successfully.
+          headers: {}
+          content: {}
+        '409':
+          description: PublicError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    NotificationTemplate:
+      title: NotificationTemplate
+      type: object
+      properties:
+        name:
+          type: string
+        provenance:
+          type: string
+        template:
+          type: string
+        version:
+          type: string
+    NotificationTemplateContent:
+      title: NotificationTemplateContent
+      type: object
+      properties:
+        template:
+          type: string
+        version:
+          type: string
+    PublicError:
+      title: PublicError
+      type: object
+      properties:
+        extra:
+          type: object
+          additionalProperties: {}
+        message:
+          type: string
+        messageId:
+          type: string
+        statusCode:
+          type: integer
+          contentEncoding: int64
+      description: 'PublicError is derived from Error and only contains information
+
+        available to the end user.'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

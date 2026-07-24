@@ -1,0 +1,101 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Renew API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Renew
+paths:
+  /licensing/token/renew:
+    parameters: []
+    post:
+      tags:
+      - Renew
+      summary: Grafana Post Renew License Token
+      description: This API operation is used to renew an existing Grafana Enterprise license token. When invoked via a POST request to the /licensing/token/renew endpoint, it initiates the license token renewal process, typically validating the current token and requesting a fresh token from the Grafana licensing server. This operation is essential for maintaining continuous access to Grafana Enterprise features by ensuring the license remains valid and up-to-date. Authentication and appropriate permissions are required to execute this operation, and upon successful renewal, the system receives an updated token that extends the licensing period for the Grafana Enterprise instance.
+      operationId: postRenewLicenseToken
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          text/plain:
+            schema:
+              type: object
+              contentMediaType: text/plain
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content: {}
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

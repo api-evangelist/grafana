@@ -1,0 +1,223 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Devices API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Devices
+  description: ''
+paths:
+  /anonymous/devices:
+    parameters: []
+    get:
+      tags:
+      - Devices
+      summary: Grafana List Devices
+      description: This API operation retrieves a list of devices from Grafana's anonymous device management system. It uses the HTTP GET method to query the /anonymous/devices endpoint, returning device information without requiring authenticated user credentials. The operation is useful for monitoring and managing devices that have been registered or accessed anonymously within the Grafana platform, providing administrators with visibility into device activity and enabling device inventory management.
+      operationId: listDevices
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/deviceDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /anonymous/search:
+    parameters: []
+    get:
+      tags:
+      - Devices
+      summary: Grafana Search Devices
+      description: This API operation performs a GET request to the `/anonymous/search` endpoint in Grafana to search for devices without requiring authentication. It allows users to query and retrieve device information from the Grafana system by submitting search parameters, returning matching device records based on the specified criteria. The anonymous nature of this endpoint means it can be accessed without user credentials, making it suitable for public-facing integrations or dashboard displays where device discovery and lookup capabilities are needed without imposing authentication requirements.
+      operationId: searchDevices
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchDeviceQueryResult'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    deviceDTO:
+      title: deviceDTO
+      type: object
+      properties:
+        avatarUrl:
+          type: string
+        clientIp:
+          type: string
+        createdAt:
+          type: string
+          contentEncoding: date-time
+        deviceId:
+          type: string
+        lastSeenAt:
+          type: string
+        updatedAt:
+          type: string
+          contentEncoding: date-time
+        userAgent:
+          type: string
+    SearchDeviceQueryResult:
+      title: SearchDeviceQueryResult
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeviceSearchHitDTO'
+          description: ''
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        totalCount:
+          type: integer
+          contentEncoding: int64
+    DeviceSearchHitDTO:
+      title: DeviceSearchHitDTO
+      type: object
+      properties:
+        clientIp:
+          type: string
+        createdAt:
+          type: string
+          contentEncoding: date-time
+        deviceId:
+          type: string
+        lastSeenAt:
+          type: string
+          contentEncoding: date-time
+        updatedAt:
+          type: string
+          contentEncoding: date-time
+        userAgent:
+          type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

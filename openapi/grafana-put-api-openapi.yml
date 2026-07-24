@@ -1,0 +1,855 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Put API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Put
+paths:
+  /v1/provisioning/alert-rules/{UID}:
+    parameters: []
+    put:
+      tags:
+      - Put
+      summary: Grafana Route Put Alert Rule
+      description: Updates an existing alert rule in Grafana's provisioning API by specifying the rule's unique identifier (UID) in the path. This endpoint allows you to modify all aspects of an alert rule including its condition, evaluation interval, notification settings, labels, and annotations. The request requires a complete alert rule definition in the body, and the UID in the path must match the UID in the request body. This operation is part of Grafana's provisioning capabilities, enabling programmatic management of alerting rules for infrastructure-as-code workflows and automated alert configuration.
+      operationId: routePutAlertRule
+      parameters:
+      - name: UID
+        in: path
+        description: Alert rule UID
+        required: true
+        schema:
+          type: string
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisionedAlertRule'
+        required: false
+      responses:
+        '200':
+          description: ProvisionedAlertRule
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisionedAlertRule'
+        '400':
+          description: ValidationError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/contact-points/{UID}:
+    parameters: []
+    put:
+      tags:
+      - Put
+      summary: Grafana Route Put Contactpoint
+      description: Updates an existing contact point in Grafana's alerting system using its unique identifier (UID). This PUT operation allows administrators to modify the configuration of a specific notification channel or contact point, such as updating webhook URLs, email addresses, Slack channels, or other alerting destination settings. The endpoint requires the contact point's UID in the path and accepts a request body containing the updated contact point configuration including its name, type, and integration-specific settings. This is part of Grafana's provisioning API, enabling programmatic management of alerting infrastructure and ensuring contact points can be maintained through automation or infrastructure-as-code practices.
+      operationId: routePutContactpoint
+      parameters:
+      - name: UID
+        in: path
+        description: UID is the contact point unique identifier
+        required: true
+        schema:
+          type: string
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmbeddedContactPoint'
+        required: false
+      responses:
+        '202':
+          description: Ack
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                contentMediaType: application/json
+        '400':
+          description: ValidationError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/folder/{FolderUID}/rule-groups/{Group}:
+    parameters: []
+    put:
+      tags:
+      - Put
+      summary: Grafana Route Put Alert Rule Group
+      description: Updates an existing alert rule group identified by the folder UID and group name in Grafana's provisioning API. This PUT operation allows you to modify the configuration of alert rules within a specific rule group, including updating rule definitions, thresholds, evaluation intervals, and notification settings. The endpoint requires both the FolderUID parameter to identify the containing folder and the Group parameter to specify which alert rule group to update, with the updated configuration provided in the request body following Grafana's alert rule group schema.
+      operationId: routePutAlertRuleGroup
+      parameters:
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      - name: FolderUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: Group
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertRuleGroup'
+        required: false
+      responses:
+        '200':
+          description: AlertRuleGroup
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertRuleGroup'
+        '400':
+          description: ValidationError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/mute-timings/{name}:
+    parameters: []
+    put:
+      tags:
+      - Put
+      summary: Grafana Route Put Mute Timing
+      description: The PUT operation on the `/v1/provisioning/mute-timings/{name}` endpoint in Grafana is used to update or replace an existing mute timing configuration identified by its name parameter. Mute timings define time-based rules that silence alert notifications during specific periods, such as maintenance windows or non-business hours. This endpoint allows administrators to modify the schedule, time intervals, or other properties of a previously created mute timing by providing the complete updated configuration in the request body. The operation requires appropriate authentication and permissions to manage alert notification policies, and it will overwrite the existing mute timing with the new definition provided in the PUT request.
+      operationId: routePutMuteTiming
+      parameters:
+      - name: name
+        in: path
+        description: Mute timing name
+        required: true
+        schema:
+          type: string
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MuteTimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+        required: false
+      responses:
+        '202':
+          description: MuteTimeInterval
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MuteTimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+        '400':
+          description: ValidationError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '409':
+          description: PublicError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/policies:
+    parameters: []
+    put:
+      tags:
+      - Put
+      summary: Grafana Route Put Policy Tree
+      description: The PUT operation on the /v1/provisioning/policies endpoint in Grafana allows administrators to update or replace the entire notification policy tree for alert routing. This API call enables programmatic management of how alerts are organized, grouped, and routed to different contact points based on matching labels and conditions. By submitting a complete policy tree structure, users can define the hierarchy of policies, including root and nested policies, their matchers, grouping configurations, timing intervals, and associated receiver integrations. This is particularly useful for infrastructure-as-code approaches where alert routing configurations need to be version-controlled and deployed automatically across Grafana instances.
+      operationId: routePutPolicyTree
+      parameters:
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: The new notification routing tree to use
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/Route'
+              - description: The new notification routing tree to use
+              contentMediaType: application/json
+        required: false
+      responses:
+        '202':
+          description: Ack
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                contentMediaType: application/json
+        '400':
+          description: ValidationError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/templates/{name}:
+    parameters: []
+    put:
+      tags:
+      - Put
+      summary: Grafana Route Put Template
+      description: Updates an existing notification template in Grafana's provisioning system by replacing the template configuration identified by the specified name parameter. This PUT operation allows administrators to modify template content, formatting, and other properties used for alert notifications. The route accepts the template name as a path parameter and expects the complete updated template definition in the request body, which will overwrite the existing template configuration while maintaining the same identifier.
+      operationId: routePutTemplate
+      parameters:
+      - name: name
+        in: path
+        description: Template group name
+        required: true
+        schema:
+          type: string
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationTemplateContent'
+        required: false
+      responses:
+        '202':
+          description: NotificationTemplate
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationTemplate'
+        '400':
+          description: PublicError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicError'
+        '409':
+          description: PublicError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    Type:
+      title: Type
+      enum:
+      - alertmanager
+      - dingding
+      - discord
+      - email
+      - googlechat
+      - kafka
+      - line
+      - opsgenie
+      - pagerduty
+      - pushover
+      - sensugo
+      - slack
+      - teams
+      - telegram
+      - threema
+      - victorops
+      - webhook
+      - wecom
+      type: string
+      examples:
+      - webhook
+    ExecErrState:
+      title: ExecErrState
+      enum:
+      - OK
+      - Alerting
+      - Error
+      type: string
+    EmbeddedContactPoint:
+      title: EmbeddedContactPoint
+      required:
+      - settings
+      - type
+      type: object
+      properties:
+        disableResolveMessage:
+          type: boolean
+          examples:
+          - false
+        name:
+          type: string
+          description: 'Name is used as grouping key in the UI. Contact points with the
+
+            same name will be grouped in the UI.'
+          examples:
+          - webhook_1
+        provenance:
+          type: string
+          readOnly: true
+        settings:
+          type: object
+        type:
+          allOf:
+          - $ref: '#/components/schemas/Type'
+          - examples:
+            - webhook
+        uid:
+          maxLength: 40
+          minLength: 1
+          pattern: ^[a-zA-Z0-9\-\_]+$
+          type: string
+          description: 'UID is the unique identifier of the contact point. The UID can be
+
+            set by the user.'
+          examples:
+          - my_external_reference
+      description: 'EmbeddedContactPoint is the contact point type that is used
+
+        by grafanas embedded alertmanager implementation.'
+    AlertRuleGroup:
+      title: AlertRuleGroup
+      type: object
+      properties:
+        folderUid:
+          type: string
+        interval:
+          type: integer
+          contentEncoding: int64
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProvisionedAlertRule'
+          description: ''
+        title:
+          type: string
+    NoDataState:
+      title: NoDataState
+      enum:
+      - Alerting
+      - NoData
+      - OK
+      type: string
+    ProvisionedAlertRule:
+      title: ProvisionedAlertRule
+      required:
+      - condition
+      - data
+      - execErrState
+      - folderUID
+      - for
+      - noDataState
+      - orgID
+      - ruleGroup
+      - title
+      type: object
+      properties:
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+          examples:
+          - runbook_url: https://supercoolrunbook.com/page/13
+        condition:
+          type: string
+          examples:
+          - A
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.'
+          description: ''
+          examples:
+          - - datasourceUid: __expr__
+              model:
+                conditions:
+                - evaluator:
+                    params:
+                    - 0
+                    - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
+                datasource:
+                  type: __expr__
+                  uid: __expr__
+                expression: 1 == 1
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: A
+                type: math
+              queryType: ''
+              refId: A
+              relativeTimeRange:
+                from: 0
+                to: 0
+        execErrState:
+          $ref: '#/components/schemas/ExecErrState'
+        folderUID:
+          type: string
+          examples:
+          - project_x
+        for:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        isPaused:
+          type: boolean
+          examples:
+          - false
+        keep_firing_for:
+          type: string
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          examples:
+          - team: sre-team-1
+        missingSeriesEvalsToResolve:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 2
+        noDataState:
+          $ref: '#/components/schemas/NoDataState'
+        notification_settings:
+          $ref: '#/components/schemas/AlertRuleNotificationSettings'
+        orgID:
+          type: integer
+          contentEncoding: int64
+        provenance:
+          type: string
+        record:
+          $ref: '#/components/schemas/Record'
+        ruleGroup:
+          maxLength: 190
+          minLength: 1
+          type: string
+          examples:
+          - eval_group_1
+        title:
+          maxLength: 190
+          minLength: 1
+          type: string
+          examples:
+          - Always firing
+        uid:
+          maxLength: 40
+          minLength: 1
+          pattern: ^[a-zA-Z0-9-_]+$
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+          readOnly: true
+    AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.:
+      title: AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.
+      type: object
+      properties:
+        datasourceUid:
+          type: string
+          description: Grafana data source unique identifier; it should be '__expr__' for a Server Side Expression operation.
+        model:
+          type: object
+          description: JSON is the raw JSON query and includes the above properties as well as custom properties.
+        queryType:
+          type: string
+          description: 'QueryType is an optional identifier for the type of query.
+
+            It can be used to distinguish different types of queries.'
+        refId:
+          type: string
+          description: RefID is the unique identifier of the query, set by the frontend call.
+        relativeTimeRange:
+          allOf:
+          - $ref: '#/components/schemas/RelativeTimeRange'
+          - description: 'RelativeTimeRange is the per query start and end time
+
+              for requests.'
+    ValidationError:
+      title: ValidationError
+      type: object
+      properties:
+        message:
+          type: string
+          examples:
+          - error message
+    NotificationTemplate:
+      title: NotificationTemplate
+      type: object
+      properties:
+        name:
+          type: string
+        provenance:
+          type: string
+        template:
+          type: string
+        version:
+          type: string
+    Matchermodelsthematchingofalabel.:
+      title: Matchermodelsthematchingofalabel.
+      type: object
+      properties:
+        Name:
+          type: string
+        Type:
+          type: integer
+          contentEncoding: int64
+        Value:
+          type: string
+    MuteTimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.:
+      title: MuteTimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.
+      type: object
+      properties:
+        name:
+          type: string
+        time_intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+          description: ''
+    AlertRuleNotificationSettings:
+      title: AlertRuleNotificationSettings
+      required:
+      - receiver
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: 'Override the times when notifications should not be muted. These must match the name of a mute time interval defined
+
+            in the alertmanager configuration time_intervals section. All notifications will be suppressed unless they are sent
+
+            at the time that matches any interval.'
+          examples:
+          - - maintenance
+        group_by:
+          type: array
+          items:
+            type: string
+          description: 'Override the labels by which incoming alerts are grouped together. For example, multiple alerts coming in for
+
+            cluster=A and alertname=LatencyHigh would be batched into a single group. To aggregate by all possible labels
+
+            use the special value ''...'' as the sole label name.
+
+            This effectively disables aggregation entirely, passing through all alerts as-is. This is unlikely to be what
+
+            you want, unless you have a very low alert volume or your upstream notification system performs its own grouping.
+
+            Must include ''alertname'' and ''grafana_folder'' if not using ''...''.'
+          default:
+          - alertname
+          - grafana_folder
+          examples:
+          - - alertname
+            - grafana_folder
+            - cluster
+        group_interval:
+          type: string
+          description: 'Override how long to wait before sending a notification about new alerts that are added to a group of alerts for
+
+            which an initial notification has already been sent. (Usually ~5m or more.)'
+          examples:
+          - 5m
+        group_wait:
+          type: string
+          description: 'Override how long to initially wait to send a notification for a group of alerts. Allows to wait for an
+
+            inhibiting alert to arrive or collect more initial alerts for the same group. (Usually ~0s to few minutes.)'
+          examples:
+          - 30s
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: 'Override the times when notifications should be muted. These must match the name of a mute time interval defined
+
+            in the alertmanager configuration time_intervals section. When muted it will not send any notifications, but
+
+            otherwise acts normally.'
+          examples:
+          - - maintenance
+        receiver:
+          type: string
+          description: Name of the receiver to send notifications to.
+          examples:
+          - grafana-default-email
+        repeat_interval:
+          type: string
+          description: 'Override how long to wait before sending a notification again if it has already been sent successfully for an
+
+            alert. (Usually ~3h or more).
+
+            Note that this parameter is implicitly bound by Alertmanager''s `--data.retention` configuration flag.
+
+            Notifications will be resent after either repeat_interval or the data retention period have passed, whichever
+
+            occurs first. `repeat_interval` should not be less than `group_interval`.'
+          examples:
+          - 4h
+    RelativeTimeRange:
+      title: RelativeTimeRange
+      type: object
+      properties:
+        from:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        to:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+      description: 'RelativeTimeRange is the per query start and end time
+
+        for requests.'
+    Route:
+      title: Route
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        continue:
+          type: boolean
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        match:
+          type: object
+          additionalProperties:
+            type: string
+          description: Deprecated. Remove before v1.0 release.
+        match_re:
+          type: object
+          additionalProperties:
+            type: string
+        matchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Matchermodelsthematchingofalabel.'
+          description: 'Matchers is a slice of Matchers that is sortable, implements Stringer, and
+
+            provides a Matches method to match a LabelSet against all Matchers in the
+
+            slice. Note that some users of Matchers might require it to be sorted.'
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        object_matchers:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        provenance:
+          type: string
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Route'
+          description: ''
+      description: 'A Route is a node that contains definitions of how to handle alerts. This is modified
+
+        from the upstream alertmanager in that it adds the ObjectMatchers property.'
+    PublicError:
+      title: PublicError
+      type: object
+      properties:
+        extra:
+          type: object
+          additionalProperties: {}
+        message:
+          type: string
+        messageId:
+          type: string
+        statusCode:
+          type: integer
+          contentEncoding: int64
+      description: 'PublicError is derived from Error and only contains information
+
+        available to the end user.'
+    TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.:
+      title: TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.
+      type: object
+      properties:
+        name:
+          type: string
+        time_intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+          description: ''
+    Record:
+      title: Record
+      required:
+      - from
+      - metric
+      type: object
+      properties:
+        from:
+          type: string
+          description: Which expression node should be used as the input for the recorded metric.
+          examples:
+          - A
+        metric:
+          type: string
+          description: Name of the recorded metric.
+          examples:
+          - grafana_alerts_ratio
+        target_datasource_uid:
+          type: string
+          description: Which data source should be used to write the output of the recording rule, specified by UID.
+          examples:
+          - my-prom
+    NotificationTemplateContent:
+      title: NotificationTemplateContent
+      type: object
+      properties:
+        template:
+          type: string
+        version:
+          type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

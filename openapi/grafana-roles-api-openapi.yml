@@ -1,0 +1,637 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Roles API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Roles
+paths:
+  /access-control/roles:
+    parameters: []
+    get:
+      tags:
+      - Roles
+      summary: Grafana List Roles
+      description: '<endpoint>
+
+        This API operation retrieves a list of all available roles within Grafana''s access control system. When invoked with a GET request to the /access-control/roles endpoint, it returns a comprehensive collection of role definitions that exist in the Grafana instance, including both built-in system roles and any custom roles that have been created. The response typically includes role metadata such as role names, descriptions, UIDs, permissions associated with each role, and other relevant attributes that define the access control capabilities granted to users or teams assigned to these roles. This endpoint is commonly used by administrators to audit existing roles, understand the permission structure, or retrieve role information programmatically for integration with external systems or for displaying role management interfaces.
+
+        </endpoint>'
+      operationId: listRoles
+      parameters:
+      - name: delegatable
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: includeHidden
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleDTO'
+                description: ''
+                contentMediaType: application/json
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/teams/roles/search:
+    parameters: []
+    post:
+      tags:
+      - Roles
+      summary: Grafana List Teams Roles
+      description: This API operation performs a search for team roles within Grafana's access control system. It uses a POST request to the /access-control/teams/roles/search endpoint to retrieve a list of roles that are associated with teams in the Grafana instance. The operation allows administrators to query and discover which roles have been assigned to various teams, helping them manage permissions and access control policies. This is useful for auditing team permissions, understanding role assignments, and maintaining proper access governance across the organization's Grafana deployment.
+      operationId: listTeamsRoles
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolesSearchQuery'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                contentMediaType: application/json
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/teams/{teamId}/roles:
+    parameters: []
+    get:
+      tags:
+      - Roles
+      summary: Grafana List Team Roles
+      description: This API operation retrieves all roles assigned to a specific team in Grafana's access control system. By making a GET request to the endpoint with a team identifier, users can view the complete list of roles and their associated permissions that have been granted to that particular team. This is useful for auditing team permissions, understanding what access levels a team has across different resources, and managing role-based access control (RBAC) configurations within Grafana.
+      operationId: listTeamRoles
+      parameters:
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Roles
+      summary: Grafana Set Team Roles
+      description: This API operation updates the complete set of RBAC (Role-Based Access Control) roles assigned to a specific team in Grafana by replacing any existing role assignments with the new ones provided in the request. It uses the PUT method on the endpoint /access-control/teams/{teamId}/roles, where {teamId} is the unique identifier of the team whose roles are being modified. This is a destructive operation that overwrites the current role configuration rather than adding to it, making it useful for scenarios where you need to redefine a team's permissions from scratch or ensure a specific set of roles is applied without concern for previous assignments. The operation requires appropriate administrative permissions and is typically used in access management workflows to maintain proper authorization controls across teams within the Grafana instance.
+      operationId: setTeamRoles
+      parameters:
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetTeamRolesCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/users/roles/search:
+    parameters: []
+    post:
+      tags:
+      - Roles
+      summary: Grafana List Users Roles
+      description: This API operation allows you to search and retrieve a list of roles assigned to users within Grafana's access control system. By sending a POST request to the /access-control/users/roles/search endpoint, you can query and filter user role assignments based on various criteria. The operation is useful for administrators who need to audit user permissions, manage access control policies, or retrieve information about which roles are assigned to specific users across the Grafana instance. The POST method enables you to include search parameters in the request body to narrow down results based on your specific requirements.
+      operationId: listUsersRoles
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolesSearchQuery'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                contentMediaType: application/json
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/users/{userId}/roles:
+    parameters: []
+    get:
+      tags:
+      - Roles
+      summary: Grafana List User Roles
+      description: This API operation retrieves all roles assigned to a specific user in Grafana's access control system. By making a GET request to the endpoint with a user's unique identifier (userId) in the path, you can obtain a comprehensive list of roles that define the user's permissions and access levels within the Grafana instance. This is useful for auditing user permissions, verifying access levels, or managing role-based access control (RBAC) configurations.
+      operationId: listUserRoles
+      parameters:
+      - name: userId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleDTO'
+                description: ''
+                contentMediaType: application/json
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Roles
+      summary: Grafana Set User Roles
+      description: This API operation allows administrators to assign or modify the complete set of roles for a specific user in Grafana's access control system. By making a PUT request to the endpoint with a user's ID, you can replace all existing role assignments for that user with a new set of roles defined in the request body. This is useful for managing user permissions at scale, ensuring users have the appropriate access levels to dashboards, data sources, and other Grafana resources. The operation requires administrative privileges and follows Grafana's role-based access control (RBAC) model to maintain security and proper authorization across the platform.
+      operationId: setUserRoles
+      parameters:
+      - name: userId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetUserRolesCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /groupsync/groups/{group_id}/roles:
+    parameters: []
+    get:
+      tags:
+      - Roles
+      summary: Grafana Get Group Roles
+      description: This API operation retrieves the roles associated with a specific group in Grafana's group synchronization system. By providing a group_id in the URL path, the GET request returns information about what roles have been assigned to that particular group, which is useful for managing permissions and access control in Grafana when using external group synchronization features like LDAP or OAuth.
+      operationId: getGroupRoles
+      parameters:
+      - name: group_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleDTO'
+                description: ''
+                contentMediaType: application/json
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    RoleDTO:
+      title: RoleDTO
+      required:
+      - created
+      - description
+      - displayName
+      - group
+      - name
+      - uid
+      - updated
+      - version
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        delegatable:
+          type: boolean
+        description:
+          type: string
+        displayName:
+          type: string
+        global:
+          type: boolean
+        group:
+          type: string
+        hidden:
+          type: boolean
+        mapped:
+          type: boolean
+        name:
+          type: string
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+          description: ''
+        uid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        version:
+          type: integer
+          contentEncoding: int64
+    SetUserRolesCommand:
+      title: SetUserRolesCommand
+      type: object
+      properties:
+        global:
+          type: boolean
+        includeHidden:
+          type: boolean
+        roleUids:
+          type: array
+          items:
+            type: string
+          description: ''
+    Permission:
+      title: Permission
+      type: object
+      properties:
+        action:
+          type: string
+        created:
+          type: string
+          contentEncoding: date-time
+        scope:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+      description: Permission is the model for access control permissions
+    RolesSearchQuery:
+      title: RolesSearchQuery
+      type: object
+      properties:
+        includeHidden:
+          type: boolean
+        orgId:
+          type: integer
+          contentEncoding: int64
+        teamIds:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+        userIds:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+    SetTeamRolesCommand:
+      title: SetTeamRolesCommand
+      type: object
+      properties:
+        includeHidden:
+          type: boolean
+        roleUids:
+          type: array
+          items:
+            type: string
+          description: ''
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

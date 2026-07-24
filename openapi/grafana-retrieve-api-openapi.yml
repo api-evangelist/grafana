@@ -1,0 +1,920 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Retrieve API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Retrieve
+paths:
+  /serviceaccounts/{serviceAccountId}:
+    parameters: []
+    get:
+      tags:
+      - Retrieve
+      summary: Grafana Retrieve Service Account
+      description: Returns detailed information about a specific Grafana service account by its unique identifier. This operation allows administrators to fetch the complete configuration and metadata of a service account, including its name, role, status, and associated permissions. The service account ID must be provided as a path parameter to identify which service account to retrieve. This is useful for auditing purposes, verifying service account configurations, or retrieving details before performing updates or deletions.
+      operationId: retrieveServiceAccount
+      parameters:
+      - name: serviceAccountId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceAccountDTO'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /signing-keys/keys:
+    parameters: []
+    get:
+      tags:
+      - Retrieve
+      summary: Grafana Retrieve JWKS
+      description: The Grafana API endpoint `/signing-keys/keys` using the GET method retrieves the JSON Web Key Set (JWKS) for the Grafana instance. This endpoint returns the public keys used for verifying JSON Web Tokens (JWTs) issued by Grafana, which is essential for validating authentication tokens in distributed systems or when integrating with external services. The JWKS contains cryptographic key information in a standardized format that allows clients to verify the signature of JWTs without needing to store the keys locally, supporting secure token-based authentication workflows.
+      operationId: retrieveJWKS
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/jwksResponse'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    Name:
+      title: Name
+      type: object
+      properties:
+        Country:
+          type: array
+          items:
+            type: string
+          description: ''
+        ExtraNames:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeTypeAndValue'
+          description: 'ExtraNames contains attributes to be copied, raw, into any marshaled
+
+            distinguished names. Values override any attributes with the same OID.
+
+            The ExtraNames field is not populated when parsing, see Names.'
+        Locality:
+          type: array
+          items:
+            type: string
+          description: ''
+        Names:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeTypeAndValue'
+          description: 'Names contains all parsed attributes. When parsing distinguished names,
+
+            this can be used to extract non-standard attributes that are not parsed
+
+            by this package. When marshaling to RDNSequences, the Names field is
+
+            ignored, see ExtraNames.'
+        SerialNumber:
+          type: string
+        StreetAddress:
+          type: array
+          items:
+            type: string
+          description: ''
+      description: 'Name represents an X.509 distinguished name. This only includes the common
+
+        elements of a DN. Note that Name is only an approximation of the X.509
+
+        structure. If an accurate representation is needed, asn1.Unmarshal the raw
+
+        subject or issuer as an [RDNSequence].'
+    PolicyMappingrepresentsapolicymappingentryinthepolicyMappingsextension.:
+      title: PolicyMappingrepresentsapolicymappingentryinthepolicyMappingsextension.
+      type: object
+      properties:
+        IssuerDomainPolicy:
+          type: string
+          description: 'IssuerDomainPolicy contains a policy OID the issuing certificate considers
+
+            equivalent to SubjectDomainPolicy in the subject certificate.'
+        SubjectDomainPolicy:
+          type: string
+          description: 'SubjectDomainPolicy contains a OID the issuing certificate considers
+
+            equivalent to IssuerDomainPolicy in the subject certificate.'
+    AttributeTypeAndValue:
+      title: AttributeTypeAndValue
+      type: object
+      properties:
+        Type:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+        Value: {}
+      description: 'AttributeTypeAndValue mirrors the ASN.1 structure of the same name in
+
+        RFC 5280, Section 4.1.2.4.'
+    Extension:
+      title: Extension
+      type: object
+      properties:
+        Critical:
+          type: boolean
+        Id:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+        Value:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: ''
+      description: 'Extension represents the ASN.1 structure of the same name. See RFC
+
+        5280, section 4.2.'
+    jwksResponse:
+      title: jwksResponse
+      type: object
+      properties:
+        keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/JSONWebKey'
+          description: ''
+    AnIPNetrepresentsanIPnetwork.:
+      title: AnIPNetrepresentsanIPnetwork.
+      type: object
+      properties:
+        IP:
+          type: string
+        Mask:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: See type [IPNet] and func [ParseCIDR] for details.
+    ACertificaterepresentsanX.509certificate.:
+      title: ACertificaterepresentsanX.509certificate.
+      type: object
+      properties:
+        AuthorityKeyId:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: ''
+        BasicConstraintsValid:
+          type: boolean
+          description: 'BasicConstraintsValid indicates whether IsCA, MaxPathLen,
+
+            and MaxPathLenZero are valid.'
+        CRLDistributionPoints:
+          type: array
+          items:
+            type: string
+          description: CRL Distribution Points
+        DNSNames:
+          type: array
+          items:
+            type: string
+          description: 'Subject Alternate Name values. (Note that these values may not be valid
+
+            if invalid values were contained within a parsed certificate. For
+
+            example, an element of DNSNames may not be a valid DNS domain name.)'
+        EmailAddresses:
+          type: array
+          items:
+            type: string
+          description: ''
+        ExcludedDNSDomains:
+          type: array
+          items:
+            type: string
+          description: ''
+        ExcludedEmailAddresses:
+          type: array
+          items:
+            type: string
+          description: ''
+        ExcludedIPRanges:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnIPNetrepresentsanIPnetwork.'
+          description: ''
+        ExcludedURIDomains:
+          type: array
+          items:
+            type: string
+          description: ''
+        ExtKeyUsage:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+        Extensions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Extension'
+          description: 'Extensions contains raw X.509 extensions. When parsing certificates,
+
+            this can be used to extract non-critical extensions that are not
+
+            parsed by this package. When marshaling certificates, the Extensions
+
+            field is ignored, see ExtraExtensions.'
+        ExtraExtensions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Extension'
+          description: 'ExtraExtensions contains extensions to be copied, raw, into any
+
+            marshaled certificates. Values override any extensions that would
+
+            otherwise be produced based on the other fields. The ExtraExtensions
+
+            field is not populated when parsing certificates, see Extensions.'
+        IPAddresses:
+          type: array
+          items:
+            type: string
+          description: ''
+        InhibitAnyPolicy:
+          type: integer
+          description: 'InhibitAnyPolicy and InhibitAnyPolicyZero indicate the presence and value
+
+            of the inhibitAnyPolicy extension.
+
+
+            The value of InhibitAnyPolicy indicates the number of additional
+
+            certificates in the path after this certificate that may use the
+
+            anyPolicy policy OID to indicate a match with any other policy.
+
+
+            When parsing a certificate, a positive non-zero InhibitAnyPolicy means
+
+            that the field was specified, -1 means it was unset, and
+
+            InhibitAnyPolicyZero being true mean that the field was explicitly set to
+
+            zero. The case of InhibitAnyPolicy==0 with InhibitAnyPolicyZero==false
+
+            should be treated equivalent to -1 (unset).'
+          contentEncoding: int64
+        InhibitAnyPolicyZero:
+          type: boolean
+          description: 'InhibitAnyPolicyZero indicates that InhibitAnyPolicy==0 should be
+
+            interpreted as an actual maximum path length of zero. Otherwise, that
+
+            combination is interpreted as InhibitAnyPolicy not being set.'
+        InhibitPolicyMapping:
+          type: integer
+          description: 'InhibitPolicyMapping and InhibitPolicyMappingZero indicate the presence
+
+            and value of the inhibitPolicyMapping field of the policyConstraints
+
+            extension.
+
+
+            The value of InhibitPolicyMapping indicates the number of additional
+
+            certificates in the path after this certificate that may use policy
+
+            mapping.
+
+
+            When parsing a certificate, a positive non-zero InhibitPolicyMapping
+
+            means that the field was specified, -1 means it was unset, and
+
+            InhibitPolicyMappingZero being true mean that the field was explicitly
+
+            set to zero. The case of InhibitPolicyMapping==0 with
+
+            InhibitPolicyMappingZero==false should be treated equivalent to -1
+
+            (unset).'
+          contentEncoding: int64
+        InhibitPolicyMappingZero:
+          type: boolean
+          description: 'InhibitPolicyMappingZero indicates that InhibitPolicyMapping==0 should be
+
+            interpreted as an actual maximum path length of zero. Otherwise, that
+
+            combination is interpreted as InhibitAnyPolicy not being set.'
+        IsCA:
+          type: boolean
+        Issuer:
+          allOf:
+          - $ref: '#/components/schemas/Name'
+          - description: 'Name represents an X.509 distinguished name. This only includes the common
+
+              elements of a DN. Note that Name is only an approximation of the X.509
+
+              structure. If an accurate representation is needed, asn1.Unmarshal the raw
+
+              subject or issuer as an [RDNSequence].'
+        IssuingCertificateURL:
+          type: array
+          items:
+            type: string
+          description: ''
+        KeyUsage:
+          type: integer
+          description: 'KeyUsage represents the set of actions that are valid for a given key. It''s
+
+            a bitmap of the KeyUsage* constants.'
+          contentEncoding: int64
+        MaxPathLen:
+          type: integer
+          description: 'MaxPathLen and MaxPathLenZero indicate the presence and
+
+            value of the BasicConstraints'' "pathLenConstraint".
+
+
+            When parsing a certificate, a positive non-zero MaxPathLen
+
+            means that the field was specified, -1 means it was unset,
+
+            and MaxPathLenZero being true mean that the field was
+
+            explicitly set to zero. The case of MaxPathLen==0 with MaxPathLenZero==false
+
+            should be treated equivalent to -1 (unset).
+
+
+            When generating a certificate, an unset pathLenConstraint
+
+            can be requested with either MaxPathLen == -1 or using the
+
+            zero value for both MaxPathLen and MaxPathLenZero.'
+          contentEncoding: int64
+        MaxPathLenZero:
+          type: boolean
+          description: 'MaxPathLenZero indicates that BasicConstraintsValid==true
+
+            and MaxPathLen==0 should be interpreted as an actual
+
+            maximum path length of zero. Otherwise, that combination is
+
+            interpreted as MaxPathLen not being set.'
+        NotBefore:
+          type: string
+          contentEncoding: date-time
+        OCSPServer:
+          type: array
+          items:
+            type: string
+          description: RFC 5280, 4.2.2.1 (Authority Information Access)
+        PermittedDNSDomains:
+          type: array
+          items:
+            type: string
+          description: ''
+        PermittedDNSDomainsCritical:
+          type: boolean
+          description: Name constraints
+        PermittedEmailAddresses:
+          type: array
+          items:
+            type: string
+          description: ''
+        PermittedIPRanges:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnIPNetrepresentsanIPnetwork.'
+          description: ''
+        PermittedURIDomains:
+          type: array
+          items:
+            type: string
+          description: ''
+        Policies:
+          type: array
+          items:
+            type: string
+          description: 'Policies contains all policy identifiers included in the certificate.
+
+            See CreateCertificate for context about how this field and the PolicyIdentifiers field
+
+            interact.
+
+            In Go 1.22, encoding/gob cannot handle and ignores this field.'
+        PolicyIdentifiers:
+          type: array
+          items:
+            type: array
+            items:
+              type: integer
+              contentEncoding: int64
+          description: 'PolicyIdentifiers contains asn1.ObjectIdentifiers, the components
+
+            of which are limited to int32. If a certificate contains a policy which
+
+            cannot be represented by asn1.ObjectIdentifier, it will not be included in
+
+            PolicyIdentifiers, but will be present in Policies, which contains all parsed
+
+            policy OIDs.
+
+            See CreateCertificate for context about how this field and the Policies field
+
+            interact.'
+        PolicyMappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyMappingrepresentsapolicymappingentryinthepolicyMappingsextension.'
+          description: PolicyMappings contains a list of policy mappings included in the certificate.
+        PublicKey: {}
+        PublicKeyAlgorithm:
+          type: integer
+          contentEncoding: int64
+        Raw:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: ''
+        RawIssuer:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: ''
+        RawSubject:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: ''
+        RawSubjectPublicKeyInfo:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: ''
+        RawTBSCertificate:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: ''
+        RequireExplicitPolicy:
+          type: integer
+          description: 'RequireExplicitPolicy and RequireExplicitPolicyZero indicate the presence
+
+            and value of the requireExplicitPolicy field of the policyConstraints
+
+            extension.
+
+
+            The value of RequireExplicitPolicy indicates the number of additional
+
+            certificates in the path after this certificate before an explicit policy
+
+            is required for the rest of the path. When an explicit policy is required,
+
+            each subsequent certificate in the path must contain a required policy OID,
+
+            or a policy OID which has been declared as equivalent through the policy
+
+            mapping extension.
+
+
+            When parsing a certificate, a positive non-zero RequireExplicitPolicy
+
+            means that the field was specified, -1 means it was unset, and
+
+            RequireExplicitPolicyZero being true mean that the field was explicitly
+
+            set to zero. The case of RequireExplicitPolicy==0 with
+
+            RequireExplicitPolicyZero==false should be treated equivalent to -1
+
+            (unset).'
+          contentEncoding: int64
+        RequireExplicitPolicyZero:
+          type: boolean
+          description: 'RequireExplicitPolicyZero indicates that RequireExplicitPolicy==0 should be
+
+            interpreted as an actual maximum path length of zero. Otherwise, that
+
+            combination is interpreted as InhibitAnyPolicy not being set.'
+        SerialNumber:
+          type: string
+        Signature:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: ''
+        SignatureAlgorithm:
+          type: integer
+          contentEncoding: int64
+        Subject:
+          allOf:
+          - $ref: '#/components/schemas/Name'
+          - description: 'Name represents an X.509 distinguished name. This only includes the common
+
+              elements of a DN. Note that Name is only an approximation of the X.509
+
+              structure. If an accurate representation is needed, asn1.Unmarshal the raw
+
+              subject or issuer as an [RDNSequence].'
+        SubjectKeyId:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: ''
+        URIs:
+          type: array
+          items:
+            $ref: '#/components/schemas/AURLrepresentsaparsedURLtechnicallyaURIreference.2'
+          description: ''
+        UnhandledCriticalExtensions:
+          type: array
+          items:
+            type: array
+            items:
+              type: integer
+              contentEncoding: int64
+          description: 'UnhandledCriticalExtensions contains a list of extension IDs that
+
+            were not (fully) processed when parsing. Verify will fail if this
+
+            slice is non-empty, unless verification is delegated to an OS
+
+            library which understands all the critical extensions.
+
+
+            Users can access these extensions using Extensions and can remove
+
+            elements from this slice if they believe that they have been
+
+            handled.'
+        UnknownExtKeyUsage:
+          type: array
+          items:
+            type: array
+            items:
+              type: integer
+              contentEncoding: int64
+        Version:
+          type: integer
+          contentEncoding: int64
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    ServiceAccountDTO:
+      title: ServiceAccountDTO
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+          examples:
+          - serviceaccounts:delete: true
+            serviceaccounts:read: true
+            serviceaccounts:write: true
+        avatarUrl:
+          type: string
+          examples:
+          - /avatar/85ec38023d90823d3e5b43ef35646af9
+        id:
+          type: integer
+          contentEncoding: int64
+        isDisabled:
+          type: boolean
+          examples:
+          - false
+        isExternal:
+          type: boolean
+          examples:
+          - false
+        login:
+          type: string
+          examples:
+          - sa-grafana
+        name:
+          type: string
+          examples:
+          - grafana
+        orgId:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 1
+        role:
+          type: string
+          examples:
+          - Viewer
+        tokens:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 0
+        uid:
+          type: string
+          examples:
+          - fe1xejlha91xce
+      description: 'swagger: model'
+    AURLrepresentsaparsedURLtechnicallyaURIreference.2:
+      title: AURLrepresentsaparsedURLtechnicallyaURIreference.2
+      type: object
+      properties:
+        ForceQuery:
+          type: boolean
+        Fragment:
+          type: string
+        Host:
+          type: string
+        OmitHost:
+          type: boolean
+        Opaque:
+          type: string
+        Path:
+          type: string
+        RawFragment:
+          type: string
+        RawPath:
+          type: string
+        RawQuery:
+          type: string
+        Scheme:
+          type: string
+        User:
+          type: object
+          description: 'The Userinfo type is an immutable encapsulation of username and
+
+            password details for a [URL]. An existing Userinfo value is guaranteed
+
+            to have a username set (potentially empty, as allowed by RFC 2396),
+
+            and optionally a password.'
+      description: 'The general form represented is:
+
+
+        [scheme:][//[userinfo@]host][/]path[?query][#fragment]
+
+
+        URLs that do not start with a slash after the scheme are interpreted as:
+
+
+        scheme:opaque[?query][#fragment]
+
+
+        The Host field contains the host and port subcomponents of the URL.
+
+        When the port is present, it is separated from the host with a colon.
+
+        When the host is an IPv6 address, it must be enclosed in square brackets:
+
+        "[fe80::1]:80". The [net.JoinHostPort] function combines a host and port
+
+        into a string suitable for the Host field, adding square brackets to
+
+        the host when necessary.
+
+
+        Note that the Path field is stored in decoded form: /%47%6f%2f becomes /Go/.
+
+        A consequence is that it is impossible to tell which slashes in the Path were
+
+        slashes in the raw URL and which were %2f. This distinction is rarely important,
+
+        but when it is, the code should use the [URL.EscapedPath] method, which preserves
+
+        the original encoding of Path.
+
+
+        The RawPath field is an optional field which is only set when the default
+
+        encoding of Path is different from the escaped path. See the EscapedPath method
+
+        for more details.
+
+
+        URL''s String method uses the EscapedPath method to obtain the path.'
+    JSONWebKey:
+      title: JSONWebKey
+      type: object
+      properties:
+        Algorithm:
+          type: string
+          description: Key algorithm, parsed from `alg` header.
+        CertificateThumbprintSHA1:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: X.509 certificate thumbprint (SHA-1), parsed from `x5t` header.
+        CertificateThumbprintSHA256:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: X.509 certificate thumbprint (SHA-256), parsed from `x5t#S256` header.
+        Certificates:
+          type: array
+          items:
+            $ref: '#/components/schemas/ACertificaterepresentsanX.509certificate.'
+          description: X.509 certificate chain, parsed from `x5c` header.
+        CertificatesURL:
+          allOf:
+          - $ref: '#/components/schemas/AURLrepresentsaparsedURLtechnicallyaURIreference.2'
+          - description: 'The general form represented is:
+
+
+              [scheme:][//[userinfo@]host][/]path[?query][#fragment]
+
+
+              URLs that do not start with a slash after the scheme are interpreted as:
+
+
+              scheme:opaque[?query][#fragment]
+
+
+              The Host field contains the host and port subcomponents of the URL.
+
+              When the port is present, it is separated from the host with a colon.
+
+              When the host is an IPv6 address, it must be enclosed in square brackets:
+
+              "[fe80::1]:80". The [net.JoinHostPort] function combines a host and port
+
+              into a string suitable for the Host field, adding square brackets to
+
+              the host when necessary.
+
+
+              Note that the Path field is stored in decoded form: /%47%6f%2f becomes /Go/.
+
+              A consequence is that it is impossible to tell which slashes in the Path were
+
+              slashes in the raw URL and which were %2f. This distinction is rarely important,
+
+              but when it is, the code should use the [URL.EscapedPath] method, which preserves
+
+              the original encoding of Path.
+
+
+              The RawPath field is an optional field which is only set when the default
+
+              encoding of Path is different from the escaped path. See the EscapedPath method
+
+              for more details.
+
+
+              URL''s String method uses the EscapedPath method to obtain the path.'
+        Key:
+          description: 'Key is the Go in-memory representation of this key. It must have one
+
+            of these types:
+
+            ed25519.PublicKey
+
+            ed25519.PrivateKey
+
+            ecdsa.PublicKey
+
+            ecdsa.PrivateKey
+
+            rsa.PublicKey
+
+            rsa.PrivateKey
+
+            []byte (a symmetric key)
+
+
+            When marshaling this JSONWebKey into JSON, the "kty" header parameter
+
+            will be automatically set based on the type of this field.'
+        KeyID:
+          type: string
+          description: Key identifier, parsed from `kid` header.
+        Use:
+          type: string
+          description: Key use, parsed from `use` header.
+      description: 'JSONWebKey represents a public or private key in JWK format. It can be
+
+        marshaled into JSON and unmarshaled from JSON.'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

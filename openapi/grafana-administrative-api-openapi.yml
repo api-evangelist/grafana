@@ -1,0 +1,1065 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Administrative API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Administrative
+paths:
+  /admin/settings:
+    parameters: []
+    get:
+      tags:
+      - Administrative
+      summary: Grafana Admin Get Settings
+      description: The Admin Get Settings endpoint in Grafana's Admin API allows administrators with appropriate permissions to retrieve the current configuration settings of the Grafana instance. This GET operation at the /admin/settings path returns a comprehensive view of all server settings, including data source configurations, authentication settings, feature toggles, and other system-wide parameters. The endpoint is typically used for administrative tasks such as auditing configurations, troubleshooting issues, or verifying that settings have been applied correctly. Access to this endpoint requires admin-level privileges as it exposes sensitive configuration information about the Grafana deployment.
+      operationId: adminGetSettings
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/stats:
+    parameters: []
+    get:
+      tags:
+      - Administrative
+      summary: Grafana Admin Get Stats
+      description: The Grafana Admin Get Stats API operation is an administrative endpoint accessible via HTTP GET request at `/admin/stats` that retrieves statistical information and metrics about the Grafana instance. This endpoint requires administrator privileges and provides aggregated data such as user counts, dashboard counts, data source statistics, organization metrics, and other system-wide analytics that help administrators monitor the overall health, usage, and growth of their Grafana deployment. The statistics returned offer insights into resource utilization and platform adoption within the organization.
+      operationId: adminGetStats
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminStats'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/provisioning/access-control/reload:
+    parameters: []
+    post:
+      tags:
+      - Administrative
+      summary: Grafana Admin Provisioning Reload Access Control
+      description: This API operation performs a POST request to the '/admin/provisioning/access-control/reload' endpoint in Grafana's admin provisioning system. It triggers a reload of the access control configuration, allowing administrators to refresh and apply any changes made to access control provisioning files without requiring a full Grafana server restart. This is particularly useful in environments where role-based access control (RBAC) settings are managed through provisioning configurations and need to be updated dynamically. The operation requires administrative privileges to execute and ensures that the latest access control policies and permissions are loaded into the running Grafana instance.
+      operationId: adminProvisioningReloadAccessControl
+      parameters: []
+      responses:
+        '202':
+          description: AcceptedResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/provisioning/dashboards/reload:
+    parameters: []
+    post:
+      tags:
+      - Administrative
+      summary: Grafana Admin Provisioning Reload Dashboards
+      description: This API operation is a POST request to the '/admin/provisioning/dashboards/reload' endpoint in Grafana that allows administrators to trigger a reload of provisioned dashboards without requiring a full Grafana server restart. When invoked, this endpoint scans the configured provisioning directories and reloads all dashboard configurations, applying any changes made to the provisioning files such as new dashboards, modifications to existing ones, or deletions. This is particularly useful in automated environments or when managing dashboards as code, as it enables administrators to update dashboard configurations dynamically and see changes reflected immediately in the Grafana instance without service interruption.
+      operationId: adminProvisioningReloadDashboards
+      parameters: []
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/provisioning/datasources/reload:
+    parameters: []
+    post:
+      tags:
+      - Administrative
+      summary: Grafana Admin Provisioning Reload Datasources
+      description: This API endpoint allows administrators to trigger a reload of provisioned datasources in Grafana. When invoked via a POST request to '/admin/provisioning/datasources/reload', it refreshes the datasource configurations from the provisioning files without requiring a full Grafana restart. This is particularly useful when datasource configuration files have been modified on disk and need to be applied immediately to the running Grafana instance. The operation requires admin-level privileges to execute and provides a convenient way to manage datasources programmatically or through automation scripts while maintaining consistency with infrastructure-as-code practices.
+      operationId: adminProvisioningReloadDatasources
+      parameters: []
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/provisioning/plugins/reload:
+    parameters: []
+    post:
+      tags:
+      - Administrative
+      summary: Grafana Admin Provisioning Reload Plugins
+      description: This API operation is an administrative endpoint in Grafana that triggers a reload of provisioned plugins without requiring a full system restart. When invoked via a POST request to the /admin/provisioning/plugins/reload path, it forces Grafana to re-scan and reload plugin configurations that have been set up through the provisioning system, allowing administrators to apply changes to plugin provisioning files dynamically. This is particularly useful in automated deployment scenarios or when managing plugins through infrastructure-as-code approaches, as it enables updates to take effect immediately without disrupting the Grafana service or requiring manual intervention through the UI.
+      operationId: adminProvisioningReloadPlugins
+      parameters: []
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users:
+    parameters: []
+    post:
+      tags:
+      - Administrative
+      summary: Grafana Admin Create User
+      description: This API operation allows administrators to create new users in Grafana through a POST request to the /admin/users endpoint. It is an administrative function that requires elevated privileges and enables the programmatic addition of user accounts to the Grafana system. When invoked, the operation accepts user details such as username, email, password, and other relevant attributes in the request body, then creates a new user account with the specified credentials and settings. This endpoint is particularly useful for bulk user provisioning, automated user management workflows, or integrating Grafana user creation with external identity management systems.
+      operationId: adminCreateUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminCreateUserForm'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminCreateUserResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '412':
+          description: PreconditionFailedError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}:
+    parameters: []
+    delete:
+      tags:
+      - Administrative
+      summary: Grafana Admin Delete User
+      description: This API operation allows Grafana administrators with appropriate permissions to permanently delete a specific user account from the Grafana instance by making a DELETE request to the /admin/users/{user_id} endpoint, where {user_id} is the unique identifier of the target user. This is a privileged administrative function that removes the user and all associated data from the system, and should be used with caution as the deletion is typically irreversible. The operation requires admin-level authentication and authorization, and upon successful execution, it returns a confirmation response indicating the user has been removed from the Grafana database.
+      operationId: adminDeleteUser
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/auth-tokens:
+    parameters: []
+    get:
+      tags:
+      - Administrative
+      summary: Grafana Admin Get User Auth Tokens
+      description: Retrieves a list of authentication tokens associated with a specific user account in Grafana. This administrative endpoint requires admin privileges and allows system administrators to view all active auth tokens that have been generated for a particular user identified by their user ID. The operation returns token metadata including creation dates, last used timestamps, and token names, which helps administrators audit user access, monitor authentication activity, and identify potentially unauthorized or stale tokens that may need to be revoked for security purposes.
+      operationId: adminGetUserAuthTokens
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserToken'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/disable:
+    parameters: []
+    post:
+      tags:
+      - Administrative
+      summary: Grafana Admin Disable User
+      description: This API operation allows Grafana administrators to disable a specific user account by sending a POST request to the /admin/users/{user_id}/disable endpoint. The operation requires administrative privileges and targets a user identified by their unique user_id parameter in the URL path. When executed, this endpoint deactivates the specified user account, preventing them from logging in or accessing Grafana resources while preserving their user data and configurations for potential future reactivation. This is a non-destructive administrative action typically used for temporarily suspending user access due to security concerns, policy violations, or when users no longer require access to the system.
+      operationId: adminDisableUser
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/enable:
+    parameters: []
+    post:
+      tags:
+      - Administrative
+      summary: Grafana Admin Enable User
+      description: This API operation is used by Grafana administrators to re-enable a previously disabled user account. It requires a POST request to the endpoint with the specific user ID as a path parameter. Only users with admin privileges can execute this operation, which restores access for users who may have been temporarily disabled due to security concerns, policy violations, or administrative purposes. Upon successful execution, the specified user account is activated and the user can log in and access Grafana resources according to their assigned permissions and roles.
+      operationId: adminEnableUser
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/logout:
+    parameters: []
+    post:
+      tags:
+      - Administrative
+      summary: Grafana Admin Logout User
+      description: This API operation allows a Grafana administrator to forcibly log out a specific user by sending a POST request to the endpoint with the target user's ID. When invoked, it invalidates all active sessions for the specified user, effectively disconnecting them from Grafana and requiring them to re-authenticate before accessing the system again. This is typically used for security purposes, such as immediately revoking access when a user account is compromised, when enforcing policy changes, or when an administrator needs to ensure a user re-authenticates with updated permissions or credentials.
+      operationId: adminLogoutUser
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/password:
+    parameters: []
+    put:
+      tags:
+      - Administrative
+      summary: Grafana Admin Update User Password
+      description: This API operation allows Grafana administrators to programmatically update the password for a specific user account by sending a PUT request to the endpoint with the target user's ID. The administrator must provide the new password in the request body, and this action requires admin-level privileges to execute. This operation is particularly useful for password resets, account recovery scenarios, or when administrators need to enforce password changes for security purposes without requiring the user to go through a standard password reset flow.
+      operationId: adminUpdateUserPassword
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUpdateUserPasswordForm'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/permissions:
+    parameters: []
+    put:
+      tags:
+      - Administrative
+      summary: Grafana Admin Update User Permissions
+      description: Updates the permissions for a specific user in Grafana through an administrative endpoint. This operation requires admin privileges and allows modification of user permission settings by targeting a specific user via their user_id parameter in the URL path. The PUT method indicates this is a full update of the user's permission configuration, replacing the existing permissions with the new settings provided in the request body. This is typically used by system administrators to grant or revoke access rights, adjust role-based permissions, or modify what resources and features a particular user can access within the Grafana instance.
+      operationId: adminUpdateUserPermissions
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUpdateUserPermissionsForm'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/revoke-auth-token:
+    parameters: []
+    post:
+      tags:
+      - Administrative
+      summary: Grafana Admin Revoke User Auth Token
+      description: This API operation allows a Grafana administrator to forcibly revoke a specific authentication token for a given user by making a POST request to the endpoint with the target user's ID. When executed, it invalidates the specified auth token, effectively logging out that user from any session using that particular token, which is useful for security purposes such as when a token may have been compromised or when an administrator needs to terminate a user's access immediately without affecting other active sessions the user might have with different tokens.
+      operationId: adminRevokeUserAuthToken
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevokeAuthTokenCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    AdminCreateUserForm:
+      title: AdminCreateUserForm
+      type: object
+      properties:
+        email:
+          type: string
+        login:
+          type: string
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        password:
+          type: string
+    AdminUpdateUserPermissionsForm:
+      title: AdminUpdateUserPermissionsForm
+      type: object
+      properties:
+        isGrafanaAdmin:
+          type: boolean
+    UserToken:
+      title: UserToken
+      type: object
+      properties:
+        AuthToken:
+          type: string
+        AuthTokenSeen:
+          type: boolean
+        ClientIp:
+          type: string
+        CreatedAt:
+          type: integer
+          contentEncoding: int64
+        ExternalSessionId:
+          type: integer
+          contentEncoding: int64
+        Id:
+          type: integer
+          contentEncoding: int64
+        PrevAuthToken:
+          type: string
+        RevokedAt:
+          type: integer
+          contentEncoding: int64
+        RotatedAt:
+          type: integer
+          contentEncoding: int64
+        SeenAt:
+          type: integer
+          contentEncoding: int64
+        UnhashedToken:
+          type: string
+        UpdatedAt:
+          type: integer
+          contentEncoding: int64
+        UserAgent:
+          type: string
+        UserId:
+          type: integer
+          contentEncoding: int64
+      description: UserToken represents a user token
+    RevokeAuthTokenCmd:
+      title: RevokeAuthTokenCmd
+      type: object
+      properties:
+        authTokenId:
+          type: integer
+          contentEncoding: int64
+    AdminStats:
+      title: AdminStats
+      type: object
+      properties:
+        activeAdmins:
+          type: integer
+          contentEncoding: int64
+        activeDevices:
+          type: integer
+          contentEncoding: int64
+        activeEditors:
+          type: integer
+          contentEncoding: int64
+        activeSessions:
+          type: integer
+          contentEncoding: int64
+        activeUsers:
+          type: integer
+          contentEncoding: int64
+        activeViewers:
+          type: integer
+          contentEncoding: int64
+        admins:
+          type: integer
+          contentEncoding: int64
+        alerts:
+          type: integer
+          contentEncoding: int64
+        dailyActiveAdmins:
+          type: integer
+          contentEncoding: int64
+        dailyActiveEditors:
+          type: integer
+          contentEncoding: int64
+        dailyActiveSessions:
+          type: integer
+          contentEncoding: int64
+        dailyActiveUsers:
+          type: integer
+          contentEncoding: int64
+        dailyActiveViewers:
+          type: integer
+          contentEncoding: int64
+        dashboards:
+          type: integer
+          contentEncoding: int64
+        datasources:
+          type: integer
+          contentEncoding: int64
+        editors:
+          type: integer
+          contentEncoding: int64
+        monthlyActiveUsers:
+          type: integer
+          contentEncoding: int64
+        orgs:
+          type: integer
+          contentEncoding: int64
+        playlists:
+          type: integer
+          contentEncoding: int64
+        snapshots:
+          type: integer
+          contentEncoding: int64
+        stars:
+          type: integer
+          contentEncoding: int64
+        tags:
+          type: integer
+          contentEncoding: int64
+        users:
+          type: integer
+          contentEncoding: int64
+        viewers:
+          type: integer
+          contentEncoding: int64
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    AdminCreateUserResponse:
+      title: AdminCreateUserResponse
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+        uid:
+          type: string
+    AdminUpdateUserPasswordForm:
+      title: AdminUpdateUserPasswordForm
+      type: object
+      properties:
+        password:
+          type: string
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

@@ -1,0 +1,752 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Libraries API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Libraries
+paths:
+  /library-elements:
+    parameters: []
+    get:
+      tags:
+      - Libraries
+      summary: Grafana Get Library Elements
+      description: This API operation retrieves library elements from Grafana, which are reusable components such as panels or variables that can be shared across multiple dashboards. When called, it returns a list of library elements available in the Grafana instance, allowing users to query and fetch these shared resources for dashboard creation or management purposes. The GET request to the /library-elements endpoint provides access to the library element catalog, enabling efficient reuse of dashboard components across an organization's Grafana environment.
+      operationId: getLibraryElements
+      parameters:
+      - name: searchString
+        in: query
+        description: Part of the name or description searched for.
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: kind
+        in: query
+        description: Kind of element to search for.
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: sortDirection
+        in: query
+        description: Sort order of elements.
+        style: form
+        explode: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/sortDirection'
+          - description: Sort order of elements.
+      - name: typeFilter
+        in: query
+        description: A comma separated list of types to filter the elements by
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: excludeUid
+        in: query
+        description: Element UID to exclude from search results.
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: folderFilter
+        in: query
+        description: A comma separated list of folder ID(s) to filter the elements by.
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: perPage
+        in: query
+        description: The number of results per page.
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 100
+      - name: page
+        in: query
+        description: The page for a set of records, given that only perPage records are returned at a time. Numbering starts at 1.
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 1
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryElementSearchResponseisaresponsestructforLibraryElementSearchResult.'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Libraries
+      summary: Grafana Create Library Element
+      description: Creates a new library element in Grafana, which is a reusable component such as a panel or variable that can be shared across multiple dashboards. This endpoint accepts a POST request with the library element configuration in the request body, including properties like name, model, kind (panel or variable), and folder ID where the element should be stored. Upon successful creation, it returns the newly created library element object with its unique identifier, allowing users to reference and reuse this element across their Grafana instance, promoting consistency and simplifying dashboard maintenance.
+      operationId: createLibraryElement
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLibraryElementCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryElementResponseisaresponsestructforLibraryElementDTO.'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /library-elements/name/{library_element_name}:
+    parameters: []
+    get:
+      tags:
+      - Libraries
+      summary: Grafana Get Library Element By Name
+      description: Gets a library element with the specified name from Grafana's library elements collection. This endpoint retrieves a single library element by providing its unique name as a path parameter. Library elements in Grafana are reusable components like panels or data sources that can be shared across multiple dashboards. The operation returns the complete library element object including its configuration, metadata, and any associated properties. This is useful when you need to reference or reuse a specific library element in your dashboard configurations or when you want to retrieve details about a named library element without knowing its numeric ID.
+      operationId: getLibraryElementByName
+      parameters:
+      - name: library_element_name
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryElementArrayResponseisaresponsestructforanarrayofLibraryElementDTO.'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /library-elements/{library_element_uid}:
+    parameters: []
+    get:
+      tags:
+      - Libraries
+      summary: Grafana Get Library Element By UID
+      description: This API operation retrieves a specific library element from Grafana using its unique identifier (UID). Library elements in Grafana are reusable components such as panels or variables that can be shared across multiple dashboards. By making a GET request to this endpoint with a library element's UID, users can fetch the complete configuration and metadata of that particular library element, including its type, name, model definition, and any associated properties. This is useful when you need to inspect, reference, or programmatically work with shared dashboard components in your Grafana instance.
+      operationId: getLibraryElementByUID
+      parameters:
+      - name: library_element_uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryElementResponseisaresponsestructforLibraryElementDTO.'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Libraries
+      summary: Grafana Delete Library Element By UID
+      description: Removes a library element from Grafana by specifying its unique identifier (UID) in the URL path. This DELETE operation permanently deletes the specified library element, which can be a panel or other reusable dashboard component that was stored in the Grafana library for sharing across multiple dashboards. The endpoint requires the library element's UID as a path parameter and appropriate authentication credentials with sufficient permissions to delete library resources. Once deleted, the library element will no longer be available for use in any dashboards, though existing dashboard instances that referenced it may need to be updated separately. This is a destructive operation that cannot be undone, so it should be used with caution in production environments.
+      operationId: deleteLibraryElementByUID
+      parameters:
+      - name: library_element_uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    patch:
+      tags:
+      - Libraries
+      summary: Grafana Update Library Element
+      description: This API operation allows you to update an existing library element in Grafana by specifying its unique identifier (UID) in the request path. Using the PATCH HTTP method, you can modify specific properties of the library element without needing to provide the complete resource definition. Library elements in Grafana are reusable components such as panels or data sources that can be shared across multiple dashboards, and this endpoint enables you to make incremental changes to these shared resources. The operation requires the library element's UID to identify which element to update, and accepts a request body containing the fields you wish to modify. This is particularly useful for making quick updates to shared dashboard components without affecting their references in existing dashboards, maintaining consistency across your Grafana instance while allowing for flexible modifications to library element properties like name, description, model, or other configurable attributes.
+      operationId: updateLibraryElement
+      parameters:
+      - name: library_element_uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchLibraryElementCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryElementResponseisaresponsestructforLibraryElementDTO.'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '412':
+          description: PreconditionFailedError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /library-elements/{library_element_uid}/connections/:
+    parameters: []
+    get:
+      tags:
+      - Libraries
+      summary: Grafana Get Library Element Connections
+      description: This API operation retrieves all the connections associated with a specific library element in Grafana by providing its unique identifier (UID). When called, it returns information about where and how the library element is being used across different dashboards and panels within the Grafana instance. This is particularly useful for understanding dependencies and the impact of modifying or deleting a library element, as it shows all the locations where the element is currently referenced or utilized.
+      operationId: getLibraryElementConnections
+      parameters:
+      - name: library_element_uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryElementConnectionsResponseisaresponsestructforanarrayofLibraryElementConnectionDTO.'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    PatchLibraryElementCommand:
+      title: PatchLibraryElementCommand
+      type: object
+      properties:
+        folderId:
+          type: integer
+          description: 'ID of the folder where the library element is stored.
+
+
+            Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+          description: UID of the folder where the library element is stored.
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/Kind'
+          - description: 'Kind of element to create, Use 1 for library panels or 2 for c.
+
+              Description:
+
+              1 - library panels'
+        model:
+          type: object
+          description: The JSON model for the library element.
+        name:
+          type: string
+          description: Name of the library element.
+        uid:
+          type: string
+        version:
+          type: integer
+          description: Version of the library element you are updating.
+          contentEncoding: int64
+      description: PatchLibraryElementCommand is the command for patching a LibraryElement
+    LibraryElementDTOisthefrontendDTOforentities.:
+      title: LibraryElementDTOisthefrontendDTOforentities.
+      type: object
+      properties:
+        description:
+          type: string
+        folderId:
+          type: integer
+          description: 'Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        kind:
+          type: integer
+          contentEncoding: int64
+        meta:
+          $ref: '#/components/schemas/LibraryElementDTOMetaisthemetainformationforLibraryElementDTO.'
+        model:
+          type: object
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        schemaVersion:
+          type: integer
+          contentEncoding: int64
+        type:
+          type: string
+        uid:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+    LibraryElementSearchResponseisaresponsestructforLibraryElementSearchResult.:
+      title: LibraryElementSearchResponseisaresponsestructforLibraryElementSearchResult.
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/LibraryElementSearchResultisthesearchresultforentities.'
+    LibraryElementResponseisaresponsestructforLibraryElementDTO.:
+      title: LibraryElementResponseisaresponsestructforLibraryElementDTO.
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/LibraryElementDTOisthefrontendDTOforentities.'
+    LibraryElementDTOMetaisthemetainformationforLibraryElementDTO.:
+      title: LibraryElementDTOMetaisthemetainformationforLibraryElementDTO.
+      type: object
+      properties:
+        connectedDashboards:
+          type: integer
+          contentEncoding: int64
+        created:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          $ref: '#/components/schemas/LibraryElementDTOMetaUser'
+        folderName:
+          type: string
+        folderUid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        updatedBy:
+          $ref: '#/components/schemas/LibraryElementDTOMetaUser'
+    LibraryElementDTOMetaUser:
+      title: LibraryElementDTOMetaUser
+      type: object
+      properties:
+        avatarUrl:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+    LibraryElementSearchResultisthesearchresultforentities.:
+      title: LibraryElementSearchResultisthesearchresultforentities.
+      type: object
+      properties:
+        elements:
+          type: array
+          items:
+            $ref: '#/components/schemas/LibraryElementDTOisthefrontendDTOforentities.'
+          description: ''
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        totalCount:
+          type: integer
+          contentEncoding: int64
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    Kind:
+      title: Kind
+      const: 1
+      type: integer
+      description: 'Kind of element to create, Use 1 for library panels or 2 for c.
+
+        Description:
+
+        1 - library panels'
+    LibraryElementConnectionDTOisthefrontendDTOforelementconnections.:
+      title: LibraryElementConnectionDTOisthefrontendDTOforelementconnections.
+      type: object
+      properties:
+        connectionId:
+          type: integer
+          contentEncoding: int64
+        connectionUid:
+          type: string
+        created:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          $ref: '#/components/schemas/LibraryElementDTOMetaUser'
+        elementId:
+          type: integer
+          contentEncoding: int64
+        id:
+          type: integer
+          description: 'Deprecated: this field will be removed in the future'
+          contentEncoding: int64
+        kind:
+          type: integer
+          contentEncoding: int64
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    LibraryElementConnectionsResponseisaresponsestructforanarrayofLibraryElementConnectionDTO.:
+      title: LibraryElementConnectionsResponseisaresponsestructforanarrayofLibraryElementConnectionDTO.
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/LibraryElementConnectionDTOisthefrontendDTOforelementconnections.'
+          description: ''
+    LibraryElementArrayResponseisaresponsestructforanarrayofLibraryElementDTO.:
+      title: LibraryElementArrayResponseisaresponsestructforanarrayofLibraryElementDTO.
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/LibraryElementDTOisthefrontendDTOforentities.'
+          description: ''
+    CreateLibraryElementCommand:
+      title: CreateLibraryElementCommand
+      type: object
+      properties:
+        folderId:
+          type: integer
+          description: 'ID of the folder where the library element is stored.
+
+
+            Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+          description: UID of the folder where the library element is stored.
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/Kind'
+          - description: 'Kind of element to create, Use 1 for library panels or 2 for c.
+
+              Description:
+
+              1 - library panels'
+        model:
+          type: object
+          description: The JSON model for the library element.
+        name:
+          type: string
+          description: Name of the library element.
+        uid:
+          type: string
+      description: CreateLibraryElementCommand is the command for adding a LibraryElement
+    sortDirection:
+      title: sortDirection
+      enum:
+      - alpha-asc
+      - alpha-desc
+      type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

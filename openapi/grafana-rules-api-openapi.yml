@@ -1,0 +1,2486 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Rules API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Rules
+paths:
+  /datasources/uid/{uid}/lbac/teams:
+    parameters: []
+    get:
+      tags:
+      - Rules
+      summary: Grafana Get Team LBAC Rules Api
+      description: This API operation retrieves team-based Label-Based Access Control (LBAC) rules for a specific data source in Grafana identified by its unique identifier (uid). When called with a GET request to the endpoint /datasources/uid/{uid}/lbac/teams, it returns the configured LBAC rules that determine which teams have access to specific labels or subsets of data within the specified data source. This functionality is essential for managing granular permissions and ensuring teams can only query and view data they are authorized to access within multi-tenant Grafana environments.
+      operationId: getTeamLBACRulesApi
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamLBACRules'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Rules
+      summary: Grafana Update Team LBAC Rules Api
+      description: This API operation updates the Label-Based Access Control (LBAC) rules for teams associated with a specific data source in Grafana. It uses the PUT method and targets a data source identified by its unique identifier (uid) in the endpoint path. The operation allows administrators to modify which teams have access to specific labels or subsets of data within the data source, enabling fine-grained access control at the team level. By updating these LBAC rules, organizations can ensure that different teams only have access to the data relevant to their roles and responsibilities, maintaining security and data governance policies within their Grafana instance.
+      operationId: updateTeamLBACRulesApi
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTeamLBACCommand'
+        required: false
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/updateTeamLBACRulesResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /convert/api/prom/rules:
+    parameters: []
+    get:
+      tags:
+      - Rules
+      summary: Grafana Route Convert Prometheus Cortex Get Rules
+      description: This API operation retrieves Prometheus or Cortex alerting and recording rules from a configured data source and converts them into Grafana's unified alerting format. It acts as a migration utility that fetches existing Prometheus-compatible rules and transforms them so they can be imported or managed within Grafana's alerting system, enabling users to consolidate their monitoring rules into Grafana's native rule structure while maintaining compatibility with Prometheus-style rule definitions.
+      operationId: routeConvertPrometheusCortexGetRules
+      parameters: []
+      responses:
+        '200':
+          description: PrometheusNamespace
+          headers: {}
+          content:
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+        '403':
+          description: ForbiddenError
+          headers: {}
+          content:
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+        '404':
+          description: NotFound
+          headers: {}
+          content:
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Rules
+      summary: Grafana Route Convert Prometheus Cortex Post Rule Groups
+      description: This API operation converts Prometheus or Cortex rule group configurations into Grafana's native format by accepting a POST request to the /convert/api/prom/rules endpoint. It enables users to migrate their existing Prometheus-style alerting and recording rules from Prometheus or Cortex deployments into Grafana, facilitating the transition between monitoring systems while preserving rule logic and structure. The endpoint processes the submitted rule groups and transforms them into a format compatible with Grafana's alerting engine, streamlining the configuration migration process and reducing manual conversion efforts.
+      operationId: routeConvertPrometheusCortexPostRuleGroups
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        schema:
+          const: application/json
+          type: string
+      responses:
+        '202':
+          description: ConvertPrometheusResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConvertPrometheusResponse'
+        '403':
+          description: ForbiddenError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /convert/api/prom/rules/{NamespaceTitle}:
+    parameters: []
+    post:
+      tags:
+      - Rules
+      summary: Grafana Route Convert Prometheus Cortex Post Rule Group
+      description: The Grafana API operation POST /convert/api/prom/rules/{NamespaceTitle} converts and creates a Prometheus or Cortex rule group within a specified namespace. This endpoint accepts Prometheus-style rule definitions and transforms them into Grafana's native alert rule format, allowing users to migrate their existing Prometheus alerting and recording rules into Grafana's unified alerting system. The {NamespaceTitle} parameter identifies the target namespace where the converted rule group will be stored, enabling organized management of alert rules across different teams or services within Grafana.
+      operationId: routeConvertPrometheusCortexPostRuleGroup
+      parameters:
+      - name: NamespaceTitle
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: x-grafana-alerting-datasource-uid
+        in: header
+        description: ''
+        schema:
+          type: string
+      - name: x-grafana-alerting-recording-rules-paused
+        in: header
+        description: ''
+        schema:
+          type: boolean
+      - name: x-grafana-alerting-alert-rules-paused
+        in: header
+        description: ''
+        schema:
+          type: boolean
+      - name: x-grafana-alerting-target-datasource-uid
+        in: header
+        description: ''
+        schema:
+          type: string
+      - name: x-grafana-alerting-folder-uid
+        in: header
+        description: ''
+        schema:
+          type: string
+      - name: x-grafana-alerting-notification-settings
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/yaml:
+            schema:
+              $ref: '#/components/schemas/PrometheusRuleGroup'
+        required: false
+      responses:
+        '202':
+          description: ConvertPrometheusResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConvertPrometheusResponse'
+        '403':
+          description: ForbiddenError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /convert/api/prom/rules/{NamespaceTitle}/{Group}:
+    parameters: []
+    get:
+      tags:
+      - Rules
+      summary: Grafana Route Convert Prometheus Cortex Get Rule Group
+      description: 'This API operation retrieves a specific Prometheus rule group from a designated namespace in Grafana''s Cortex ruler service. The endpoint accepts two path parameters: NamespaceTitle which identifies the namespace containing the rule group, and Group which specifies the name of the rule group to retrieve. When called, it returns the configuration and rules defined within that particular rule group, allowing users to view and manage their Prometheus alerting and recording rules that have been converted or stored in the Cortex format within Grafana''s unified alerting system.'
+      operationId: routeConvertPrometheusCortexGetRuleGroup
+      parameters:
+      - name: NamespaceTitle
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: Group
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: PrometheusRuleGroup
+          headers: {}
+          content:
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+        '403':
+          description: ForbiddenError
+          headers: {}
+          content:
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+        '404':
+          description: NotFound
+          headers: {}
+          content:
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Rules
+      summary: Grafana Route Convert Prometheus Cortex Delete Rule Group
+      description: This API operation is used to delete a specific Prometheus rule group within Grafana's Cortex-based alerting system. It targets a rule group identified by both its namespace title and group name through the URL path parameters. When called with the DELETE HTTP method, it removes the entire rule group configuration from the specified namespace, effectively eliminating all alert and recording rules contained within that group from the Prometheus-compatible rules engine in Grafana.
+      operationId: routeConvertPrometheusCortexDeleteRuleGroup
+      parameters:
+      - name: NamespaceTitle
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: Group
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          description: ConvertPrometheusResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConvertPrometheusResponse'
+        '403':
+          description: ForbiddenError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /convert/prometheus/config/v1/rules:
+    parameters: []
+    get:
+      tags:
+      - Rules
+      summary: Grafana Route Convert Prometheus Get Rules
+      description: This API operation retrieves Prometheus alerting and recording rules from a Grafana instance and converts them into a standardized configuration format. When a GET request is made to the /convert/prometheus/config/v1/rules endpoint, it fetches the existing Prometheus-style rules configured within Grafana and transforms them into a version 1 configuration schema, making it easier to migrate, backup, or integrate these rules with other systems or Prometheus instances. This is particularly useful for administrators who need to export their Grafana-managed Prometheus rules or maintain consistency across multiple monitoring environments.
+      operationId: routeConvertPrometheusGetRules
+      parameters: []
+      responses:
+        '200':
+          description: PrometheusNamespace
+          headers: {}
+          content:
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+        '403':
+          description: ForbiddenError
+          headers: {}
+          content:
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+        '404':
+          description: NotFound
+          headers: {}
+          content:
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Rules
+      summary: Grafana Route Convert Prometheus Post Rule Groups
+      description: This API operation converts Prometheus rule group configurations to Grafana's format via a POST request to the /convert/prometheus/config/v1/rules endpoint. It accepts Prometheus-formatted rule groups as input and transforms them into a compatible format that can be used within Grafana's alerting and recording rule system, facilitating migration or integration between Prometheus and Grafana monitoring setups.
+      operationId: routeConvertPrometheusPostRuleGroups
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        schema:
+          const: application/json
+          type: string
+      responses:
+        '202':
+          description: ConvertPrometheusResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConvertPrometheusResponse'
+        '403':
+          description: ForbiddenError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /convert/prometheus/config/v1/rules/{NamespaceTitle}:
+    parameters: []
+    post:
+      tags:
+      - Rules
+      summary: Grafana Route Convert Prometheus Post Rule Group
+      description: This API operation converts Prometheus rule group configurations to Grafana's native format by accepting a POST request to the endpoint /convert/prometheus/config/v1/rules/{NamespaceTitle}, where {NamespaceTitle} represents the target namespace for the rule group. It takes Prometheus-formatted alerting and recording rules as input and transforms them into Grafana-compatible rule configurations, facilitating migration or integration between Prometheus and Grafana alerting systems. The operation allows users to seamlessly transfer their existing Prometheus rule definitions into Grafana without manual reconfiguration, preserving the rule logic, labels, annotations, and evaluation intervals while adapting them to Grafana's rule management structure.
+      operationId: routeConvertPrometheusPostRuleGroup
+      parameters:
+      - name: NamespaceTitle
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: x-grafana-alerting-datasource-uid
+        in: header
+        description: ''
+        schema:
+          type: string
+      - name: x-grafana-alerting-recording-rules-paused
+        in: header
+        description: ''
+        schema:
+          type: boolean
+      - name: x-grafana-alerting-alert-rules-paused
+        in: header
+        description: ''
+        schema:
+          type: boolean
+      - name: x-grafana-alerting-target-datasource-uid
+        in: header
+        description: ''
+        schema:
+          type: string
+      - name: x-grafana-alerting-folder-uid
+        in: header
+        description: ''
+        schema:
+          type: string
+      - name: x-grafana-alerting-notification-settings
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/yaml:
+            schema:
+              $ref: '#/components/schemas/PrometheusRuleGroup'
+        required: false
+      responses:
+        '202':
+          description: ConvertPrometheusResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConvertPrometheusResponse'
+        '403':
+          description: ForbiddenError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /convert/prometheus/config/v1/rules/{NamespaceTitle}/{Group}:
+    parameters: []
+    get:
+      tags:
+      - Rules
+      summary: Grafana Route Convert Prometheus Get Rule Group
+      description: This API operation retrieves and converts a Prometheus rule group configuration from a specific namespace in Grafana. It accepts GET requests at the endpoint path that includes both the namespace title and group name as path parameters, allowing users to fetch the configuration details of a particular Prometheus alerting or recording rule group. The operation is part of Grafana's conversion utilities that help transform Prometheus-native rule configurations into Grafana's internal format or vice versa, facilitating migration and management of alerting rules across different monitoring system configurations.
+      operationId: routeConvertPrometheusGetRuleGroup
+      parameters:
+      - name: NamespaceTitle
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: Group
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: PrometheusRuleGroup
+          headers: {}
+          content:
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+        '403':
+          description: ForbiddenError
+          headers: {}
+          content:
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+        '404':
+          description: NotFound
+          headers: {}
+          content:
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Rules
+      summary: Grafana Route Convert Prometheus Delete Rule Group
+      description: This API operation is used to delete a Prometheus rule group from a specific namespace in Grafana's configuration. It targets a particular rule group identified by both the namespace title and group name through the URL path parameters. When invoked with a DELETE HTTP method, it removes the specified rule group configuration from the Prometheus-compatible alerting and recording rules system within Grafana, effectively cleaning up rules that are no longer needed or are being replaced.
+      operationId: routeConvertPrometheusDeleteRuleGroup
+      parameters:
+      - name: NamespaceTitle
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: Group
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          description: ConvertPrometheusResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConvertPrometheusResponse'
+        '403':
+          description: ForbiddenError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /recording-rules:
+    parameters: []
+    get:
+      tags:
+      - Rules
+      summary: Grafana List Recording Rules
+      description: This API operation retrieves a list of all recording rules configured in Grafana. Recording rules are used to pre-compute frequently needed or computationally expensive expressions and save their result as a new set of time series data, which can improve query performance and reduce load on data sources. The GET request to the /recording-rules endpoint returns details about existing recording rules including their names, expressions, labels, and associated data sources, allowing administrators and users to view and manage their configured recording rules within the Grafana instance.
+      operationId: listRecordingRules
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecordingRuleJSON'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Rules
+      summary: Grafana Update Recording Rule
+      description: Updates an existing recording rule in Grafana's alerting system. Recording rules are used to pre-calculate frequently needed or computationally expensive expressions and save their results as a new set of time series. This operation allows you to modify the configuration of a recording rule including its query expressions, labels, evaluation interval, and other parameters. You need to provide the complete updated recording rule configuration in the request body, and the rule will be identified by its UID or name. This is commonly used when you need to adjust the recording rule's query, change its labels, modify the evaluation frequency, or update any other aspect of how the rule processes and stores metric data. Proper authentication and appropriate permissions are required to perform this operation.
+      operationId: updateRecordingRule
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordingRuleJSON'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordingRuleJSON'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Rules
+      summary: Grafana Create Recording Rule
+      description: Creates a new recording rule in Grafana's alerting system that allows you to pre-compute frequently needed or computationally expensive expressions and save their result as a new set of time series. This POST endpoint accepts a recording rule definition including the rule name, query expression, labels, and evaluation interval, then stores it in the Grafana instance for continuous evaluation. Recording rules are particularly useful for dashboard performance optimization and creating aggregated metrics that can be queried more efficiently than running complex calculations repeatedly.
+      operationId: createRecordingRule
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordingRuleJSON'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordingRuleJSON'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /recording-rules/test:
+    parameters: []
+    post:
+      tags:
+      - Rules
+      summary: Grafana Test Create Recording Rule
+      description: This API operation allows users to test the creation of a recording rule in Grafana before actually implementing it. By sending a POST request to the /recording-rules/test endpoint, users can validate their recording rule configuration, including the PromQL expression, labels, and other parameters, to ensure it functions as expected without permanently adding it to the system. This testing capability helps prevent errors and allows users to verify that their recording rule will produce the desired metrics aggregation or computation results in their monitoring setup before committing the changes to their Grafana instance.
+      operationId: testCreateRecordingRule
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordingRuleJSON'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '422':
+          description: UnprocessableEntityError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /recording-rules/writer:
+    parameters: []
+    get:
+      tags:
+      - Rules
+      summary: Grafana Get Recording Rule Write Target
+      description: This API operation retrieves the configured write target for recording rules in Grafana. When called using a GET request to the /recording-rules/writer endpoint, it returns information about where recording rule data is being written, which typically includes details about the remote write configuration or storage backend that has been set up to receive and store the results of recording rule evaluations. This is useful for administrators who need to verify or audit the destination of their recording rule outputs.
+      operationId: getRecordingRuleWriteTarget
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrometheusRemoteWriteTargetJSON'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Rules
+      summary: Grafana Create Recording Rule Write Target
+      description: The POST operation on the /recording-rules/writer endpoint in Grafana allows administrators to create a new recording rule write target, which defines a destination where pre-computed metric aggregations (recording rules) should be written. This endpoint accepts configuration details such as the remote write URL, authentication credentials, and other parameters necessary to establish a connection with the target storage system. Recording rule write targets enable Grafana to send the results of recording rule evaluations to external time-series databases or other compatible endpoints, facilitating data distribution, backup strategies, or multi-tenancy scenarios where recording rule results need to be persisted or forwarded to different storage backends.
+      operationId: createRecordingRuleWriteTarget
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrometheusRemoteWriteTargetJSON'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrometheusRemoteWriteTargetJSON'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '422':
+          description: UnprocessableEntityError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Rules
+      summary: Grafana Delete Recording Rule Write Target
+      description: This API operation removes a configured recording rule write target from Grafana. Recording rule write targets define external destinations where pre-aggregated metric data can be stored, and deleting a write target will disconnect Grafana from that specific storage endpoint. This DELETE operation is typically used when decommissioning a remote write destination, cleaning up unused configurations, or reconfiguring the recording rules infrastructure. Once deleted, recording rules will no longer write their computed results to the removed target location.
+      operationId: deleteRecordingRuleWriteTarget
+      parameters: []
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /recording-rules/{recordingRuleID}:
+    parameters: []
+    delete:
+      tags:
+      - Rules
+      summary: Grafana Delete Recording Rule
+      description: Deletes a specific recording rule from Grafana by providing its unique identifier in the request path. Recording rules are used to pre-compute frequently needed or computationally expensive expressions and save their results as new time series data. This DELETE operation permanently removes the recording rule configuration identified by the recordingRuleID parameter, stopping any future evaluations and recordings associated with that rule. The operation requires appropriate authentication and authorization permissions to modify recording rule configurations in the Grafana instance.
+      operationId: deleteRecordingRule
+      parameters:
+      - name: recordingRuleID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/alert-rules:
+    parameters: []
+    get:
+      tags:
+      - Rules
+      summary: Grafana Route Get Alert Rules
+      description: This API operation retrieves alert rules from Grafana's provisioning system. It uses a GET request to the /v1/provisioning/alert-rules endpoint to fetch configured alert rules that have been set up through Grafana's provisioning mechanism. The operation returns a list of alert rule definitions including their conditions, notifications, and metadata, allowing administrators and applications to programmatically query and review the current alerting configuration without manual access to the Grafana UI.
+      operationId: routeGetAlertRules
+      parameters: []
+      responses:
+        '200':
+          description: ProvisionedAlertRules
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProvisionedAlertRule'
+                description: ''
+                contentMediaType: application/json
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Rules
+      summary: Grafana Route Post Alert Rule
+      description: Creates a new alert rule in Grafana's provisioning API, allowing administrators to programmatically define alerting conditions, evaluation intervals, notification settings, and query expressions. This endpoint accepts a POST request with a JSON payload containing the alert rule configuration including the rule name, folder location, data source queries, alert conditions, evaluation group, and notification channels. The operation enables infrastructure-as-code practices by allowing alert rules to be version-controlled and deployed automatically rather than manually configured through the UI. Upon successful creation, it returns the newly created alert rule object with its assigned unique identifier and complete configuration details. This is commonly used in CI/CD pipelines and automated Grafana deployments to ensure consistent alerting across environments.
+      operationId: routePostAlertRule
+      parameters:
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisionedAlertRule'
+        required: false
+      responses:
+        '201':
+          description: ProvisionedAlertRule
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisionedAlertRule'
+        '400':
+          description: ValidationError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/alert-rules/export:
+    parameters: []
+    get:
+      tags:
+      - Rules
+      summary: Grafana Route Get Alert Rules Export
+      description: This API operation retrieves alert rules from Grafana in an exportable format, allowing administrators to extract alert rule configurations for backup, migration, or version control purposes. The GET endpoint at /v1/provisioning/alert-rules/export provides a way to programmatically access the complete definition of configured alert rules, including their conditions, notification settings, and metadata. This is particularly useful for maintaining infrastructure as code, replicating alert configurations across multiple Grafana instances, or creating snapshots of monitoring setups for disaster recovery scenarios.
+      operationId: routeGetAlertRulesExport
+      parameters:
+      - name: download
+        in: query
+        description: Whether to initiate a download of the file or not.
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: format
+        in: query
+        description: Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.
+        style: form
+        explode: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/format'
+          - description: Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.
+      - name: folderUid
+        in: query
+        description: UIDs of folders from which to export rules
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: group
+        in: query
+        description: Name of group of rules to export. Must be specified only together with a single folder UID
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: ruleUid
+        in: query
+        description: UID of alert rule to export. If specified, parameters folderUid and group must be empty.
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: AlertingFileExport
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertingFileExportisthefullprovisionedfileexport.'
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+            application/terraform+hcl:
+              schema:
+                contentMediaType: application/terraform+hcl
+            text/yaml:
+              schema:
+                contentMediaType: text/yaml
+            text/hcl:
+              schema:
+                contentMediaType: text/hcl
+        '404':
+          description: Not found.
+          headers: {}
+          content: {}
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/alert-rules/{UID}:
+    parameters: []
+    get:
+      tags:
+      - Rules
+      summary: Grafana Route Get Alert Rule
+      description: This API operation retrieves a specific alert rule from Grafana's provisioning system using the alert rule's unique identifier (UID). When called with a GET request to the endpoint /v1/provisioning/alert-rules/{UID}, it returns the complete configuration details of the specified alert rule, including its conditions, labels, annotations, and evaluation settings. This endpoint is part of Grafana's provisioning API, which allows programmatic management of alert rules outside of the standard UI interface, making it useful for automation, backup purposes, or integrating Grafana alerting into external systems and workflows.
+      operationId: routeGetAlertRule
+      parameters:
+      - name: UID
+        in: path
+        description: Alert rule UID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ProvisionedAlertRule
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisionedAlertRule'
+        '404':
+          description: Not found.
+          headers: {}
+          content: {}
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Rules
+      summary: Grafana Route Put Alert Rule
+      description: Updates an existing alert rule in Grafana's provisioning API by specifying the rule's unique identifier (UID) in the path. This endpoint allows you to modify all aspects of an alert rule including its condition, evaluation interval, notification settings, labels, and annotations. The request requires a complete alert rule definition in the body, and the UID in the path must match the UID in the request body. This operation is part of Grafana's provisioning capabilities, enabling programmatic management of alerting rules for infrastructure-as-code workflows and automated alert configuration.
+      operationId: routePutAlertRule
+      parameters:
+      - name: UID
+        in: path
+        description: Alert rule UID
+        required: true
+        schema:
+          type: string
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisionedAlertRule'
+        required: false
+      responses:
+        '200':
+          description: ProvisionedAlertRule
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisionedAlertRule'
+        '400':
+          description: ValidationError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Rules
+      summary: Grafana Route Delete Alert Rule
+      description: Deletes a specific alert rule from Grafana's provisioning system by its unique identifier (UID). This operation permanently removes the alert rule configuration from the system, including all associated settings such as conditions, labels, annotations, and notification policies. The deletion is immediate and cannot be undone, so the UID must be carefully specified to avoid removing the wrong alert rule. This endpoint is part of Grafana's provisioning API, which allows programmatic management of alert rules rather than manual configuration through the UI, making it suitable for infrastructure-as-code workflows and automated alerting management at scale.
+      operationId: routeDeleteAlertRule
+      parameters:
+      - name: UID
+        in: path
+        description: Alert rule UID
+        required: true
+        schema:
+          type: string
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The alert rule was deleted successfully.
+          headers: {}
+          content: {}
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/alert-rules/{UID}/export:
+    parameters: []
+    get:
+      tags:
+      - Rules
+      summary: Grafana Route Get Alert Rule Export
+      description: The Get Alert Rule Export endpoint allows you to export a specific alert rule configuration from Grafana by providing its unique identifier (UID). This operation retrieves the complete alert rule definition in a format suitable for provisioning, enabling you to back up, version control, or migrate alert rules between Grafana instances. By making a GET request to /v1/provisioning/alert-rules/{UID}/export, you can obtain the alert rule's configuration including its conditions, notification settings, labels, and annotations in a structured format that can be used for declarative configuration management or importing into other Grafana environments.
+      operationId: routeGetAlertRuleExport
+      parameters:
+      - name: download
+        in: query
+        description: Whether to initiate a download of the file or not.
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: format
+        in: query
+        description: Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.
+        style: form
+        explode: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/format'
+          - description: Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.
+      - name: UID
+        in: path
+        description: Alert rule UID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: AlertingFileExport
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertingFileExportisthefullprovisionedfileexport.'
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+            application/terraform+hcl:
+              schema:
+                contentMediaType: application/terraform+hcl
+            text/yaml:
+              schema:
+                contentMediaType: text/yaml
+            text/hcl:
+              schema:
+                contentMediaType: text/hcl
+        '404':
+          description: Not found.
+          headers: {}
+          content: {}
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/folder/{FolderUID}/rule-groups/{Group}:
+    parameters: []
+    get:
+      tags:
+      - Rules
+      summary: Grafana Route Get Alert Rule Group
+      description: This API operation retrieves a specific alert rule group within a designated folder in Grafana's provisioning system. By providing the folder's unique identifier (FolderUID) and the name of the alert rule group (Group) in the request path, users can fetch the complete configuration and details of that particular rule group. This GET endpoint is part of Grafana's provisioning API, which allows programmatic management of alerting configurations, enabling administrators and automation systems to query existing alert rule groups for monitoring, auditing, or synchronization purposes across different Grafana instances or environments.
+      operationId: routeGetAlertRuleGroup
+      parameters:
+      - name: FolderUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: Group
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: AlertRuleGroup
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertRuleGroup'
+        '404':
+          description: Not found.
+          headers: {}
+          content: {}
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Rules
+      summary: Grafana Route Put Alert Rule Group
+      description: Updates an existing alert rule group identified by the folder UID and group name in Grafana's provisioning API. This PUT operation allows you to modify the configuration of alert rules within a specific rule group, including updating rule definitions, thresholds, evaluation intervals, and notification settings. The endpoint requires both the FolderUID parameter to identify the containing folder and the Group parameter to specify which alert rule group to update, with the updated configuration provided in the request body following Grafana's alert rule group schema.
+      operationId: routePutAlertRuleGroup
+      parameters:
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      - name: FolderUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: Group
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertRuleGroup'
+        required: false
+      responses:
+        '200':
+          description: AlertRuleGroup
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertRuleGroup'
+        '400':
+          description: ValidationError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Rules
+      summary: Grafana Route Delete Alert Rule Group
+      description: Deletes a specific alert rule group within a designated folder in Grafana's provisioning API. This operation requires both the folder's unique identifier (FolderUID) and the name of the alert rule group (Group) to be specified in the URL path. When executed, it removes the entire rule group and all alert rules contained within it from the Grafana instance. This is a destructive operation typically used when cleaning up monitoring configurations or reorganizing alert structures, and it requires appropriate permissions to modify provisioning resources in Grafana.
+      operationId: routeDeleteAlertRuleGroup
+      parameters:
+      - name: FolderUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: Group
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The alert rule group was deleted successfully.
+          headers: {}
+          content: {}
+        '403':
+          description: ForbiddenError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: NotFound
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                contentMediaType: application/json
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/folder/{FolderUID}/rule-groups/{Group}/export:
+    parameters: []
+    get:
+      tags:
+      - Rules
+      summary: Grafana Route Get Alert Rule Group Export
+      description: This API operation retrieves and exports a specific alert rule group from Grafana's provisioning system by providing both the parent folder's unique identifier (FolderUID) and the alert rule group name (Group) as path parameters. It allows users to obtain the complete configuration of an alert rule group in an exportable format, which can be used for backup purposes, migration between Grafana instances, or version control of alerting configurations. The GET method ensures this is a read-only operation that doesn't modify any existing alert rule configurations.
+      operationId: routeGetAlertRuleGroupExport
+      parameters:
+      - name: download
+        in: query
+        description: Whether to initiate a download of the file or not.
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: format
+        in: query
+        description: Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.
+        style: form
+        explode: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/format'
+          - description: Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.
+      - name: FolderUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: Group
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: AlertingFileExport
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertingFileExportisthefullprovisionedfileexport.'
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+            application/terraform+hcl:
+              schema:
+                contentMediaType: application/terraform+hcl
+            text/yaml:
+              schema:
+                contentMediaType: text/yaml
+            text/hcl:
+              schema:
+                contentMediaType: text/hcl
+        '404':
+          description: Not found.
+          headers: {}
+          content: {}
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    RelativeTimeRangeExport:
+      title: RelativeTimeRangeExport
+      type: object
+      properties:
+        from:
+          type: integer
+          contentEncoding: int64
+        to:
+          type: integer
+          contentEncoding: int64
+    ProvisionedAlertRule:
+      title: ProvisionedAlertRule
+      required:
+      - condition
+      - data
+      - execErrState
+      - folderUID
+      - for
+      - noDataState
+      - orgID
+      - ruleGroup
+      - title
+      type: object
+      properties:
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+          examples:
+          - runbook_url: https://supercoolrunbook.com/page/13
+        condition:
+          type: string
+          examples:
+          - A
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.'
+          description: ''
+          examples:
+          - - datasourceUid: __expr__
+              model:
+                conditions:
+                - evaluator:
+                    params:
+                    - 0
+                    - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
+                datasource:
+                  type: __expr__
+                  uid: __expr__
+                expression: 1 == 1
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: A
+                type: math
+              queryType: ''
+              refId: A
+              relativeTimeRange:
+                from: 0
+                to: 0
+        execErrState:
+          $ref: '#/components/schemas/ExecErrState'
+        folderUID:
+          type: string
+          examples:
+          - project_x
+        for:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        isPaused:
+          type: boolean
+          examples:
+          - false
+        keep_firing_for:
+          type: string
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          examples:
+          - team: sre-team-1
+        missingSeriesEvalsToResolve:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 2
+        noDataState:
+          $ref: '#/components/schemas/NoDataState'
+        notification_settings:
+          $ref: '#/components/schemas/AlertRuleNotificationSettings'
+        orgID:
+          type: integer
+          contentEncoding: int64
+        provenance:
+          type: string
+        record:
+          $ref: '#/components/schemas/Record'
+        ruleGroup:
+          maxLength: 190
+          minLength: 1
+          type: string
+          examples:
+          - eval_group_1
+        title:
+          maxLength: 190
+          minLength: 1
+          type: string
+          examples:
+          - Always firing
+        uid:
+          maxLength: 40
+          minLength: 1
+          pattern: ^[a-zA-Z0-9-_]+$
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+          readOnly: true
+    ValidationError:
+      title: ValidationError
+      type: object
+      properties:
+        message:
+          type: string
+          examples:
+          - error message
+    AlertRuleGroupExportistheprovisionedfileexportofAlertRuleGroupV1.:
+      title: AlertRuleGroupExportistheprovisionedfileexportofAlertRuleGroupV1.
+      type: object
+      properties:
+        folder:
+          type: string
+        interval:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertRuleExportistheprovisionedfileexportofmodels.AlertRule.'
+          description: ''
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    RecordingRuleJSON:
+      title: RecordingRuleJSON
+      type: object
+      properties:
+        active:
+          type: boolean
+        count:
+          type: boolean
+        description:
+          type: string
+        dest_data_source_uid:
+          type: string
+        id:
+          type: string
+        interval:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+        prom_name:
+          type: string
+        queries:
+          type: array
+          items: {}
+          description: ''
+        range:
+          type: integer
+          contentEncoding: int64
+        target_ref_id:
+          type: string
+      description: RecordingRuleJSON is the external representation of a recording rule
+    AlertRuleNotificationSettings:
+      title: AlertRuleNotificationSettings
+      required:
+      - receiver
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: 'Override the times when notifications should not be muted. These must match the name of a mute time interval defined
+
+            in the alertmanager configuration time_intervals section. All notifications will be suppressed unless they are sent
+
+            at the time that matches any interval.'
+          examples:
+          - - maintenance
+        group_by:
+          type: array
+          items:
+            type: string
+          description: 'Override the labels by which incoming alerts are grouped together. For example, multiple alerts coming in for
+
+            cluster=A and alertname=LatencyHigh would be batched into a single group. To aggregate by all possible labels
+
+            use the special value ''...'' as the sole label name.
+
+            This effectively disables aggregation entirely, passing through all alerts as-is. This is unlikely to be what
+
+            you want, unless you have a very low alert volume or your upstream notification system performs its own grouping.
+
+            Must include ''alertname'' and ''grafana_folder'' if not using ''...''.'
+          default:
+          - alertname
+          - grafana_folder
+          examples:
+          - - alertname
+            - grafana_folder
+            - cluster
+        group_interval:
+          type: string
+          description: 'Override how long to wait before sending a notification about new alerts that are added to a group of alerts for
+
+            which an initial notification has already been sent. (Usually ~5m or more.)'
+          examples:
+          - 5m
+        group_wait:
+          type: string
+          description: 'Override how long to initially wait to send a notification for a group of alerts. Allows to wait for an
+
+            inhibiting alert to arrive or collect more initial alerts for the same group. (Usually ~0s to few minutes.)'
+          examples:
+          - 30s
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: 'Override the times when notifications should be muted. These must match the name of a mute time interval defined
+
+            in the alertmanager configuration time_intervals section. When muted it will not send any notifications, but
+
+            otherwise acts normally.'
+          examples:
+          - - maintenance
+        receiver:
+          type: string
+          description: Name of the receiver to send notifications to.
+          examples:
+          - grafana-default-email
+        repeat_interval:
+          type: string
+          description: 'Override how long to wait before sending a notification again if it has already been sent successfully for an
+
+            alert. (Usually ~3h or more).
+
+            Note that this parameter is implicitly bound by Alertmanager''s `--data.retention` configuration flag.
+
+            Notifications will be resent after either repeat_interval or the data retention period have passed, whichever
+
+            occurs first. `repeat_interval` should not be less than `group_interval`.'
+          examples:
+          - 4h
+    ConvertPrometheusResponse:
+      title: ConvertPrometheusResponse
+      type: object
+      properties:
+        error:
+          type: string
+        errorType:
+          type: string
+        status:
+          type: string
+    RouteExport:
+      title: RouteExport
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        continue:
+          type: boolean
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        match:
+          type: object
+          additionalProperties:
+            type: string
+          description: Deprecated. Remove before v1.0 release.
+        match_re:
+          type: object
+          additionalProperties:
+            type: string
+        matchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Matchermodelsthematchingofalabel.'
+          description: 'Matchers is a slice of Matchers that is sortable, implements Stringer, and
+
+            provides a Matches method to match a LabelSet against all Matchers in the
+
+            slice. Note that some users of Matchers might require it to be sorted.'
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        object_matchers:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouteExport'
+          description: ''
+      description: 'RouteExport is the provisioned file export of definitions.Route. This is needed to hide fields that aren''t useable in
+
+        provisioning file format. An alternative would be to define a custom MarshalJSON and MarshalYAML that excludes them.'
+    ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.:
+      title: ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.
+      type: object
+      properties:
+        disableResolveMessage:
+          type: boolean
+        settings:
+          type: object
+        type:
+          type: string
+        uid:
+          type: string
+    format:
+      title: format
+      enum:
+      - yaml
+      - json
+      - hcl
+      type: string
+    updateTeamLBACRulesResponse:
+      title: updateTeamLBACRulesResponse
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+        name:
+          type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamLBACRule'
+          description: ''
+        uid:
+          type: string
+    AlertRuleGroup:
+      title: AlertRuleGroup
+      type: object
+      properties:
+        folderUid:
+          type: string
+        interval:
+          type: integer
+          contentEncoding: int64
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProvisionedAlertRule'
+          description: ''
+        title:
+          type: string
+    NoDataState:
+      title: NoDataState
+      enum:
+      - Alerting
+      - NoData
+      - OK
+      type: string
+    RelativeTimeRange:
+      title: RelativeTimeRange
+      type: object
+      properties:
+        from:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        to:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+      description: 'RelativeTimeRange is the per query start and end time
+
+        for requests.'
+    AlertRuleNotificationSettingsExportistheprovisionedexportofmodels.NotificationSettings.:
+      title: AlertRuleNotificationSettingsExportistheprovisionedexportofmodels.NotificationSettings.
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+    Matchermodelsthematchingofalabel.:
+      title: Matchermodelsthematchingofalabel.
+      type: object
+      properties:
+        Name:
+          type: string
+        Type:
+          type: integer
+          contentEncoding: int64
+        Value:
+          type: string
+    PrometheusRemoteWriteTargetJSON:
+      title: PrometheusRemoteWriteTargetJSON
+      type: object
+      properties:
+        data_source_uid:
+          type: string
+        id:
+          type: string
+        remote_write_path:
+          type: string
+    TeamLBACRules:
+      title: TeamLBACRules
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamLBACRule'
+          description: ''
+    ForbiddenError:
+      title: ForbiddenError
+      type: object
+      properties:
+        body:
+          allOf:
+          - $ref: '#/components/schemas/PublicError'
+          - description: 'PublicError is derived from Error and only contains information
+
+              available to the end user.'
+    NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.:
+      title: NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        continue:
+          type: boolean
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        match:
+          type: object
+          additionalProperties:
+            type: string
+          description: Deprecated. Remove before v1.0 release.
+        match_re:
+          type: object
+          additionalProperties:
+            type: string
+        matchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Matchermodelsthematchingofalabel.'
+          description: 'Matchers is a slice of Matchers that is sortable, implements Stringer, and
+
+            provides a Matches method to match a LabelSet against all Matchers in the
+
+            slice. Note that some users of Matchers might require it to be sorted.'
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        object_matchers:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouteExport'
+          description: ''
+    UpdateTeamLBACCommand:
+      title: UpdateTeamLBACCommand
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamLBACRule'
+          description: ''
+    PrometheusRule:
+      title: PrometheusRule
+      type: object
+      properties:
+        alert:
+          type: string
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+        expr:
+          type: string
+        for:
+          type: string
+        keep_firing_for:
+          type: string
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        record:
+          type: string
+    ExecErrState:
+      title: ExecErrState
+      enum:
+      - OK
+      - Alerting
+      - Error
+      type: string
+    AlertingFileExportisthefullprovisionedfileexport.:
+      title: AlertingFileExportisthefullprovisionedfileexport.
+      type: object
+      properties:
+        apiVersion:
+          type: integer
+          contentEncoding: int64
+        contactPoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.'
+          description: ''
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertRuleGroupExportistheprovisionedfileexportofAlertRuleGroupV1.'
+          description: ''
+        muteTimes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MuteTimeIntervalExport'
+          description: ''
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.'
+          description: ''
+    AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.:
+      title: AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.
+      type: object
+      properties:
+        datasourceUid:
+          type: string
+          description: Grafana data source unique identifier; it should be '__expr__' for a Server Side Expression operation.
+        model:
+          type: object
+          description: JSON is the raw JSON query and includes the above properties as well as custom properties.
+        queryType:
+          type: string
+          description: 'QueryType is an optional identifier for the type of query.
+
+            It can be used to distinguish different types of queries.'
+        refId:
+          type: string
+          description: RefID is the unique identifier of the query, set by the frontend call.
+        relativeTimeRange:
+          allOf:
+          - $ref: '#/components/schemas/RelativeTimeRange'
+          - description: 'RelativeTimeRange is the per query start and end time
+
+              for requests.'
+    PrometheusRuleGroup:
+      title: PrometheusRuleGroup
+      type: object
+      properties:
+        interval:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        limit:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+        query_offset:
+          type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrometheusRule'
+          description: ''
+    ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.:
+      title: ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.
+      type: object
+      properties:
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        receivers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.'
+          description: ''
+    PublicError:
+      title: PublicError
+      type: object
+      properties:
+        extra:
+          type: object
+          additionalProperties: {}
+        message:
+          type: string
+        messageId:
+          type: string
+        statusCode:
+          type: integer
+          contentEncoding: int64
+      description: 'PublicError is derived from Error and only contains information
+
+        available to the end user.'
+    TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.:
+      title: TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.
+      type: object
+      properties:
+        name:
+          type: string
+        time_intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+          description: ''
+    Record:
+      title: Record
+      required:
+      - from
+      - metric
+      type: object
+      properties:
+        from:
+          type: string
+          description: Which expression node should be used as the input for the recorded metric.
+          examples:
+          - A
+        metric:
+          type: string
+          description: Name of the recorded metric.
+          examples:
+          - grafana_alerts_ratio
+        target_datasource_uid:
+          type: string
+          description: Which data source should be used to write the output of the recording rule, specified by UID.
+          examples:
+          - my-prom
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    TeamLBACRule:
+      title: TeamLBACRule
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            type: string
+          description: ''
+        teamId:
+          type: string
+        teamUid:
+          type: string
+    AlertRuleExportistheprovisionedfileexportofmodels.AlertRule.:
+      title: AlertRuleExportistheprovisionedfileexportofmodels.AlertRule.
+      type: object
+      properties:
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+        condition:
+          type: string
+        dashboardUid:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertQueryExportistheprovisionedexportofmodels.AlertQuery.'
+          description: ''
+        execErrState:
+          $ref: '#/components/schemas/ExecErrState'
+        for:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        isPaused:
+          type: boolean
+        keepFiringFor:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        missing_series_evals_to_resolve:
+          type: integer
+          contentEncoding: int64
+        noDataState:
+          $ref: '#/components/schemas/NoDataState'
+        notification_settings:
+          $ref: '#/components/schemas/AlertRuleNotificationSettingsExportistheprovisionedexportofmodels.NotificationSettings.'
+        panelId:
+          type: integer
+          contentEncoding: int64
+        record:
+          $ref: '#/components/schemas/Recordistheprovisionedexportofmodels.Record.'
+        title:
+          type: string
+        uid:
+          type: string
+    Recordistheprovisionedexportofmodels.Record.:
+      title: Recordistheprovisionedexportofmodels.Record.
+      type: object
+      properties:
+        from:
+          type: string
+        metric:
+          type: string
+        targetDatasourceUid:
+          type: string
+    MuteTimeIntervalExport:
+      title: MuteTimeIntervalExport
+      type: object
+      properties:
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        time_intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+          description: ''
+    AlertQueryExportistheprovisionedexportofmodels.AlertQuery.:
+      title: AlertQueryExportistheprovisionedexportofmodels.AlertQuery.
+      type: object
+      properties:
+        datasourceUid:
+          type: string
+        model:
+          type: object
+          additionalProperties: {}
+        queryType:
+          type: string
+        refId:
+          type: string
+        relativeTimeRange:
+          $ref: '#/components/schemas/RelativeTimeRangeExport'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

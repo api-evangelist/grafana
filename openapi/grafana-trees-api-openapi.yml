@@ -1,0 +1,631 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Trees API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Trees
+paths:
+  /v1/provisioning/policies:
+    parameters: []
+    get:
+      tags:
+      - Trees
+      summary: Grafana Route Get Policy Tree
+      description: This API operation retrieves the entire notification policy tree configuration from Grafana's alerting system. It returns the hierarchical structure that defines how alerts are routed to different contact points based on matching labels and conditions. The policy tree includes the root policy and all nested policies with their respective matchers, grouping settings, timing intervals, and associated receiver configurations. This endpoint is part of Grafana's provisioning API and requires appropriate authentication and authorization to access the alerting configuration.
+      operationId: routeGetPolicyTree
+      parameters: []
+      responses:
+        '200':
+          description: Route
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Trees
+      summary: Grafana Route Put Policy Tree
+      description: The PUT operation on the /v1/provisioning/policies endpoint in Grafana allows administrators to update or replace the entire notification policy tree for alert routing. This API call enables programmatic management of how alerts are organized, grouped, and routed to different contact points based on matching labels and conditions. By submitting a complete policy tree structure, users can define the hierarchy of policies, including root and nested policies, their matchers, grouping configurations, timing intervals, and associated receiver integrations. This is particularly useful for infrastructure-as-code approaches where alert routing configurations need to be version-controlled and deployed automatically across Grafana instances.
+      operationId: routePutPolicyTree
+      parameters:
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: The new notification routing tree to use
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/Route'
+              - description: The new notification routing tree to use
+              contentMediaType: application/json
+        required: false
+      responses:
+        '202':
+          description: Ack
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                contentMediaType: application/json
+        '400':
+          description: ValidationError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Trees
+      summary: Grafana Route Reset Policy Tree
+      description: This API operation resets the notification policy tree in Grafana back to its default state by deleting all custom policy configurations. When invoked via a DELETE request to the /v1/provisioning/policies endpoint, it removes any user-defined notification routing rules, matchers, and nested policy hierarchies that have been configured, effectively reverting the alert notification policies to the system's original configuration. This is particularly useful for cleaning up testing configurations, resolving misconfigured policy trees, or starting fresh with notification policy setup in a Grafana instance.
+      operationId: routeResetPolicyTree
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        schema:
+          const: application/json
+          type: string
+      responses:
+        '202':
+          description: Ack
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                contentMediaType: application/json
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/policies/export:
+    parameters: []
+    get:
+      tags:
+      - Trees
+      summary: Grafana Route Get Policy Tree Export
+      description: This API operation retrieves and exports the complete policy tree structure from Grafana's provisioning system. It returns a comprehensive representation of all configured notification policies in an exportable format, which can be used for backup purposes, version control, or migration to other Grafana instances. The GET request to this endpoint provides administrators with a way to programmatically access and manage their alerting policy configurations outside of the Grafana UI, facilitating infrastructure-as-code practices and automated provisioning workflows.
+      operationId: routeGetPolicyTreeExport
+      parameters: []
+      responses:
+        '200':
+          description: AlertingFileExport
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertingFileExportisthefullprovisionedfileexport.'
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+            application/terraform+hcl:
+              schema:
+                contentMediaType: application/terraform+hcl
+            text/yaml:
+              schema:
+                contentMediaType: text/yaml
+            text/hcl:
+              schema:
+                contentMediaType: text/hcl
+        '404':
+          description: NotFound
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                contentMediaType: application/json
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+            application/terraform+hcl:
+              schema:
+                contentMediaType: application/terraform+hcl
+            text/yaml:
+              schema:
+                contentMediaType: text/yaml
+            text/hcl:
+              schema:
+                contentMediaType: text/hcl
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    RelativeTimeRangeExport:
+      title: RelativeTimeRangeExport
+      type: object
+      properties:
+        from:
+          type: integer
+          contentEncoding: int64
+        to:
+          type: integer
+          contentEncoding: int64
+    Recordistheprovisionedexportofmodels.Record.:
+      title: Recordistheprovisionedexportofmodels.Record.
+      type: object
+      properties:
+        from:
+          type: string
+        metric:
+          type: string
+        targetDatasourceUid:
+          type: string
+    ExecErrState:
+      title: ExecErrState
+      enum:
+      - OK
+      - Alerting
+      - Error
+      type: string
+    NoDataState:
+      title: NoDataState
+      enum:
+      - Alerting
+      - NoData
+      - OK
+      type: string
+    AlertingFileExportisthefullprovisionedfileexport.:
+      title: AlertingFileExportisthefullprovisionedfileexport.
+      type: object
+      properties:
+        apiVersion:
+          type: integer
+          contentEncoding: int64
+        contactPoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.'
+          description: ''
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertRuleGroupExportistheprovisionedfileexportofAlertRuleGroupV1.'
+          description: ''
+        muteTimes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MuteTimeIntervalExport'
+          description: ''
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.'
+          description: ''
+    ValidationError:
+      title: ValidationError
+      type: object
+      properties:
+        message:
+          type: string
+          examples:
+          - error message
+    AlertRuleNotificationSettingsExportistheprovisionedexportofmodels.NotificationSettings.:
+      title: AlertRuleNotificationSettingsExportistheprovisionedexportofmodels.NotificationSettings.
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+    Matchermodelsthematchingofalabel.:
+      title: Matchermodelsthematchingofalabel.
+      type: object
+      properties:
+        Name:
+          type: string
+        Type:
+          type: integer
+          contentEncoding: int64
+        Value:
+          type: string
+    ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.:
+      title: ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.
+      type: object
+      properties:
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        receivers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.'
+          description: ''
+    Route:
+      title: Route
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        continue:
+          type: boolean
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        match:
+          type: object
+          additionalProperties:
+            type: string
+          description: Deprecated. Remove before v1.0 release.
+        match_re:
+          type: object
+          additionalProperties:
+            type: string
+        matchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Matchermodelsthematchingofalabel.'
+          description: 'Matchers is a slice of Matchers that is sortable, implements Stringer, and
+
+            provides a Matches method to match a LabelSet against all Matchers in the
+
+            slice. Note that some users of Matchers might require it to be sorted.'
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        object_matchers:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        provenance:
+          type: string
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Route'
+          description: ''
+      description: 'A Route is a node that contains definitions of how to handle alerts. This is modified
+
+        from the upstream alertmanager in that it adds the ObjectMatchers property.'
+    TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.:
+      title: TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.
+      type: object
+      properties:
+        name:
+          type: string
+        time_intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+          description: ''
+    AlertRuleGroupExportistheprovisionedfileexportofAlertRuleGroupV1.:
+      title: AlertRuleGroupExportistheprovisionedfileexportofAlertRuleGroupV1.
+      type: object
+      properties:
+        folder:
+          type: string
+        interval:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertRuleExportistheprovisionedfileexportofmodels.AlertRule.'
+          description: ''
+    AlertRuleExportistheprovisionedfileexportofmodels.AlertRule.:
+      title: AlertRuleExportistheprovisionedfileexportofmodels.AlertRule.
+      type: object
+      properties:
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+        condition:
+          type: string
+        dashboardUid:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertQueryExportistheprovisionedexportofmodels.AlertQuery.'
+          description: ''
+        execErrState:
+          $ref: '#/components/schemas/ExecErrState'
+        for:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        isPaused:
+          type: boolean
+        keepFiringFor:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        missing_series_evals_to_resolve:
+          type: integer
+          contentEncoding: int64
+        noDataState:
+          $ref: '#/components/schemas/NoDataState'
+        notification_settings:
+          $ref: '#/components/schemas/AlertRuleNotificationSettingsExportistheprovisionedexportofmodels.NotificationSettings.'
+        panelId:
+          type: integer
+          contentEncoding: int64
+        record:
+          $ref: '#/components/schemas/Recordistheprovisionedexportofmodels.Record.'
+        title:
+          type: string
+        uid:
+          type: string
+    RouteExport:
+      title: RouteExport
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        continue:
+          type: boolean
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        match:
+          type: object
+          additionalProperties:
+            type: string
+          description: Deprecated. Remove before v1.0 release.
+        match_re:
+          type: object
+          additionalProperties:
+            type: string
+        matchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Matchermodelsthematchingofalabel.'
+          description: 'Matchers is a slice of Matchers that is sortable, implements Stringer, and
+
+            provides a Matches method to match a LabelSet against all Matchers in the
+
+            slice. Note that some users of Matchers might require it to be sorted.'
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        object_matchers:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouteExport'
+          description: ''
+      description: 'RouteExport is the provisioned file export of definitions.Route. This is needed to hide fields that aren''t useable in
+
+        provisioning file format. An alternative would be to define a custom MarshalJSON and MarshalYAML that excludes them.'
+    NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.:
+      title: NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        continue:
+          type: boolean
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        match:
+          type: object
+          additionalProperties:
+            type: string
+          description: Deprecated. Remove before v1.0 release.
+        match_re:
+          type: object
+          additionalProperties:
+            type: string
+        matchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Matchermodelsthematchingofalabel.'
+          description: 'Matchers is a slice of Matchers that is sortable, implements Stringer, and
+
+            provides a Matches method to match a LabelSet against all Matchers in the
+
+            slice. Note that some users of Matchers might require it to be sorted.'
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        object_matchers:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouteExport'
+          description: ''
+    ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.:
+      title: ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.
+      type: object
+      properties:
+        disableResolveMessage:
+          type: boolean
+        settings:
+          type: object
+        type:
+          type: string
+        uid:
+          type: string
+    MuteTimeIntervalExport:
+      title: MuteTimeIntervalExport
+      type: object
+      properties:
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        time_intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+          description: ''
+    AlertQueryExportistheprovisionedexportofmodels.AlertQuery.:
+      title: AlertQueryExportistheprovisionedexportofmodels.AlertQuery.
+      type: object
+      properties:
+        datasourceUid:
+          type: string
+        model:
+          type: object
+          additionalProperties: {}
+        queryType:
+          type: string
+        refId:
+          type: string
+        relativeTimeRange:
+          $ref: '#/components/schemas/RelativeTimeRangeExport'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

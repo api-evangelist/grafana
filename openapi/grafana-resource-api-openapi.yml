@@ -1,0 +1,773 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Resource API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Resource
+paths:
+  /datasources/uid/{uid}/resources/{datasource_proxy_route}:
+    parameters: []
+    get:
+      tags:
+      - Resource
+      summary: Grafana Call Datasource Resource With UID
+      description: This API operation enables clients to interact with a specific datasource in Grafana by making GET requests to custom resource endpoints exposed by that datasource. It uses the datasource's unique identifier (UID) rather than its numeric ID to route requests through Grafana's proxy to the underlying datasource's resource paths. The operation accepts a variable datasource_proxy_route parameter that allows accessing different resource endpoints specific to the datasource type, effectively acting as a proxy layer that handles authentication and request forwarding while maintaining Grafana's security context. This is particularly useful for datasource plugins that expose additional REST endpoints beyond standard query interfaces, allowing frontend applications to fetch metadata, configuration options, or other supplementary data from the datasource through Grafana's unified API.
+      operationId: callDatasourceResourceWithUID
+      parameters:
+      - name: datasource_proxy_route
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/{id}/resources/{datasource_proxy_route}:
+    parameters: []
+    get:
+      tags:
+      - Resource
+      summary: Grafana Call Datasource Resource By ID
+      description: This API operation allows you to make GET requests to a specific Grafana datasource's custom resources by providing the datasource ID and a resource route path. It acts as a proxy that forwards requests to the underlying datasource plugin's resource handler, enabling access to datasource-specific endpoints and functionality that may not be covered by standard Grafana APIs. The datasource_proxy_route parameter is a wildcard path that gets passed through to the datasource's backend, allowing flexible interaction with various datasource capabilities such as querying metadata, retrieving schema information, or accessing custom features exposed by the particular datasource plugin.
+      operationId: callDatasourceResourceByID
+      parameters:
+      - name: datasource_proxy_route
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/{resource}/description:
+    parameters: []
+    get:
+      tags:
+      - Resource
+      summary: Grafana Get Resource Description
+      description: This API operation retrieves the description of a specific access control resource in Grafana. By making a GET request to the endpoint with a resource identifier, it returns detailed information about what that particular resource represents within Grafana's role-based access control (RBAC) system. This is useful for understanding the purpose and context of different protected resources when managing permissions and access policies, allowing administrators to view human-readable descriptions of resources before assigning or modifying access controls.
+      operationId: getResourceDescription
+      parameters:
+      - name: resource
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Description'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/{resource}/{resourceID}:
+    parameters: []
+    get:
+      tags:
+      - Resource
+      summary: Grafana Get Resource Permissions
+      description: This API operation retrieves the access control permissions for a specific resource in Grafana by providing the resource type and resource ID as path parameters. It returns detailed information about who has access to the specified resource and what level of permissions they have been granted. This is useful for auditing and managing resource-level permissions within Grafana, allowing administrators to review which users, teams, or service accounts have been granted specific permissions on individual dashboards, folders, data sources, or other Grafana resources.
+      operationId: getResourcePermissions
+      parameters:
+      - name: resource
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: resourceID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/resourcePermissionDTO'
+                description: ''
+                contentMediaType: application/json
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Resource
+      summary: Grafana Set Resource Permissions
+      description: Sets access control permissions for a specific resource in Grafana, allowing administrators to define granular role-based permissions for individual resources identified by their resource type and ID. This endpoint accepts permission configurations in the request body and applies them to the specified resource, enabling fine-grained control over who can view, edit, or manage particular dashboards, folders, data sources, or other Grafana resources. The operation requires appropriate administrative privileges and follows Grafana's RBAC (Role-Based Access Control) model to ensure secure permission management across the platform.
+      operationId: setResourcePermissions
+      parameters:
+      - name: resource
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: resourceID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/setPermissionsCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/{resource}/{resourceID}/builtInRoles/{builtInRole}:
+    parameters: []
+    post:
+      tags:
+      - Resource
+      summary: Grafana Set Resource Permissions For Built In Role
+      description: This API operation allows administrators to configure and assign specific resource-level permissions to a built-in role within Grafana's access control system. By making a POST request to this endpoint with a specified resource type, resource ID, and built-in role identifier, you can define granular permissions that determine what actions the built-in role can perform on that particular resource. This is useful for customizing access control policies beyond default settings, enabling fine-grained security management where built-in roles like Viewer, Editor, or Admin can have their permissions tailored for specific dashboards, folders, data sources, or other Grafana resources without modifying the role globally.
+      operationId: setResourcePermissionsForBuiltInRole
+      parameters:
+      - name: resource
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: resourceID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: builtInRole
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/setPermissionCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/{resource}/{resourceID}/teams/{teamID}:
+    parameters: []
+    post:
+      tags:
+      - Resource
+      summary: Grafana Set Resource Permissions For Team
+      description: This API operation allows you to configure specific permissions for a team on a particular resource in Grafana's access control system. By making a POST request to this endpoint with the resource type, resource ID, and team ID, you can grant or update the access rights that a specific team has for that resource. This is part of Grafana's role-based access control (RBAC) functionality, enabling administrators to manage fine-grained permissions by assigning different levels of access to teams for individual resources such as dashboards, folders, or data sources within the Grafana instance.
+      operationId: setResourcePermissionsForTeam
+      parameters:
+      - name: resource
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: resourceID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: teamID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/setPermissionCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/{resource}/{resourceID}/users/{userID}:
+    parameters: []
+    post:
+      tags:
+      - Resource
+      summary: Grafana Set Resource Permissions For User
+      description: This API operation allows administrators to configure specific access control permissions for an individual user on a particular Grafana resource. By making a POST request to this endpoint with the resource type, resource ID, and user ID, you can grant or modify the permissions that determine what actions the specified user can perform on that resource. This granular permission management enables fine-tuned control over user access rights within Grafana, allowing administrators to implement role-based access control (RBAC) at the resource level and ensure users have appropriate levels of access to dashboards, folders, data sources, or other Grafana resources based on their organizational responsibilities.
+      operationId: setResourcePermissionsForUser
+      parameters:
+      - name: resource
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: resourceID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: userID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/setPermissionCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /cloudmigration/resources/dependencies:
+    parameters: []
+    get:
+      tags:
+      - Resource
+      summary: Grafana Get Resource Dependencies
+      description: This API operation retrieves the dependencies for resources involved in a cloud migration process within Grafana. When called, it analyzes and returns information about the relationships and dependencies between various Grafana resources (such as dashboards, data sources, folders, and other configuration elements) that need to be considered during a cloud migration. This is particularly useful for understanding which resources must be migrated together to maintain functionality and avoid broken references, helping administrators plan and execute a complete and successful migration from a self-hosted Grafana instance to Grafana Cloud or between different Grafana environments.
+      operationId: getResourceDependencies
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceDependenciesResponseDTO'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    resourcePermissionDTO:
+      title: resourcePermissionDTO
+      type: object
+      properties:
+        actions:
+          type: array
+          items:
+            type: string
+          description: ''
+        builtInRole:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        isInherited:
+          type: boolean
+        isManaged:
+          type: boolean
+        isServiceAccount:
+          type: boolean
+        permission:
+          type: string
+        roleName:
+          type: string
+        team:
+          type: string
+        teamAvatarUrl:
+          type: string
+        teamId:
+          type: integer
+          contentEncoding: int64
+        teamUid:
+          type: string
+        userAvatarUrl:
+          type: string
+        userId:
+          type: integer
+          contentEncoding: int64
+        userLogin:
+          type: string
+        userUid:
+          type: string
+    SetResourcePermissionCommand:
+      title: SetResourcePermissionCommand
+      type: object
+      properties:
+        builtInRole:
+          type: string
+        permission:
+          type: string
+        teamId:
+          type: integer
+          contentEncoding: int64
+        userId:
+          type: integer
+          contentEncoding: int64
+    Dependency:
+      title: Dependency
+      enum:
+      - DASHBOARD
+      - DATASOURCE
+      - FOLDER
+      - LIBRARY_ELEMENT
+      - ALERT_RULE
+      - ALERT_RULE_GROUP
+      - CONTACT_POINT
+      - NOTIFICATION_POLICY
+      - NOTIFICATION_TEMPLATE
+      - MUTE_TIMING
+      - PLUGIN
+      type: string
+    ResourceDependenciesResponseDTO:
+      title: ResourceDependenciesResponseDTO
+      type: object
+      properties:
+        resourceDependencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceDependencyDTO'
+          description: ''
+    ResourceType:
+      title: ResourceType
+      enum:
+      - DASHBOARD
+      - DATASOURCE
+      - FOLDER
+      - LIBRARY_ELEMENT
+      - ALERT_RULE
+      - ALERT_RULE_GROUP
+      - CONTACT_POINT
+      - NOTIFICATION_POLICY
+      - NOTIFICATION_TEMPLATE
+      - MUTE_TIMING
+      - PLUGIN
+      type: string
+    setPermissionCommand:
+      title: setPermissionCommand
+      type: object
+      properties:
+        permission:
+          type: string
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    ResourceDependencyDTO:
+      title: ResourceDependencyDTO
+      type: object
+      properties:
+        dependencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dependency'
+          description: ''
+        resourceType:
+          $ref: '#/components/schemas/ResourceType'
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    Description:
+      title: Description
+      type: object
+      properties:
+        assignments:
+          $ref: '#/components/schemas/Assignments'
+        permissions:
+          type: array
+          items:
+            type: string
+          description: ''
+    Assignments:
+      title: Assignments
+      type: object
+      properties:
+        builtInRoles:
+          type: boolean
+        serviceAccounts:
+          type: boolean
+        teams:
+          type: boolean
+        users:
+          type: boolean
+    setPermissionsCommand:
+      title: setPermissionsCommand
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SetResourcePermissionCommand'
+          description: ''
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

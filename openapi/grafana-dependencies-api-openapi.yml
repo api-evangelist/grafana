@@ -1,0 +1,114 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Dependencies API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Dependencies
+paths:
+  /cloudmigration/resources/dependencies:
+    parameters: []
+    get:
+      tags:
+      - Dependencies
+      summary: Grafana Get Resource Dependencies
+      description: This API operation retrieves the dependencies for resources involved in a cloud migration process within Grafana. When called, it analyzes and returns information about the relationships and dependencies between various Grafana resources (such as dashboards, data sources, folders, and other configuration elements) that need to be considered during a cloud migration. This is particularly useful for understanding which resources must be migrated together to maintain functionality and avoid broken references, helping administrators plan and execute a complete and successful migration from a self-hosted Grafana instance to Grafana Cloud or between different Grafana environments.
+      operationId: getResourceDependencies
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceDependenciesResponseDTO'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    Dependency:
+      title: Dependency
+      enum:
+      - DASHBOARD
+      - DATASOURCE
+      - FOLDER
+      - LIBRARY_ELEMENT
+      - ALERT_RULE
+      - ALERT_RULE_GROUP
+      - CONTACT_POINT
+      - NOTIFICATION_POLICY
+      - NOTIFICATION_TEMPLATE
+      - MUTE_TIMING
+      - PLUGIN
+      type: string
+    ResourceDependenciesResponseDTO:
+      title: ResourceDependenciesResponseDTO
+      type: object
+      properties:
+        resourceDependencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceDependencyDTO'
+          description: ''
+    ResourceType:
+      title: ResourceType
+      enum:
+      - DASHBOARD
+      - DATASOURCE
+      - FOLDER
+      - LIBRARY_ELEMENT
+      - ALERT_RULE
+      - ALERT_RULE_GROUP
+      - CONTACT_POINT
+      - NOTIFICATION_POLICY
+      - NOTIFICATION_TEMPLATE
+      - MUTE_TIMING
+      - PLUGIN
+      type: string
+    ResourceDependencyDTO:
+      title: ResourceDependencyDTO
+      type: object
+      properties:
+        dependencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dependency'
+          description: ''
+        resourceType:
+          $ref: '#/components/schemas/ResourceType'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

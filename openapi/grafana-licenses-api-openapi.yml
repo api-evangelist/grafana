@@ -1,0 +1,341 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Licenses API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Licenses
+paths:
+  /licensing/refresh-stats:
+    parameters: []
+    get:
+      tags:
+      - Licenses
+      summary: Grafana Refresh License Stats
+      description: This API operation refreshes the licensing statistics in Grafana by sending a GET request to the /licensing/refresh-stats endpoint. When invoked, it triggers an update of the current license usage data and metrics, ensuring that the most recent information about license consumption, active users, and other licensing-related statistics are retrieved and synchronized. This operation is typically used by administrators to obtain real-time licensing information without waiting for the automatic refresh cycle, allowing for immediate verification of license compliance and usage patterns within the Grafana instance.
+      operationId: refreshLicenseStats
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActiveUserStats'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /licensing/token:
+    parameters: []
+    get:
+      tags:
+      - Licenses
+      summary: Grafana Get License Token
+      description: This API operation retrieves the current license token information from a Grafana instance. When invoked with a GET request to the /licensing/token endpoint, it returns details about the active licensing configuration, which may include token metadata, validity status, expiration dates, and associated entitlements or features enabled by the license. This endpoint is typically used by administrators to verify licensing status, check token validity, or retrieve license information for audit and compliance purposes within Grafana's enterprise or commercial offerings.
+      operationId: getLicenseToken
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Licenses
+      summary: Grafana Post License Token
+      description: This API operation allows administrators to activate or update a Grafana Enterprise license by submitting a license token via a POST request to the /licensing/token endpoint. When called, it accepts a license token string in the request body, validates the token with Grafana's licensing service, and applies the license to the Grafana instance if valid. This operation is typically used during initial Enterprise setup or when renewing an existing license, and it requires administrative privileges to execute. Upon successful validation, the license details are stored and the Enterprise features associated with that license tier become available to the Grafana instance.
+      operationId: postLicenseToken
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteTokenCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Licenses
+      summary: Grafana Delete License Token
+      description: This API operation removes the currently active license token from a Grafana instance. When executed, it deletes the stored license information, effectively reverting the instance to an unlicensed state or to use any default licensing configuration. This endpoint requires appropriate administrative permissions and is typically used when decommissioning a licensed Grafana installation, switching to a different license, or troubleshooting license-related issues. The DELETE method ensures complete removal of the token from the system's license management configuration.
+      operationId: deleteLicenseToken
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteTokenCommand'
+        required: true
+      responses:
+        '202':
+          description: AcceptedResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '422':
+          description: UnprocessableEntityError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /licensing/token/renew:
+    parameters: []
+    post:
+      tags:
+      - Licenses
+      summary: Grafana Post Renew License Token
+      description: This API operation is used to renew an existing Grafana Enterprise license token. When invoked via a POST request to the /licensing/token/renew endpoint, it initiates the license token renewal process, typically validating the current token and requesting a fresh token from the Grafana licensing server. This operation is essential for maintaining continuous access to Grafana Enterprise features by ensuring the license remains valid and up-to-date. Authentication and appropriate permissions are required to execute this operation, and upon successful renewal, the system receives an updated token that extends the licensing period for the Grafana Enterprise instance.
+      operationId: postRenewLicenseToken
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          text/plain:
+            schema:
+              type: object
+              contentMediaType: text/plain
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content: {}
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    Token:
+      title: Token
+      type: object
+      properties:
+        account:
+          type: string
+        anonymousRatio:
+          type: integer
+          contentEncoding: int64
+        company:
+          type: string
+        details_url:
+          type: string
+        exp:
+          type: integer
+          contentEncoding: int64
+        iat:
+          type: integer
+          contentEncoding: int64
+        included_users:
+          type: integer
+          contentEncoding: int64
+        iss:
+          type: string
+        jti:
+          type: string
+        lexp:
+          type: integer
+          contentEncoding: int64
+        lic_exp_warn_days:
+          type: integer
+          contentEncoding: int64
+        lid:
+          type: string
+        limit_by:
+          type: string
+        max_concurrent_user_sessions:
+          type: integer
+          contentEncoding: int64
+        nbf:
+          type: integer
+          contentEncoding: int64
+        prod:
+          type: array
+          items:
+            type: string
+          description: ''
+        slug:
+          type: string
+        status:
+          type: integer
+          contentEncoding: int64
+        sub:
+          type: string
+        tok_exp_warn_days:
+          type: integer
+          contentEncoding: int64
+        trial:
+          type: boolean
+        trial_exp:
+          type: integer
+          contentEncoding: int64
+        update_days:
+          type: integer
+          contentEncoding: int64
+        usage_billing:
+          type: boolean
+    ActiveUserStats:
+      title: ActiveUserStats
+      type: object
+      properties:
+        active_admins_and_editors:
+          type: integer
+          contentEncoding: int64
+        active_anonymous_devices:
+          type: integer
+          contentEncoding: int64
+        active_users:
+          type: integer
+          contentEncoding: int64
+        active_viewers:
+          type: integer
+          contentEncoding: int64
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    DeleteTokenCommand:
+      title: DeleteTokenCommand
+      type: object
+      properties:
+        instance:
+          type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

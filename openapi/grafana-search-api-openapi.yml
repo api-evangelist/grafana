@@ -1,0 +1,1561 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Search API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Search
+  description: ''
+paths:
+  /query-history:
+    parameters: []
+    get:
+      tags:
+      - Search
+      summary: Grafana Search Queries
+      description: Retrieves a paginated list of query history entries from Grafana based on specified search criteria. This endpoint allows users to filter and search through their saved query history, returning matching queries along with relevant metadata such as query text, timestamp, data source information, and user details. The operation supports various filtering parameters to narrow down results and includes pagination controls to manage large result sets efficiently.
+      operationId: searchQueries
+      parameters:
+      - name: datasourceUid
+        in: query
+        description: List of data source UIDs to search for
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: searchString
+        in: query
+        description: Text inside query or comments that is searched for
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: onlyStarred
+        in: query
+        description: Flag indicating if only starred queries should be returned
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: sort
+        in: query
+        description: Sort method
+        style: form
+        explode: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/sort'
+          - description: Sort method
+      - name: page
+        in: query
+        description: Use this parameter to access hits beyond limit. Numbering starts at 1. limit param acts as page size.
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: limit
+        in: query
+        description: Limit the number of returned results
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: from
+        in: query
+        description: From range for the query history search
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: to
+        in: query
+        description: To range for the query history search
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryHistorySearchResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /orgs:
+    parameters: []
+    get:
+      tags:
+      - Search
+      summary: Grafana Search Organizations
+      description: The GET /orgs endpoint in Grafana allows users to retrieve a list of all organizations within the Grafana instance. This operation performs a search across organizations and returns their details, typically requiring administrative privileges to access. The endpoint supports pagination and filtering parameters to help narrow down results when dealing with multiple organizations. It's commonly used by system administrators to manage multi-tenant Grafana deployments, audit organizational structures, or integrate Grafana with external systems that need to enumerate available organizations. The response includes organization metadata such as ID, name, and other relevant organizational attributes.
+      operationId: searchOrganizations
+      parameters:
+      - name: page
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 1
+      - name: perpage
+        in: query
+        description: 'Number of items per page
+
+          The totalCount field in the response can be used for pagination list E.g. if totalCount is equal to 100 teams and the perpage parameter is set to 10 then there are 10 pages of teams.'
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 1000
+      - name: name
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: query
+        in: query
+        description: If set it will return results where the query value is contained in the name field. Query values with spaces need to be URL encoded.
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrgDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '409':
+          description: ConflictError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /orgs/{org_id}/users/search:
+    parameters: []
+    get:
+      tags:
+      - Search
+      summary: Grafana Search Org Users
+      description: This API operation allows you to search for users within a specific organization in Grafana by providing the organization ID in the URL path. It uses the GET HTTP method to retrieve a filtered list of users belonging to the specified organization, enabling administrators to query and find specific users based on search criteria. The endpoint is useful for managing organization membership and performing user lookups within the context of a particular Grafana organization.
+      operationId: searchOrgUsers
+      parameters:
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchOrgUsersQueryResult'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams/search:
+    parameters: []
+    get:
+      tags:
+      - Search
+      summary: Grafana Search Teams
+      description: The Grafana Teams Search API endpoint allows users to query and retrieve a list of teams within a Grafana instance using a GET request to /teams/search. This operation enables administrators and users with appropriate permissions to search for teams based on various criteria, returning matching team information such as team names, IDs, and associated metadata. The endpoint supports pagination and filtering parameters to help narrow down results when working with large numbers of teams, making it easier to locate specific teams or browse through the organization's team structure programmatically.
+      operationId: searchTeams
+      parameters:
+      - name: page
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 1
+      - name: perpage
+        in: query
+        description: 'Number of items per page
+
+          The totalCount field in the response can be used for pagination list E.g. if totalCount is equal to 100 teams and the perpage parameter is set to 10 then there are 10 pages of teams.'
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 1000
+      - name: name
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: query
+        in: query
+        description: If set it will return results where the query value is contained in the name field. Query values with spaces need to be URL encoded.
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: accesscontrol
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: sort
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchTeamQueryResult'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/assignments/search:
+    parameters: []
+    post:
+      tags:
+      - Search
+      summary: Grafana Search Result
+      description: The Grafana Access Control Assignments Search API operation is a POST endpoint located at /access-control/assignments/search that enables users to query and retrieve access control assignments within a Grafana instance. This endpoint allows administrators and authorized users to search through role-based access control (RBAC) assignments by submitting search criteria in the request body, returning a filtered list of assignments that match the specified parameters. The search functionality helps manage and audit user permissions, team assignments, and resource access configurations by providing a programmatic way to discover which users or teams have been assigned specific roles or permissions within the Grafana environment.
+      operationId: searchResult
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResult'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /serviceaccounts/search:
+    parameters: []
+    get:
+      tags:
+      - Search
+      summary: Grafana Search Org Service Accounts With Paging
+      description: The Grafana service accounts search API endpoint allows administrators to retrieve a paginated list of service accounts within an organization. This GET operation on the /serviceaccounts/search path enables filtering and searching through service accounts, returning results in a structured, paginated format that can be navigated through multiple pages. It's particularly useful for managing large numbers of service accounts in an organization, providing capabilities to query and locate specific accounts efficiently while maintaining performance through pagination controls.
+      operationId: searchOrgServiceAccountsWithPaging
+      parameters:
+      - name: Disabled
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: expiredTokens
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: query
+        in: query
+        description: 'It will return results where the query value is contained in one of the name.
+
+          Query values with spaces need to be URL encoded.'
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: perpage
+        in: query
+        description: The default value is 1000.
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: page
+        in: query
+        description: The default value is 1.
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchOrgServiceAccountsResult'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /anonymous/search:
+    parameters: []
+    get:
+      tags:
+      - Search
+      summary: Grafana Search Devices
+      description: This API operation performs a GET request to the `/anonymous/search` endpoint in Grafana to search for devices without requiring authentication. It allows users to query and retrieve device information from the Grafana system by submitting search parameters, returning matching device records based on the specified criteria. The anonymous nature of this endpoint means it can be accessed without user credentials, making it suitable for public-facing integrations or dashboard displays where device discovery and lookup capabilities are needed without imposing authentication requirements.
+      operationId: searchDevices
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchDeviceQueryResult'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboard/snapshots:
+    parameters: []
+    get:
+      tags:
+      - Search
+      summary: Grafana Search Dashboard Snapshots
+      description: Retrieves a list of dashboard snapshots based on specified search criteria. This operation allows users to query and filter existing snapshots that have been created from Grafana dashboards, returning metadata about each snapshot such as its name, key, creation timestamp, and expiration details. Users can apply various parameters to narrow down results, including searching by snapshot name, limiting the number of results returned, or filtering by tags. The endpoint is useful for managing and discovering previously created dashboard snapshots without needing to access the full dashboard interface.
+      operationId: searchDashboardSnapshots
+      parameters:
+      - name: query
+        in: query
+        description: Search Query
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Limit the number of returned results
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 1000
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardSnapshotDTO'
+                description: ''
+                contentMediaType: application/json
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /playlists:
+    parameters: []
+    get:
+      tags:
+      - Search
+      summary: Grafana Search Playlists
+      description: The GET /playlists endpoint in Grafana allows users to retrieve a list of playlists based on search criteria. This operation queries the Grafana instance for playlists that match specified parameters, returning playlist metadata such as name, ID, and associated dashboards. Users can filter results using query parameters to narrow down playlists by name or other attributes. The endpoint returns a JSON array containing the matching playlists, making it useful for administrators and users who need to discover, list, or programmatically access available playlists within their Grafana environment. This is particularly valuable in environments with multiple playlists where users need to search and identify specific playlist configurations without manually browsing through the Grafana interface.
+      operationId: searchPlaylists
+      parameters:
+      - name: query
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: in:limit
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Playlist'
+                description: ''
+                contentMediaType: application/json
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /search:
+    parameters: []
+    get:
+      tags:
+      - Search
+      summary: Grafana Search
+      operationId: search
+      parameters:
+      - name: query
+        in: query
+        description: Search Query
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: tag
+        in: query
+        description: List of tags to search for
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: type
+        in: query
+        description: Type to search for, dash-folder or dash-db
+        style: form
+        explode: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/type4'
+          - description: Type to search for, dash-folder or dash-db
+      - name: dashboardIds
+        in: query
+        description: 'List of dashboard id’s to search for
+
+          This is deprecated: users should use the `dashboardUIDs` query parameter instead'
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+      - name: dashboardUIDs
+        in: query
+        description: List of dashboard uid’s to search for
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: folderIds
+        in: query
+        description: 'List of folder id’s to search in for dashboards
+
+          If it''s `0` then it will query for the top level folders
+
+          This is deprecated: users should use the `folderUIDs` query parameter instead'
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+      - name: folderUIDs
+        in: query
+        description: 'List of folder UID’s to search in for dashboards
+
+          If it''s an empty string then it will query for the top level folders'
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: starred
+        in: query
+        description: Flag indicating if only starred Dashboards should be returned
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: limit
+        in: query
+        description: Limit the number of returned results (max 5000)
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: page
+        in: query
+        description: Use this parameter to access hits beyond limit. Numbering starts at 1. limit param acts as page size. Only available in Grafana v6.2+.
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: permission
+        in: query
+        description: Set to `Edit` to return dashboards/folders that the user can edit
+        style: form
+        explode: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/permission1'
+          - description: Set to `Edit` to return dashboards/folders that the user can edit
+      - name: sort
+        in: query
+        description: Sort method; for listing all the possible sort methods use the search sorting endpoint.
+        style: form
+        explode: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/sort1'
+          - description: Sort method; for listing all the possible sort methods use the search sorting endpoint.
+      - name: deleted
+        in: query
+        description: Flag indicating if only soft deleted Dashboards should be returned
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Hit'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '422':
+          description: UnprocessableEntityError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+      description: The Grafana Search API endpoint allows users to query and retrieve dashboards, folders, and other resources within their Grafana instance through a GET request to the /search path. This operation supports various query parameters to filter results, including search terms, tags, folder IDs, dashboard IDs, types (dash-db or dash-folder), starred status, and pagination limits. It returns a JSON array of matching items with metadata such as ID, UID, title, URL, type, tags, and whether the item is starred, enabling programmatic discovery and navigation of Grafana content without requiring direct access to the user interface.
+  /teams/{teamId}/groups/search:
+    parameters: []
+    get:
+      tags:
+      - Search
+      summary: Grafana Search Team Groups
+      description: This API operation performs a search for groups associated with a specific team in Grafana by making a GET request to the endpoint /teams/{teamId}/groups/search, where {teamId} is the unique identifier of the team whose groups you want to search. It allows administrators and authorized users to query and retrieve a list of groups that are linked to a particular team, which is useful for managing team memberships, permissions, and organizational structures within Grafana. The search functionality helps filter through potentially large numbers of groups to find specific ones related to the team, returning relevant group information that can be used for further team management operations.
+      operationId: searchTeamGroups
+      parameters:
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: page
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 1
+      - name: perpage
+        in: query
+        description: Number of items per page
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 1000
+      - name: query
+        in: query
+        description: If set it will return results where the query value is contained in the name field. Query values with spaces need to be URL encoded.
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: Filter by exact name match
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchTeamGroupsQueryResult'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /users:
+    parameters: []
+    get:
+      tags:
+      - Search
+      summary: Grafana Search Users
+      description: This API operation retrieves a list of users from the Grafana instance based on specified search criteria. It performs a GET request to the /users endpoint and allows administrators or users with appropriate permissions to query and filter user accounts within the system. The operation typically supports various query parameters such as pagination limits, search terms, and filters to narrow down results, returning user information including usernames, email addresses, roles, and other relevant account details in a structured format such as JSON.
+      operationId: searchUsers
+      parameters:
+      - name: perpage
+        in: query
+        description: Limit the maximum number of users to return per page
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 1000
+      - name: page
+        in: query
+        description: Page index for starting fetching users
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 1
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserSearchHitDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /users/search:
+    parameters: []
+    get:
+      tags:
+      - Search
+      summary: Grafana Search Users With Paging
+      description: This API operation performs a paginated search of users within a Grafana instance, allowing administrators or authorized users to retrieve a list of user accounts based on specific search criteria. The GET request to the /users/search endpoint returns user information in a structured format with pagination support, making it efficient to handle large numbers of users by breaking results into manageable pages. This operation is commonly used in administrative interfaces, user management dashboards, or when implementing features that require user selection or filtering capabilities within Grafana.
+      operationId: searchUsersWithPaging
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchUserQueryResult'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    DashboardSnapshotDTO:
+      title: DashboardSnapshotDTO
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        expires:
+          type: string
+          contentEncoding: date-time
+        external:
+          type: boolean
+        externalUrl:
+          type: string
+        key:
+          type: string
+        name:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+      description: DashboardSnapshotDTO without dashboard map
+    OrgUserDTO:
+      title: OrgUserDTO
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+        authLabels:
+          type: array
+          items:
+            type: string
+          description: ''
+        avatarUrl:
+          type: string
+        email:
+          type: string
+        isDisabled:
+          type: boolean
+        isExternallySynced:
+          type: boolean
+        isProvisioned:
+          type: boolean
+        lastSeenAt:
+          type: string
+          contentEncoding: date-time
+        lastSeenAtAge:
+          type: string
+        login:
+          type: string
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        role:
+          type: string
+        uid:
+          type: string
+        userId:
+          type: integer
+          contentEncoding: int64
+    QueryHistoryDTO:
+      title: QueryHistoryDTO
+      type: object
+      properties:
+        comment:
+          type: string
+        createdAt:
+          type: integer
+          contentEncoding: int64
+        createdBy:
+          type: integer
+          contentEncoding: int64
+        datasourceUid:
+          type: string
+        queries:
+          type: object
+        starred:
+          type: boolean
+        uid:
+          type: string
+    QueryHistorySearchResponse:
+      title: QueryHistorySearchResponse
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/QueryHistorySearchResult'
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    SearchTeamGroupsQueryResult:
+      title: SearchTeamGroupsQueryResult
+      type: object
+      properties:
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        teamGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamGroupDTO'
+          description: ''
+        totalCount:
+          type: integer
+          contentEncoding: int64
+    SearchResultItem:
+      title: SearchResultItem
+      type: object
+      properties:
+        action:
+          type: string
+        basicRole:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        roleName:
+          type: string
+        scope:
+          type: string
+        teamId:
+          type: integer
+          contentEncoding: int64
+        userId:
+          type: integer
+          contentEncoding: int64
+        version:
+          type: integer
+          contentEncoding: int64
+    ServiceAccountDTO:
+      title: ServiceAccountDTO
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+          examples:
+          - serviceaccounts:delete: true
+            serviceaccounts:read: true
+            serviceaccounts:write: true
+        avatarUrl:
+          type: string
+          examples:
+          - /avatar/85ec38023d90823d3e5b43ef35646af9
+        id:
+          type: integer
+          contentEncoding: int64
+        isDisabled:
+          type: boolean
+          examples:
+          - false
+        isExternal:
+          type: boolean
+          examples:
+          - false
+        login:
+          type: string
+          examples:
+          - sa-grafana
+        name:
+          type: string
+          examples:
+          - grafana
+        orgId:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 1
+        role:
+          type: string
+          examples:
+          - Viewer
+        tokens:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 0
+        uid:
+          type: string
+          examples:
+          - fe1xejlha91xce
+      description: 'swagger: model'
+    SearchResult:
+      title: SearchResult
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResultItem'
+          description: ''
+    TeamDTO:
+      title: TeamDTO
+      required:
+      - id
+      - isProvisioned
+      - memberCount
+      - name
+      - orgId
+      - uid
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+        avatarUrl:
+          type: string
+        email:
+          type: string
+        externalUID:
+          type: string
+        id:
+          type: integer
+          description: '@deprecated Use UID instead'
+          contentEncoding: int64
+        isProvisioned:
+          type: boolean
+        memberCount:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        permission:
+          type: integer
+          contentEncoding: int64
+        uid:
+          type: string
+    sort:
+      title: sort
+      enum:
+      - time-desc
+      - time-asc
+      type: string
+    SearchOrgServiceAccountsResult:
+      title: SearchOrgServiceAccountsResult
+      type: object
+      properties:
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        serviceAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceAccountDTO'
+          description: ''
+        totalCount:
+          type: integer
+          description: 'It can be used for pagination of the user list
+
+            E.g. if totalCount is equal to 100 users and
+
+            the perpage parameter is set to 10 then there are 10 pages of users.'
+          contentEncoding: int64
+      description: 'swagger: model'
+    Playlist:
+      title: Playlist
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        interval:
+          type: string
+        name:
+          type: string
+        uid:
+          type: string
+      description: Playlist model
+    type4:
+      title: type4
+      enum:
+      - dash-folder
+      - dash-db
+      type: string
+    SearchTeamQueryResult:
+      title: SearchTeamQueryResult
+      type: object
+      properties:
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        teams:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamDTO'
+          description: ''
+        totalCount:
+          type: integer
+          contentEncoding: int64
+    sort1:
+      title: sort1
+      enum:
+      - alpha-asc
+      - alpha-desc
+      type: string
+    OrgDTO:
+      title: OrgDTO
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+    UserSearchHitDTO:
+      title: UserSearchHitDTO
+      type: object
+      properties:
+        authLabels:
+          type: array
+          items:
+            type: string
+          description: ''
+        avatarUrl:
+          type: string
+        email:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        isAdmin:
+          type: boolean
+        isDisabled:
+          type: boolean
+        isProvisioned:
+          type: boolean
+        lastSeenAt:
+          type: string
+          contentEncoding: date-time
+        lastSeenAtAge:
+          type: string
+        login:
+          type: string
+        name:
+          type: string
+        uid:
+          type: string
+    SearchDeviceQueryResult:
+      title: SearchDeviceQueryResult
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeviceSearchHitDTO'
+          description: ''
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        totalCount:
+          type: integer
+          contentEncoding: int64
+    DeviceSearchHitDTO:
+      title: DeviceSearchHitDTO
+      type: object
+      properties:
+        clientIp:
+          type: string
+        createdAt:
+          type: string
+          contentEncoding: date-time
+        deviceId:
+          type: string
+        lastSeenAt:
+          type: string
+          contentEncoding: date-time
+        updatedAt:
+          type: string
+          contentEncoding: date-time
+        userAgent:
+          type: string
+    SearchUserQueryResult:
+      title: SearchUserQueryResult
+      type: object
+      properties:
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        totalCount:
+          type: integer
+          contentEncoding: int64
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserSearchHitDTO'
+          description: ''
+    permission1:
+      title: permission1
+      enum:
+      - Edit
+      - View
+      type: string
+    Hit:
+      title: Hit
+      type: object
+      properties:
+        description:
+          type: string
+        folderId:
+          type: integer
+          contentEncoding: int64
+        folderTitle:
+          type: string
+        folderUid:
+          type: string
+        folderUrl:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        isDeleted:
+          type: boolean
+        isStarred:
+          type: boolean
+        orgId:
+          type: integer
+          contentEncoding: int64
+        permanentlyDeleteDate:
+          type: string
+          contentEncoding: date-time
+        slug:
+          type: string
+        sortMeta:
+          type: integer
+          contentEncoding: int64
+        sortMetaName:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+          description: ''
+        title:
+          type: string
+        type:
+          type: string
+        uid:
+          type: string
+        uri:
+          type: string
+        url:
+          type: string
+    TeamGroupDTO:
+      title: TeamGroupDTO
+      type: object
+      properties:
+        groupId:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        teamId:
+          type: integer
+          contentEncoding: int64
+        uid:
+          type: string
+    QueryHistorySearchResult:
+      title: QueryHistorySearchResult
+      type: object
+      properties:
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        queryHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryHistoryDTO'
+          description: ''
+        totalCount:
+          type: integer
+          contentEncoding: int64
+    SearchOrgUsersQueryResult:
+      title: SearchOrgUsersQueryResult
+      type: object
+      properties:
+        orgUsers:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrgUserDTO'
+          description: ''
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        totalCount:
+          type: integer
+          contentEncoding: int64
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

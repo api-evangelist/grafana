@@ -1,0 +1,217 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Sync API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Sync
+paths:
+  /admin/ldap-sync-status:
+    parameters: []
+    get:
+      tags:
+      - Sync
+      summary: Grafana Get Sync Status
+      description: This API endpoint retrieves the current synchronization status between Grafana and LDAP (Lightweight Directory Access Protocol) servers. It is an administrative GET operation that returns information about the last LDAP sync operation, including whether it was successful, when it occurred, and any relevant error messages or warnings. This endpoint is typically used by system administrators to monitor and troubleshoot LDAP integration, ensuring that user accounts and permissions are properly synchronized between the external LDAP directory and Grafana's internal user database.
+      operationId: getSyncStatus
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActiveSyncStatusDTO'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/ldap/sync/{user_id}:
+    parameters: []
+    post:
+      tags:
+      - Sync
+      summary: Grafana Post Sync User With LDAP
+      description: This API operation triggers a synchronization between a specific Grafana user and LDAP directory services by sending a POST request to the endpoint with the target user's ID. When invoked, it forces Grafana to retrieve the latest user information, groups, and permissions from the configured LDAP server for the specified user, updating their local Grafana profile accordingly. This is particularly useful when LDAP user attributes or group memberships have changed and you need to immediately reflect those changes in Grafana without waiting for the automatic synchronization cycle. The operation requires admin privileges to execute and helps maintain consistency between the LDAP source of truth and Grafana's user database.
+      operationId: postSyncUserWithLDAP
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    SyncResultholdstheresultofasyncwithLDAP.Thisgivesusinformationonwhichuserswereupdatedandhow.:
+      title: SyncResultholdstheresultofasyncwithLDAP.Thisgivesusinformationonwhichuserswereupdatedandhow.
+      type: object
+      properties:
+        Elapsed:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        FailedUsers:
+          type: array
+          items:
+            $ref: '#/components/schemas/FailedUser'
+          description: ''
+        MissingUserIds:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+        Started:
+          type: string
+          contentEncoding: date-time
+        UpdatedUserIds:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+    FailedUser:
+      title: FailedUser
+      type: object
+      properties:
+        Error:
+          type: string
+        Login:
+          type: string
+      description: FailedUser holds the information of an user that failed
+    ActiveSyncStatusDTO:
+      title: ActiveSyncStatusDTO
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        nextSync:
+          type: string
+          contentEncoding: date-time
+        prevSync:
+          $ref: '#/components/schemas/SyncResultholdstheresultofasyncwithLDAP.Thisgivesusinformationonwhichuserswereupdatedandhow.'
+        schedule:
+          type: string
+      description: ActiveSyncStatusDTO holds the information for LDAP background Sync
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

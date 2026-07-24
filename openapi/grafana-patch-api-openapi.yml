@@ -1,0 +1,409 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Patch API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Patch
+paths:
+  /annotations/{annotation_id}:
+    parameters: []
+    patch:
+      tags:
+      - Patch
+      summary: Grafana Patch Annotation
+      description: Updates an existing annotation in Grafana by its unique identifier. This PATCH operation allows you to modify specific properties of an annotation without replacing the entire resource. You can update fields such as the annotation text, tags, time range, or associated dashboard and panel IDs. The request requires the annotation_id as a path parameter and accepts a JSON body containing only the fields you wish to modify. This is useful for correcting or enhancing existing annotations without needing to delete and recreate them. The operation returns the updated annotation object upon success.
+      operationId: patchAnnotation
+      parameters:
+      - name: annotation_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchAnnotationsCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /query-history/{query_history_uid}:
+    parameters: []
+    patch:
+      tags:
+      - Patch
+      summary: Grafana Patch Query Comment
+      description: Updates the comment of a specific query in the query history by its unique identifier. This endpoint allows users to modify the descriptive comment associated with a previously executed query, making it easier to document and organize query history. The operation requires the query history UID as a path parameter and accepts the updated comment data in the request body. This is useful for adding context, notes, or explanations to queries after they have been run, improving collaboration and query management within Grafana.
+      operationId: patchQueryComment
+      parameters:
+      - name: query_history_uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchQueryCommentInQueryHistoryCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryHistoryResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /org/preferences:
+    parameters: []
+    patch:
+      tags:
+      - Patch
+      summary: Grafana Patch Org Preferences
+      description: Updates the preferences for the current organization, allowing administrators to modify settings such as the default theme (light/dark/system), home dashboard ID, timezone preferences, and week start day. This endpoint accepts a partial preferences object via PATCH request, meaning only the fields that need to be changed should be included in the request body while other settings remain unchanged. The operation requires organization admin permissions and returns the updated preferences object upon successful modification, making it useful for customizing the organizational experience without affecting individual user preferences.
+      operationId: patchOrgPreferences
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchPrefsCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/preferences:
+    parameters: []
+    patch:
+      tags:
+      - Patch
+      summary: Grafana Patch User Preferences
+      description: Updates the preferences for the currently authenticated user by allowing partial modifications to settings such as theme (light/dark), timezone, home dashboard ID, and UI preferences. This PATCH endpoint enables users to customize their Grafana experience by submitting only the specific preference fields they want to change, without needing to provide all preference values. The operation requires authentication and only affects the preferences of the user making the request, leaving unchanged any preference fields not included in the request body.
+      operationId: patchUserPreferences
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchPrefsCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    Timezone:
+      title: Timezone
+      enum:
+      - utc
+      - browser
+      type: string
+    PatchQueryCommentInQueryHistoryCommand:
+      title: PatchQueryCommentInQueryHistoryCommand
+      type: object
+      properties:
+        comment:
+          type: string
+          description: Updated comment
+      description: PatchQueryCommentInQueryHistoryCommand is the command for updating comment for query in query history
+    Theme:
+      title: Theme
+      enum:
+      - light
+      - dark
+      type: string
+    QueryHistoryDTO:
+      title: QueryHistoryDTO
+      type: object
+      properties:
+        comment:
+          type: string
+        createdAt:
+          type: integer
+          contentEncoding: int64
+        createdBy:
+          type: integer
+          contentEncoding: int64
+        datasourceUid:
+          type: string
+        queries:
+          type: object
+        starred:
+          type: boolean
+        uid:
+          type: string
+    QueryHistoryPreference:
+      title: QueryHistoryPreference
+      type: object
+      properties:
+        homeTab:
+          type: string
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    QueryHistoryResponse:
+      title: QueryHistoryResponse
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/QueryHistoryDTO'
+      description: QueryHistoryResponse is a response struct for QueryHistoryDTO
+    PatchPrefsCmd:
+      title: PatchPrefsCmd
+      type: object
+      properties:
+        cookies:
+          type: array
+          items:
+            type: string
+          description: ''
+        homeDashboardId:
+          type: integer
+          description: The numerical :id of a favorited dashboard
+          contentEncoding: int64
+          default: 0
+        homeDashboardUID:
+          type: string
+        language:
+          type: string
+        navbar:
+          $ref: '#/components/schemas/NavbarPreference'
+        queryHistory:
+          $ref: '#/components/schemas/QueryHistoryPreference'
+        regionalFormat:
+          type: string
+        theme:
+          $ref: '#/components/schemas/Theme'
+        timezone:
+          $ref: '#/components/schemas/Timezone'
+        weekStart:
+          type: string
+    NavbarPreference:
+      title: NavbarPreference
+      type: object
+      properties:
+        bookmarkUrls:
+          type: array
+          items:
+            type: string
+          description: ''
+    PatchAnnotationsCmd:
+      title: PatchAnnotationsCmd
+      type: object
+      properties:
+        data:
+          type: object
+        id:
+          type: integer
+          contentEncoding: int64
+        tags:
+          type: array
+          items:
+            type: string
+          description: ''
+        text:
+          type: string
+        time:
+          type: integer
+          contentEncoding: int64
+        timeEnd:
+          type: integer
+          contentEncoding: int64
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

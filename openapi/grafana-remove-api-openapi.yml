@@ -1,0 +1,522 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Remove API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Remove
+paths:
+  /orgs/{org_id}/users/{user_id}:
+    parameters: []
+    delete:
+      tags:
+      - Remove
+      summary: Grafana Remove Org User
+      description: This API operation removes a specific user from a designated organization in Grafana by sending a DELETE request to the endpoint /orgs/{org_id}/users/{user_id}, where org_id represents the unique identifier of the organization and user_id represents the unique identifier of the user to be removed. When executed successfully, this operation revokes the user's membership and access rights within the specified organization, effectively disconnecting them from that particular organizational context while potentially maintaining their user account in the Grafana instance for participation in other organizations or contexts.
+      operationId: removeOrgUser
+      parameters:
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /org/users/{user_id}:
+    parameters: []
+    delete:
+      tags:
+      - Remove
+      summary: Grafana Remove Org User For Current Org
+      description: This API operation removes a specified user from the current organization in Grafana by making a DELETE request to the endpoint /org/users/{user_id}, where {user_id} is the unique identifier of the user to be removed. When executed, it disassociates the targeted user from the organization context in which the API call is made, effectively revoking their access and permissions within that specific organization. This operation requires appropriate administrative privileges within the current organization and only affects the user's membership in that particular organization, not their overall Grafana account or memberships in other organizations they may belong to.
+      operationId: removeOrgUserForCurrentOrg
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams/{team_id}/members/{user_id}:
+    parameters: []
+    delete:
+      tags:
+      - Remove
+      summary: Grafana Remove Team Member
+      description: Removes a specific user from a team by their user ID. This operation requires the team ID and user ID as path parameters. When executed, it deletes the membership association between the specified user and team, effectively revoking the user's access to team-specific resources and permissions. This is typically used when a user no longer needs to be part of a team or when reorganizing team structures within Grafana.
+      operationId: removeTeamMember
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/teams/{teamId}/roles/{roleUID}:
+    parameters: []
+    delete:
+      tags:
+      - Remove
+      summary: Grafana Remove Team Role
+      description: This API operation removes a specific role assignment from a team in Grafana's access control system. It uses a DELETE request to the endpoint /access-control/teams/{teamId}/roles/{roleUID}, where teamId identifies the target team and roleUID specifies the role to be removed. When executed, it revokes the specified role's permissions from the team, effectively removing that role's access rights from all members of that team without affecting other role assignments the team may have.
+      operationId: removeTeamRole
+      parameters:
+      - name: roleUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/users/{userId}/roles/{roleUID}:
+    parameters: []
+    delete:
+      tags:
+      - Remove
+      summary: Grafana Remove User Role
+      description: Removes a specific role assignment from a user in Grafana's access control system. This API endpoint deletes the association between a user (identified by userId) and a particular role (identified by roleUID), effectively revoking the permissions granted by that role from the user. The operation requires appropriate administrative privileges and is typically used when managing user permissions, reorganizing team structures, or removing access rights that are no longer needed. Upon successful execution, the user will no longer have the capabilities and access rights defined by the removed role, though they may still retain other role assignments.
+      operationId: removeUserRole
+      parameters:
+      - name: global
+        in: query
+        description: A flag indicating if the assignment is global or not. If set to false, the default org ID of the authenticated user will be used from the request to remove assignment.
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: roleUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams/{teamId}/groups:
+    parameters: []
+    delete:
+      tags:
+      - Remove
+      summary: Grafana Remove Team Group Api Query
+      description: This API operation removes an external group mapping from a specified team in Grafana. When executed, it performs a DELETE request to the endpoint /teams/{teamId}/groups, where {teamId} represents the unique identifier of the team from which the group association should be removed. The operation is used to disconnect external authentication provider groups (such as LDAP, OAuth, or SAML groups) from Grafana teams, effectively revoking the automatic team membership that was granted to users belonging to those external groups. This is particularly useful when reorganizing team structures, removing obsolete group mappings, or adjusting access control policies within Grafana's role-based access control system.
+      operationId: removeTeamGroupApiQuery
+      parameters:
+      - name: groupId
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/sso-settings/{key}:
+    parameters: []
+    delete:
+      tags:
+      - Remove
+      summary: Grafana Remove Provider Settings
+      description: This API operation allows you to delete a specific single sign-on (SSO) provider configuration from Grafana by specifying the provider's unique key in the URL path. When executed, it removes all settings and configuration associated with that particular SSO provider, effectively disabling that authentication method for your Grafana instance. This is useful when you need to decommission an SSO integration, clean up unused authentication providers, or reconfigure your authentication setup from scratch. The operation requires the provider key identifier to target the specific SSO configuration you want to remove, and upon successful deletion, the provider will no longer be available as an authentication option for users.
+      operationId: removeProviderSettings
+      parameters:
+      - name: key
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

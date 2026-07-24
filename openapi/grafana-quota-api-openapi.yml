@@ -1,0 +1,424 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Quota API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Quota
+  description: ''
+paths:
+  /admin/users/{user_id}/quotas:
+    parameters: []
+    get:
+      tags:
+      - Quota
+      summary: Grafana Get User Quota
+      description: This API operation retrieves the current quota limits and usage statistics for a specific user in Grafana. By making a GET request to the /admin/users/{user_id}/quotas endpoint with a valid user ID, administrators can view resource allocation details such as the maximum number of dashboards, data sources, or organizations that the specified user is allowed to create or use. The response provides both the configured quota limits and the current consumption for each quota type, enabling administrators to monitor resource usage, enforce limits, and make informed decisions about quota adjustments for individual users within their Grafana instance.
+      operationId: getUserQuota
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuotaDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/quotas/{quota_target}:
+    parameters: []
+    put:
+      tags:
+      - Quota
+      summary: Grafana Update User Quota
+      description: This API operation allows Grafana administrators to update quota limits for a specific user by targeting a particular quota type. It uses a PUT request to modify the quota value associated with the specified user ID and quota target, which could be related to resources like dashboards, data sources, or other Grafana entities. The operation requires admin-level privileges and accepts the user ID and quota target as path parameters, along with the new quota value in the request body, enabling fine-grained control over individual user resource allocation within the Grafana instance.
+      operationId: updateUserQuota
+      parameters:
+      - name: quota_target
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateQuotaCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /org/quotas:
+    parameters: []
+    get:
+      tags:
+      - Quota
+      summary: Grafana Get Current Org Quota
+      description: This API operation retrieves the current resource quotas configured for the organization in Grafana. When called, it returns the quota limits that have been set for various resources such as the maximum number of users, dashboards, data sources, and API keys allowed within the organization. This is useful for administrators who need to monitor or verify the current quota settings to ensure they align with organizational policies and resource management requirements. The operation requires appropriate authentication and authorization, typically at the organization administrator level, to access this information.
+      operationId: getCurrentOrgQuota
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuotaDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /orgs/{org_id}/quotas:
+    parameters: []
+    get:
+      tags:
+      - Quota
+      summary: Grafana Get Org Quota
+      description: '```
+
+        Retrieves the current resource quota settings for a specific organization in Grafana identified by its organization ID. This endpoint returns quota limits that define resource constraints for the organization, such as maximum number of users, dashboards, data sources, and API keys allowed. The response provides visibility into the configured thresholds that govern resource allocation and help administrators manage and control organizational resource consumption within their Grafana instance.
+
+        ```'
+      operationId: getOrgQuota
+      parameters:
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuotaDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /orgs/{org_id}/quotas/{quota_target}:
+    parameters: []
+    put:
+      tags:
+      - Quota
+      summary: Grafana Update Org Quota
+      description: This API operation allows administrators to update a specific quota limit for an organization in Grafana by making a PUT request to the endpoint with the organization ID and quota target specified in the path. The quota target represents the type of resource being limited, such as users, dashboards, data sources, or API keys. The request body should contain the new quota limit value to be applied. This operation requires administrative privileges and is typically used for managing resource allocation and consumption limits across different organizations in a multi-tenant Grafana deployment. Upon successful execution, the specified quota limit for the target organization will be updated to the new value, helping administrators control resource usage and maintain system performance.
+      operationId: updateOrgQuota
+      parameters:
+      - name: quota_target
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateQuotaCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    QuotaDTO:
+      title: QuotaDTO
+      type: object
+      properties:
+        limit:
+          type: integer
+          contentEncoding: int64
+        org_id:
+          type: integer
+          contentEncoding: int64
+        target:
+          type: string
+        used:
+          type: integer
+          contentEncoding: int64
+        user_id:
+          type: integer
+          contentEncoding: int64
+    UpdateQuotaCmd:
+      title: UpdateQuotaCmd
+      type: object
+      properties:
+        limit:
+          type: integer
+          contentEncoding: int64
+        target:
+          type: string
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

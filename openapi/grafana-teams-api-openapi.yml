@@ -1,0 +1,2176 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Teams API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Teams
+  description: Team management
+paths:
+  /teams/search:
+    parameters: []
+    get:
+      tags:
+      - Teams
+      operationId: searchTeams
+      summary: Search teams
+      parameters:
+      - name: query
+        in: query
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: perpage
+        in: query
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Teams
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamSearchResult'
+  /teams:
+    parameters: []
+    post:
+      tags:
+      - Teams
+      operationId: createTeam
+      summary: Create team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTeamCommand'
+      responses:
+        '200':
+          description: Team created
+  /teams/{id}:
+    get:
+      tags:
+      - Teams
+      operationId: getTeamById
+      summary: Get team by ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Team
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+    put:
+      tags:
+      - Teams
+      operationId: updateTeam
+      summary: Update team
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTeamCommand'
+      responses:
+        '200':
+          description: Team updated
+    delete:
+      tags:
+      - Teams
+      operationId: deleteTeam
+      summary: Delete team
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Team deleted
+  /teams/{id}/members:
+    get:
+      tags:
+      - Teams
+      operationId: getTeamMembers
+      summary: Get team members
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Team members
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamMember'
+    post:
+      tags:
+      - Teams
+      operationId: addTeamMember
+      summary: Add team member
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddTeamMemberCommand'
+      responses:
+        '200':
+          description: Member added
+  /teams/{team_id}:
+    parameters: []
+    get:
+      tags:
+      - Teams
+      summary: Grafana Get Team By ID
+      description: This API operation retrieves detailed information about a specific team in Grafana by providing the team's unique identifier in the URL path. When a GET request is made to the /teams/{team_id} endpoint with a valid team ID, the API returns comprehensive data about that team, including properties such as the team name, email address, member count, and other relevant team metadata. This endpoint is typically used by administrators or applications that need to fetch information about a particular team for display purposes, integration workflows, or team management operations within the Grafana platform.
+      operationId: getTeamByID
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: accesscontrol
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Teams
+      summary: Grafana Update Team
+      description: Updates an existing team in Grafana by modifying its properties such as name and email address. This endpoint requires the team ID as a path parameter and accepts a JSON payload containing the updated team information. The operation is typically used by administrators or users with appropriate permissions to maintain team configurations, ensuring that team metadata remains current and accurate within the Grafana organization.
+      operationId: updateTeam
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTeamCommand_2'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '409':
+          description: ConflictError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Teams
+      summary: Grafana Delete Team By ID
+      description: This API operation removes a specific team from a Grafana instance by providing the team's unique identifier in the URL path. When executed, it performs a DELETE request to the endpoint /teams/{team_id}, where {team_id} is replaced with the numerical ID of the team to be deleted. The operation requires appropriate administrative permissions and will permanently remove the team along with its associated configurations, memberships, and permissions. Upon successful execution, the team will no longer exist in the Grafana system, and all users previously assigned to that team will lose their team-based access rights and dashboard permissions granted through that team membership.
+      operationId: deleteTeamByID
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams/{team_id}/members:
+    parameters: []
+    get:
+      tags:
+      - Teams
+      summary: Grafana Get Team Members
+      description: This API operation retrieves a list of all members belonging to a specific team in Grafana by providing the team's unique identifier in the URL path. When called, it returns detailed information about each team member including their user ID, email, login credentials, and role within the team. This is useful for administrators and team leaders who need to audit team composition, manage access permissions, or integrate Grafana team data with external systems for user management and reporting purposes.
+      operationId: getTeamMembers
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamMemberDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Teams
+      summary: Grafana Set Team Memberships
+      description: The PUT operation on the /teams/{team_id}/members endpoint in Grafana allows administrators to set or update the complete membership roster for a specific team by providing the team_id parameter. This operation replaces the existing team membership list with the new set of members specified in the request body, effectively adding new members and removing any members not included in the updated list. It provides a comprehensive way to manage team composition in a single API call, rather than adding or removing members individually. The operation requires appropriate administrative permissions and is useful for bulk synchronization of team memberships, such as when integrating with external directory services or performing organizational restructuring within Grafana's access control system.
+      operationId: setTeamMemberships
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetTeamMembershipsCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Teams
+      summary: Grafana Add Team Member
+      description: This API operation adds a new member to a specific team in Grafana by making a POST request to the /teams/{team_id}/members endpoint, where {team_id} is the unique identifier of the team. The operation allows administrators or users with appropriate permissions to expand team membership by associating additional users with an existing team, typically requiring the user ID or username to be specified in the request body to identify which user should be added to the team.
+      operationId: addTeamMember
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddTeamMemberCommand_2'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams/{team_id}/members/{user_id}:
+    parameters: []
+    put:
+      tags:
+      - Teams
+      summary: Grafana Update Team Member
+      description: Updates the permissions of an existing team member in Grafana by specifying the team ID and user ID in the request path. This PUT operation allows administrators to modify a user's role or permission level within a specific team, such as changing them from a member to an admin or vice versa. The request typically requires authentication and appropriate administrative privileges to execute successfully, and it modifies the existing team membership record rather than creating a new one.
+      operationId: updateTeamMember
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTeamMemberCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Teams
+      summary: Grafana Remove Team Member
+      description: Removes a specific user from a team by their user ID. This operation requires the team ID and user ID as path parameters. When executed, it deletes the membership association between the specified user and team, effectively revoking the user's access to team-specific resources and permissions. This is typically used when a user no longer needs to be part of a team or when reorganizing team structures within Grafana.
+      operationId: removeTeamMember
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams/{team_id}/preferences:
+    parameters: []
+    get:
+      tags:
+      - Teams
+      summary: Grafana Get Team Preferences
+      description: Returns the preferences for a specific Grafana team identified by the team_id parameter, which includes settings such as the team's home dashboard, timezone, and theme preferences. This GET endpoint allows administrators and team members with appropriate permissions to retrieve the current preference configuration that applies to all members of the specified team, enabling them to view or audit the team-level settings that override individual user preferences when working within the team context.
+      operationId: getTeamPreferences
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreferencesSpec'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Teams
+      summary: Grafana Update Team Preferences
+      description: Updates the preferences for a specific team in Grafana by making a PUT request to the /teams/{team_id}/preferences endpoint. This operation allows administrators or team members with appropriate permissions to modify team-level settings such as the default home dashboard, timezone, and theme preferences. The team_id parameter in the URL path identifies which team's preferences should be updated, and the request body contains the preference values to be applied. These preferences will affect the default Grafana interface experience for all members of the specified team, overriding individual user preferences when those team members are operating within the team context.
+      operationId: updateTeamPreferences
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePrefsCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/uid/{uid}/lbac/teams:
+    parameters: []
+    get:
+      tags:
+      - Teams
+      summary: Grafana Get Team LBAC Rules Api
+      description: This API operation retrieves team-based Label-Based Access Control (LBAC) rules for a specific data source in Grafana identified by its unique identifier (uid). When called with a GET request to the endpoint /datasources/uid/{uid}/lbac/teams, it returns the configured LBAC rules that determine which teams have access to specific labels or subsets of data within the specified data source. This functionality is essential for managing granular permissions and ensuring teams can only query and view data they are authorized to access within multi-tenant Grafana environments.
+      operationId: getTeamLBACRulesApi
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamLBACRules'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Teams
+      summary: Grafana Update Team LBAC Rules Api
+      description: This API operation updates the Label-Based Access Control (LBAC) rules for teams associated with a specific data source in Grafana. It uses the PUT method and targets a data source identified by its unique identifier (uid) in the endpoint path. The operation allows administrators to modify which teams have access to specific labels or subsets of data within the data source, enabling fine-grained access control at the team level. By updating these LBAC rules, organizations can ensure that different teams only have access to the data relevant to their roles and responsibilities, maintaining security and data governance policies within their Grafana instance.
+      operationId: updateTeamLBACRulesApi
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTeamLBACCommand'
+        required: false
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/updateTeamLBACRulesResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/teams/roles/search:
+    parameters: []
+    post:
+      tags:
+      - Teams
+      summary: Grafana List Teams Roles
+      description: This API operation performs a search for team roles within Grafana's access control system. It uses a POST request to the /access-control/teams/roles/search endpoint to retrieve a list of roles that are associated with teams in the Grafana instance. The operation allows administrators to query and discover which roles have been assigned to various teams, helping them manage permissions and access control policies. This is useful for auditing team permissions, understanding role assignments, and maintaining proper access governance across the organization's Grafana deployment.
+      operationId: listTeamsRoles
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolesSearchQuery'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                contentMediaType: application/json
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/teams/{teamId}/roles:
+    parameters: []
+    get:
+      tags:
+      - Teams
+      summary: Grafana List Team Roles
+      description: This API operation retrieves all roles assigned to a specific team in Grafana's access control system. By making a GET request to the endpoint with a team identifier, users can view the complete list of roles and their associated permissions that have been granted to that particular team. This is useful for auditing team permissions, understanding what access levels a team has across different resources, and managing role-based access control (RBAC) configurations within Grafana.
+      operationId: listTeamRoles
+      parameters:
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Teams
+      summary: Grafana Set Team Roles
+      description: This API operation updates the complete set of RBAC (Role-Based Access Control) roles assigned to a specific team in Grafana by replacing any existing role assignments with the new ones provided in the request. It uses the PUT method on the endpoint /access-control/teams/{teamId}/roles, where {teamId} is the unique identifier of the team whose roles are being modified. This is a destructive operation that overwrites the current role configuration rather than adding to it, making it useful for scenarios where you need to redefine a team's permissions from scratch or ensure a specific set of roles is applied without concern for previous assignments. The operation requires appropriate administrative permissions and is typically used in access management workflows to maintain proper authorization controls across teams within the Grafana instance.
+      operationId: setTeamRoles
+      parameters:
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetTeamRolesCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Teams
+      summary: Grafana Add Team Role
+      description: This API operation adds a role to a specific team in Grafana's access control system. It uses a POST request to the endpoint /access-control/teams/{teamId}/roles, where {teamId} is the unique identifier of the team receiving the new role assignment. The operation allows administrators to grant specific permissions and access levels to an entire team by associating a role with that team, streamlining permission management across multiple users who belong to the same team.
+      operationId: addTeamRole
+      parameters:
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddTeamRoleCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/teams/{teamId}/roles/{roleUID}:
+    parameters: []
+    delete:
+      tags:
+      - Teams
+      summary: Grafana Remove Team Role
+      description: This API operation removes a specific role assignment from a team in Grafana's access control system. It uses a DELETE request to the endpoint /access-control/teams/{teamId}/roles/{roleUID}, where teamId identifies the target team and roleUID specifies the role to be removed. When executed, it revokes the specified role's permissions from the team, effectively removing that role's access rights from all members of that team without affecting other role assignments the team may have.
+      operationId: removeTeamRole
+      parameters:
+      - name: roleUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/{resource}/{resourceID}/teams/{teamID}:
+    parameters: []
+    post:
+      tags:
+      - Teams
+      summary: Grafana Set Resource Permissions For Team
+      description: This API operation allows you to configure specific permissions for a team on a particular resource in Grafana's access control system. By making a POST request to this endpoint with the resource type, resource ID, and team ID, you can grant or update the access rights that a specific team has for that resource. This is part of Grafana's role-based access control (RBAC) functionality, enabling administrators to manage fine-grained permissions by assigning different levels of access to teams for individual resources such as dashboards, folders, or data sources within the Grafana instance.
+      operationId: setResourcePermissionsForTeam
+      parameters:
+      - name: resource
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: resourceID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: teamID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/setPermissionCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams/{teamId}/groups:
+    parameters: []
+    get:
+      tags:
+      - Teams
+      summary: Grafana Get Team Groups Api
+      description: This API operation retrieves the list of external groups that are synchronized with a specific team in Grafana. By providing a team ID in the path parameter, the endpoint returns all groups that have been mapped or linked to that team, which is particularly useful in environments where Grafana teams are integrated with external authentication providers like LDAP, OAuth, or SAML. This allows administrators to view and verify which external directory groups have access to a particular Grafana team, helping maintain proper access control and team membership management across integrated systems.
+      operationId: getTeamGroupsApi
+      parameters:
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamGroupDTO'
+                description: ''
+                contentMediaType: application/json
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Teams
+      summary: Grafana Add Team Group Api
+      description: The Add Team Group API is a POST operation available at the endpoint /teams/{teamId}/groups in Grafana that allows administrators to associate an external authentication group with a specific Grafana team. This operation requires the teamId parameter in the URL path to identify the target team, and typically accepts a request body containing details about the group to be added, such as the group identifier from the external authentication provider (like LDAP, OAuth, or SAML). When executed successfully, this API creates a mapping between the external group and the Grafana team, enabling automatic team membership synchronization where users belonging to the specified external group are automatically added to the corresponding Grafana team upon authentication. This functionality is particularly useful for organizations that want to manage team memberships centrally through their existing identity provider rather than manually maintaining team rosters within Grafana itself.
+      operationId: addTeamGroupApi
+      parameters:
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamGroupMapping'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Teams
+      summary: Grafana Remove Team Group Api Query
+      description: This API operation removes an external group mapping from a specified team in Grafana. When executed, it performs a DELETE request to the endpoint /teams/{teamId}/groups, where {teamId} represents the unique identifier of the team from which the group association should be removed. The operation is used to disconnect external authentication provider groups (such as LDAP, OAuth, or SAML groups) from Grafana teams, effectively revoking the automatic team membership that was granted to users belonging to those external groups. This is particularly useful when reorganizing team structures, removing obsolete group mappings, or adjusting access control policies within Grafana's role-based access control system.
+      operationId: removeTeamGroupApiQuery
+      parameters:
+      - name: groupId
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams/{teamId}/groups/search:
+    parameters: []
+    get:
+      tags:
+      - Teams
+      summary: Grafana Search Team Groups
+      description: This API operation performs a search for groups associated with a specific team in Grafana by making a GET request to the endpoint /teams/{teamId}/groups/search, where {teamId} is the unique identifier of the team whose groups you want to search. It allows administrators and authorized users to query and retrieve a list of groups that are linked to a particular team, which is useful for managing team memberships, permissions, and organizational structures within Grafana. The search functionality helps filter through potentially large numbers of groups to find specific ones related to the team, returning relevant group information that can be used for further team management operations.
+      operationId: searchTeamGroups
+      parameters:
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: page
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 1
+      - name: perpage
+        in: query
+        description: Number of items per page
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 1000
+      - name: query
+        in: query
+        description: If set it will return results where the query value is contained in the name field. Query values with spaces need to be URL encoded.
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: Filter by exact name match
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchTeamGroupsQueryResult'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/teams:
+    parameters: []
+    get:
+      tags:
+      - Teams
+      summary: Grafana Get Signed In User Team List
+      description: This API operation retrieves a list of all teams that the currently authenticated user is a member of in Grafana. When called, it returns team information associated with the signed-in user's account, allowing applications to determine which teams the user belongs to and potentially their roles or permissions within those teams. This is useful for displaying team memberships in user interfaces, implementing team-based access controls, or filtering content based on team associations.
+      operationId: getSignedInUserTeamList
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /users/{user_id}/teams:
+    parameters: []
+    get:
+      tags:
+      - Teams
+      summary: Grafana Get User Teams
+      description: This API operation retrieves a list of all teams that a specific user belongs to in Grafana. By making a GET request to the endpoint with a valid user ID parameter, the system returns information about the teams associated with that particular user, including team details such as team names, IDs, and potentially other relevant metadata. This is useful for administrators or applications that need to understand a user's team memberships and access permissions within the Grafana environment.
+      operationId: getUserTeams
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    RolesSearchQuery:
+      title: RolesSearchQuery
+      type: object
+      properties:
+        includeHidden:
+          type: boolean
+        orgId:
+          type: integer
+          contentEncoding: int64
+        teamIds:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+        userIds:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+    TeamMember:
+      type: object
+      properties:
+        orgId:
+          type: integer
+        teamId:
+          type: integer
+        userId:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        login:
+          type: string
+        avatarUrl:
+          type: string
+        labels:
+          type: array
+          items:
+            type: string
+        permission:
+          type: integer
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    SearchTeamGroupsQueryResult:
+      title: SearchTeamGroupsQueryResult
+      type: object
+      properties:
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        teamGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamGroupDTO'
+          description: ''
+        totalCount:
+          type: integer
+          contentEncoding: int64
+    AddTeamMemberCommand_2:
+      title: AddTeamMemberCommand
+      required:
+      - userId
+      type: object
+      properties:
+        userId:
+          type: integer
+          contentEncoding: int64
+    UpdatePrefsCmd:
+      title: UpdatePrefsCmd
+      type: object
+      properties:
+        cookies:
+          type: array
+          items:
+            type: string
+          description: ''
+        homeDashboardId:
+          type: integer
+          description: The numerical :id of a favorited dashboard
+          contentEncoding: int64
+          default: 0
+        homeDashboardUID:
+          type: string
+        language:
+          type: string
+        navbar:
+          $ref: '#/components/schemas/NavbarPreference'
+        queryHistory:
+          $ref: '#/components/schemas/QueryHistoryPreference'
+        regionalFormat:
+          type: string
+        theme:
+          $ref: '#/components/schemas/Theme1'
+        timezone:
+          $ref: '#/components/schemas/Timezone'
+        weekStart:
+          type: string
+    TeamSearchResult:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+        teams:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
+        page:
+          type: integer
+        perPage:
+          type: integer
+    Theme1:
+      title: Theme1
+      enum:
+      - light
+      - dark
+      - system
+      type: string
+    Timezone:
+      title: Timezone
+      enum:
+      - utc
+      - browser
+      type: string
+    TeamDTO:
+      title: TeamDTO
+      required:
+      - id
+      - isProvisioned
+      - memberCount
+      - name
+      - orgId
+      - uid
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+        avatarUrl:
+          type: string
+        email:
+          type: string
+        externalUID:
+          type: string
+        id:
+          type: integer
+          description: '@deprecated Use UID instead'
+          contentEncoding: int64
+        isProvisioned:
+          type: boolean
+        memberCount:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        permission:
+          type: integer
+          contentEncoding: int64
+        uid:
+          type: string
+    PreferencesQueryHistoryPreference:
+      title: PreferencesQueryHistoryPreference
+      type: object
+      properties:
+        homeTab:
+          type: string
+          description: 'one of: '''' | ''query'' | ''starred'';'
+      description: +k8s:openapi-gen=true
+    SetTeamRolesCommand:
+      title: SetTeamRolesCommand
+      type: object
+      properties:
+        includeHidden:
+          type: boolean
+        roleUids:
+          type: array
+          items:
+            type: string
+          description: ''
+    AddTeamRoleCommand:
+      title: AddTeamRoleCommand
+      type: object
+      properties:
+        roleUid:
+          type: string
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+        orgId:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        avatarUrl:
+          type: string
+        memberCount:
+          type: integer
+        permission:
+          type: integer
+        accessControl:
+          type: object
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
+    TeamMemberDTO:
+      title: TeamMemberDTO
+      type: object
+      properties:
+        auth_module:
+          type: string
+        avatarUrl:
+          type: string
+        email:
+          type: string
+        labels:
+          type: array
+          items:
+            type: string
+          description: ''
+        login:
+          type: string
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        permission:
+          type: integer
+          contentEncoding: int64
+        teamId:
+          type: integer
+          contentEncoding: int64
+        teamUID:
+          type: string
+        uid:
+          type: string
+        userId:
+          type: integer
+          contentEncoding: int64
+        userUID:
+          type: string
+    updateTeamLBACRulesResponse:
+      title: updateTeamLBACRulesResponse
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+        name:
+          type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamLBACRule'
+          description: ''
+        uid:
+          type: string
+    UpdateTeamCommand_2:
+      title: UpdateTeamCommand
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+    AddTeamMemberCommand:
+      type: object
+      required:
+      - userId
+      properties:
+        userId:
+          type: integer
+    TeamLBACRules:
+      title: TeamLBACRules
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamLBACRule'
+          description: ''
+    QueryHistoryPreference:
+      title: QueryHistoryPreference
+      type: object
+      properties:
+        homeTab:
+          type: string
+    TeamGroupMapping:
+      title: TeamGroupMapping
+      type: object
+      properties:
+        groupId:
+          type: string
+    CreateTeamCommand:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+    UpdateTeamMemberCommand:
+      title: UpdateTeamMemberCommand
+      type: object
+      properties:
+        permission:
+          type: integer
+          contentEncoding: int64
+    UpdateTeamLBACCommand:
+      title: UpdateTeamLBACCommand
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamLBACRule'
+          description: ''
+    NavbarPreference:
+      title: NavbarPreference
+      type: object
+      properties:
+        bookmarkUrls:
+          type: array
+          items:
+            type: string
+          description: ''
+    TeamGroupDTO:
+      title: TeamGroupDTO
+      type: object
+      properties:
+        groupId:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        teamId:
+          type: integer
+          contentEncoding: int64
+        uid:
+          type: string
+    setPermissionCommand:
+      title: setPermissionCommand
+      type: object
+      properties:
+        permission:
+          type: string
+    PreferencesSpec:
+      title: PreferencesSpec
+      type: object
+      properties:
+        cookiePreferences:
+          allOf:
+          - $ref: '#/components/schemas/PreferencesCookiePreferences'
+          - description: +k8s:openapi-gen=true
+        homeDashboardUID:
+          type: string
+          description: UID for the home dashboard
+        language:
+          type: string
+          description: Selected language (beta)
+        navbar:
+          allOf:
+          - $ref: '#/components/schemas/PreferencesNavbarPreference'
+          - description: +k8s:openapi-gen=true
+        queryHistory:
+          allOf:
+          - $ref: '#/components/schemas/PreferencesQueryHistoryPreference'
+          - description: +k8s:openapi-gen=true
+        regionalFormat:
+          type: string
+          description: Selected locale (beta)
+        theme:
+          type: string
+          description: light, dark, empty is default
+        timezone:
+          type: string
+          description: 'The timezone selection
+
+            TODO: this should use the timezone defined in common'
+        weekStart:
+          type: string
+          description: day of the week (sunday, monday, etc)
+      description: +k8s:openapi-gen=true
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    TeamLBACRule:
+      title: TeamLBACRule
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            type: string
+          description: ''
+        teamId:
+          type: string
+        teamUid:
+          type: string
+    PreferencesNavbarPreference:
+      title: PreferencesNavbarPreference
+      type: object
+      properties:
+        bookmarkUrls:
+          type: array
+          items:
+            type: string
+          description: ''
+      description: +k8s:openapi-gen=true
+    UpdateTeamCommand:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+    SetTeamMembershipsCommand:
+      title: SetTeamMembershipsCommand
+      type: object
+      properties:
+        admins:
+          type: array
+          items:
+            type: string
+          description: ''
+        members:
+          type: array
+          items:
+            type: string
+          description: ''
+    PreferencesCookiePreferences:
+      title: PreferencesCookiePreferences
+      type: object
+      properties:
+        analytics: {}
+        functional: {}
+        performance: {}
+      description: +k8s:openapi-gen=true
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

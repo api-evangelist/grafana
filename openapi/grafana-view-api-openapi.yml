@@ -1,0 +1,227 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access View API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: View
+paths:
+  /public/dashboards/{accessToken}:
+    parameters: []
+    get:
+      tags:
+      - View
+      summary: Grafana View Public Dashboard
+      description: This API operation retrieves and displays a public Grafana dashboard using a unique access token. When a GET request is made to the endpoint with a valid accessToken parameter, it returns the dashboard configuration and visualization data that has been publicly shared. This allows users to view specific dashboards without requiring authentication or login credentials, making it useful for sharing monitoring data, metrics, and analytics with external stakeholders or embedding dashboards in public websites and applications.
+      operationId: viewPublicDashboard
+      parameters:
+      - name: accessToken
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardFullWithMeta'
+        '400':
+          description: BadRequestPublicError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '401':
+          description: UnauthorisedPublicError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '403':
+          description: ForbiddenPublicError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '404':
+          description: NotFoundPublicError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '500':
+          description: InternalServerPublicError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    publicError1:
+      title: publicError1
+      required:
+      - messageId
+      - statusCode
+      type: object
+      properties:
+        extra:
+          type: object
+          additionalProperties: {}
+          description: Extra Additional information about the error
+        message:
+          type: string
+          description: Message A human readable message
+        messageId:
+          type: string
+          description: MessageID A unique identifier for the error
+        statusCode:
+          type: integer
+          description: StatusCode The HTTP status code returned
+          contentEncoding: int64
+      description: 'PublicError is derived from Error and only contains information
+
+        available to the end user.'
+    DashboardFullWithMeta:
+      title: DashboardFullWithMeta
+      type: object
+      properties:
+        dashboard:
+          type: object
+        meta:
+          $ref: '#/components/schemas/DashboardMeta'
+    AnnotationActions:
+      title: AnnotationActions
+      type: object
+      properties:
+        canAdd:
+          type: boolean
+        canDelete:
+          type: boolean
+        canEdit:
+          type: boolean
+      description: +k8s:deepcopy-gen=true
+    AnnotationPermission:
+      title: AnnotationPermission
+      type: object
+      properties:
+        dashboard:
+          allOf:
+          - $ref: '#/components/schemas/AnnotationActions'
+          - description: +k8s:deepcopy-gen=true
+        organization:
+          allOf:
+          - $ref: '#/components/schemas/AnnotationActions'
+          - description: +k8s:deepcopy-gen=true
+      description: +k8s:deepcopy-gen=true
+    DashboardMeta:
+      title: DashboardMeta
+      type: object
+      properties:
+        annotationsPermissions:
+          allOf:
+          - $ref: '#/components/schemas/AnnotationPermission'
+          - description: +k8s:deepcopy-gen=true
+        apiVersion:
+          type: string
+        canAdmin:
+          type: boolean
+        canDelete:
+          type: boolean
+        canEdit:
+          type: boolean
+        canSave:
+          type: boolean
+        canStar:
+          type: boolean
+        created:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          type: string
+        expires:
+          type: string
+          contentEncoding: date-time
+        folderId:
+          type: integer
+          description: 'Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderTitle:
+          type: string
+        folderUid:
+          type: string
+        folderUrl:
+          type: string
+        hasAcl:
+          type: boolean
+        isFolder:
+          type: boolean
+        isSnapshot:
+          type: boolean
+        isStarred:
+          type: boolean
+        provisioned:
+          type: boolean
+        provisionedExternalId:
+          type: string
+        publicDashboardEnabled:
+          type: boolean
+        slug:
+          type: string
+        type:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        updatedBy:
+          type: string
+        url:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

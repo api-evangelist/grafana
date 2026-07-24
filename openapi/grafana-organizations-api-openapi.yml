@@ -1,0 +1,253 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Organizations API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Organizations
+  description: Organization management
+paths:
+  /orgs:
+    parameters: []
+    get:
+      tags:
+      - Organizations
+      operationId: searchOrgs
+      summary: Search organizations
+      parameters:
+      - name: query
+        in: query
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: perpage
+        in: query
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Organizations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization'
+    post:
+      tags:
+      - Organizations
+      operationId: createOrg
+      summary: Create organization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrgCommand'
+      responses:
+        '200':
+          description: Organization created
+  /orgs/{orgId}:
+    get:
+      tags:
+      - Organizations
+      operationId: getOrgById
+      summary: Get organization by ID
+      parameters:
+      - name: orgId
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Organization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+    put:
+      tags:
+      - Organizations
+      operationId: updateOrg
+      summary: Update organization
+      parameters:
+      - name: orgId
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrgCommand'
+      responses:
+        '200':
+          description: Organization updated
+    delete:
+      tags:
+      - Organizations
+      operationId: deleteOrg
+      summary: Delete organization
+      parameters:
+      - name: orgId
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Organization deleted
+  /orgs/{orgId}/users:
+    get:
+      tags:
+      - Organizations
+      operationId: getOrgUsers
+      summary: Get users in organization
+      parameters:
+      - name: orgId
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Organization users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrgUser'
+    post:
+      tags:
+      - Organizations
+      operationId: addOrgUser
+      summary: Add user to organization
+      parameters:
+      - name: orgId
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddOrgUserCommand'
+      responses:
+        '200':
+          description: User added
+components:
+  schemas:
+    CreateOrgCommand:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+    Organization:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        address:
+          type: object
+          properties:
+            address1:
+              type: string
+            address2:
+              type: string
+            city:
+              type: string
+            zipCode:
+              type: string
+            state:
+              type: string
+            country:
+              type: string
+    UpdateOrgCommand:
+      type: object
+      properties:
+        name:
+          type: string
+    OrgUser:
+      type: object
+      properties:
+        orgId:
+          type: integer
+        userId:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        avatarUrl:
+          type: string
+        login:
+          type: string
+        role:
+          type: string
+          enum:
+          - Viewer
+          - Editor
+          - Admin
+        lastSeenAt:
+          type: string
+          format: date-time
+        lastSeenAtAge:
+          type: string
+    AddOrgUserCommand:
+      type: object
+      required:
+      - loginOrEmail
+      - role
+      properties:
+        loginOrEmail:
+          type: string
+        role:
+          type: string
+          enum:
+          - Viewer
+          - Editor
+          - Admin
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

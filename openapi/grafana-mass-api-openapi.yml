@@ -1,0 +1,124 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Mass API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Mass
+paths:
+  /annotations/mass-delete:
+    parameters: []
+    post:
+      tags:
+      - Mass
+      summary: Grafana Mass Delete Annotations
+      description: The Mass Delete Annotations API operation in Grafana allows users to delete multiple annotations in a single request by sending a POST request to the /annotations/mass-delete endpoint. This operation is useful for bulk cleanup of annotations based on specific criteria such as time range, dashboard ID, panel ID, tags, or annotation IDs. Instead of deleting annotations one by one, users can specify filter parameters in the request body to target multiple annotations at once, improving efficiency when managing large numbers of annotations across dashboards and panels. The operation requires appropriate permissions and returns information about the number of annotations successfully deleted.
+      operationId: massDeleteAnnotations
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MassDeleteAnnotationsCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    MassDeleteAnnotationsCmd:
+      title: MassDeleteAnnotationsCmd
+      type: object
+      properties:
+        annotationId:
+          type: integer
+          contentEncoding: int64
+        dashboardId:
+          type: integer
+          contentEncoding: int64
+        dashboardUID:
+          type: string
+        panelId:
+          type: integer
+          contentEncoding: int64
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

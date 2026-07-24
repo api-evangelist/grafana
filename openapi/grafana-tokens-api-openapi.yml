@@ -1,0 +1,1030 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Tokens API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Tokens
+paths:
+  /licensing/token:
+    parameters: []
+    get:
+      tags:
+      - Tokens
+      summary: Grafana Get License Token
+      description: This API operation retrieves the current license token information from a Grafana instance. When invoked with a GET request to the /licensing/token endpoint, it returns details about the active licensing configuration, which may include token metadata, validity status, expiration dates, and associated entitlements or features enabled by the license. This endpoint is typically used by administrators to verify licensing status, check token validity, or retrieve license information for audit and compliance purposes within Grafana's enterprise or commercial offerings.
+      operationId: getLicenseToken
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Tokens
+      summary: Grafana Post License Token
+      description: This API operation allows administrators to activate or update a Grafana Enterprise license by submitting a license token via a POST request to the /licensing/token endpoint. When called, it accepts a license token string in the request body, validates the token with Grafana's licensing service, and applies the license to the Grafana instance if valid. This operation is typically used during initial Enterprise setup or when renewing an existing license, and it requires administrative privileges to execute. Upon successful validation, the license details are stored and the Enterprise features associated with that license tier become available to the Grafana instance.
+      operationId: postLicenseToken
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteTokenCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Tokens
+      summary: Grafana Delete License Token
+      description: This API operation removes the currently active license token from a Grafana instance. When executed, it deletes the stored license information, effectively reverting the instance to an unlicensed state or to use any default licensing configuration. This endpoint requires appropriate administrative permissions and is typically used when decommissioning a licensed Grafana installation, switching to a different license, or troubleshooting license-related issues. The DELETE method ensures complete removal of the token from the system's license management configuration.
+      operationId: deleteLicenseToken
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteTokenCommand'
+        required: true
+      responses:
+        '202':
+          description: AcceptedResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '422':
+          description: UnprocessableEntityError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /licensing/token/renew:
+    parameters: []
+    post:
+      tags:
+      - Tokens
+      summary: Grafana Post Renew License Token
+      description: This API operation is used to renew an existing Grafana Enterprise license token. When invoked via a POST request to the /licensing/token/renew endpoint, it initiates the license token renewal process, typically validating the current token and requesting a fresh token from the Grafana licensing server. This operation is essential for maintaining continuous access to Grafana Enterprise features by ensuring the license remains valid and up-to-date. Authentication and appropriate permissions are required to execute this operation, and upon successful renewal, the system receives an updated token that extends the licensing period for the Grafana Enterprise instance.
+      operationId: postRenewLicenseToken
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          text/plain:
+            schema:
+              type: object
+              contentMediaType: text/plain
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content: {}
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /serviceaccounts/{serviceAccountId}/tokens:
+    parameters: []
+    get:
+      tags:
+      - Tokens
+      summary: Grafana List Tokens
+      description: Returns a list of all tokens associated with a specific service account in Grafana, identified by the serviceAccountId parameter. This endpoint allows administrators and authorized users to view all authentication tokens that have been generated for a particular service account, which is useful for managing API access, monitoring token usage, and maintaining security by auditing which tokens are currently active or have been created for automated integrations and external services.
+      operationId: listTokens
+      parameters:
+      - name: serviceAccountId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TokenDTO'
+                description: ''
+                contentMediaType: application/json
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Tokens
+      summary: Grafana Create Token
+      description: Creates a new API token for a specified service account in Grafana by sending a POST request to the endpoint with the service account ID as a path parameter. This operation generates authentication tokens that allow service accounts to interact with Grafana's API programmatically, enabling automated workflows, integrations, and machine-to-machine communication. The request typically requires specifying token properties such as name, role, and optionally an expiration date, and returns the newly created token details including the token string itself, which should be securely stored as it cannot be retrieved again after the initial response.
+      operationId: createToken
+      parameters:
+      - name: serviceAccountId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddServiceAccountTokenCommand'
+        required: false
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewApiKeyResult'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '409':
+          description: ConflictError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /serviceaccounts/{serviceAccountId}/tokens/{tokenId}:
+    parameters: []
+    delete:
+      tags:
+      - Tokens
+      summary: Grafana Delete Token
+      description: Deletes a specific service account token in Grafana by providing both the service account ID and the token ID as path parameters. This operation permanently removes the authentication token, immediately revoking its access to the Grafana instance. Once deleted, any applications or services using this token will no longer be able to authenticate, making this a critical operation for token lifecycle management and security hygiene when rotating credentials or removing access for service accounts.
+      operationId: deleteToken
+      parameters:
+      - name: tokenId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: serviceAccountId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/auth-tokens:
+    parameters: []
+    get:
+      tags:
+      - Tokens
+      summary: Grafana Admin Get User Auth Tokens
+      description: Retrieves a list of authentication tokens associated with a specific user account in Grafana. This administrative endpoint requires admin privileges and allows system administrators to view all active auth tokens that have been generated for a particular user identified by their user ID. The operation returns token metadata including creation dates, last used timestamps, and token names, which helps administrators audit user access, monitor authentication activity, and identify potentially unauthorized or stale tokens that may need to be revoked for security purposes.
+      operationId: adminGetUserAuthTokens
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserToken'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/revoke-auth-token:
+    parameters: []
+    post:
+      tags:
+      - Tokens
+      summary: Grafana Admin Revoke User Auth Token
+      description: This API operation allows a Grafana administrator to forcibly revoke a specific authentication token for a given user by making a POST request to the endpoint with the target user's ID. When executed, it invalidates the specified auth token, effectively logging out that user from any session using that particular token, which is useful for security purposes such as when a token may have been compromised or when an administrator needs to terminate a user's access immediately without affecting other active sessions the user might have with different tokens.
+      operationId: adminRevokeUserAuthToken
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevokeAuthTokenCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /cloudmigration/token:
+    parameters: []
+    get:
+      tags:
+      - Tokens
+      summary: Grafana Get Cloud Migration Token
+      description: Retrieves the cloud migration token for a Grafana instance, which is used to authenticate and authorize the migration of dashboards, data sources, and other resources from a self-hosted or on-premise Grafana installation to Grafana Cloud. This token serves as a secure credential that enables the migration service to access and transfer configuration data between environments, typically generated when initiating a cloud migration process and required for establishing a trusted connection between the source Grafana instance and the destination cloud environment.
+      operationId: getCloudMigrationToken
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAccessTokenResponseDTO'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Tokens
+      summary: Grafana Create Cloud Migration Token
+      description: Creates a new cloud migration token in Grafana that enables secure data transfer and authentication between a self-hosted Grafana instance and Grafana Cloud during migration operations. This endpoint generates a temporary authentication token that authorizes the migration service to access and migrate dashboards, data sources, alerts, and other Grafana resources from the source instance to the cloud destination. The token serves as a security credential to establish a trusted connection and should be handled securely throughout the migration process.
+      operationId: createCloudMigrationToken
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAccessTokenResponseDTO'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /cloudmigration/token/{uid}:
+    parameters: []
+    delete:
+      tags:
+      - Tokens
+      summary: Grafana Delete Cloud Migration Token
+      description: Deletes a specific cloud migration token identified by its unique identifier (UID) from Grafana. This operation permanently removes the authentication token that was previously created to facilitate data migration to Grafana Cloud. Once deleted, the token can no longer be used for migration purposes, and any ongoing migration processes using this token will be invalidated. This is typically used when a migration is complete, a token has been compromised, or when cleaning up unused credentials for security purposes.
+      operationId: deleteCloudMigrationToken
+      parameters:
+      - name: uid
+        in: path
+        description: UID of a cloud migration token
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: (empty)
+          headers: {}
+          content: {}
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/auth-tokens:
+    parameters: []
+    get:
+      tags:
+      - Tokens
+      summary: Grafana Get User Auth Tokens
+      description: This API operation retrieves a list of authentication tokens associated with the currently authenticated user in Grafana. When called via a GET request to the /user/auth-tokens endpoint, it returns information about active auth tokens that have been generated for the user's account, typically including details such as token IDs, creation timestamps, last used dates, and expiration information. This allows users to view and manage their active sessions and API tokens for security and access control purposes.
+      operationId: getUserAuthTokens
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserToken'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/revoke-auth-token:
+    parameters: []
+    post:
+      tags:
+      - Tokens
+      summary: Grafana Revoke User Auth Token
+      description: This API operation allows for the revocation of a specific authentication token associated with a user in Grafana. When invoked via a POST request to the /user/revoke-auth-token endpoint, it invalidates the specified auth token, effectively logging out the user from any session using that particular token. This is useful for security purposes when a user wants to manually terminate access from a specific device or session, or when an administrator needs to force a logout. The operation requires proper authentication and authorization to ensure only legitimate revocation requests are processed, helping maintain the security and integrity of user sessions within the Grafana system.
+      operationId: revokeUserAuthToken
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevokeAuthTokenCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    Token:
+      title: Token
+      type: object
+      properties:
+        account:
+          type: string
+        anonymousRatio:
+          type: integer
+          contentEncoding: int64
+        company:
+          type: string
+        details_url:
+          type: string
+        exp:
+          type: integer
+          contentEncoding: int64
+        iat:
+          type: integer
+          contentEncoding: int64
+        included_users:
+          type: integer
+          contentEncoding: int64
+        iss:
+          type: string
+        jti:
+          type: string
+        lexp:
+          type: integer
+          contentEncoding: int64
+        lic_exp_warn_days:
+          type: integer
+          contentEncoding: int64
+        lid:
+          type: string
+        limit_by:
+          type: string
+        max_concurrent_user_sessions:
+          type: integer
+          contentEncoding: int64
+        nbf:
+          type: integer
+          contentEncoding: int64
+        prod:
+          type: array
+          items:
+            type: string
+          description: ''
+        slug:
+          type: string
+        status:
+          type: integer
+          contentEncoding: int64
+        sub:
+          type: string
+        tok_exp_warn_days:
+          type: integer
+          contentEncoding: int64
+        trial:
+          type: boolean
+        trial_exp:
+          type: integer
+          contentEncoding: int64
+        update_days:
+          type: integer
+          contentEncoding: int64
+        usage_billing:
+          type: boolean
+    UserToken:
+      title: UserToken
+      type: object
+      properties:
+        AuthToken:
+          type: string
+        AuthTokenSeen:
+          type: boolean
+        ClientIp:
+          type: string
+        CreatedAt:
+          type: integer
+          contentEncoding: int64
+        ExternalSessionId:
+          type: integer
+          contentEncoding: int64
+        Id:
+          type: integer
+          contentEncoding: int64
+        PrevAuthToken:
+          type: string
+        RevokedAt:
+          type: integer
+          contentEncoding: int64
+        RotatedAt:
+          type: integer
+          contentEncoding: int64
+        SeenAt:
+          type: integer
+          contentEncoding: int64
+        UnhashedToken:
+          type: string
+        UpdatedAt:
+          type: integer
+          contentEncoding: int64
+        UserAgent:
+          type: string
+        UserId:
+          type: integer
+          contentEncoding: int64
+      description: UserToken represents a user token
+    RevokeAuthTokenCmd:
+      title: RevokeAuthTokenCmd
+      type: object
+      properties:
+        authTokenId:
+          type: integer
+          contentEncoding: int64
+    DeleteTokenCommand:
+      title: DeleteTokenCommand
+      type: object
+      properties:
+        instance:
+          type: string
+    GetAccessTokenResponseDTO:
+      title: GetAccessTokenResponseDTO
+      type: object
+      properties:
+        createdAt:
+          type: string
+        displayName:
+          type: string
+        expiresAt:
+          type: string
+        firstUsedAt:
+          type: string
+        id:
+          type: string
+        lastUsedAt:
+          type: string
+    CreateAccessTokenResponseDTO:
+      title: CreateAccessTokenResponseDTO
+      type: object
+      properties:
+        token:
+          type: string
+    NewApiKeyResult:
+      title: NewApiKeyResult
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 1
+        key:
+          type: string
+        name:
+          type: string
+          examples:
+          - grafana
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    AddServiceAccountTokenCommand:
+      title: AddServiceAccountTokenCommand
+      type: object
+      properties:
+        name:
+          type: string
+        secondsToLive:
+          type: integer
+          contentEncoding: int64
+    TokenDTO:
+      title: TokenDTO
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+          examples:
+          - '2022-03-23T10:31:02.000Z'
+        expiration:
+          type: string
+          contentEncoding: date-time
+          examples:
+          - '2022-03-23T10:31:02.000Z'
+        hasExpired:
+          type: boolean
+          examples:
+          - false
+        id:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 1
+        isRevoked:
+          type: boolean
+          examples:
+          - false
+        lastUsedAt:
+          type: string
+          contentEncoding: date-time
+          examples:
+          - '2022-03-23T10:31:02.000Z'
+        name:
+          type: string
+          examples:
+          - grafana
+        secondsUntilExpiration:
+          type: number
+          examples:
+          - 0
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

@@ -1,0 +1,311 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Cache API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Cache
+paths:
+  /datasources/{dataSourceUID}/cache:
+    parameters: []
+    get:
+      tags:
+      - Cache
+      summary: Grafana Get Data Source Cache Config
+      description: Retrieves the caching configuration settings for a specific data source in Grafana identified by its unique identifier (dataSourceUID). This GET operation allows administrators and users with appropriate permissions to view the current cache configuration parameters associated with a particular data source, which may include settings such as cache TTL (time-to-live), cache size limits, and enabled/disabled status. The response provides insight into how query results from this data source are being cached to optimize performance and reduce load on the underlying data source system.
+      operationId: getDataSourceCacheConfig
+      parameters:
+      - name: dataSourceUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: CacheConfigResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CacheConfigResponse'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Cache
+      summary: Grafana Set Data Source Cache Config
+      description: Sets the cache configuration for a specific data source in Grafana identified by its unique identifier (dataSourceUID). This POST operation allows administrators to configure caching parameters such as TTL (time-to-live), cache size limits, and other cache-related settings that control how query results from the data source are stored and retrieved. By enabling and configuring caching at the data source level, users can improve dashboard performance and reduce the load on backend data sources by serving frequently requested data from cache rather than executing redundant queries.
+      operationId: setDataSourceCacheConfig
+      parameters:
+      - name: dataSourceUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CacheConfigSetter'
+        required: true
+      responses:
+        '200':
+          description: CacheConfigResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CacheConfigResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/{dataSourceUID}/cache/clean:
+    parameters: []
+    post:
+      tags:
+      - Cache
+      summary: Grafana Clean Data Source Cache
+      description: This API operation allows you to clear the cache for a specific data source in Grafana by sending a POST request to the endpoint with the data source's unique identifier (UID). When invoked, it removes all cached query results and stored data associated with that particular data source, forcing subsequent queries to fetch fresh data directly from the source. This is useful when you need to ensure users see the most up-to-date information, troubleshoot data inconsistencies, or after making configuration changes to the data source that might affect cached results.
+      operationId: cleanDataSourceCache
+      parameters:
+      - name: dataSourceUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: CacheConfigResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CacheConfigResponse'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/{dataSourceUID}/cache/disable:
+    parameters: []
+    post:
+      tags:
+      - Cache
+      summary: Grafana Disable Data Source Cache
+      description: Disables the caching functionality for a specific Grafana data source identified by its unique identifier (dataSourceUID). When executed via a POST request to the endpoint /datasources/{dataSourceUID}/cache/disable, this operation turns off query result caching for the specified data source, causing subsequent queries to fetch fresh data directly from the source rather than serving cached results. This is useful when real-time data accuracy is critical or when troubleshooting data freshness issues, though it may result in increased load on the underlying data source and potentially slower query response times.
+      operationId: disableDataSourceCache
+      parameters:
+      - name: dataSourceUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: CacheConfigResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CacheConfigResponse'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/{dataSourceUID}/cache/enable:
+    parameters: []
+    post:
+      tags:
+      - Cache
+      summary: Grafana Enable Data Source Cache
+      description: This API operation enables caching functionality for a specific data source in Grafana by sending a POST request to the endpoint with the data source's unique identifier (UID). When invoked, it activates the caching mechanism for the specified data source, which can improve query performance by storing and reusing query results instead of repeatedly fetching data from the original source. This is particularly useful for data sources that have slow response times or rate limits, as cached data can be served more quickly to dashboard users. The operation requires the data source UID to be specified in the URL path to identify which data source should have caching enabled.
+      operationId: enableDataSourceCache
+      parameters:
+      - name: dataSourceUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: CacheConfigResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CacheConfigResponse'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    CacheConfigResponse:
+      title: CacheConfigResponse
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        dataSourceID:
+          type: integer
+          description: Fields that can be set by the API caller - read/write
+          contentEncoding: int64
+        dataSourceUID:
+          type: string
+        defaultTTLMs:
+          type: integer
+          description: 'These are returned by the HTTP API, but are managed internally - read-only
+
+            Note: ''created'' and ''updated'' are special properties managed automatically by xorm, but we are setting them manually'
+          contentEncoding: int64
+        enabled:
+          type: boolean
+        message:
+          type: string
+        ttlQueriesMs:
+          type: integer
+          description: TTL MS, or "time to live", is how long a cached item will stay in the cache before it is removed (in milliseconds)
+          contentEncoding: int64
+        ttlResourcesMs:
+          type: integer
+          contentEncoding: int64
+        updated:
+          type: string
+          contentEncoding: date-time
+        useDefaultTTL:
+          type: boolean
+          description: If UseDefaultTTL is enabled, then the TTLQueriesMS and TTLResourcesMS in this object is always sent as the default TTL located in grafana.ini
+    CacheConfigSetter:
+      title: CacheConfigSetter
+      type: object
+      properties:
+        dataSourceID:
+          type: integer
+          contentEncoding: int64
+        dataSourceUID:
+          type: string
+        enabled:
+          type: boolean
+        ttlQueriesMs:
+          type: integer
+          description: TTL MS, or "time to live", is how long a cached item will stay in the cache before it is removed (in milliseconds)
+          contentEncoding: int64
+        ttlResourcesMs:
+          type: integer
+          contentEncoding: int64
+        useDefaultTTL:
+          type: boolean
+          description: If UseDefaultTTL is enabled, then the TTLQueriesMS and TTLResourcesMS in this object is always sent as the default TTL located in grafana.ini
+      description: 'ConfigSetter defines the cache parameters that users can configure per datasource
+
+        This is only intended to be consumed by the SetCache HTTP Handler'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

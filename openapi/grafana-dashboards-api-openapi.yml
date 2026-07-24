@@ -1,0 +1,3500 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Dashboards API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Dashboards
+  description: Manage dashboards
+paths:
+  /dashboards/db:
+    parameters: []
+    post:
+      tags:
+      - Dashboards
+      operationId: createUpdateDashboard
+      summary: Create or update a dashboard
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveDashboardCommand'
+      responses:
+        '200':
+          description: Dashboard saved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaveDashboardResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /dashboards/uid/{uid}:
+    parameters: []
+    get:
+      tags:
+      - Dashboards
+      operationId: getDashboardByUid
+      summary: Get dashboard by UID
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Dashboard found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardFullWithMeta'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+      - Dashboards
+      operationId: deleteDashboardByUid
+      summary: Delete dashboard by UID
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Dashboard deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /search:
+    get:
+      tags:
+      - Dashboards
+      operationId: searchDashboards
+      summary: Search dashboards and folders
+      parameters:
+      - name: query
+        in: query
+        schema:
+          type: string
+      - name: tag
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+      - name: type
+        in: query
+        schema:
+          type: string
+          enum:
+          - dash-folder
+          - dash-db
+      - name: folderIds
+        in: query
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 1000
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardSearchHit'
+  /reports/dashboards/{uid}:
+    parameters: []
+    get:
+      tags:
+      - Dashboards
+      summary: Grafana Get Reports By Dashboard UID
+      description: This API operation retrieves all reports associated with a specific Grafana dashboard by using its unique identifier (UID). When you make a GET request to the endpoint /reports/dashboards/{uid}, where {uid} is replaced with the actual dashboard's UID, Grafana returns a list of all reports that have been configured for that particular dashboard. This is useful for administrators or users who need to view, audit, or manage the reporting configurations linked to a specific dashboard, allowing them to see details such as report schedules, recipients, formats, and other report-specific settings without having to search through all reports in the system.
+      operationId: getReportsByDashboardUID
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Report'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/provisioning/dashboards/reload:
+    parameters: []
+    post:
+      tags:
+      - Dashboards
+      summary: Grafana Admin Provisioning Reload Dashboards
+      description: This API operation is a POST request to the '/admin/provisioning/dashboards/reload' endpoint in Grafana that allows administrators to trigger a reload of provisioned dashboards without requiring a full Grafana server restart. When invoked, this endpoint scans the configured provisioning directories and reloads all dashboard configurations, applying any changes made to the provisioning files such as new dashboards, modifications to existing ones, or deletions. This is particularly useful in automated environments or when managing dashboards as code, as it enables administrators to update dashboard configurations dynamically and see changes reflected immediately in the Grafana instance without service interruption.
+      operationId: adminProvisioningReloadDashboards
+      parameters: []
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboard/snapshots:
+    parameters: []
+    get:
+      tags:
+      - Dashboards
+      summary: Grafana Search Dashboard Snapshots
+      description: Retrieves a list of dashboard snapshots based on specified search criteria. This operation allows users to query and filter existing snapshots that have been created from Grafana dashboards, returning metadata about each snapshot such as its name, key, creation timestamp, and expiration details. Users can apply various parameters to narrow down results, including searching by snapshot name, limiting the number of results returned, or filtering by tags. The endpoint is useful for managing and discovering previously created dashboard snapshots without needing to access the full dashboard interface.
+      operationId: searchDashboardSnapshots
+      parameters:
+      - name: query
+        in: query
+        description: Search Query
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Limit the number of returned results
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 1000
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardSnapshotDTO'
+                description: ''
+                contentMediaType: application/json
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/home:
+    parameters: []
+    get:
+      tags:
+      - Dashboards
+      summary: Grafana Get Home Dashboard
+      description: The Grafana Get Home Dashboard API operation retrieves the dashboard that is configured as the home dashboard for the current user or organization. When a GET request is made to the /dashboards/home endpoint, it returns the dashboard data that should be displayed when a user first logs into Grafana or navigates to the home page. This endpoint is useful for applications that need to programmatically access the default landing dashboard, whether it's a custom dashboard set by an administrator or the default Grafana home dashboard. The response includes the dashboard JSON model along with metadata such as the dashboard's unique identifier, title, and other configuration settings.
+      operationId: getHomeDashboard
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gethomedashboardresponse.'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/id/{DashboardID}/permissions:
+    parameters: []
+    get:
+      tags:
+      - Dashboards
+      summary: Grafana Get Dashboard Permissions List By ID
+      description: This API operation retrieves the complete list of permissions associated with a specific Grafana dashboard by providing its unique dashboard identifier. It returns details about which users, teams, or roles have access to the dashboard and what level of permissions they possess (such as view, edit, or admin rights). The GET request to this endpoint allows administrators to audit and review the current access control settings for a dashboard, making it useful for security compliance, permission management, and understanding who can interact with specific dashboards within the Grafana instance.
+      operationId: getDashboardPermissionsListByID
+      parameters:
+      - name: DashboardID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardACLInfoDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Dashboards
+      summary: Grafana Update Dashboard Permissions By ID
+      description: This API operation allows administrators to modify the access control permissions for a specific Grafana dashboard by providing its unique dashboard ID in the URL path. By sending a POST request to this endpoint with the appropriate permission payload, users can grant or revoke access rights for teams, users, or roles, defining who can view, edit, or administer the dashboard. The operation requires proper authentication and authorization, typically at an administrator or dashboard owner level, and accepts a JSON body containing the new permission settings that specify the permission level (viewer, editor, or admin) along with the corresponding user IDs, team IDs, or role identifiers to be applied to the target dashboard.
+      operationId: updateDashboardPermissionsByID
+      parameters:
+      - name: DashboardID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDashboardACLCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/id/{DashboardID}/versions:
+    parameters: []
+    get:
+      tags:
+      - Dashboards
+      summary: Grafana Get Dashboard Versions By ID
+      description: Retrieves the version history of a specific Grafana dashboard identified by its unique dashboard ID. This operation returns a list of all saved versions for the dashboard, including metadata such as version numbers, timestamps, user information who made the changes, and version messages or notes. It allows administrators and users to track changes made to a dashboard over time, compare different versions, and understand the evolution of dashboard configurations, which is useful for auditing purposes, troubleshooting issues introduced by recent changes, or reverting to previous dashboard states if needed.
+      operationId: getDashboardVersionsByID
+      parameters:
+      - name: DashboardID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardVersionResponseMeta'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/id/{DashboardID}/versions/{DashboardVersionID}:
+    parameters: []
+    get:
+      tags:
+      - Dashboards
+      summary: Grafana Get Dashboard Version By ID
+      description: This API operation retrieves a specific version of a Grafana dashboard by providing both the dashboard's unique identifier and the desired version identifier. When invoked using the GET method, it returns the complete configuration and metadata for that particular version of the dashboard, allowing users to view historical snapshots, compare changes between versions, or restore previous dashboard states. This is particularly useful for auditing dashboard modifications, understanding what changes were made over time, and recovering from unwanted updates by accessing earlier working versions of a dashboard's configuration.
+      operationId: getDashboardVersionByID
+      parameters:
+      - name: DashboardID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: DashboardVersionID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardVersionMeta'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/import:
+    parameters: []
+    post:
+      tags:
+      - Dashboards
+      summary: Grafana Import Dashboard
+      description: This API operation allows users to import a dashboard into Grafana by sending a POST request to the /dashboards/import endpoint. The operation accepts dashboard configuration data, typically in JSON format, which can include the complete dashboard definition, settings, and panel configurations. Users can import dashboards that were previously exported from Grafana or created externally, specify the target folder for the imported dashboard, and optionally override certain properties like the dashboard's unique identifier or data source mappings. This endpoint is commonly used for sharing dashboards between Grafana instances, automating dashboard deployment, or restoring dashboard backups, making it an essential tool for dashboard management and migration workflows.
+      operationId: importDashboard
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImportDashboardRequestrequestobjectforimportingadashboard.'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportDashboardResponseresponseobjectreturnedwhenimportingadashboard.'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '412':
+          description: PreconditionFailedError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '422':
+          description: UnprocessableEntityError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/interpolate:
+    parameters: []
+    post:
+      tags:
+      - Dashboards
+      summary: Grafana Interpolate Dashboard
+      description: This API operation performs variable interpolation on Grafana dashboard elements by resolving template variables within dashboard configurations. When invoked via POST request to the /dashboards/interpolate endpoint, it processes dashboard JSON payloads containing template variable syntax (such as $variable or [[variable]]) and replaces these placeholders with their actual values based on the current dashboard context, time range, data source queries, or user-defined variable values, returning the fully interpolated dashboard configuration that can be rendered with concrete values rather than abstract variable references.
+      operationId: interpolateDashboard
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                contentMediaType: application/json
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '422':
+          description: UnprocessableEntityError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/public-dashboards:
+    parameters: []
+    get:
+      tags:
+      - Dashboards
+      summary: Grafana List Public Dashboards
+      description: This API operation retrieves a list of all public dashboards available in Grafana. It uses a GET request to the /dashboards/public-dashboards endpoint and returns information about dashboards that have been made publicly accessible, meaning they can be viewed without authentication. The response typically includes details such as dashboard UIDs, titles, access tokens, and configuration settings for each public dashboard. This endpoint is useful for administrators who need to audit or manage which dashboards are publicly shared and review their sharing settings.
+      operationId: listPublicDashboards
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicDashboardListResponseWithPagination'
+        '401':
+          description: UnauthorisedPublicError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '403':
+          description: ForbiddenPublicError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '500':
+          description: InternalServerPublicError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/tags:
+    parameters: []
+    get:
+      tags:
+      - Dashboards
+      summary: Grafana Get Dashboard Tags
+      description: This API operation retrieves all tags that have been assigned to dashboards within the Grafana instance. When called, it returns a list of unique tags used across all dashboards, which can be helpful for filtering, organizing, or discovering dashboards based on their categorization. The endpoint is accessed via a GET request to /dashboards/tags and typically returns an array of tag objects containing information about each tag's name and count of associated dashboards. This is commonly used in dashboard management interfaces or when building custom dashboard discovery tools.
+      operationId: getDashboardTags
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardTagCloudItem'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/uid/{dashboardUid}/public-dashboards:
+    parameters: []
+    get:
+      tags:
+      - Dashboards
+      summary: Grafana Get Public Dashboard
+      description: This API operation retrieves the public dashboard configuration for a specific Grafana dashboard identified by its unique identifier (dashboardUid). When a dashboard has been made publicly accessible, this GET endpoint returns the public dashboard settings and metadata, including information such as the public access token, sharing configuration, enabled state, and any annotations or time range settings that have been configured for public viewing. This allows administrators and applications to programmatically query and manage public dashboard sharing settings without requiring direct access to the Grafana UI.
+      operationId: getPublicDashboard
+      parameters:
+      - name: dashboardUid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicDashboard'
+        '400':
+          description: BadRequestPublicError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '401':
+          description: UnauthorisedPublicError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '403':
+          description: ForbiddenPublicError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '404':
+          description: NotFoundPublicError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '500':
+          description: InternalServerPublicError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Dashboards
+      summary: Grafana Create Public Dashboard
+      description: Creates a public dashboard that enables external users to view a specific Grafana dashboard without authentication. This operation takes a dashboard UID as a path parameter and accepts configuration options in the request body to control how the dashboard is shared publicly, including settings for time range, template variables, and access permissions. Once created, it generates a unique public URL that can be shared with anyone to view the dashboard's visualizations and data without requiring Grafana login credentials, making it useful for embedding dashboards in public websites or sharing metrics with external stakeholders.
+      operationId: createPublicDashboard
+      parameters:
+      - name: dashboardUid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicDashboardDTO'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicDashboard'
+        '400':
+          description: BadRequestPublicError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '401':
+          description: UnauthorisedPublicError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '403':
+          description: ForbiddenPublicError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '500':
+          description: InternalServerPublicError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/uid/{dashboardUid}/public-dashboards/{uid}:
+    parameters: []
+    delete:
+      tags:
+      - Dashboards
+      summary: Grafana Delete Public Dashboard
+      description: Deletes a public dashboard by its unique identifier, removing public access to the specified dashboard. This operation requires both the dashboard's UID and the public dashboard's UID to locate and remove the specific public sharing configuration. Once deleted, the public link previously associated with this dashboard will no longer be accessible, and any users who had the public URL will lose access to view the dashboard anonymously. This is a permanent action that revokes the public sharing settings for the dashboard while leaving the underlying private dashboard intact.
+      operationId: deletePublicDashboard
+      parameters:
+      - name: dashboardUid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestPublicError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '401':
+          description: UnauthorisedPublicError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '403':
+          description: ForbiddenPublicError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '500':
+          description: InternalServerPublicError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    patch:
+      tags:
+      - Dashboards
+      summary: Grafana Update Public Dashboard
+      description: This API operation allows you to update an existing public dashboard in Grafana by specifying both the parent dashboard's unique identifier (dashboardUid) and the public dashboard's unique identifier (uid) in the endpoint path. Using the PATCH HTTP method, you can modify specific properties of the public dashboard configuration without replacing the entire resource, such as toggling public access, changing sharing settings, or updating time range configurations. This endpoint is particularly useful when you need to make incremental changes to how a dashboard is shared publicly, enabling administrators to fine-tune visibility and access controls for external users without affecting the underlying dashboard structure or requiring a complete reconfiguration of the public sharing settings.
+      operationId: updatePublicDashboard
+      parameters:
+      - name: dashboardUid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicDashboardDTO'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicDashboard'
+        '400':
+          description: BadRequestPublicError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '401':
+          description: UnauthorisedPublicError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '403':
+          description: ForbiddenPublicError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '500':
+          description: InternalServerPublicError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/uid/{uid}/permissions:
+    parameters: []
+    get:
+      tags:
+      - Dashboards
+      summary: Grafana Get Dashboard Permissions List By UID
+      description: This API operation retrieves the permission settings for a specific Grafana dashboard identified by its unique identifier (UID). When called with a GET request to the endpoint /dashboards/uid/{uid}/permissions, it returns a list of all permissions associated with that dashboard, including which users, teams, or roles have access and their respective permission levels (such as view, edit, or admin rights). This allows administrators and authorized users to review and audit who has access to a particular dashboard and what actions they can perform on it.
+      operationId: getDashboardPermissionsListByUID
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardACLInfoDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Dashboards
+      summary: Grafana Update Dashboard Permissions By UID
+      description: Updates the access control permissions for a dashboard identified by its unique identifier (UID). This POST endpoint allows administrators to modify who can view, edit, or administrate a specific dashboard by sending permission configurations in the request body. The permissions can be set for individual users, teams, or roles, defining their level of access to the dashboard. This operation requires appropriate administrative privileges and is commonly used to manage dashboard security and collaboration settings within Grafana workspaces.
+      operationId: updateDashboardPermissionsByUID
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDashboardACLCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/uid/{uid}/restore:
+    parameters: []
+    post:
+      tags:
+      - Dashboards
+      summary: Grafana Restore Dashboard Version By UID
+      description: This API operation restores a specific version of a Grafana dashboard identified by its unique identifier (UID). When invoked via a POST request to the endpoint /dashboards/uid/{uid}/restore, it allows users to revert a dashboard to a previous state by specifying the desired version number in the request body. This is particularly useful for recovering from unwanted changes, comparing different dashboard iterations, or rolling back to a known working configuration. The operation requires appropriate permissions and returns the restored dashboard's metadata upon successful execution.
+      operationId: restoreDashboardVersionByUID
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RestoreDashboardVersionCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/postDashboardResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/uid/{uid}/versions:
+    parameters: []
+    get:
+      tags:
+      - Dashboards
+      summary: Grafana Get Dashboard Versions By UID
+      description: This API operation retrieves the version history of a specific Grafana dashboard identified by its unique identifier (UID). When called with a GET request to the endpoint /dashboards/uid/{uid}/versions, it returns a list of all saved versions of the dashboard, allowing users to track changes made over time, view metadata about each version such as creation date and author, and potentially restore previous versions if needed. This is particularly useful for auditing dashboard modifications, understanding the evolution of visualizations, and recovering from unwanted changes.
+      operationId: getDashboardVersionsByUID
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Maximum number of results to return
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 0
+      - name: start
+        in: query
+        description: Version to start from when returning queries
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 0
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardVersionResponseMeta'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/uid/{uid}/versions/{DashboardVersionID}:
+    parameters: []
+    get:
+      tags:
+      - Dashboards
+      summary: Grafana Get Dashboard Version By UID
+      description: 'This API operation retrieves a specific version of a Grafana dashboard by providing both the dashboard''s unique identifier (UID) and the desired version ID. It allows users to access historical versions of a dashboard, enabling them to review previous configurations, compare changes over time, or restore an earlier state of the dashboard. The endpoint uses a GET request and requires two path parameters: the dashboard UID which uniquely identifies the dashboard, and the DashboardVersionID which specifies which historical version to retrieve. This is particularly useful for audit purposes, version control, and recovering from unwanted dashboard modifications.'
+      operationId: getDashboardVersionByUID
+      parameters:
+      - name: DashboardVersionID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardVersionMeta'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /public/dashboards/{accessToken}:
+    parameters: []
+    get:
+      tags:
+      - Dashboards
+      summary: Grafana View Public Dashboard
+      description: This API operation retrieves and displays a public Grafana dashboard using a unique access token. When a GET request is made to the endpoint with a valid accessToken parameter, it returns the dashboard configuration and visualization data that has been publicly shared. This allows users to view specific dashboards without requiring authentication or login credentials, making it useful for sharing monitoring data, metrics, and analytics with external stakeholders or embedding dashboards in public websites and applications.
+      operationId: viewPublicDashboard
+      parameters:
+      - name: accessToken
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardFullWithMeta_2'
+        '400':
+          description: BadRequestPublicError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '401':
+          description: UnauthorisedPublicError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '403':
+          description: ForbiddenPublicError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '404':
+          description: NotFoundPublicError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '500':
+          description: InternalServerPublicError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /public/dashboards/{accessToken}/panels/{panelId}/query:
+    parameters: []
+    post:
+      tags:
+      - Dashboards
+      summary: Grafana Query Public Dashboard
+      description: The Grafana POST endpoint at /public/dashboards/{accessToken}/panels/{panelId}/query enables querying data from a specific panel within a publicly shared dashboard. This operation requires an access token that grants permission to view the public dashboard and a panel ID to identify which panel's data should be retrieved. The endpoint allows external applications or users to programmatically fetch panel data without authentication beyond the public access token, making it useful for embedding dashboard visualizations in external websites, generating reports, or integrating Grafana metrics into other monitoring systems. The query executes the panel's configured data source query and returns the results in a structured format that can be consumed by the requesting application.
+      operationId: queryPublicDashboard
+      parameters:
+      - name: accessToken
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: panelId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryDataResponsecontainstheresultsfromaQueryDataRequest.'
+        '400':
+          description: BadRequestPublicError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '401':
+          description: UnauthorisedPublicError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '403':
+          description: ForbiddenPublicError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '404':
+          description: NotFoundPublicError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '500':
+          description: InternalServerPublicError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /snapshots:
+    parameters: []
+    post:
+      tags:
+      - Dashboards
+      summary: Grafana Create Dashboard Snapshot
+      description: Creates a new dashboard snapshot in Grafana, allowing users to capture and share the current state of a dashboard at a specific point in time. This operation accepts a POST request containing the dashboard data, metadata, and optional configuration parameters such as expiration time and external sharing settings. The snapshot preserves all panel configurations, queries, and visualizations as they appear at the moment of creation, generating a unique URL that can be shared with others without requiring authentication. The API returns a snapshot identifier and access URLs (both for viewing and deletion) that can be used to retrieve or manage the snapshot later. This is particularly useful for creating static references to dashboard states for reporting, troubleshooting, or sharing data insights with external stakeholders without granting full access to the live Grafana instance.
+      operationId: createDashboardSnapshot
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDashboardSnapshotCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createDashboardSnapshotResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /snapshots-delete/{deleteKey}:
+    parameters: []
+    get:
+      tags:
+      - Dashboards
+      summary: Grafana Delete Dashboard Snapshot By Delete Key
+      description: This API operation allows you to remove a dashboard snapshot from Grafana using its unique delete key. When a snapshot is created, it generates a special delete key that provides authorized deletion access without requiring authentication. By making a GET request to this endpoint with the appropriate deleteKey parameter, the associated snapshot will be permanently removed from the system. This provides a secure way to clean up temporary or unwanted dashboard snapshots, particularly useful when snapshots were created with delete keys for self-service removal by users who may not have direct administrative access to the Grafana instance.
+      operationId: deleteDashboardSnapshotByDeleteKey
+      parameters:
+      - name: deleteKey
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /snapshots/{key}:
+    parameters: []
+    get:
+      tags:
+      - Dashboards
+      summary: Grafana Get Dashboard Snapshot
+      description: This API operation retrieves a specific dashboard snapshot from Grafana using its unique key identifier. When called, it fetches the stored snapshot data which represents a static, point-in-time view of a dashboard that was previously captured. The snapshot includes all panel configurations, data visualizations, and dashboard settings as they existed at the moment the snapshot was created. This is useful for sharing dashboard views with external users who may not have access to the live Grafana instance, reviewing historical dashboard states, or preserving specific dashboard configurations for documentation or reporting purposes. The operation requires the snapshot's unique key as a path parameter and returns the complete snapshot object containing all dashboard data and metadata.
+      operationId: getDashboardSnapshot
+      parameters:
+      - name: key
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content: {}
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Dashboards
+      summary: Grafana Delete Dashboard Snapshot
+      description: Deletes a dashboard snapshot identified by its unique key from Grafana. This operation permanently removes the snapshot, making it inaccessible via its sharing URL. Snapshots are point-in-time captures of dashboards that can be shared externally without requiring authentication to the Grafana instance. Once deleted, the snapshot key becomes invalid and any attempts to access it will result in a not found error. This is typically used to revoke access to previously shared dashboard data or to clean up expired or no longer needed snapshots.
+      operationId: deleteDashboardSnapshot
+      parameters:
+      - name: key
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/stars/dashboard/uid/{dashboard_uid}:
+    parameters: []
+    post:
+      tags:
+      - Dashboards
+      summary: Grafana Star Dashboard By UID
+      description: This API operation allows an authenticated user to mark a specific dashboard as a favorite or "starred" item in Grafana by providing the dashboard's unique identifier (UID) in the URL path. When a POST request is made to this endpoint with a valid dashboard UID, the system records that the current user has starred that particular dashboard, making it easier to access from their list of favorite dashboards. This is a user-specific action that helps organize and quickly navigate to frequently used or important dashboards within the Grafana interface, and the starred status is stored per user account rather than affecting the dashboard globally for all users.
+      operationId: starDashboardByUID
+      parameters:
+      - name: dashboard_uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Dashboards
+      summary: Grafana Unstar Dashboard By UID
+      description: This API operation removes a star from a specific Grafana dashboard for the currently authenticated user by using the dashboard's unique identifier (UID). When executed via an HTTP DELETE request to the endpoint /user/stars/dashboard/uid/{dashboard_uid}, it unmarks the specified dashboard as a favorite, effectively removing it from the user's starred dashboards collection. The operation requires the dashboard_uid parameter to be provided in the URL path to identify which dashboard should be unstarred, and authentication is necessary to determine which user's star list should be modified.
+      operationId: unstarDashboardByUID
+      parameters:
+      - name: dashboard_uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    Dashboard:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: true
+          description: Null when creating a new dashboard
+        uid:
+          type: string
+        title:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        timezone:
+          type: string
+          default: browser
+        schemaVersion:
+          type: integer
+        version:
+          type: integer
+        refresh:
+          type: string
+          description: Auto-refresh interval, e.g. 5s, 1m, 1h
+        time:
+          type: object
+          properties:
+            from:
+              type: string
+            to:
+              type: string
+        timepicker:
+          type: object
+          properties:
+            refresh_intervals:
+              type: array
+              items:
+                type: string
+            time_options:
+              type: array
+              items:
+                type: string
+        templating:
+          type: object
+          properties:
+            list:
+              type: array
+              items:
+                $ref: '#/components/schemas/TemplateVariable'
+        annotations:
+          type: object
+          properties:
+            list:
+              type: array
+              items:
+                type: object
+        panels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Panel'
+        editable:
+          type: boolean
+          default: true
+        fiscalYearStartMonth:
+          type: integer
+        graphTooltip:
+          type: integer
+          enum:
+          - 0
+          - 1
+          - 2
+          description: '0: default, 1: shared crosshair, 2: shared tooltip'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardLink'
+        liveNow:
+          type: boolean
+    DataLink:
+      title: DataLink
+      type: object
+      properties:
+        internal:
+          allOf:
+          - $ref: '#/components/schemas/InternalDataLink'
+          - description: InternalDataLink definition to allow Explore links to be constructed in the backend
+        targetBlank:
+          type: boolean
+        title:
+          type: string
+        url:
+          type: string
+      description: DataLink define what
+    DashboardSnapshotDTO:
+      title: DashboardSnapshotDTO
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        expires:
+          type: string
+          contentEncoding: date-time
+        external:
+          type: boolean
+        externalUrl:
+          type: string
+        key:
+          type: string
+        name:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+      description: DashboardSnapshotDTO without dashboard map
+    ReportOptions:
+      title: ReportOptions
+      type: object
+      properties:
+        layout:
+          type: string
+        orientation:
+          type: string
+        pdfCombineOneFile:
+          type: boolean
+        pdfShowTemplateVariables:
+          type: boolean
+        timeRange:
+          $ref: '#/components/schemas/ReportTimeRange'
+    DashboardACLUpdateItem:
+      title: DashboardACLUpdateItem
+      type: object
+      properties:
+        permission:
+          type: integer
+          contentEncoding: int64
+        role:
+          $ref: '#/components/schemas/Role'
+        teamId:
+          type: integer
+          contentEncoding: int64
+        userId:
+          type: integer
+          contentEncoding: int64
+    DashboardLink:
+      type: object
+      properties:
+        title:
+          type: string
+        type:
+          type: string
+          enum:
+          - dashboards
+          - link
+        url:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        targetBlank:
+          type: boolean
+        asDropdown:
+          type: boolean
+        icon:
+          type: string
+        includeVars:
+          type: boolean
+        keepTime:
+          type: boolean
+    NoticeprovidesastructureforpresentingnotificationsinGrafanasuserinterface.:
+      title: NoticeprovidesastructureforpresentingnotificationsinGrafanasuserinterface.
+      type: object
+      properties:
+        inspect:
+          type: integer
+          contentEncoding: int64
+        link:
+          type: string
+          description: 'Link is an optional link for display in the user interface and can be an
+
+            absolute URL or a path relative to Grafana''s root url.'
+        severity:
+          type: integer
+          contentEncoding: int64
+        text:
+          type: string
+          description: Text is freeform descriptive text for the notice.
+    DashboardMeta:
+      type: object
+      properties:
+        isStarred:
+          type: boolean
+        slug:
+          type: string
+        url:
+          type: string
+        folderId:
+          type: integer
+        folderUid:
+          type: string
+        folderTitle:
+          type: string
+        folderUrl:
+          type: string
+        canSave:
+          type: boolean
+        canEdit:
+          type: boolean
+        canAdmin:
+          type: boolean
+        canStar:
+          type: boolean
+        canDelete:
+          type: boolean
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        version:
+          type: integer
+        provisioned:
+          type: boolean
+        provisionedExternalId:
+          type: string
+    FrameMetamatches:
+      title: FrameMetamatches
+      type: object
+      properties:
+        channel:
+          type: string
+          description: Channel is the path to a stream in grafana live that has real-time updates for this data.
+        custom:
+          description: Custom datasource specific values.
+        dataTopic:
+          type: string
+          description: nolint:revive
+        executedQueryString:
+          type: string
+          description: 'ExecutedQueryString is the raw query sent to the underlying system. All macros and templating
+
+            have been applied.  When metadata contains this value, it will be shown in the query inspector.'
+        notices:
+          type: array
+          items:
+            $ref: '#/components/schemas/NoticeprovidesastructureforpresentingnotificationsinGrafanasuserinterface.'
+          description: 'Notices provide additional information about the data in the Frame that
+
+            Grafana can display to the user in the user interface.'
+        path:
+          type: string
+          description: Path is a browsable path on the datasource.
+        pathSeparator:
+          type: string
+          description: PathSeparator defines the separator pattern to decode a hierarchy. The default separator is '/'.
+        preferredVisualisationPluginId:
+          type: string
+          description: 'PreferredVisualizationPluginId sets the panel plugin id to use to render the data when using Explore. If
+
+            the plugin cannot be found will fall back to PreferredVisualization.'
+        preferredVisualisationType:
+          type: string
+        stats:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryStatisusedforstoringarbitrarystatisticsmetadatarelatedtoaqueryanditsresulte.g.totalrequesttimedataprocessingtime.'
+          description: Stats is an array of query result statistics.
+        type:
+          type: string
+          description: 'A FrameType string, when present in a frame''s metadata, asserts that the
+
+            frame''s structure conforms to the FrameType''s specification.
+
+            This property is currently optional, so FrameType may be FrameTypeUnknown even if the properties of
+
+            the Frame correspond to a defined FrameType.
+
+            +enum'
+        typeVersion:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: ''
+        uniqueRowIdFields:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: 'Array of field indices which values create a unique id for each row. Ideally this should be globally unique ID
+
+            but that isn''t guarantied. Should help with keeping track and deduplicating rows in visualizations, especially
+
+            with streaming data with frequent updates.'
+      description: 'https://github.com/grafana/grafana/blob/master/packages/grafana-data/src/types/data.ts#L11
+
+        NOTE -- in javascript this can accept any `[key: string]: any;` however
+
+        this interface only exposes the values we want to be exposed'
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    SaveDashboardCommand:
+      type: object
+      required:
+      - dashboard
+      properties:
+        dashboard:
+          $ref: '#/components/schemas/Dashboard'
+        folderId:
+          type: integer
+          description: Deprecated - use folderUid
+        folderUid:
+          type: string
+        overwrite:
+          type: boolean
+          default: false
+        message:
+          type: string
+          description: Commit message for version history
+    ReportDashboard:
+      title: ReportDashboard
+      type: object
+      properties:
+        dashboard:
+          $ref: '#/components/schemas/ReportDashboardID'
+        reportVariables:
+          type: object
+        timeRange:
+          $ref: '#/components/schemas/ReportTimeRange'
+    PublicDashboardListResponse:
+      title: PublicDashboardListResponse
+      type: object
+      properties:
+        accessToken:
+          type: string
+        dashboardUid:
+          type: string
+        isEnabled:
+          type: boolean
+        slug:
+          type: string
+        title:
+          type: string
+        uid:
+          type: string
+    QueryStatisusedforstoringarbitrarystatisticsmetadatarelatedtoaqueryanditsresulte.g.totalrequesttimedataprocessingtime.:
+      title: QueryStatisusedforstoringarbitrarystatisticsmetadatarelatedtoaqueryanditsresulte.g.totalrequesttimedataprocessingtime.
+      type: object
+      properties:
+        color:
+          type: object
+          additionalProperties: {}
+          description: 'Map values to a display color
+
+            NOTE: this interface is under development in the frontend... so simple map for now'
+        custom:
+          type: object
+          additionalProperties: {}
+          description: Panel Specific Values
+        decimals:
+          type: integer
+          contentEncoding: int32
+        description:
+          type: string
+          description: Description is human readable field metadata
+        displayName:
+          type: string
+          description: DisplayName overrides Grafana default naming, should not be used from a data source
+        displayNameFromDS:
+          type: string
+          description: DisplayNameFromDS overrides Grafana default naming strategy.
+        filterable:
+          type: boolean
+          description: Filterable indicates if the Field's data can be filtered by additional calls.
+        interval:
+          type: number
+          description: 'Interval indicates the expected regular step between values in the series.
+
+            When an interval exists, consumers can identify "missing" values when the expected value is not present.
+
+            The grafana timeseries visualization will render disconnected values when missing values are found it the time field.
+
+            The interval uses the same units as the values.  For time.Time, this is defined in milliseconds.'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataLink'
+          description: The behavior when clicking on a result
+        mappings:
+          type: array
+          items:
+            type: object
+          description: ''
+        max:
+          type: number
+          description: 'ConfFloat64 is a float64. It Marshals float64 values of NaN of Inf
+
+            to null.'
+        min:
+          type: number
+          description: 'ConfFloat64 is a float64. It Marshals float64 values of NaN of Inf
+
+            to null.'
+        noValue:
+          type: string
+          description: Alternative to empty string
+        path:
+          type: string
+          description: 'Path is an explicit path to the field in the datasource. When the frame meta includes a path,
+
+            this will default to `${frame.meta.path}/${field.name}
+
+
+            When defined, this value can be used as an identifier within the datasource scope, and
+
+            may be used as an identifier to update values in a subsequent request'
+        thresholds:
+          allOf:
+          - $ref: '#/components/schemas/ThresholdsConfig'
+          - description: ThresholdsConfig setup thresholds
+        type:
+          allOf:
+          - $ref: '#/components/schemas/FieldTypeConfig'
+          - description: FieldTypeConfig has type specific configs, only one should be active at a time
+        unit:
+          type: string
+          description: Numeric Options
+        value:
+          type: number
+        writeable:
+          type: boolean
+          description: Writeable indicates that the datasource knows how to update this value
+      description: 'The embedded FieldConfig''s display name must be set.
+
+        It corresponds to the QueryResultMetaStat on the frontend (https://github.com/grafana/grafana/blob/master/packages/grafana-data/src/types/data.ts#L53).'
+    LinkTransformationConfig:
+      title: LinkTransformationConfig
+      type: object
+      properties:
+        expression:
+          type: string
+        field:
+          type: string
+        mapValue:
+          type: string
+        type:
+          type: string
+    RestoreDashboardVersionCommand:
+      title: RestoreDashboardVersionCommand
+      type: object
+      properties:
+        version:
+          type: integer
+          contentEncoding: int64
+    ReportSchedule:
+      title: ReportSchedule
+      type: object
+      properties:
+        dayOfMonth:
+          type: string
+        endDate:
+          type: string
+          contentEncoding: date-time
+        frequency:
+          type: string
+        intervalAmount:
+          type: integer
+          contentEncoding: int64
+        intervalFrequency:
+          type: string
+        startDate:
+          type: string
+          contentEncoding: date-time
+        timeZone:
+          type: string
+        workdaysOnly:
+          type: boolean
+    AnnotationActions:
+      title: AnnotationActions
+      type: object
+      properties:
+        canAdd:
+          type: boolean
+        canDelete:
+          type: boolean
+        canEdit:
+          type: boolean
+      description: +k8s:deepcopy-gen=true
+    postDashboardResponse:
+      title: postDashboardResponse
+      required:
+      - id
+      - status
+      - title
+      - uid
+      - url
+      - version
+      type: object
+      properties:
+        folderUid:
+          type: string
+          description: FolderUID The unique identifier (uid) of the folder the dashboard belongs to.
+        id:
+          type: integer
+          description: ID The unique identifier (id) of the created/updated dashboard.
+          contentEncoding: int64
+          examples:
+          - 1
+        status:
+          type: string
+          description: Status status of the response.
+          examples:
+          - success
+        title:
+          type: string
+          description: Slug The slug of the dashboard.
+          examples:
+          - my-dashboard
+        uid:
+          type: string
+          description: UID The unique identifier (uid) of the created/updated dashboard.
+          examples:
+          - nHz3SXiiz
+        url:
+          type: string
+          description: URL The relative URL for accessing the created/updated dashboard.
+          examples:
+          - /d/nHz3SXiiz/my-dashboard
+        version:
+          type: integer
+          description: Version The version of the dashboard.
+          contentEncoding: int64
+          examples:
+          - 2
+    ImportDashboardResponseresponseobjectreturnedwhenimportingadashboard.:
+      title: ImportDashboardResponseresponseobjectreturnedwhenimportingadashboard.
+      type: object
+      properties:
+        dashboardId:
+          type: integer
+          contentEncoding: int64
+        description:
+          type: string
+        folderId:
+          type: integer
+          description: 'Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+        imported:
+          type: boolean
+        importedRevision:
+          type: integer
+          contentEncoding: int64
+        importedUri:
+          type: string
+        importedUrl:
+          type: string
+        path:
+          type: string
+        pluginId:
+          type: string
+        removed:
+          type: boolean
+        revision:
+          type: integer
+          contentEncoding: int64
+        slug:
+          type: string
+        title:
+          type: string
+        uid:
+          type: string
+    Gethomedashboardresponse.:
+      title: Gethomedashboardresponse.
+      type: object
+      properties:
+        dashboard:
+          type: object
+        meta:
+          $ref: '#/components/schemas/DashboardMeta_2'
+        redirectUri:
+          type: string
+    DashboardTagCloudItem:
+      title: DashboardTagCloudItem
+      type: object
+      properties:
+        count:
+          type: integer
+          contentEncoding: int64
+        term:
+          type: string
+    DashboardVersionResponseMeta:
+      title: DashboardVersionResponseMeta
+      type: object
+      properties:
+        continueToken:
+          type: string
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardVersionMeta'
+          description: ''
+    SaveDashboardResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        uid:
+          type: string
+        url:
+          type: string
+        status:
+          type: string
+        version:
+          type: integer
+        slug:
+          type: string
+    DataResponsecontainstheresultsfromaDataQuery.:
+      title: DataResponsecontainstheresultsfromaDataQuery.
+      type: object
+      properties:
+        Error:
+          type: string
+          description: Error is a property to be set if the corresponding DataQuery has an error.
+        ErrorSource:
+          type: string
+        Frames:
+          type: array
+          items:
+            $ref: '#/components/schemas/FrameisacolumnardatastructurewhereeachcolumnisaField.'
+          description: 'It is the main data container within a backend.DataResponse.
+
+            There should be no `nil` entries in the Frames slice (making them pointers was a mistake).'
+        Status:
+          type: integer
+          contentEncoding: int64
+      description: 'A map of RefIDs (unique query identifiers) to this type makes up the Responses property of a QueryDataResponse.
+
+        The Error property is used to allow for partial success responses from the containing QueryDataResponse.'
+    ReportTimeRange:
+      title: ReportTimeRange
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+    QueryDataResponsecontainstheresultsfromaQueryDataRequest.:
+      title: QueryDataResponsecontainstheresultsfromaQueryDataRequest.
+      type: object
+      properties:
+        results:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/DataResponsecontainstheresultsfromaDataQuery.'
+          description: 'The QueryData method the QueryDataHandler method will set the RefId
+
+            property on the DataResponses'' frames based on these RefIDs.'
+      description: It is the return type of a QueryData call.
+    ImportDashboardInputdefinitionofinputparameterswhenimportingadashboard.:
+      title: ImportDashboardInputdefinitionofinputparameterswhenimportingadashboard.
+      type: object
+      properties:
+        name:
+          type: string
+        pluginId:
+          type: string
+        type:
+          type: string
+        value:
+          type: string
+    TemplateVariable:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - query
+          - custom
+          - constant
+          - datasource
+          - interval
+          - textbox
+          - adhoc
+        label:
+          type: string
+        datasource:
+          type: object
+        query:
+          type: string
+        current:
+          type: object
+        hide:
+          type: integer
+          enum:
+          - 0
+          - 1
+          - 2
+        multi:
+          type: boolean
+        includeAll:
+          type: boolean
+        allValue:
+          type: string
+        refresh:
+          type: integer
+          enum:
+          - 0
+          - 1
+          - 2
+        sort:
+          type: integer
+    InternalDataLink:
+      title: InternalDataLink
+      type: object
+      properties:
+        datasourceName:
+          type: string
+        datasourceUid:
+          type: string
+        panelsState:
+          description: This is an object constructed with the keys as the values of the enum VisType and the value being a bag of properties
+        query: {}
+        timeRange:
+          allOf:
+          - $ref: '#/components/schemas/TimeRange'
+          - description: Redefining this to avoid an import cycle
+        transformations:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkTransformationConfig'
+          description: ''
+      description: InternalDataLink definition to allow Explore links to be constructed in the backend
+    Report:
+      title: Report
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        dashboards:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportDashboard'
+          description: ''
+        enableCsv:
+          type: boolean
+        enableDashboardUrl:
+          type: boolean
+        formats:
+          type: array
+          items:
+            type: string
+          description: ''
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+        name:
+          type: string
+        options:
+          $ref: '#/components/schemas/ReportOptions'
+        orgId:
+          type: integer
+          contentEncoding: int64
+        recipients:
+          type: string
+        replyTo:
+          type: string
+        scaleFactor:
+          type: integer
+          contentEncoding: int64
+        schedule:
+          $ref: '#/components/schemas/ReportSchedule'
+        state:
+          type: string
+          description: +enum
+        subject:
+          type: string
+        uid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        userId:
+          type: integer
+          contentEncoding: int64
+    TimeRange:
+      title: TimeRange
+      type: object
+      properties:
+        from:
+          type: string
+          contentEncoding: date-time
+        to:
+          type: string
+          contentEncoding: date-time
+      description: Redefining this to avoid an import cycle
+    DashboardACLInfoDTO:
+      title: DashboardACLInfoDTO
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        dashboardId:
+          type: integer
+          contentEncoding: int64
+        folderId:
+          type: integer
+          description: 'Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+        inherited:
+          type: boolean
+        isFolder:
+          type: boolean
+        permission:
+          type: integer
+          contentEncoding: int64
+        permissionName:
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+        slug:
+          type: string
+        team:
+          type: string
+        teamAvatarUrl:
+          type: string
+        teamEmail:
+          type: string
+        teamId:
+          type: integer
+          contentEncoding: int64
+        teamUid:
+          type: string
+        title:
+          type: string
+        uid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        url:
+          type: string
+        userAvatarUrl:
+          type: string
+        userEmail:
+          type: string
+        userId:
+          type: integer
+          contentEncoding: int64
+        userLogin:
+          type: string
+        userUid:
+          type: string
+    ThresholdsConfig:
+      title: ThresholdsConfig
+      type: object
+      properties:
+        mode:
+          type: string
+          description: ThresholdsMode absolute or percentage
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/Threshold'
+          description: Must be sorted by 'value', first value is always -Infinity
+      description: ThresholdsConfig setup thresholds
+    EmailDTO:
+      title: EmailDTO
+      type: object
+      properties:
+        recipient:
+          type: string
+        uid:
+          type: string
+    FrameisacolumnardatastructurewhereeachcolumnisaField.:
+      title: FrameisacolumnardatastructurewhereeachcolumnisaField.
+      type: object
+      properties:
+        Fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldrepresentsatypedcolumnofdatawithinaFrame.'
+          description: 'Fields are the columns of a frame.
+
+            All Fields must be of the same the length when marshalling the Frame for transmission.
+
+            There should be no `nil` entries in the Fields slice (making them pointers was a mistake).'
+        Meta:
+          allOf:
+          - $ref: '#/components/schemas/FrameMetamatches'
+          - description: 'https://github.com/grafana/grafana/blob/master/packages/grafana-data/src/types/data.ts#L11
+
+              NOTE -- in javascript this can accept any `[key: string]: any;` however
+
+              this interface only exposes the values we want to be exposed'
+        Name:
+          type: string
+          description: Name is used in some Grafana visualizations.
+        RefID:
+          type: string
+          description: RefID is a property that can be set to match a Frame to its originating query.
+      description: 'Each Field is well typed by its FieldType and supports optional Labels.
+
+
+        A Frame is a general data container for Grafana. A Frame can be table data
+
+        or time series data depending on its content and field types.'
+    PublicDashboardListResponseWithPagination:
+      title: PublicDashboardListResponseWithPagination
+      type: object
+      properties:
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        publicDashboards:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicDashboardListResponse'
+          description: ''
+        totalCount:
+          type: integer
+          contentEncoding: int64
+    Role:
+      title: Role
+      enum:
+      - None
+      - Viewer
+      - Editor
+      - Admin
+      type: string
+    createDashboardSnapshotResponse:
+      title: createDashboardSnapshotResponse
+      type: object
+      properties:
+        deleteKey:
+          type: string
+          description: Unique key used to delete the snapshot. It is different from the key so that only the creator can delete the snapshot.
+        deleteUrl:
+          type: string
+        id:
+          type: integer
+          description: Snapshot id
+          contentEncoding: int64
+        key:
+          type: string
+          description: Unique key
+        url:
+          type: string
+    DashboardSearchHit:
+      type: object
+      properties:
+        id:
+          type: integer
+        uid:
+          type: string
+        title:
+          type: string
+        uri:
+          type: string
+        url:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        isStarred:
+          type: boolean
+        folderId:
+          type: integer
+        folderUid:
+          type: string
+        folderTitle:
+          type: string
+        folderUrl:
+          type: string
+        sortMeta:
+          type: integer
+    Threshold:
+      title: Threshold
+      type: object
+      properties:
+        color:
+          type: string
+        state:
+          type: string
+        value:
+          type: number
+          description: 'ConfFloat64 is a float64. It Marshals float64 values of NaN of Inf
+
+            to null.'
+      description: Threshold a single step on the threshold list
+    DashboardVersionMeta:
+      title: DashboardVersionMeta
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          type: string
+        dashboardId:
+          type: integer
+          contentEncoding: int64
+        data:
+          type: object
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+        parentVersion:
+          type: integer
+          contentEncoding: int64
+        restoredFrom:
+          type: integer
+          contentEncoding: int64
+        uid:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+      description: 'DashboardVersionMeta extends the DashboardVersionDTO with the names
+
+        associated with the UserIds, overriding the field with the same name from
+
+        the DashboardVersionDTO model.'
+    PublicDashboardDTO:
+      title: PublicDashboardDTO
+      type: object
+      properties:
+        accessToken:
+          type: string
+        annotationsEnabled:
+          type: boolean
+        isEnabled:
+          type: boolean
+        share:
+          type: string
+        timeSelectionEnabled:
+          type: boolean
+        uid:
+          type: string
+    PublicDashboard:
+      title: PublicDashboard
+      type: object
+      properties:
+        accessToken:
+          type: string
+        annotationsEnabled:
+          type: boolean
+        createdAt:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          type: integer
+          contentEncoding: int64
+        dashboardUid:
+          type: string
+        isEnabled:
+          type: boolean
+        recipients:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailDTO'
+          description: ''
+        share:
+          type: string
+        timeSelectionEnabled:
+          type: boolean
+        uid:
+          type: string
+        updatedAt:
+          type: string
+          contentEncoding: date-time
+        updatedBy:
+          type: integer
+          contentEncoding: int64
+    DashboardMeta_2:
+      title: DashboardMeta
+      type: object
+      properties:
+        annotationsPermissions:
+          allOf:
+          - $ref: '#/components/schemas/AnnotationPermission'
+          - description: +k8s:deepcopy-gen=true
+        apiVersion:
+          type: string
+        canAdmin:
+          type: boolean
+        canDelete:
+          type: boolean
+        canEdit:
+          type: boolean
+        canSave:
+          type: boolean
+        canStar:
+          type: boolean
+        created:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          type: string
+        expires:
+          type: string
+          contentEncoding: date-time
+        folderId:
+          type: integer
+          description: 'Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderTitle:
+          type: string
+        folderUid:
+          type: string
+        folderUrl:
+          type: string
+        hasAcl:
+          type: boolean
+        isFolder:
+          type: boolean
+        isSnapshot:
+          type: boolean
+        isStarred:
+          type: boolean
+        provisioned:
+          type: boolean
+        provisionedExternalId:
+          type: string
+        publicDashboardEnabled:
+          type: boolean
+        slug:
+          type: string
+        type:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        updatedBy:
+          type: string
+        url:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+    Unstructured:
+      title: Unstructured
+      type: object
+      properties:
+        Object:
+          type: object
+          additionalProperties: {}
+          description: 'Object is a JSON compatible map with string, float, int, bool, []any,
+
+            or map[string]any children.'
+      description: 'Unstructured allows objects that do not have Golang structs registered to be manipulated
+
+        generically.'
+    FieldConfigrepresentsthedisplaypropertiesforaField.:
+      title: FieldConfigrepresentsthedisplaypropertiesforaField.
+      type: object
+      properties:
+        color:
+          type: object
+          additionalProperties: {}
+          description: 'Map values to a display color
+
+            NOTE: this interface is under development in the frontend... so simple map for now'
+        custom:
+          type: object
+          additionalProperties: {}
+          description: Panel Specific Values
+        decimals:
+          type: integer
+          contentEncoding: int32
+        description:
+          type: string
+          description: Description is human readable field metadata
+        displayName:
+          type: string
+          description: DisplayName overrides Grafana default naming, should not be used from a data source
+        displayNameFromDS:
+          type: string
+          description: DisplayNameFromDS overrides Grafana default naming strategy.
+        filterable:
+          type: boolean
+          description: Filterable indicates if the Field's data can be filtered by additional calls.
+        interval:
+          type: number
+          description: 'Interval indicates the expected regular step between values in the series.
+
+            When an interval exists, consumers can identify "missing" values when the expected value is not present.
+
+            The grafana timeseries visualization will render disconnected values when missing values are found it the time field.
+
+            The interval uses the same units as the values.  For time.Time, this is defined in milliseconds.'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataLink'
+          description: The behavior when clicking on a result
+        mappings:
+          type: array
+          items:
+            type: object
+          description: ''
+        max:
+          type: number
+          description: 'ConfFloat64 is a float64. It Marshals float64 values of NaN of Inf
+
+            to null.'
+        min:
+          type: number
+          description: 'ConfFloat64 is a float64. It Marshals float64 values of NaN of Inf
+
+            to null.'
+        noValue:
+          type: string
+          description: Alternative to empty string
+        path:
+          type: string
+          description: 'Path is an explicit path to the field in the datasource. When the frame meta includes a path,
+
+            this will default to `${frame.meta.path}/${field.name}
+
+
+            When defined, this value can be used as an identifier within the datasource scope, and
+
+            may be used as an identifier to update values in a subsequent request'
+        thresholds:
+          allOf:
+          - $ref: '#/components/schemas/ThresholdsConfig'
+          - description: ThresholdsConfig setup thresholds
+        type:
+          allOf:
+          - $ref: '#/components/schemas/FieldTypeConfig'
+          - description: FieldTypeConfig has type specific configs, only one should be active at a time
+        unit:
+          type: string
+          description: Numeric Options
+        writeable:
+          type: boolean
+          description: Writeable indicates that the datasource knows how to update this value
+    UpdateDashboardACLCommand:
+      title: UpdateDashboardACLCommand
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardACLUpdateItem'
+          description: ''
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: string
+    CreateDashboardSnapshotCommand:
+      title: CreateDashboardSnapshotCommand
+      required:
+      - dashboard
+      type: object
+      properties:
+        apiVersion:
+          type: string
+          description: 'APIVersion defines the versioned schema of this representation of an object.
+
+            Servers should convert recognized schemas to the latest internal value, and
+
+            may reject unrecognized values.
+
+            More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+
+            +optional'
+        dashboard:
+          allOf:
+          - $ref: '#/components/schemas/Unstructured'
+          - description: 'Unstructured allows objects that do not have Golang structs registered to be manipulated
+
+              generically.'
+        deleteKey:
+          type: string
+          description: Unique key used to delete the snapshot. It is different from the `key` so that only the creator can delete the snapshot. Required if `external` is `true`.
+        expires:
+          type: integer
+          description: When the snapshot should expire in seconds in seconds. Default is never to expire.
+          contentEncoding: int64
+          default: 0
+        external:
+          type: boolean
+          description: 'these are passed when storing an external snapshot ref
+
+            Save the snapshot on an external server rather than locally.'
+          default: false
+        key:
+          type: string
+          description: Define the unique key. Required if `external` is `true`.
+        kind:
+          type: string
+          description: 'Kind is a string value representing the REST resource this object represents.
+
+            Servers may infer this from the endpoint the client submits requests to.
+
+            Cannot be updated.
+
+            In CamelCase.
+
+            More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+
+            +optional'
+        name:
+          type: string
+          description: Snapshot name
+    publicError1:
+      title: publicError1
+      required:
+      - messageId
+      - statusCode
+      type: object
+      properties:
+        extra:
+          type: object
+          additionalProperties: {}
+          description: Extra Additional information about the error
+        message:
+          type: string
+          description: Message A human readable message
+        messageId:
+          type: string
+          description: MessageID A unique identifier for the error
+        statusCode:
+          type: integer
+          description: StatusCode The HTTP status code returned
+          contentEncoding: int64
+      description: 'PublicError is derived from Error and only contains information
+
+        available to the end user.'
+    DashboardFullWithMeta:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/DashboardMeta'
+        dashboard:
+          $ref: '#/components/schemas/Dashboard'
+    EnumFieldConfig:
+      title: EnumFieldConfig
+      type: object
+      properties:
+        color:
+          type: array
+          items:
+            type: string
+          description: Color is the color value for a given index (empty is undefined)
+        description:
+          type: array
+          items:
+            type: string
+          description: Description of the enum state
+        icon:
+          type: array
+          items:
+            type: string
+          description: Icon supports setting an icon for a given index value
+        text:
+          type: array
+          items:
+            type: string
+          description: Value is the string display value for a given index
+      description: 'Enum field config
+
+        Vector values are used as lookup keys into the enum fields'
+    FieldTypeConfig:
+      title: FieldTypeConfig
+      type: object
+      properties:
+        enum:
+          allOf:
+          - $ref: '#/components/schemas/EnumFieldConfig'
+          - description: 'Enum field config
+
+              Vector values are used as lookup keys into the enum fields'
+      description: FieldTypeConfig has type specific configs, only one should be active at a time
+    Target:
+      type: object
+      description: Query target - structure varies by data source type
+      properties:
+        refId:
+          type: string
+        datasource:
+          type: object
+          properties:
+            type:
+              type: string
+            uid:
+              type: string
+        expr:
+          type: string
+          description: Prometheus query expression
+        rawSql:
+          type: string
+          description: SQL query for SQL-based data sources
+        format:
+          type: string
+        legendFormat:
+          type: string
+        interval:
+          type: string
+        hide:
+          type: boolean
+    DashboardFullWithMeta_2:
+      title: DashboardFullWithMeta
+      type: object
+      properties:
+        dashboard:
+          type: object
+        meta:
+          $ref: '#/components/schemas/DashboardMeta_2'
+    Panel:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          description: Panel plugin type, e.g. timeseries, stat, gauge, table, barchart, etc.
+        title:
+          type: string
+        description:
+          type: string
+        gridPos:
+          type: object
+          properties:
+            h:
+              type: integer
+            w:
+              type: integer
+            x:
+              type: integer
+            y:
+              type: integer
+        datasource:
+          type: object
+          properties:
+            type:
+              type: string
+            uid:
+              type: string
+        targets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Target'
+        fieldConfig:
+          type: object
+          properties:
+            defaults:
+              type: object
+              properties:
+                unit:
+                  type: string
+                min:
+                  type: number
+                max:
+                  type: number
+                decimals:
+                  type: integer
+                thresholds:
+                  type: object
+                  properties:
+                    mode:
+                      type: string
+                      enum:
+                      - absolute
+                      - percentage
+                    steps:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          color:
+                            type: string
+                          value:
+                            type: number
+                            nullable: true
+                color:
+                  type: object
+                  properties:
+                    mode:
+                      type: string
+                mappings:
+                  type: array
+                  items:
+                    type: object
+            overrides:
+              type: array
+              items:
+                type: object
+        options:
+          type: object
+          description: Panel-type-specific options
+        transformations:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              options:
+                type: object
+        transparent:
+          type: boolean
+        links:
+          type: array
+          items:
+            type: object
+        repeat:
+          type: string
+          description: Variable name to repeat panel for
+        repeatDirection:
+          type: string
+          enum:
+          - h
+          - v
+        maxPerRow:
+          type: integer
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    AnnotationPermission:
+      title: AnnotationPermission
+      type: object
+      properties:
+        dashboard:
+          allOf:
+          - $ref: '#/components/schemas/AnnotationActions'
+          - description: +k8s:deepcopy-gen=true
+        organization:
+          allOf:
+          - $ref: '#/components/schemas/AnnotationActions'
+          - description: +k8s:deepcopy-gen=true
+      description: +k8s:deepcopy-gen=true
+    ReportDashboardID:
+      title: ReportDashboardID
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+        uid:
+          type: string
+    ImportDashboardRequestrequestobjectforimportingadashboard.:
+      title: ImportDashboardRequestrequestobjectforimportingadashboard.
+      type: object
+      properties:
+        dashboard:
+          type: object
+        folderId:
+          type: integer
+          description: 'Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImportDashboardInputdefinitionofinputparameterswhenimportingadashboard.'
+          description: ''
+        overwrite:
+          type: boolean
+        path:
+          type: string
+        pluginId:
+          type: string
+    FieldrepresentsatypedcolumnofdatawithinaFrame.:
+      title: FieldrepresentsatypedcolumnofdatawithinaFrame.
+      type: object
+      properties:
+        config:
+          $ref: '#/components/schemas/FieldConfigrepresentsthedisplaypropertiesforaField.'
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          description: Labels are used to add metadata to an object.  The JSON will always be sorted keys
+        name:
+          type: string
+          description: 'Name is default identifier of the field. The name does not have to be unique, but the combination
+
+            of name and Labels should be unique for proper behavior in all situations.'
+      description: 'A Field is essentially a slice of various types with extra properties and methods.
+
+        See NewField() for supported types.
+
+
+        The slice data in the Field is a not exported, so methods on the Field are used to to manipulate its data.'
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Forbidden - insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized - invalid or missing authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

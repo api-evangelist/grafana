@@ -1,0 +1,220 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Accounts API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Accounts
+paths:
+  /serviceaccounts/search:
+    parameters: []
+    get:
+      tags:
+      - Accounts
+      summary: Grafana Search Org Service Accounts With Paging
+      description: The Grafana service accounts search API endpoint allows administrators to retrieve a paginated list of service accounts within an organization. This GET operation on the /serviceaccounts/search path enables filtering and searching through service accounts, returning results in a structured, paginated format that can be navigated through multiple pages. It's particularly useful for managing large numbers of service accounts in an organization, providing capabilities to query and locate specific accounts efficiently while maintaining performance through pagination controls.
+      operationId: searchOrgServiceAccountsWithPaging
+      parameters:
+      - name: Disabled
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: expiredTokens
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: query
+        in: query
+        description: 'It will return results where the query value is contained in one of the name.
+
+          Query values with spaces need to be URL encoded.'
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: perpage
+        in: query
+        description: The default value is 1000.
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: page
+        in: query
+        description: The default value is 1.
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchOrgServiceAccountsResult'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    SearchOrgServiceAccountsResult:
+      title: SearchOrgServiceAccountsResult
+      type: object
+      properties:
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        serviceAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceAccountDTO'
+          description: ''
+        totalCount:
+          type: integer
+          description: 'It can be used for pagination of the user list
+
+            E.g. if totalCount is equal to 100 users and
+
+            the perpage parameter is set to 10 then there are 10 pages of users.'
+          contentEncoding: int64
+      description: 'swagger: model'
+    ServiceAccountDTO:
+      title: ServiceAccountDTO
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+          examples:
+          - serviceaccounts:delete: true
+            serviceaccounts:read: true
+            serviceaccounts:write: true
+        avatarUrl:
+          type: string
+          examples:
+          - /avatar/85ec38023d90823d3e5b43ef35646af9
+        id:
+          type: integer
+          contentEncoding: int64
+        isDisabled:
+          type: boolean
+          examples:
+          - false
+        isExternal:
+          type: boolean
+          examples:
+          - false
+        login:
+          type: string
+          examples:
+          - sa-grafana
+        name:
+          type: string
+          examples:
+          - grafana
+        orgId:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 1
+        role:
+          type: string
+          examples:
+          - Viewer
+        tokens:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 0
+        uid:
+          type: string
+          examples:
+          - fe1xejlha91xce
+      description: 'swagger: model'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

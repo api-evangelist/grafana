@@ -1,0 +1,105 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Custom API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Custom
+paths:
+  /licensing/custom-permissions:
+    parameters: []
+    get:
+      tags:
+      - Custom
+      summary: Grafana Get Custom Permissions Report
+      description: This API operation retrieves a custom permissions report from Grafana's licensing endpoint. When invoked via a GET request to the /licensing/custom-permissions path, it returns information about custom permission configurations and their usage within the Grafana instance. This endpoint is typically used by administrators to audit and review customized access control settings, helping them understand how permissions have been tailored beyond the standard roles and ensure compliance with licensing terms and organizational security policies.
+      operationId: getCustomPermissionsReport
+      parameters: []
+      responses:
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /licensing/custom-permissions-csv:
+    parameters: []
+    get:
+      tags:
+      - Custom
+      summary: Grafana Get Custom Permissions CSV
+      description: This API operation retrieves custom permissions data from Grafana in CSV format through a GET request to the /licensing/custom-permissions-csv endpoint. It allows administrators to export and download a comprehensive list of custom permission configurations that have been set up within their Grafana instance, which can be useful for auditing, backup purposes, or analyzing permission structures across the system. The response is formatted as a CSV file, making it easy to view, process, or import the permissions data into spreadsheet applications or other systems for further analysis and reporting.
+      operationId: getCustomPermissionsCSV
+      parameters: []
+      responses:
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            text/csv:
+              schema:
+                contentMediaType: text/csv
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

@@ -1,0 +1,528 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Correlation API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Correlation
+paths:
+  /datasources/uid/{sourceUID}/correlations:
+    parameters: []
+    post:
+      tags:
+      - Correlation
+      summary: Grafana Create Correlation
+      description: Creates a new correlation in Grafana between two data sources, allowing users to establish relationships and navigate between different data sources using the specified source data source UID. This operation enables the creation of links that help connect related data across different monitoring or logging systems, facilitating easier investigation and analysis workflows by defining how data in one source relates to data in another source through correlation configurations.
+      operationId: createCorrelation
+      parameters:
+      - name: sourceUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCorrelationCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateCorrelationResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/uid/{sourceUID}/correlations/{correlationUID}:
+    parameters: []
+    get:
+      tags:
+      - Correlation
+      summary: Grafana Get Correlation
+      description: The Get Correlation API operation in Grafana retrieves a specific correlation configuration between data sources using their unique identifiers. By making a GET request to the endpoint `/datasources/uid/{sourceUID}/correlations/{correlationUID}`, users can fetch detailed information about an existing correlation, including its configuration settings, transformations, and the relationship between a source data source and a target data source. This operation requires both the unique identifier of the source data source (sourceUID) and the unique identifier of the specific correlation (correlationUID) to return the correlation object with all its associated metadata and configuration parameters.
+      operationId: getCorrelation
+      parameters:
+      - name: sourceUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: correlationUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Correlation'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    patch:
+      tags:
+      - Correlation
+      summary: Grafana Update Correlation
+      description: Updates an existing correlation identified by its UID within a specific data source, also identified by UID. This PATCH operation allows you to modify the properties of a correlation, which defines relationships between queries or data across different data sources in Grafana. The correlation UID and source data source UID must be provided in the path parameters to target the specific correlation to update. The request typically includes fields such as the target data source, transformation expressions, or correlation description that need to be modified. This endpoint is useful for maintaining and refining data relationships as your monitoring infrastructure evolves, enabling more sophisticated cross-data-source queries and visualizations without recreating correlations from scratch.
+      operationId: updateCorrelation
+      parameters:
+      - name: sourceUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: correlationUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCorrelationCommand'
+        required: false
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateCorrelationResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/uid/{uid}/correlations/{correlationUID}:
+    parameters: []
+    delete:
+      tags:
+      - Correlation
+      summary: Grafana Delete Correlation
+      description: 'This API operation deletes a specific correlation in Grafana by targeting both the data source and correlation identifiers. The endpoint requires two parameters: the UID of the data source that owns the correlation and the correlationUID which uniquely identifies the correlation to be removed. When executed with a DELETE HTTP method, it permanently removes the specified correlation configuration that links queries or data between different data sources, helping administrators clean up unused or outdated correlation rules within their Grafana instance.'
+      operationId: deleteCorrelation
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: correlationUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteCorrelationResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    Correlation:
+      title: Correlation
+      type: object
+      properties:
+        config:
+          $ref: '#/components/schemas/CorrelationConfig'
+        description:
+          type: string
+          description: Description of the correlation
+          examples:
+          - Logs to Traces
+        label:
+          type: string
+          description: Label identifying the correlation
+          examples:
+          - My Label
+        orgId:
+          type: integer
+          description: OrgID of the data source the correlation originates from
+          contentEncoding: int64
+          examples:
+          - 1
+        provisioned:
+          type: boolean
+          description: Provisioned True if the correlation was created during provisioning
+        sourceUID:
+          type: string
+          description: UID of the data source the correlation originates from
+          examples:
+          - d0oxYRg4z
+        targetUID:
+          type: string
+          description: UID of the data source the correlation points to
+          examples:
+          - PE1C5CBDA0504A6A3
+        type:
+          type: string
+          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
+
+            +enum'
+        uid:
+          type: string
+          description: Unique identifier of the correlation
+          examples:
+          - 50xhMlg9k
+      description: Correlation is the model for correlations definitions
+    DeleteCorrelationResponseBody:
+      title: DeleteCorrelationResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+          examples:
+          - Correlation deleted
+    Type1:
+      title: Type1
+      enum:
+      - regex
+      - logfmt
+      type: string
+    UpdateCorrelationResponseBody:
+      title: UpdateCorrelationResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+          examples:
+          - Correlation updated
+        result:
+          allOf:
+          - $ref: '#/components/schemas/Correlation'
+          - description: Correlation is the model for correlations definitions
+    CreateCorrelationCommand:
+      title: CreateCorrelationCommand
+      type: object
+      properties:
+        config:
+          $ref: '#/components/schemas/CorrelationConfig'
+        description:
+          type: string
+          description: Optional description of the correlation
+          examples:
+          - Logs to Traces
+        label:
+          type: string
+          description: Optional label identifying the correlation
+          examples:
+          - My label
+        provisioned:
+          type: boolean
+          description: True if correlation was created with provisioning. This makes it read-only.
+        targetUID:
+          type: string
+          description: Target data source UID to which the correlation is created. required if type = query
+          examples:
+          - PE1C5CBDA0504A6A3
+        type:
+          type: string
+          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
+
+            +enum'
+      description: CreateCorrelationCommand is the command for creating a correlation
+    UpdateCorrelationCommand:
+      title: UpdateCorrelationCommand
+      type: object
+      properties:
+        config:
+          $ref: '#/components/schemas/CorrelationConfigUpdateDTO'
+        description:
+          type: string
+          description: Optional description of the correlation
+          examples:
+          - Logs to Traces
+        label:
+          type: string
+          description: Optional label identifying the correlation
+          examples:
+          - My label
+        type:
+          type: string
+          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
+
+            +enum'
+      description: UpdateCorrelationCommand is the command for updating a correlation
+    CorrelationConfig:
+      title: CorrelationConfig
+      required:
+      - field
+      - target
+      type: object
+      properties:
+        field:
+          type: string
+          description: Field used to attach the correlation link
+          examples:
+          - message
+        target:
+          type: object
+          additionalProperties: {}
+          description: Target data query
+          examples:
+          - prop1: value1
+            prop2: value
+        transformations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transformation'
+          description: ''
+        type:
+          type: string
+          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
+
+            +enum'
+    CorrelationConfigUpdateDTO:
+      title: CorrelationConfigUpdateDTO
+      type: object
+      properties:
+        field:
+          type: string
+          description: Field used to attach the correlation link
+          examples:
+          - message
+        target:
+          type: object
+          additionalProperties: {}
+          description: Target data query
+          examples:
+          - prop1: value1
+            prop2: value
+        transformations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transformation'
+          description: Source data transformations
+          examples:
+          - - type: logfmt
+            - expression: (Superman|Batman)
+              type: regex
+              variable: name
+    Transformation:
+      title: Transformation
+      type: object
+      properties:
+        expression:
+          type: string
+        field:
+          type: string
+        mapValue:
+          type: string
+        type:
+          $ref: '#/components/schemas/Type1'
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    CreateCorrelationResponseBody:
+      title: CreateCorrelationResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+          examples:
+          - Correlation created
+        result:
+          allOf:
+          - $ref: '#/components/schemas/Correlation'
+          - description: Correlation is the model for correlations definitions
+      description: CreateCorrelationResponse is the response struct for CreateCorrelationCommand
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

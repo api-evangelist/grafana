@@ -1,0 +1,160 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Connections API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Connections
+paths:
+  /library-elements/{library_element_uid}/connections/:
+    parameters: []
+    get:
+      tags:
+      - Connections
+      summary: Grafana Get Library Element Connections
+      description: This API operation retrieves all the connections associated with a specific library element in Grafana by providing its unique identifier (UID). When called, it returns information about where and how the library element is being used across different dashboards and panels within the Grafana instance. This is particularly useful for understanding dependencies and the impact of modifying or deleting a library element, as it shows all the locations where the element is currently referenced or utilized.
+      operationId: getLibraryElementConnections
+      parameters:
+      - name: library_element_uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryElementConnectionsResponseisaresponsestructforanarrayofLibraryElementConnectionDTO.'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    LibraryElementConnectionsResponseisaresponsestructforanarrayofLibraryElementConnectionDTO.:
+      title: LibraryElementConnectionsResponseisaresponsestructforanarrayofLibraryElementConnectionDTO.
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/LibraryElementConnectionDTOisthefrontendDTOforelementconnections.'
+          description: ''
+    LibraryElementDTOMetaUser:
+      title: LibraryElementDTOMetaUser
+      type: object
+      properties:
+        avatarUrl:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+    LibraryElementConnectionDTOisthefrontendDTOforelementconnections.:
+      title: LibraryElementConnectionDTOisthefrontendDTOforelementconnections.
+      type: object
+      properties:
+        connectionId:
+          type: integer
+          contentEncoding: int64
+        connectionUid:
+          type: string
+        created:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          $ref: '#/components/schemas/LibraryElementDTOMetaUser'
+        elementId:
+          type: integer
+          contentEncoding: int64
+        id:
+          type: integer
+          description: 'Deprecated: this field will be removed in the future'
+          contentEncoding: int64
+        kind:
+          type: integer
+          contentEncoding: int64
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

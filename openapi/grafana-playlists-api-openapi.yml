@@ -1,0 +1,123 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Playlists API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Playlists
+  description: ''
+paths:
+  /playlists:
+    parameters: []
+    get:
+      tags:
+      - Playlists
+      summary: Grafana Search Playlists
+      description: The GET /playlists endpoint in Grafana allows users to retrieve a list of playlists based on search criteria. This operation queries the Grafana instance for playlists that match specified parameters, returning playlist metadata such as name, ID, and associated dashboards. Users can filter results using query parameters to narrow down playlists by name or other attributes. The endpoint returns a JSON array containing the matching playlists, making it useful for administrators and users who need to discover, list, or programmatically access available playlists within their Grafana environment. This is particularly valuable in environments with multiple playlists where users need to search and identify specific playlist configurations without manually browsing through the Grafana interface.
+      operationId: searchPlaylists
+      parameters:
+      - name: query
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: in:limit
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Playlist'
+                description: ''
+                contentMediaType: application/json
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    Playlist:
+      title: Playlist
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        interval:
+          type: string
+        name:
+          type: string
+        uid:
+          type: string
+      description: Playlist model
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

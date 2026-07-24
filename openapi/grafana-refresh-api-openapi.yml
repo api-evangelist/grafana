@@ -1,0 +1,105 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Refresh API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Refresh
+paths:
+  /licensing/refresh-stats:
+    parameters: []
+    get:
+      tags:
+      - Refresh
+      summary: Grafana Refresh License Stats
+      description: This API operation refreshes the licensing statistics in Grafana by sending a GET request to the /licensing/refresh-stats endpoint. When invoked, it triggers an update of the current license usage data and metrics, ensuring that the most recent information about license consumption, active users, and other licensing-related statistics are retrieved and synchronized. This operation is typically used by administrators to obtain real-time licensing information without waiting for the automatic refresh cycle, allowing for immediate verification of license compliance and usage patterns within the Grafana instance.
+      operationId: refreshLicenseStats
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActiveUserStats'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    ActiveUserStats:
+      title: ActiveUserStats
+      type: object
+      properties:
+        active_admins_and_editors:
+          type: integer
+          contentEncoding: int64
+        active_anonymous_devices:
+          type: integer
+          contentEncoding: int64
+        active_users:
+          type: integer
+          contentEncoding: int64
+        active_viewers:
+          type: integer
+          contentEncoding: int64
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

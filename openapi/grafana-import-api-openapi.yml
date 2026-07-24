@@ -1,0 +1,198 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Import API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Import
+paths:
+  /dashboards/import:
+    parameters: []
+    post:
+      tags:
+      - Import
+      summary: Grafana Import Dashboard
+      description: This API operation allows users to import a dashboard into Grafana by sending a POST request to the /dashboards/import endpoint. The operation accepts dashboard configuration data, typically in JSON format, which can include the complete dashboard definition, settings, and panel configurations. Users can import dashboards that were previously exported from Grafana or created externally, specify the target folder for the imported dashboard, and optionally override certain properties like the dashboard's unique identifier or data source mappings. This endpoint is commonly used for sharing dashboards between Grafana instances, automating dashboard deployment, or restoring dashboard backups, making it an essential tool for dashboard management and migration workflows.
+      operationId: importDashboard
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImportDashboardRequestrequestobjectforimportingadashboard.'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportDashboardResponseresponseobjectreturnedwhenimportingadashboard.'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '412':
+          description: PreconditionFailedError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '422':
+          description: UnprocessableEntityError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    ImportDashboardInputdefinitionofinputparameterswhenimportingadashboard.:
+      title: ImportDashboardInputdefinitionofinputparameterswhenimportingadashboard.
+      type: object
+      properties:
+        name:
+          type: string
+        pluginId:
+          type: string
+        type:
+          type: string
+        value:
+          type: string
+    ImportDashboardRequestrequestobjectforimportingadashboard.:
+      title: ImportDashboardRequestrequestobjectforimportingadashboard.
+      type: object
+      properties:
+        dashboard:
+          type: object
+        folderId:
+          type: integer
+          description: 'Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImportDashboardInputdefinitionofinputparameterswhenimportingadashboard.'
+          description: ''
+        overwrite:
+          type: boolean
+        path:
+          type: string
+        pluginId:
+          type: string
+    ImportDashboardResponseresponseobjectreturnedwhenimportingadashboard.:
+      title: ImportDashboardResponseresponseobjectreturnedwhenimportingadashboard.
+      type: object
+      properties:
+        dashboardId:
+          type: integer
+          contentEncoding: int64
+        description:
+          type: string
+        folderId:
+          type: integer
+          description: 'Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+        imported:
+          type: boolean
+        importedRevision:
+          type: integer
+          contentEncoding: int64
+        importedUri:
+          type: string
+        importedUrl:
+          type: string
+        path:
+          type: string
+        pluginId:
+          type: string
+        removed:
+          type: boolean
+        revision:
+          type: integer
+          contentEncoding: int64
+        slug:
+          type: string
+        title:
+          type: string
+        uid:
+          type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

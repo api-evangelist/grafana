@@ -1,0 +1,956 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Sets API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Sets
+paths:
+  /teams/{team_id}/members:
+    parameters: []
+    put:
+      tags:
+      - Sets
+      summary: Grafana Set Team Memberships
+      description: The PUT operation on the /teams/{team_id}/members endpoint in Grafana allows administrators to set or update the complete membership roster for a specific team by providing the team_id parameter. This operation replaces the existing team membership list with the new set of members specified in the request body, effectively adding new members and removing any members not included in the updated list. It provides a comprehensive way to manage team composition in a single API call, rather than adding or removing members individually. The operation requires appropriate administrative permissions and is useful for bulk synchronization of team memberships, such as when integrating with external directory services or performing organizational restructuring within Grafana's access control system.
+      operationId: setTeamMemberships
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetTeamMembershipsCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/{dataSourceUID}/cache:
+    parameters: []
+    post:
+      tags:
+      - Sets
+      summary: Grafana Set Data Source Cache Config
+      description: Sets the cache configuration for a specific data source in Grafana identified by its unique identifier (dataSourceUID). This POST operation allows administrators to configure caching parameters such as TTL (time-to-live), cache size limits, and other cache-related settings that control how query results from the data source are stored and retrieved. By enabling and configuring caching at the data source level, users can improve dashboard performance and reduce the load on backend data sources by serving frequently requested data from cache rather than executing redundant queries.
+      operationId: setDataSourceCacheConfig
+      parameters:
+      - name: dataSourceUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CacheConfigSetter'
+        required: true
+      responses:
+        '200':
+          description: CacheConfigResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CacheConfigResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/roles/{roleUID}/assignments:
+    parameters: []
+    put:
+      tags:
+      - Sets
+      summary: Grafana Set Role Assignments
+      description: Updates the complete set of role assignments for a specific role identified by its UID in Grafana's access control system. This operation replaces all existing assignments with the new set provided in the request body, allowing administrators to define which users, teams, or service accounts are assigned to the role. The request requires the role's unique identifier in the URL path and accepts a payload containing the new assignments, typically including user IDs, team IDs, or service account IDs that should have this role. This is a privileged operation that requires appropriate permissions to manage role-based access control and is commonly used when restructuring team permissions or implementing access control changes across the Grafana instance.
+      operationId: setRoleAssignments
+      parameters:
+      - name: roleUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetRoleAssignmentsCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleAssignmentsDTO'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/teams/{teamId}/roles:
+    parameters: []
+    put:
+      tags:
+      - Sets
+      summary: Grafana Set Team Roles
+      description: This API operation updates the complete set of RBAC (Role-Based Access Control) roles assigned to a specific team in Grafana by replacing any existing role assignments with the new ones provided in the request. It uses the PUT method on the endpoint /access-control/teams/{teamId}/roles, where {teamId} is the unique identifier of the team whose roles are being modified. This is a destructive operation that overwrites the current role configuration rather than adding to it, making it useful for scenarios where you need to redefine a team's permissions from scratch or ensure a specific set of roles is applied without concern for previous assignments. The operation requires appropriate administrative permissions and is typically used in access management workflows to maintain proper authorization controls across teams within the Grafana instance.
+      operationId: setTeamRoles
+      parameters:
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetTeamRolesCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/users/{userId}/roles:
+    parameters: []
+    put:
+      tags:
+      - Sets
+      summary: Grafana Set User Roles
+      description: This API operation allows administrators to assign or modify the complete set of roles for a specific user in Grafana's access control system. By making a PUT request to the endpoint with a user's ID, you can replace all existing role assignments for that user with a new set of roles defined in the request body. This is useful for managing user permissions at scale, ensuring users have the appropriate access levels to dashboards, data sources, and other Grafana resources. The operation requires administrative privileges and follows Grafana's role-based access control (RBAC) model to maintain security and proper authorization across the platform.
+      operationId: setUserRoles
+      parameters:
+      - name: userId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetUserRolesCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/{resource}/{resourceID}:
+    parameters: []
+    post:
+      tags:
+      - Sets
+      summary: Grafana Set Resource Permissions
+      description: Sets access control permissions for a specific resource in Grafana, allowing administrators to define granular role-based permissions for individual resources identified by their resource type and ID. This endpoint accepts permission configurations in the request body and applies them to the specified resource, enabling fine-grained control over who can view, edit, or manage particular dashboards, folders, data sources, or other Grafana resources. The operation requires appropriate administrative privileges and follows Grafana's RBAC (Role-Based Access Control) model to ensure secure permission management across the platform.
+      operationId: setResourcePermissions
+      parameters:
+      - name: resource
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: resourceID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/setPermissionsCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/{resource}/{resourceID}/builtInRoles/{builtInRole}:
+    parameters: []
+    post:
+      tags:
+      - Sets
+      summary: Grafana Set Resource Permissions For Built In Role
+      description: This API operation allows administrators to configure and assign specific resource-level permissions to a built-in role within Grafana's access control system. By making a POST request to this endpoint with a specified resource type, resource ID, and built-in role identifier, you can define granular permissions that determine what actions the built-in role can perform on that particular resource. This is useful for customizing access control policies beyond default settings, enabling fine-grained security management where built-in roles like Viewer, Editor, or Admin can have their permissions tailored for specific dashboards, folders, data sources, or other Grafana resources without modifying the role globally.
+      operationId: setResourcePermissionsForBuiltInRole
+      parameters:
+      - name: resource
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: resourceID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: builtInRole
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/setPermissionCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/{resource}/{resourceID}/teams/{teamID}:
+    parameters: []
+    post:
+      tags:
+      - Sets
+      summary: Grafana Set Resource Permissions For Team
+      description: This API operation allows you to configure specific permissions for a team on a particular resource in Grafana's access control system. By making a POST request to this endpoint with the resource type, resource ID, and team ID, you can grant or update the access rights that a specific team has for that resource. This is part of Grafana's role-based access control (RBAC) functionality, enabling administrators to manage fine-grained permissions by assigning different levels of access to teams for individual resources such as dashboards, folders, or data sources within the Grafana instance.
+      operationId: setResourcePermissionsForTeam
+      parameters:
+      - name: resource
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: resourceID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: teamID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/setPermissionCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/{resource}/{resourceID}/users/{userID}:
+    parameters: []
+    post:
+      tags:
+      - Sets
+      summary: Grafana Set Resource Permissions For User
+      description: This API operation allows administrators to configure specific access control permissions for an individual user on a particular Grafana resource. By making a POST request to this endpoint with the resource type, resource ID, and user ID, you can grant or modify the permissions that determine what actions the specified user can perform on that resource. This granular permission management enables fine-tuned control over user access rights within Grafana, allowing administrators to implement role-based access control (RBAC) at the resource level and ensure users have appropriate levels of access to dashboards, folders, data sources, or other Grafana resources based on their organizational responsibilities.
+      operationId: setResourcePermissionsForUser
+      parameters:
+      - name: resource
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: resourceID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: userID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/setPermissionCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/helpflags/{flag_id}:
+    parameters: []
+    put:
+      tags:
+      - Sets
+      summary: Grafana Set Help Flag
+      description: The PUT operation on the /user/helpflags/{flag_id} endpoint in Grafana allows authenticated users to set or update a specific help flag identified by the flag_id parameter in the URL path. Help flags are typically used to track which help tooltips, tutorials, or onboarding messages a user has already seen or dismissed within the Grafana interface, enabling a personalized user experience by preventing repetitive display of guidance elements. When invoked, this endpoint modifies the state of the specified help flag for the current user, marking it as acknowledged or completed. This operation is commonly triggered automatically by the Grafana frontend when users interact with help features, close informational popups, or complete walkthrough steps, ensuring that these interface elements don't appear again on subsequent visits. The endpoint requires proper authentication and the flag_id must correspond to a valid help flag identifier recognized by the Grafana system.
+      operationId: setHelpFlag
+      parameters:
+      - name: flag_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/helpFlagResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/using/{org_id}:
+    parameters: []
+    post:
+      tags:
+      - Sets
+      summary: Grafana User Set Using Org
+      description: This API operation allows a user to switch their current active organization context in Grafana by specifying a target organization ID in the request path. When executed via a POST request to the /user/using/{org_id} endpoint, it changes the user's working context to the specified organization, making that organization the active one for subsequent operations. This is particularly useful in multi-tenant Grafana deployments where users belong to multiple organizations and need to switch between them to access different dashboards, data sources, and settings associated with each organization. The operation requires the user to be authenticated and to have valid membership in the target organization identified by the org_id parameter.
+      operationId: userSetUsingOrg
+      parameters:
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    SetRoleAssignmentsCommand:
+      title: SetRoleAssignmentsCommand
+      type: object
+      properties:
+        service_accounts:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+        teams:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+        users:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+    SetUserRolesCommand:
+      title: SetUserRolesCommand
+      type: object
+      properties:
+        global:
+          type: boolean
+        includeHidden:
+          type: boolean
+        roleUids:
+          type: array
+          items:
+            type: string
+          description: ''
+    SetTeamMembershipsCommand:
+      title: SetTeamMembershipsCommand
+      type: object
+      properties:
+        admins:
+          type: array
+          items:
+            type: string
+          description: ''
+        members:
+          type: array
+          items:
+            type: string
+          description: ''
+    SetResourcePermissionCommand:
+      title: SetResourcePermissionCommand
+      type: object
+      properties:
+        builtInRole:
+          type: string
+        permission:
+          type: string
+        teamId:
+          type: integer
+          contentEncoding: int64
+        userId:
+          type: integer
+          contentEncoding: int64
+    RoleAssignmentsDTO:
+      title: RoleAssignmentsDTO
+      type: object
+      properties:
+        role_uid:
+          type: string
+        service_accounts:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+        teams:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+        users:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+    CacheConfigResponse:
+      title: CacheConfigResponse
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        dataSourceID:
+          type: integer
+          description: Fields that can be set by the API caller - read/write
+          contentEncoding: int64
+        dataSourceUID:
+          type: string
+        defaultTTLMs:
+          type: integer
+          description: 'These are returned by the HTTP API, but are managed internally - read-only
+
+            Note: ''created'' and ''updated'' are special properties managed automatically by xorm, but we are setting them manually'
+          contentEncoding: int64
+        enabled:
+          type: boolean
+        message:
+          type: string
+        ttlQueriesMs:
+          type: integer
+          description: TTL MS, or "time to live", is how long a cached item will stay in the cache before it is removed (in milliseconds)
+          contentEncoding: int64
+        ttlResourcesMs:
+          type: integer
+          contentEncoding: int64
+        updated:
+          type: string
+          contentEncoding: date-time
+        useDefaultTTL:
+          type: boolean
+          description: If UseDefaultTTL is enabled, then the TTLQueriesMS and TTLResourcesMS in this object is always sent as the default TTL located in grafana.ini
+    CacheConfigSetter:
+      title: CacheConfigSetter
+      type: object
+      properties:
+        dataSourceID:
+          type: integer
+          contentEncoding: int64
+        dataSourceUID:
+          type: string
+        enabled:
+          type: boolean
+        ttlQueriesMs:
+          type: integer
+          description: TTL MS, or "time to live", is how long a cached item will stay in the cache before it is removed (in milliseconds)
+          contentEncoding: int64
+        ttlResourcesMs:
+          type: integer
+          contentEncoding: int64
+        useDefaultTTL:
+          type: boolean
+          description: If UseDefaultTTL is enabled, then the TTLQueriesMS and TTLResourcesMS in this object is always sent as the default TTL located in grafana.ini
+      description: 'ConfigSetter defines the cache parameters that users can configure per datasource
+
+        This is only intended to be consumed by the SetCache HTTP Handler'
+    setPermissionCommand:
+      title: setPermissionCommand
+      type: object
+      properties:
+        permission:
+          type: string
+    SetTeamRolesCommand:
+      title: SetTeamRolesCommand
+      type: object
+      properties:
+        includeHidden:
+          type: boolean
+        roleUids:
+          type: array
+          items:
+            type: string
+          description: ''
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    helpFlagResponse:
+      title: helpFlagResponse
+      type: object
+      properties:
+        helpFlags1:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+    setPermissionsCommand:
+      title: setPermissionsCommand
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SetResourcePermissionCommand'
+          description: ''
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

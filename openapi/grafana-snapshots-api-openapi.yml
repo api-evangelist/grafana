@@ -1,0 +1,132 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Snapshots API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Snapshots
+  description: ''
+paths:
+  /dashboard/snapshots:
+    parameters: []
+    get:
+      tags:
+      - Snapshots
+      summary: Grafana Search Dashboard Snapshots
+      description: Retrieves a list of dashboard snapshots based on specified search criteria. This operation allows users to query and filter existing snapshots that have been created from Grafana dashboards, returning metadata about each snapshot such as its name, key, creation timestamp, and expiration details. Users can apply various parameters to narrow down results, including searching by snapshot name, limiting the number of results returned, or filtering by tags. The endpoint is useful for managing and discovering previously created dashboard snapshots without needing to access the full dashboard interface.
+      operationId: searchDashboardSnapshots
+      parameters:
+      - name: query
+        in: query
+        description: Search Query
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Limit the number of returned results
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 1000
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardSnapshotDTO'
+                description: ''
+                contentMediaType: application/json
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    DashboardSnapshotDTO:
+      title: DashboardSnapshotDTO
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        expires:
+          type: string
+          contentEncoding: date-time
+        external:
+          type: boolean
+        externalUrl:
+          type: string
+        key:
+          type: string
+        name:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+      description: DashboardSnapshotDTO without dashboard map
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

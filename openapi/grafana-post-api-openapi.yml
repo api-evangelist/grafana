@@ -1,0 +1,1657 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Post API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Post
+paths:
+  /datasources/proxy/uid/{uid}/{datasource_proxy_route}:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Datasource Proxy POST By UID Calls
+      description: This API operation enables POST requests to be proxied through Grafana to a configured datasource identified by its unique identifier (UID). The endpoint acts as an intermediary, forwarding requests from the Grafana UI to the target datasource using the specified proxy route path. This allows Grafana to securely communicate with various datasources without exposing their direct endpoints to clients, while maintaining authentication and authorization controls. The datasource_proxy_route parameter provides flexibility to target specific endpoints or paths within the datasource's API, making it particularly useful for executing queries, sending data, or performing operations that require POST method semantics through Grafana's unified interface.
+      operationId: datasourceProxyPOSTByUIDcalls
+      parameters:
+      - name: datasource_proxy_route
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          text/plain:
+            schema:
+              contentMediaType: text/plain
+        required: true
+      responses:
+        '201':
+          description: (empty)
+          headers: {}
+          content: {}
+        '202':
+          description: (empty)
+          headers: {}
+          content: {}
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/proxy/{id}/{datasource_proxy_route}:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Datasource Proxy POST Calls
+      description: The Grafana datasource proxy POST operation allows users to send POST requests to a configured datasource through Grafana's proxy endpoint by specifying the datasource ID and the target route. This API call acts as an intermediary that forwards HTTP POST requests to the underlying datasource while handling authentication, connection management, and security concerns on behalf of the client. The endpoint accepts a datasource identifier in the path along with a dynamic route parameter that determines the specific datasource endpoint to be invoked, enabling users to interact with various datasource APIs such as querying data, executing commands, or performing write operations without directly exposing datasource credentials or connection details to the frontend application.
+      operationId: datasourceProxyPOSTcalls
+      parameters:
+      - name: datasource_proxy_route
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          text/plain:
+            schema:
+              contentMediaType: text/plain
+        required: true
+      responses:
+        '201':
+          description: (empty)
+          headers: {}
+          content: {}
+        '202':
+          description: (empty)
+          headers: {}
+          content: {}
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /annotations:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Post Annotation
+      description: Creates a new annotation in Grafana, which is a way to mark points in time on graphs with rich metadata. Annotations can be associated with specific dashboards, panels, or tags, and are commonly used to mark events like deployments, incidents, or system changes that help correlate metrics with real-world events. The request requires authentication and accepts parameters such as time range, text description, tags, and optional dashboard or panel IDs to specify where the annotation should appear. This operation is frequently used in CI/CD pipelines and monitoring systems to automatically mark when changes occur in the infrastructure.
+      operationId: postAnnotation
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostAnnotationsCmd'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/postAnnotationResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /annotations/graphite:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Post Graphite Annotation
+      description: Creates a new Graphite-style annotation in Grafana by submitting annotation data through a POST request to the /annotations/graphite endpoint. This operation allows users to mark specific points in time on their graphs with contextual information, which is particularly useful for correlating system events, deployments, or incidents with metric changes. The annotation typically includes details such as timestamp, tags, and descriptive text that will be displayed on Grafana dashboards when hovering over or viewing the marked timepoint.
+      operationId: postGraphiteAnnotation
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostGraphiteAnnotationsCmd'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/postAnnotationResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /licensing/token:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Post License Token
+      description: This API operation allows administrators to activate or update a Grafana Enterprise license by submitting a license token via a POST request to the /licensing/token endpoint. When called, it accepts a license token string in the request body, validates the token with Grafana's licensing service, and applies the license to the Grafana instance if valid. This operation is typically used during initial Enterprise setup or when renewing an existing license, and it requires administrative privileges to execute. Upon successful validation, the license details are stored and the Enterprise features associated with that license tier become available to the Grafana instance.
+      operationId: postLicenseToken
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteTokenCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /licensing/token/renew:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Post Renew License Token
+      description: This API operation is used to renew an existing Grafana Enterprise license token. When invoked via a POST request to the /licensing/token/renew endpoint, it initiates the license token renewal process, typically validating the current token and requesting a fresh token from the Grafana licensing server. This operation is essential for maintaining continuous access to Grafana Enterprise features by ensuring the license remains valid and up-to-date. Authentication and appropriate permissions are required to execute this operation, and upon successful renewal, the system receives an updated token that extends the licensing period for the Grafana Enterprise instance.
+      operationId: postRenewLicenseToken
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          text/plain:
+            schema:
+              type: object
+              contentMediaType: text/plain
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content: {}
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/ldap/sync/{user_id}:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Post Sync User With LDAP
+      description: This API operation triggers a synchronization between a specific Grafana user and LDAP directory services by sending a POST request to the endpoint with the target user's ID. When invoked, it forces Grafana to retrieve the latest user information, groups, and permissions from the configured LDAP server for the specified user, updating their local Grafana profile accordingly. This is particularly useful when LDAP user attributes or group memberships have changed and you need to immediately reflect those changes in Grafana without waiting for the automatic synchronization cycle. The operation requires admin privileges to execute and helps maintain consistency between the LDAP source of truth and Grafana's user database.
+      operationId: postSyncUserWithLDAP
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /convert/api/prom/rules:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Route Convert Prometheus Cortex Post Rule Groups
+      description: This API operation converts Prometheus or Cortex rule group configurations into Grafana's native format by accepting a POST request to the /convert/api/prom/rules endpoint. It enables users to migrate their existing Prometheus-style alerting and recording rules from Prometheus or Cortex deployments into Grafana, facilitating the transition between monitoring systems while preserving rule logic and structure. The endpoint processes the submitted rule groups and transforms them into a format compatible with Grafana's alerting engine, streamlining the configuration migration process and reducing manual conversion efforts.
+      operationId: routeConvertPrometheusCortexPostRuleGroups
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        schema:
+          const: application/json
+          type: string
+      responses:
+        '202':
+          description: ConvertPrometheusResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConvertPrometheusResponse'
+        '403':
+          description: ForbiddenError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /convert/api/prom/rules/{NamespaceTitle}:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Route Convert Prometheus Cortex Post Rule Group
+      description: The Grafana API operation POST /convert/api/prom/rules/{NamespaceTitle} converts and creates a Prometheus or Cortex rule group within a specified namespace. This endpoint accepts Prometheus-style rule definitions and transforms them into Grafana's native alert rule format, allowing users to migrate their existing Prometheus alerting and recording rules into Grafana's unified alerting system. The {NamespaceTitle} parameter identifies the target namespace where the converted rule group will be stored, enabling organized management of alert rules across different teams or services within Grafana.
+      operationId: routeConvertPrometheusCortexPostRuleGroup
+      parameters:
+      - name: NamespaceTitle
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: x-grafana-alerting-datasource-uid
+        in: header
+        description: ''
+        schema:
+          type: string
+      - name: x-grafana-alerting-recording-rules-paused
+        in: header
+        description: ''
+        schema:
+          type: boolean
+      - name: x-grafana-alerting-alert-rules-paused
+        in: header
+        description: ''
+        schema:
+          type: boolean
+      - name: x-grafana-alerting-target-datasource-uid
+        in: header
+        description: ''
+        schema:
+          type: string
+      - name: x-grafana-alerting-folder-uid
+        in: header
+        description: ''
+        schema:
+          type: string
+      - name: x-grafana-alerting-notification-settings
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/yaml:
+            schema:
+              $ref: '#/components/schemas/PrometheusRuleGroup'
+        required: false
+      responses:
+        '202':
+          description: ConvertPrometheusResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConvertPrometheusResponse'
+        '403':
+          description: ForbiddenError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /convert/prometheus/config/v1/rules:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Route Convert Prometheus Post Rule Groups
+      description: This API operation converts Prometheus rule group configurations to Grafana's format via a POST request to the /convert/prometheus/config/v1/rules endpoint. It accepts Prometheus-formatted rule groups as input and transforms them into a compatible format that can be used within Grafana's alerting and recording rule system, facilitating migration or integration between Prometheus and Grafana monitoring setups.
+      operationId: routeConvertPrometheusPostRuleGroups
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        schema:
+          const: application/json
+          type: string
+      responses:
+        '202':
+          description: ConvertPrometheusResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConvertPrometheusResponse'
+        '403':
+          description: ForbiddenError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /convert/prometheus/config/v1/rules/{NamespaceTitle}:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Route Convert Prometheus Post Rule Group
+      description: This API operation converts Prometheus rule group configurations to Grafana's native format by accepting a POST request to the endpoint /convert/prometheus/config/v1/rules/{NamespaceTitle}, where {NamespaceTitle} represents the target namespace for the rule group. It takes Prometheus-formatted alerting and recording rules as input and transforms them into Grafana-compatible rule configurations, facilitating migration or integration between Prometheus and Grafana alerting systems. The operation allows users to seamlessly transfer their existing Prometheus rule definitions into Grafana without manual reconfiguration, preserving the rule logic, labels, annotations, and evaluation intervals while adapting them to Grafana's rule management structure.
+      operationId: routeConvertPrometheusPostRuleGroup
+      parameters:
+      - name: NamespaceTitle
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: x-grafana-alerting-datasource-uid
+        in: header
+        description: ''
+        schema:
+          type: string
+      - name: x-grafana-alerting-recording-rules-paused
+        in: header
+        description: ''
+        schema:
+          type: boolean
+      - name: x-grafana-alerting-alert-rules-paused
+        in: header
+        description: ''
+        schema:
+          type: boolean
+      - name: x-grafana-alerting-target-datasource-uid
+        in: header
+        description: ''
+        schema:
+          type: string
+      - name: x-grafana-alerting-folder-uid
+        in: header
+        description: ''
+        schema:
+          type: string
+      - name: x-grafana-alerting-notification-settings
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/yaml:
+            schema:
+              $ref: '#/components/schemas/PrometheusRuleGroup'
+        required: false
+      responses:
+        '202':
+          description: ConvertPrometheusResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConvertPrometheusResponse'
+        '403':
+          description: ForbiddenError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/db:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Post Dashboard
+      description: Creates or updates a Grafana dashboard in the database. This endpoint accepts a dashboard JSON model along with optional metadata such as folder ID, message for the version history, and overwrite settings. The dashboard must include a unique identifier (UID) and will be saved to the specified folder or the General folder if none is provided. If a dashboard with the same UID exists, it can be overwritten by setting the overwrite flag to true. The operation returns the saved dashboard's ID, UID, URL, version number, and status indicating whether it was created or updated. This is the primary method for programmatically managing dashboard definitions in Grafana.
+      operationId: postDashboard
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveDashboardCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/postDashboardResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '412':
+          description: PreconditionFailedError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '422':
+          description: UnprocessableEntityError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /saml/acs:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Post ACS
+      description: The Grafana SAML ACS (Assertion Consumer Service) POST endpoint receives and processes SAML authentication responses from identity providers after a user attempts to log in. When a user authenticates with an external IdP, the IdP sends a signed SAML assertion to this endpoint containing user identity information and authentication status. Grafana validates the SAML response signature, extracts user attributes like email, username, and roles, then creates or updates the user session accordingly. This endpoint is a critical component of SAML-based single sign-on integration, enabling Grafana to trust authentication performed by external identity management systems and grant appropriate access to authenticated users based on their SAML attributes and role mappings.
+      operationId: postACS
+      parameters:
+      - name: RelayState
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '302':
+          description: (empty)
+          headers: {}
+          content: {}
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /saml/slo:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Post SLO
+      description: The Grafana SAML Single Logout (SLO) POST endpoint processes logout requests in SAML-based authentication workflows, allowing users to securely terminate their sessions across all connected service providers. When invoked, this endpoint receives SAML logout request or response messages, validates the SAML assertions, and performs the necessary cleanup to end the user's authenticated session in Grafana. This operation is essential for maintaining security in enterprise environments where centralized identity management is implemented, ensuring that when a user logs out from their identity provider or a connected application, their Grafana session is also properly terminated to prevent unauthorized access.
+      operationId: postSLO
+      parameters:
+      - name: SAMLRequest
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: SAMLResponse
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '302':
+          description: (empty)
+          headers: {}
+          content: {}
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/alert-rules:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Route Post Alert Rule
+      description: Creates a new alert rule in Grafana's provisioning API, allowing administrators to programmatically define alerting conditions, evaluation intervals, notification settings, and query expressions. This endpoint accepts a POST request with a JSON payload containing the alert rule configuration including the rule name, folder location, data source queries, alert conditions, evaluation group, and notification channels. The operation enables infrastructure-as-code practices by allowing alert rules to be version-controlled and deployed automatically rather than manually configured through the UI. Upon successful creation, it returns the newly created alert rule object with its assigned unique identifier and complete configuration details. This is commonly used in CI/CD pipelines and automated Grafana deployments to ensure consistent alerting across environments.
+      operationId: routePostAlertRule
+      parameters:
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisionedAlertRule'
+        required: false
+      responses:
+        '201':
+          description: ProvisionedAlertRule
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisionedAlertRule'
+        '400':
+          description: ValidationError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/contact-points:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Route Post Contactpoints
+      description: Creates a new contact point in Grafana's alerting system through the provisioning API. This endpoint allows administrators to programmatically configure notification channels by defining how and where alert notifications should be sent. The contact point can specify various integration types such as email, Slack, PagerDuty, webhook, or other supported notification methods, along with their respective configuration settings. This is typically used for infrastructure-as-code deployments or automated Grafana configuration management, enabling teams to version control and consistently deploy alerting configurations across multiple Grafana instances without manual intervention through the UI.
+      operationId: routePostContactpoints
+      parameters:
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmbeddedContactPoint'
+        required: false
+      responses:
+        '202':
+          description: EmbeddedContactPoint
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbeddedContactPoint'
+        '400':
+          description: ValidationError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/mute-timings:
+    parameters: []
+    post:
+      tags:
+      - Post
+      summary: Grafana Route Post Mute Timing
+      description: The POST /v1/provisioning/mute-timings endpoint in Grafana allows administrators to create a new mute timing configuration through the provisioning API. Mute timings define specific time intervals during which alert notifications should be silenced, such as maintenance windows, weekends, or business hours exclusions. By posting to this endpoint with the appropriate JSON payload containing the timing specifications (including recurrence rules, time ranges, and date intervals), users can programmatically establish when their alerting system should suppress notifications without requiring manual configuration through the Grafana UI. This is particularly useful for implementing infrastructure-as-code practices and automating alert management across multiple Grafana instances.
+      operationId: routePostMuteTiming
+      parameters:
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MuteTimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+        required: false
+      responses:
+        '201':
+          description: MuteTimeInterval
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MuteTimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+        '400':
+          description: ValidationError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    Type:
+      title: Type
+      enum:
+      - alertmanager
+      - dingding
+      - discord
+      - email
+      - googlechat
+      - kafka
+      - line
+      - opsgenie
+      - pagerduty
+      - pushover
+      - sensugo
+      - slack
+      - teams
+      - telegram
+      - threema
+      - victorops
+      - webhook
+      - wecom
+      type: string
+      examples:
+      - webhook
+    Token:
+      title: Token
+      type: object
+      properties:
+        account:
+          type: string
+        anonymousRatio:
+          type: integer
+          contentEncoding: int64
+        company:
+          type: string
+        details_url:
+          type: string
+        exp:
+          type: integer
+          contentEncoding: int64
+        iat:
+          type: integer
+          contentEncoding: int64
+        included_users:
+          type: integer
+          contentEncoding: int64
+        iss:
+          type: string
+        jti:
+          type: string
+        lexp:
+          type: integer
+          contentEncoding: int64
+        lic_exp_warn_days:
+          type: integer
+          contentEncoding: int64
+        lid:
+          type: string
+        limit_by:
+          type: string
+        max_concurrent_user_sessions:
+          type: integer
+          contentEncoding: int64
+        nbf:
+          type: integer
+          contentEncoding: int64
+        prod:
+          type: array
+          items:
+            type: string
+          description: ''
+        slug:
+          type: string
+        status:
+          type: integer
+          contentEncoding: int64
+        sub:
+          type: string
+        tok_exp_warn_days:
+          type: integer
+          contentEncoding: int64
+        trial:
+          type: boolean
+        trial_exp:
+          type: integer
+          contentEncoding: int64
+        update_days:
+          type: integer
+          contentEncoding: int64
+        usage_billing:
+          type: boolean
+    ProvisionedAlertRule:
+      title: ProvisionedAlertRule
+      required:
+      - condition
+      - data
+      - execErrState
+      - folderUID
+      - for
+      - noDataState
+      - orgID
+      - ruleGroup
+      - title
+      type: object
+      properties:
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+          examples:
+          - runbook_url: https://supercoolrunbook.com/page/13
+        condition:
+          type: string
+          examples:
+          - A
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.'
+          description: ''
+          examples:
+          - - datasourceUid: __expr__
+              model:
+                conditions:
+                - evaluator:
+                    params:
+                    - 0
+                    - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
+                datasource:
+                  type: __expr__
+                  uid: __expr__
+                expression: 1 == 1
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: A
+                type: math
+              queryType: ''
+              refId: A
+              relativeTimeRange:
+                from: 0
+                to: 0
+        execErrState:
+          $ref: '#/components/schemas/ExecErrState'
+        folderUID:
+          type: string
+          examples:
+          - project_x
+        for:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        isPaused:
+          type: boolean
+          examples:
+          - false
+        keep_firing_for:
+          type: string
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          examples:
+          - team: sre-team-1
+        missingSeriesEvalsToResolve:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 2
+        noDataState:
+          $ref: '#/components/schemas/NoDataState'
+        notification_settings:
+          $ref: '#/components/schemas/AlertRuleNotificationSettings'
+        orgID:
+          type: integer
+          contentEncoding: int64
+        provenance:
+          type: string
+        record:
+          $ref: '#/components/schemas/Record'
+        ruleGroup:
+          maxLength: 190
+          minLength: 1
+          type: string
+          examples:
+          - eval_group_1
+        title:
+          maxLength: 190
+          minLength: 1
+          type: string
+          examples:
+          - Always firing
+        uid:
+          maxLength: 40
+          minLength: 1
+          pattern: ^[a-zA-Z0-9-_]+$
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+          readOnly: true
+    ValidationError:
+      title: ValidationError
+      type: object
+      properties:
+        message:
+          type: string
+          examples:
+          - error message
+    postAnnotationResponse:
+      title: postAnnotationResponse
+      required:
+      - id
+      - message
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID Identifier of the created annotation.
+          contentEncoding: int64
+          examples:
+          - 65
+        message:
+          type: string
+          description: Message Message of the created annotation.
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    SaveDashboardCommand:
+      title: SaveDashboardCommand
+      type: object
+      properties:
+        UpdatedAt:
+          type: string
+          contentEncoding: date-time
+        dashboard:
+          type: object
+        folderId:
+          type: integer
+          description: 'Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+        isFolder:
+          type: boolean
+        message:
+          type: string
+        overwrite:
+          type: boolean
+        userId:
+          type: integer
+          contentEncoding: int64
+    PostGraphiteAnnotationsCmd:
+      title: PostGraphiteAnnotationsCmd
+      type: object
+      properties:
+        data:
+          type: string
+        tags: {}
+        what:
+          type: string
+        when:
+          type: integer
+          contentEncoding: int64
+    EmbeddedContactPoint:
+      title: EmbeddedContactPoint
+      required:
+      - settings
+      - type
+      type: object
+      properties:
+        disableResolveMessage:
+          type: boolean
+          examples:
+          - false
+        name:
+          type: string
+          description: 'Name is used as grouping key in the UI. Contact points with the
+
+            same name will be grouped in the UI.'
+          examples:
+          - webhook_1
+        provenance:
+          type: string
+          readOnly: true
+        settings:
+          type: object
+        type:
+          allOf:
+          - $ref: '#/components/schemas/Type'
+          - examples:
+            - webhook
+        uid:
+          maxLength: 40
+          minLength: 1
+          pattern: ^[a-zA-Z0-9\-\_]+$
+          type: string
+          description: 'UID is the unique identifier of the contact point. The UID can be
+
+            set by the user.'
+          examples:
+          - my_external_reference
+      description: 'EmbeddedContactPoint is the contact point type that is used
+
+        by grafanas embedded alertmanager implementation.'
+    DeleteTokenCommand:
+      title: DeleteTokenCommand
+      type: object
+      properties:
+        instance:
+          type: string
+    MuteTimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.:
+      title: MuteTimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.
+      type: object
+      properties:
+        name:
+          type: string
+        time_intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+          description: ''
+    AlertRuleNotificationSettings:
+      title: AlertRuleNotificationSettings
+      required:
+      - receiver
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: 'Override the times when notifications should not be muted. These must match the name of a mute time interval defined
+
+            in the alertmanager configuration time_intervals section. All notifications will be suppressed unless they are sent
+
+            at the time that matches any interval.'
+          examples:
+          - - maintenance
+        group_by:
+          type: array
+          items:
+            type: string
+          description: 'Override the labels by which incoming alerts are grouped together. For example, multiple alerts coming in for
+
+            cluster=A and alertname=LatencyHigh would be batched into a single group. To aggregate by all possible labels
+
+            use the special value ''...'' as the sole label name.
+
+            This effectively disables aggregation entirely, passing through all alerts as-is. This is unlikely to be what
+
+            you want, unless you have a very low alert volume or your upstream notification system performs its own grouping.
+
+            Must include ''alertname'' and ''grafana_folder'' if not using ''...''.'
+          default:
+          - alertname
+          - grafana_folder
+          examples:
+          - - alertname
+            - grafana_folder
+            - cluster
+        group_interval:
+          type: string
+          description: 'Override how long to wait before sending a notification about new alerts that are added to a group of alerts for
+
+            which an initial notification has already been sent. (Usually ~5m or more.)'
+          examples:
+          - 5m
+        group_wait:
+          type: string
+          description: 'Override how long to initially wait to send a notification for a group of alerts. Allows to wait for an
+
+            inhibiting alert to arrive or collect more initial alerts for the same group. (Usually ~0s to few minutes.)'
+          examples:
+          - 30s
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: 'Override the times when notifications should be muted. These must match the name of a mute time interval defined
+
+            in the alertmanager configuration time_intervals section. When muted it will not send any notifications, but
+
+            otherwise acts normally.'
+          examples:
+          - - maintenance
+        receiver:
+          type: string
+          description: Name of the receiver to send notifications to.
+          examples:
+          - grafana-default-email
+        repeat_interval:
+          type: string
+          description: 'Override how long to wait before sending a notification again if it has already been sent successfully for an
+
+            alert. (Usually ~3h or more).
+
+            Note that this parameter is implicitly bound by Alertmanager''s `--data.retention` configuration flag.
+
+            Notifications will be resent after either repeat_interval or the data retention period have passed, whichever
+
+            occurs first. `repeat_interval` should not be less than `group_interval`.'
+          examples:
+          - 4h
+    ConvertPrometheusResponse:
+      title: ConvertPrometheusResponse
+      type: object
+      properties:
+        error:
+          type: string
+        errorType:
+          type: string
+        status:
+          type: string
+    postDashboardResponse:
+      title: postDashboardResponse
+      required:
+      - id
+      - status
+      - title
+      - uid
+      - url
+      - version
+      type: object
+      properties:
+        folderUid:
+          type: string
+          description: FolderUID The unique identifier (uid) of the folder the dashboard belongs to.
+        id:
+          type: integer
+          description: ID The unique identifier (id) of the created/updated dashboard.
+          contentEncoding: int64
+          examples:
+          - 1
+        status:
+          type: string
+          description: Status status of the response.
+          examples:
+          - success
+        title:
+          type: string
+          description: Slug The slug of the dashboard.
+          examples:
+          - my-dashboard
+        uid:
+          type: string
+          description: UID The unique identifier (uid) of the created/updated dashboard.
+          examples:
+          - nHz3SXiiz
+        url:
+          type: string
+          description: URL The relative URL for accessing the created/updated dashboard.
+          examples:
+          - /d/nHz3SXiiz/my-dashboard
+        version:
+          type: integer
+          description: Version The version of the dashboard.
+          contentEncoding: int64
+          examples:
+          - 2
+    PostAnnotationsCmd:
+      title: PostAnnotationsCmd
+      required:
+      - text
+      type: object
+      properties:
+        dashboardId:
+          type: integer
+          contentEncoding: int64
+        dashboardUID:
+          type: string
+        data:
+          type: object
+        panelId:
+          type: integer
+          contentEncoding: int64
+        tags:
+          type: array
+          items:
+            type: string
+          description: ''
+        text:
+          type: string
+        time:
+          type: integer
+          contentEncoding: int64
+        timeEnd:
+          type: integer
+          contentEncoding: int64
+    NoDataState:
+      title: NoDataState
+      enum:
+      - Alerting
+      - NoData
+      - OK
+      type: string
+    RelativeTimeRange:
+      title: RelativeTimeRange
+      type: object
+      properties:
+        from:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        to:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+      description: 'RelativeTimeRange is the per query start and end time
+
+        for requests.'
+    ForbiddenError:
+      title: ForbiddenError
+      type: object
+      properties:
+        body:
+          allOf:
+          - $ref: '#/components/schemas/PublicError'
+          - description: 'PublicError is derived from Error and only contains information
+
+              available to the end user.'
+    PrometheusRule:
+      title: PrometheusRule
+      type: object
+      properties:
+        alert:
+          type: string
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+        expr:
+          type: string
+        for:
+          type: string
+        keep_firing_for:
+          type: string
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        record:
+          type: string
+    ExecErrState:
+      title: ExecErrState
+      enum:
+      - OK
+      - Alerting
+      - Error
+      type: string
+    AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.:
+      title: AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.
+      type: object
+      properties:
+        datasourceUid:
+          type: string
+          description: Grafana data source unique identifier; it should be '__expr__' for a Server Side Expression operation.
+        model:
+          type: object
+          description: JSON is the raw JSON query and includes the above properties as well as custom properties.
+        queryType:
+          type: string
+          description: 'QueryType is an optional identifier for the type of query.
+
+            It can be used to distinguish different types of queries.'
+        refId:
+          type: string
+          description: RefID is the unique identifier of the query, set by the frontend call.
+        relativeTimeRange:
+          allOf:
+          - $ref: '#/components/schemas/RelativeTimeRange'
+          - description: 'RelativeTimeRange is the per query start and end time
+
+              for requests.'
+    PrometheusRuleGroup:
+      title: PrometheusRuleGroup
+      type: object
+      properties:
+        interval:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        limit:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+        query_offset:
+          type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrometheusRule'
+          description: ''
+    PublicError:
+      title: PublicError
+      type: object
+      properties:
+        extra:
+          type: object
+          additionalProperties: {}
+        message:
+          type: string
+        messageId:
+          type: string
+        statusCode:
+          type: integer
+          contentEncoding: int64
+      description: 'PublicError is derived from Error and only contains information
+
+        available to the end user.'
+    TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.:
+      title: TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.
+      type: object
+      properties:
+        name:
+          type: string
+        time_intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+          description: ''
+    Record:
+      title: Record
+      required:
+      - from
+      - metric
+      type: object
+      properties:
+        from:
+          type: string
+          description: Which expression node should be used as the input for the recorded metric.
+          examples:
+          - A
+        metric:
+          type: string
+          description: Name of the recorded metric.
+          examples:
+          - grafana_alerts_ratio
+        target_datasource_uid:
+          type: string
+          description: Which data source should be used to write the output of the recording rule, specified by UID.
+          examples:
+          - my-prom
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

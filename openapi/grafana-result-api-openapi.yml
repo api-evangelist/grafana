@@ -1,0 +1,136 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Result API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Result
+paths:
+  /access-control/assignments/search:
+    parameters: []
+    post:
+      tags:
+      - Result
+      summary: Grafana Search Result
+      description: The Grafana Access Control Assignments Search API operation is a POST endpoint located at /access-control/assignments/search that enables users to query and retrieve access control assignments within a Grafana instance. This endpoint allows administrators and authorized users to search through role-based access control (RBAC) assignments by submitting search criteria in the request body, returning a filtered list of assignments that match the specified parameters. The search functionality helps manage and audit user permissions, team assignments, and resource access configurations by providing a programmatic way to discover which users or teams have been assigned specific roles or permissions within the Grafana environment.
+      operationId: searchResult
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResult'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    SearchResultItem:
+      title: SearchResultItem
+      type: object
+      properties:
+        action:
+          type: string
+        basicRole:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        roleName:
+          type: string
+        scope:
+          type: string
+        teamId:
+          type: integer
+          contentEncoding: int64
+        userId:
+          type: integer
+          contentEncoding: int64
+        version:
+          type: integer
+          contentEncoding: int64
+    SearchResult:
+      title: SearchResult
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResultItem'
+          description: ''
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

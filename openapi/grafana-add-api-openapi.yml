@@ -1,0 +1,721 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Add API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Add
+paths:
+  /datasources:
+    parameters: []
+    post:
+      tags:
+      - Add
+      summary: Grafana Add Data Source
+      description: Adds a new data source to Grafana by creating a configuration that defines how Grafana connects to and retrieves data from external systems such as Prometheus, Elasticsearch, MySQL, or other supported data sources. This POST operation requires authentication and accepts a JSON payload containing the data source properties including the type, name, access mode (proxy or direct), URL, database credentials if applicable, and any additional JSON data specific to the data source type. Upon successful creation, the API returns the newly created data source object with its assigned unique identifier, allowing users to reference and use this data source in dashboards, alerts, and queries throughout the Grafana instance.
+      operationId: addDataSource
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddDataSourceCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createOrUpdateDatasourceResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '409':
+          description: ConflictError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /orgs/{org_id}/users:
+    parameters: []
+    post:
+      tags:
+      - Add
+      summary: Grafana Add Org User
+      description: Adds a new user to an existing organization in Grafana by sending a POST request to the /orgs/{org_id}/users endpoint, where {org_id} is the unique identifier of the target organization. This operation requires authentication and appropriate permissions to manage organization membership. The request body typically includes the user's login credentials or user ID along with the desired role (such as Viewer, Editor, or Admin) that determines their access level within the organization. Upon successful execution, the specified user becomes a member of the organization with the assigned role and can access resources and dashboards according to their permission level.
+      operationId: addOrgUser
+      parameters:
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddOrgUserCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /org/invites:
+    parameters: []
+    post:
+      tags:
+      - Add
+      summary: Grafana Add Org Invite
+      description: This API operation allows you to create and send an invitation for a user to join a specific organization in Grafana. By making a POST request to the /org/invites endpoint, administrators can invite new members by providing details such as the invitee's email address, username, and the role they should have within the organization. The invitation generates a unique token that is sent to the specified user, allowing them to accept the invitation and gain access to the organization with the assigned permissions. This endpoint is typically used for managing team membership and controlling access to Grafana resources at the organization level, requiring appropriate administrative privileges to execute successfully.
+      operationId: addOrgInvite
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddInviteForm'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '412':
+          description: (empty)
+          headers: {}
+          content: {}
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /org/users:
+    parameters: []
+    post:
+      tags:
+      - Add
+      summary: Grafana Add Org User To Current Org
+      description: This API operation allows administrators to add a new user to the current organization in Grafana by sending a POST request to the /org/users endpoint. When invoked, it creates a new membership association between a specified user and the organization that the authenticated user currently belongs to. The request typically requires parameters such as the user's login credentials or user ID, along with the desired role (Viewer, Editor, or Admin) that the new member should have within the organization. This operation requires appropriate administrative permissions and is commonly used when onboarding team members or managing organizational access control in Grafana instances.
+      operationId: addOrgUserToCurrentOrg
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddOrgUserCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams/{team_id}/members:
+    parameters: []
+    post:
+      tags:
+      - Add
+      summary: Grafana Add Team Member
+      description: This API operation adds a new member to a specific team in Grafana by making a POST request to the /teams/{team_id}/members endpoint, where {team_id} is the unique identifier of the team. The operation allows administrators or users with appropriate permissions to expand team membership by associating additional users with an existing team, typically requiring the user ID or username to be specified in the request body to identify which user should be added to the team.
+      operationId: addTeamMember
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddTeamMemberCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/teams/{teamId}/roles:
+    parameters: []
+    post:
+      tags:
+      - Add
+      summary: Grafana Add Team Role
+      description: This API operation adds a role to a specific team in Grafana's access control system. It uses a POST request to the endpoint /access-control/teams/{teamId}/roles, where {teamId} is the unique identifier of the team receiving the new role assignment. The operation allows administrators to grant specific permissions and access levels to an entire team by associating a role with that team, streamlining permission management across multiple users who belong to the same team.
+      operationId: addTeamRole
+      parameters:
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddTeamRoleCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/users/{userId}/roles:
+    parameters: []
+    post:
+      tags:
+      - Add
+      summary: Grafana Add User Role
+      description: This API operation adds a role to a specific user in Grafana's access control system by sending a POST request to the endpoint /access-control/users/{userId}/roles, where {userId} is replaced with the target user's identifier. The operation allows administrators to grant additional permissions and access rights to users by assigning them predefined or custom roles within the Grafana instance. This is typically used for managing user permissions and implementing role-based access control (RBAC) to ensure users have appropriate levels of access to dashboards, data sources, and other Grafana resources.
+      operationId: addUserRole
+      parameters:
+      - name: userId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddUserRoleCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams/{teamId}/groups:
+    parameters: []
+    post:
+      tags:
+      - Add
+      summary: Grafana Add Team Group Api
+      description: The Add Team Group API is a POST operation available at the endpoint /teams/{teamId}/groups in Grafana that allows administrators to associate an external authentication group with a specific Grafana team. This operation requires the teamId parameter in the URL path to identify the target team, and typically accepts a request body containing details about the group to be added, such as the group identifier from the external authentication provider (like LDAP, OAuth, or SAML). When executed successfully, this API creates a mapping between the external group and the Grafana team, enabling automatic team membership synchronization where users belonging to the specified external group are automatically added to the corresponding Grafana team upon authentication. This functionality is particularly useful for organizations that want to manage team memberships centrally through their existing identity provider rather than manually maintaining team rosters within Grafana itself.
+      operationId: addTeamGroupApi
+      parameters:
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamGroupMapping'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    createOrUpdateDatasourceResponse:
+      title: createOrUpdateDatasourceResponse
+      required:
+      - datasource
+      - id
+      - message
+      - name
+      type: object
+      properties:
+        datasource:
+          $ref: '#/components/schemas/DataSource'
+        id:
+          type: integer
+          description: ID Identifier of the new data source.
+          contentEncoding: int64
+          examples:
+          - 65
+        message:
+          type: string
+          description: Message Message of the deleted dashboard.
+          examples:
+          - Data source added
+        name:
+          type: string
+          description: Name of the new data source.
+          examples:
+          - My Data source
+    AddDataSourceCommand:
+      title: AddDataSourceCommand
+      type: object
+      properties:
+        access:
+          type: string
+        basicAuth:
+          type: boolean
+        basicAuthUser:
+          type: string
+        database:
+          type: string
+        isDefault:
+          type: boolean
+        jsonData:
+          type: object
+        name:
+          type: string
+        secureJsonData:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+        uid:
+          type: string
+        url:
+          type: string
+        user:
+          type: string
+        withCredentials:
+          type: boolean
+      description: Also acts as api DTO
+    Role:
+      title: Role
+      enum:
+      - None
+      - Viewer
+      - Editor
+      - Admin
+      type: string
+    AddTeamMemberCommand:
+      title: AddTeamMemberCommand
+      required:
+      - userId
+      type: object
+      properties:
+        userId:
+          type: integer
+          contentEncoding: int64
+    DataSource:
+      title: DataSource
+      type: object
+      properties:
+        access:
+          type: string
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+          description: 'Metadata contains user accesses for a given resource
+
+            Ex: map[string]bool{"create":true, "delete": true}'
+        basicAuth:
+          type: boolean
+        basicAuthUser:
+          type: string
+        database:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        isDefault:
+          type: boolean
+        jsonData:
+          type: object
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        readOnly:
+          type: boolean
+        secureJsonFields:
+          type: object
+          additionalProperties:
+            type: boolean
+        type:
+          type: string
+        typeLogoUrl:
+          type: string
+        uid:
+          type: string
+        url:
+          type: string
+        user:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+        withCredentials:
+          type: boolean
+    AddUserRoleCommand:
+      title: AddUserRoleCommand
+      type: object
+      properties:
+        global:
+          type: boolean
+        roleUid:
+          type: string
+    TeamGroupMapping:
+      title: TeamGroupMapping
+      type: object
+      properties:
+        groupId:
+          type: string
+    AddInviteForm:
+      title: AddInviteForm
+      type: object
+      properties:
+        loginOrEmail:
+          type: string
+        name:
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+        sendEmail:
+          type: boolean
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    AddTeamRoleCommand:
+      title: AddTeamRoleCommand
+      type: object
+      properties:
+        roleUid:
+          type: string
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    AddOrgUserCommand:
+      title: AddOrgUserCommand
+      type: object
+      properties:
+        loginOrEmail:
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

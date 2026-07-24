@@ -1,0 +1,3634 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Update API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Update
+paths:
+  /datasources/uid/{sourceUID}/correlations/{correlationUID}:
+    parameters: []
+    patch:
+      tags:
+      - Update
+      summary: Grafana Update Correlation
+      description: Updates an existing correlation identified by its UID within a specific data source, also identified by UID. This PATCH operation allows you to modify the properties of a correlation, which defines relationships between queries or data across different data sources in Grafana. The correlation UID and source data source UID must be provided in the path parameters to target the specific correlation to update. The request typically includes fields such as the target data source, transformation expressions, or correlation description that need to be modified. This endpoint is useful for maintaining and refining data relationships as your monitoring infrastructure evolves, enabling more sophisticated cross-data-source queries and visualizations without recreating correlations from scratch.
+      operationId: updateCorrelation
+      parameters:
+      - name: sourceUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: correlationUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCorrelationCommand'
+        required: false
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateCorrelationResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/uid/{uid}:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Data Source By UID
+      description: This API operation updates an existing data source in Grafana by specifying its unique identifier (UID) in the URL path. The PUT request allows administrators to modify the configuration of a data source, including its name, type, URL, authentication settings, and other connection parameters. The operation requires the data source's UID as a path parameter and accepts a JSON payload containing the updated data source configuration in the request body. Upon successful execution, it returns the updated data source object with all its properties, making it useful for programmatically managing and maintaining data source configurations in Grafana instances without needing to access the user interface.
+      operationId: updateDataSourceByUID
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDataSourceCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createOrUpdateDatasourceResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '409':
+          description: ConflictError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/{id}:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Data Source By ID
+      description: Updates an existing data source in Grafana by specifying its unique identifier in the URL path. This PUT operation requires the complete data source configuration including connection details, authentication credentials, and any custom settings. The request must include all data source properties as the PUT method typically replaces the entire resource rather than partially updating it. Users need appropriate permissions to modify data sources, and the operation returns the updated data source configuration upon success. This endpoint is commonly used when reconfiguring database connections, updating credentials, or modifying data source settings through automation or administrative interfaces.
+      operationId: updateDataSourceByID
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDataSourceCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createOrUpdateDatasourceResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /folders/{folder_uid}:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Folder
+      description: Updates an existing folder in Grafana identified by its unique folder UID. This PUT operation allows you to modify folder properties such as the folder's title, and optionally update the folder's version for optimistic concurrency control. The request requires authentication and appropriate permissions to modify the specified folder. Upon successful execution, it returns the updated folder object with its current metadata including the new title, UID, ID, URL, and updated version number. This operation is commonly used when reorganizing dashboards or renaming folder structures within Grafana's dashboard management system.
+      operationId: updateFolder
+      parameters:
+      - name: folder_uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: 'To change the unique identifier (uid), provide another one.
+
+          To overwrite an existing folder with newer version, set `overwrite` to `true`.
+
+          Provide the current version to safelly update the folder: if the provided version differs from the stored one the request will fail, unless `overwrite` is `true`.'
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateFolderCommand'
+              - description: 'To change the unique identifier (uid), provide another one.
+
+                  To overwrite an existing folder with newer version, set `overwrite` to `true`.
+
+                  Provide the current version to safelly update the folder: if the provided version differs from the stored one the request will fail, unless `overwrite` is `true`.'
+              contentMediaType: application/json
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Folder'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '409':
+          description: ConflictError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /folders/{folder_uid}/permissions:
+    parameters: []
+    post:
+      tags:
+      - Update
+      summary: Grafana Update Folder Permissions
+      description: This API operation allows you to modify the access permissions for a specific folder in Grafana by making a POST request to the endpoint with the folder's unique identifier (UID). You can use it to grant or revoke permissions for users, teams, or roles, controlling who can view, edit, or administer the folder and its contents. The request body typically includes permission items specifying the permission level (viewer, editor, or admin) and the entity being granted access (user ID, team ID, or role). This is essential for managing collaborative access to dashboards and resources organized within folders, enabling fine-grained access control in multi-user Grafana environments.
+      operationId: updateFolderPermissions
+      parameters:
+      - name: folder_uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDashboardACLCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /annotations/{annotation_id}:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Annotation
+      description: This API operation updates an existing annotation in Grafana by sending a PUT request to the /annotations/{annotation_id} endpoint, where {annotation_id} is the unique identifier of the annotation to be modified. Annotations in Grafana are metadata that can be overlaid on graphs to mark specific points or time ranges with descriptive information, such as deployment events, system outages, or other significant occurrences. When invoking this endpoint, users can modify various properties of the annotation including its text content, tags, time range (start and end timestamps), and associated dashboard or panel IDs. The request typically requires appropriate authentication credentials and permissions to modify annotations, and upon successful execution, it returns the updated annotation object with all its current properties, allowing teams to maintain accurate historical context and documentation within their monitoring dashboards.
+      operationId: updateAnnotation
+      parameters:
+      - name: annotation_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAnnotationsCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /library-elements/{library_element_uid}:
+    parameters: []
+    patch:
+      tags:
+      - Update
+      summary: Grafana Update Library Element
+      description: This API operation allows you to update an existing library element in Grafana by specifying its unique identifier (UID) in the request path. Using the PATCH HTTP method, you can modify specific properties of the library element without needing to provide the complete resource definition. Library elements in Grafana are reusable components such as panels or data sources that can be shared across multiple dashboards, and this endpoint enables you to make incremental changes to these shared resources. The operation requires the library element's UID to identify which element to update, and accepts a request body containing the fields you wish to modify. This is particularly useful for making quick updates to shared dashboard components without affecting their references in existing dashboards, maintaining consistency across your Grafana instance while allowing for flexible modifications to library element properties like name, description, model, or other configurable attributes.
+      operationId: updateLibraryElement
+      parameters:
+      - name: library_element_uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchLibraryElementCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryElementResponseisaresponsestructforLibraryElementDTO.'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '412':
+          description: PreconditionFailedError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /orgs/{org_id}:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Org
+      description: Updates an existing organization in Grafana by specifying the organization ID in the URL path. This PUT operation allows administrators to modify organization properties such as the organization name. The request requires authentication and appropriate permissions to manage organizations. When successful, it returns the updated organization details including its ID, name, and address information. This endpoint is typically used by Grafana administrators who need to change organization metadata or correct organizational information in a Grafana instance.
+      operationId: updateOrg
+      parameters:
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrgForm'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /orgs/{org_id}/address:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Org Address
+      description: This API operation updates the address information for a specific organization in Grafana by sending a PUT request to the /orgs/{org_id}/address endpoint, where {org_id} is the unique identifier of the organization whose address needs to be modified. The operation allows administrators to maintain accurate organizational address details within the Grafana system, typically requiring appropriate authentication and authorization permissions to execute successfully. The request body would contain the updated address fields such as street, city, state, postal code, and country, which will replace the existing address information for the specified organization.
+      operationId: updateOrgAddress
+      parameters:
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrgAddressForm'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /orgs/{org_id}/users/{user_id}:
+    parameters: []
+    patch:
+      tags:
+      - Update
+      summary: Grafana Update Org User
+      description: This API operation updates an existing user's role within a specific organization in Grafana. It uses a PATCH request to the endpoint /orgs/{org_id}/users/{user_id}, where org_id identifies the target organization and user_id specifies which user's permissions should be modified. The operation allows administrators to change a user's role (such as Viewer, Editor, or Admin) within the organization context, enabling granular control over user permissions and access levels across different Grafana organizations.
+      operationId: updateOrgUser
+      parameters:
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrgUserCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /org:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Current Org
+      description: Updates the current organization's settings in Grafana, allowing modifications to the organization's name and other configuration properties. This operation requires authentication and operates on the organization context of the currently authenticated user. The request body should contain the updated organization details as a JSON object, and upon successful execution, it returns the updated organization information. This is typically used by organization administrators to manage their organization's metadata and settings through the Grafana HTTP API.
+      operationId: updateCurrentOrg
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrgForm'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /org/address:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Current Org Address
+      description: Updates the physical address information for the currently authenticated organization in Grafana. This PUT endpoint modifies the organization's address details, which may include street address, city, state, postal code, and country information. The operation requires appropriate authentication and permissions to modify organization settings, and it affects only the organization context of the current user session. The updated address information is typically used for administrative purposes, billing, or organizational records within Grafana.
+      operationId: updateCurrentOrgAddress
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrgAddressForm'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /org/preferences:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Org Preferences
+      description: This API operation allows you to modify the configuration settings and preferences for a specific organization in Grafana. By sending a PUT request to the /org/preferences endpoint, you can update various organizational-level settings such as the UI theme, home dashboard, timezone, and other display or operational preferences that apply to all users within that organization. The request typically requires appropriate administrative permissions and accepts a JSON payload containing the preference keys and their new values. Once successfully executed, the changes take effect immediately and are applied organization-wide, affecting how Grafana behaves and appears for all members of that organization.
+      operationId: updateOrgPreferences
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePrefsCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /org/users/{user_id}:
+    parameters: []
+    patch:
+      tags:
+      - Update
+      summary: Grafana Update Org User For Current Org
+      description: This API operation allows you to update an existing organization user's details within the currently authenticated organization in Grafana. By sending a PATCH request to the endpoint with a specific user ID, you can modify properties such as the user's role within the organization without affecting their underlying Grafana user account. This is particularly useful for managing permissions and access levels of team members, allowing administrators to promote users to admin roles or adjust their organizational privileges while maintaining their user identity across multiple organizations they may belong to.
+      operationId: updateOrgUserForCurrentOrg
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrgUserCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams/{team_id}:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Team
+      description: Updates an existing team in Grafana by modifying its properties such as name and email address. This endpoint requires the team ID as a path parameter and accepts a JSON payload containing the updated team information. The operation is typically used by administrators or users with appropriate permissions to maintain team configurations, ensuring that team metadata remains current and accurate within the Grafana organization.
+      operationId: updateTeam
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTeamCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '409':
+          description: ConflictError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams/{team_id}/members/{user_id}:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Team Member
+      description: Updates the permissions of an existing team member in Grafana by specifying the team ID and user ID in the request path. This PUT operation allows administrators to modify a user's role or permission level within a specific team, such as changing them from a member to an admin or vice versa. The request typically requires authentication and appropriate administrative privileges to execute successfully, and it modifies the existing team membership record rather than creating a new one.
+      operationId: updateTeamMember
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTeamMemberCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams/{team_id}/preferences:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Team Preferences
+      description: Updates the preferences for a specific team in Grafana by making a PUT request to the /teams/{team_id}/preferences endpoint. This operation allows administrators or team members with appropriate permissions to modify team-level settings such as the default home dashboard, timezone, and theme preferences. The team_id parameter in the URL path identifies which team's preferences should be updated, and the request body contains the preference values to be applied. These preferences will affect the default Grafana interface experience for all members of the specified team, overriding individual user preferences when those team members are operating within the team context.
+      operationId: updateTeamPreferences
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePrefsCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/uid/{uid}/lbac/teams:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Team LBAC Rules Api
+      description: This API operation updates the Label-Based Access Control (LBAC) rules for teams associated with a specific data source in Grafana. It uses the PUT method and targets a data source identified by its unique identifier (uid) in the endpoint path. The operation allows administrators to modify which teams have access to specific labels or subsets of data within the data source, enabling fine-grained access control at the team level. By updating these LBAC rules, organizations can ensure that different teams only have access to the data relevant to their roles and responsibilities, maintaining security and data governance policies within their Grafana instance.
+      operationId: updateTeamLBACRulesApi
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTeamLBACCommand'
+        required: false
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/updateTeamLBACRulesResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/roles/{roleUID}:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Role
+      description: This API operation updates an existing role in Grafana's access control system by sending a PUT request to the endpoint with the role's unique identifier (roleUID) in the path. It allows administrators to modify role properties such as the role name, description, permissions, and other attributes associated with that specific role. The request requires the roleUID parameter to identify which role to update, and the request body contains the updated role configuration. This operation is typically used for managing custom roles and adjusting access permissions within Grafana's role-based access control (RBAC) system, enabling fine-grained control over user capabilities and resource access.
+      operationId: updateRole
+      parameters:
+      - name: roleUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRoleCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDTO'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /reports/{id}:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Report
+      description: Updates an existing report in Grafana by its unique identifier. This operation allows you to modify the configuration of a scheduled report, including parameters such as the report name, dashboard source, recipient list, schedule frequency, time range, and format options. The request requires the report ID in the URL path and accepts a JSON payload containing the updated report properties. Upon successful execution, it returns the modified report object with all current settings. This endpoint is typically used when you need to adjust report recipients, change the reporting schedule, update the associated dashboard, or modify any other report settings after initial creation.
+      operationId: updateReport
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateReport'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /serviceaccounts/{serviceAccountId}:
+    parameters: []
+    patch:
+      tags:
+      - Update
+      summary: Grafana Update Service Account
+      description: Updates an existing service account in Grafana by modifying its properties such as name, role, or other configuration settings. This PATCH operation targets a specific service account identified by its unique serviceAccountId in the URL path, allowing administrators to make partial updates to the service account without replacing the entire resource. Service accounts are commonly used for programmatic access to Grafana, enabling applications and automated systems to authenticate and interact with Grafana APIs without requiring a regular user account.
+      operationId: updateServiceAccount
+      parameters:
+      - name: serviceAccountId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateServiceAccountForm'
+        required: false
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/updateServiceAccountResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/password:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Admin Update User Password
+      description: This API operation allows Grafana administrators to programmatically update the password for a specific user account by sending a PUT request to the endpoint with the target user's ID. The administrator must provide the new password in the request body, and this action requires admin-level privileges to execute. This operation is particularly useful for password resets, account recovery scenarios, or when administrators need to enforce password changes for security purposes without requiring the user to go through a standard password reset flow.
+      operationId: adminUpdateUserPassword
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUpdateUserPasswordForm'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/permissions:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Admin Update User Permissions
+      description: Updates the permissions for a specific user in Grafana through an administrative endpoint. This operation requires admin privileges and allows modification of user permission settings by targeting a specific user via their user_id parameter in the URL path. The PUT method indicates this is a full update of the user's permission configuration, replacing the existing permissions with the new settings provided in the request body. This is typically used by system administrators to grant or revoke access rights, adjust role-based permissions, or modify what resources and features a particular user can access within the Grafana instance.
+      operationId: adminUpdateUserPermissions
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUpdateUserPermissionsForm'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/quotas/{quota_target}:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update User Quota
+      description: This API operation allows Grafana administrators to update quota limits for a specific user by targeting a particular quota type. It uses a PUT request to modify the quota value associated with the specified user ID and quota target, which could be related to resources like dashboards, data sources, or other Grafana entities. The operation requires admin-level privileges and accepts the user ID and quota target as path parameters, along with the new quota value in the request body, enabling fine-grained control over individual user resource allocation within the Grafana instance.
+      operationId: updateUserQuota
+      parameters:
+      - name: quota_target
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateQuotaCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /orgs/{org_id}/quotas/{quota_target}:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Org Quota
+      description: This API operation allows administrators to update a specific quota limit for an organization in Grafana by making a PUT request to the endpoint with the organization ID and quota target specified in the path. The quota target represents the type of resource being limited, such as users, dashboards, data sources, or API keys. The request body should contain the new quota limit value to be applied. This operation requires administrative privileges and is typically used for managing resource allocation and consumption limits across different organizations in a multi-tenant Grafana deployment. Upon successful execution, the specified quota limit for the target organization will be updated to the new value, helping administrators control resource usage and maintain system performance.
+      operationId: updateOrgQuota
+      parameters:
+      - name: quota_target
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateQuotaCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/id/{DashboardID}/permissions:
+    parameters: []
+    post:
+      tags:
+      - Update
+      summary: Grafana Update Dashboard Permissions By ID
+      description: This API operation allows administrators to modify the access control permissions for a specific Grafana dashboard by providing its unique dashboard ID in the URL path. By sending a POST request to this endpoint with the appropriate permission payload, users can grant or revoke access rights for teams, users, or roles, defining who can view, edit, or administer the dashboard. The operation requires proper authentication and authorization, typically at an administrator or dashboard owner level, and accepts a JSON body containing the new permission settings that specify the permission level (viewer, editor, or admin) along with the corresponding user IDs, team IDs, or role identifiers to be applied to the target dashboard.
+      operationId: updateDashboardPermissionsByID
+      parameters:
+      - name: DashboardID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDashboardACLCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/uid/{dashboardUid}/public-dashboards/{uid}:
+    parameters: []
+    patch:
+      tags:
+      - Update
+      summary: Grafana Update Public Dashboard
+      description: This API operation allows you to update an existing public dashboard in Grafana by specifying both the parent dashboard's unique identifier (dashboardUid) and the public dashboard's unique identifier (uid) in the endpoint path. Using the PATCH HTTP method, you can modify specific properties of the public dashboard configuration without replacing the entire resource, such as toggling public access, changing sharing settings, or updating time range configurations. This endpoint is particularly useful when you need to make incremental changes to how a dashboard is shared publicly, enabling administrators to fine-tune visibility and access controls for external users without affecting the underlying dashboard structure or requiring a complete reconfiguration of the public sharing settings.
+      operationId: updatePublicDashboard
+      parameters:
+      - name: dashboardUid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicDashboardDTO'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicDashboard'
+        '400':
+          description: BadRequestPublicError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '401':
+          description: UnauthorisedPublicError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '403':
+          description: ForbiddenPublicError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '500':
+          description: InternalServerPublicError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/uid/{uid}/permissions:
+    parameters: []
+    post:
+      tags:
+      - Update
+      summary: Grafana Update Dashboard Permissions By UID
+      description: Updates the access control permissions for a dashboard identified by its unique identifier (UID). This POST endpoint allows administrators to modify who can view, edit, or administrate a specific dashboard by sending permission configurations in the request body. The permissions can be set for individual users, teams, or roles, defining their level of access to the dashboard. This operation requires appropriate administrative privileges and is commonly used to manage dashboard security and collaboration settings within Grafana workspaces.
+      operationId: updateDashboardPermissionsByUID
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDashboardACLCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /groupsync/groups/{group_id}:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Group Mappings
+      description: This API operation updates the group mappings for a specific group in Grafana's group synchronization system. By sending a PUT request to the endpoint with a particular group ID, administrators can modify how external authentication groups (such as those from LDAP, OAuth, or SAML providers) are mapped to internal Grafana groups. This allows for dynamic management of user permissions and access control by adjusting which external groups correspond to specific Grafana organizational roles and teams. The operation requires the group ID as a path parameter and accepts a payload containing the updated mapping configuration, enabling seamless integration between external identity providers and Grafana's authorization model.
+      operationId: updateGroupMappings
+      parameters:
+      - name: group_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupAttributes'
+        required: true
+      responses:
+        '201':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messageResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /playlists/{uid}:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Playlist
+      description: Updates an existing playlist in Grafana identified by its unique identifier (UID). This operation allows you to modify playlist properties such as name, interval between dashboards, and the list of dashboards included in the playlist. You must provide the complete updated playlist configuration in the request body, and appropriate permissions are required to modify the playlist. The endpoint returns the updated playlist object upon successful execution, making it useful for programmatically managing and automating playlist configurations in Grafana dashboards.
+      operationId: updatePlaylist
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePlaylistCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaylistDTO'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /recording-rules:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Recording Rule
+      description: Updates an existing recording rule in Grafana's alerting system. Recording rules are used to pre-calculate frequently needed or computationally expensive expressions and save their results as a new set of time series. This operation allows you to modify the configuration of a recording rule including its query expressions, labels, evaluation interval, and other parameters. You need to provide the complete updated recording rule configuration in the request body, and the rule will be identified by its UID or name. This is commonly used when you need to adjust the recording rule's query, change its labels, modify the evaluation frequency, or update any other aspect of how the rule processes and stores metric data. Proper authentication and appropriate permissions are required to perform this operation.
+      operationId: updateRecordingRule
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordingRuleJSON'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordingRuleJSON'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Signed In User
+      description: Updates the profile information for the currently authenticated user in Grafana, allowing modification of fields such as email address, name, login username, and theme preferences. This endpoint requires the user to be signed in and operates on the user's own account, making it a self-service operation for managing personal account details. The request accepts a JSON payload containing the user attributes to be updated, and upon successful execution, returns the updated user information along with a confirmation message.
+      operationId: updateSignedInUser
+      parameters: []
+      requestBody:
+        description: To change the email, name, login, theme, provide another one.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateUserCommand'
+              - description: To change the email, name, login, theme, provide another one.
+              contentMediaType: application/json
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '409':
+          description: ConflictError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/preferences:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update User Preferences
+      description: Updates the preferences for the currently authenticated user in Grafana, allowing modification of settings such as theme (light/dark), home dashboard, timezone, and language preferences. This endpoint requires authentication and only affects the preferences of the user making the request. The operation accepts a JSON payload containing the preference fields to be updated, and returns the updated preference object upon successful modification. Changes take effect immediately for the user's session and persist across logins.
+      operationId: updateUserPreferences
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePrefsCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/email/update:
+    parameters: []
+    get:
+      tags:
+      - Update
+      summary: Grafana Update User Email
+      description: This API operation allows for updating the email address associated with a user account in Grafana. When invoked via a GET request to the /user/email/update endpoint, it modifies the email address of the currently authenticated user. The operation requires the user to be logged in and typically needs the new email address to be provided as a parameter. This endpoint is useful for maintaining accurate user contact information and ensuring proper communication channels within the Grafana platform.
+      operationId: updateUserEmail
+      parameters: []
+      responses:
+        '302':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /users/{user_id}:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update User
+      description: The PUT operation on the /users/{user_id} endpoint in Grafana allows administrators to update an existing user's account information by specifying the user's unique identifier in the URL path. This endpoint enables modification of user attributes such as email address, login username, display name, and theme preferences. The request requires appropriate administrative privileges and accepts a JSON payload containing the fields to be updated. Upon successful execution, the API returns the updated user object with all current values, while validation errors or permission issues will result in appropriate error responses. This operation is commonly used for user management tasks like correcting user details, updating contact information, or adjusting user preferences programmatically.
+      operationId: updateUser
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: To change the email, name, login, theme, provide another one.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateUserCommand'
+              - description: To change the email, name, login, theme, provide another one.
+              contentMediaType: application/json
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '409':
+          description: ConflictError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/sso-settings/{key}:
+    parameters: []
+    put:
+      tags:
+      - Update
+      summary: Grafana Update Provider Settings
+      description: Updates the configuration settings for a specific Single Sign-On (SSO) provider in Grafana identified by the provided key parameter. This PUT operation allows administrators to modify authentication provider settings such as client credentials, authorization endpoints, scopes, and other SSO-related parameters for the specified provider. The request requires the provider's unique key in the URL path and accepts a JSON payload containing the updated configuration values, enabling centralized management of SSO integrations within the Grafana instance.
+      operationId: updateProviderSettings
+      parameters:
+      - name: key
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/body'
+        required: true
+      responses:
+        '204':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    UpdateOrgAddressForm:
+      title: UpdateOrgAddressForm
+      type: object
+      properties:
+        address1:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        zipcode:
+          type: string
+    UpdateCorrelationResponseBody:
+      title: UpdateCorrelationResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+          examples:
+          - Correlation updated
+        result:
+          allOf:
+          - $ref: '#/components/schemas/Correlation'
+          - description: Correlation is the model for correlations definitions
+    createOrUpdateDatasourceResponse:
+      title: createOrUpdateDatasourceResponse
+      required:
+      - datasource
+      - id
+      - message
+      - name
+      type: object
+      properties:
+        datasource:
+          $ref: '#/components/schemas/DataSource'
+        id:
+          type: integer
+          description: ID Identifier of the new data source.
+          contentEncoding: int64
+          examples:
+          - 65
+        message:
+          type: string
+          description: Message Message of the deleted dashboard.
+          examples:
+          - Data source added
+        name:
+          type: string
+          description: Name of the new data source.
+          examples:
+          - My Data source
+    UpdateCorrelationCommand:
+      title: UpdateCorrelationCommand
+      type: object
+      properties:
+        config:
+          $ref: '#/components/schemas/CorrelationConfigUpdateDTO'
+        description:
+          type: string
+          description: Optional description of the correlation
+          examples:
+          - Logs to Traces
+        label:
+          type: string
+          description: Optional label identifying the correlation
+          examples:
+          - My label
+        type:
+          type: string
+          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
+
+            +enum'
+      description: UpdateCorrelationCommand is the command for updating a correlation
+    ReportOptions:
+      title: ReportOptions
+      type: object
+      properties:
+        layout:
+          type: string
+        orientation:
+          type: string
+        pdfCombineOneFile:
+          type: boolean
+        pdfShowTemplateVariables:
+          type: boolean
+        timeRange:
+          $ref: '#/components/schemas/ReportTimeRange'
+    LibraryElementDTOMetaisthemetainformationforLibraryElementDTO.:
+      title: LibraryElementDTOMetaisthemetainformationforLibraryElementDTO.
+      type: object
+      properties:
+        connectedDashboards:
+          type: integer
+          contentEncoding: int64
+        created:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          $ref: '#/components/schemas/LibraryElementDTOMetaUser'
+        folderName:
+          type: string
+        folderUid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        updatedBy:
+          $ref: '#/components/schemas/LibraryElementDTOMetaUser'
+    PlaylistItem:
+      title: PlaylistItem
+      type: object
+      properties:
+        Id:
+          type: integer
+          contentEncoding: int64
+        PlaylistId:
+          type: integer
+          contentEncoding: int64
+        order:
+          type: integer
+          contentEncoding: int64
+        title:
+          type: string
+        type:
+          type: string
+        value:
+          type: string
+    DashboardACLUpdateItem:
+      title: DashboardACLUpdateItem
+      type: object
+      properties:
+        permission:
+          type: integer
+          contentEncoding: int64
+        role:
+          $ref: '#/components/schemas/Role'
+        teamId:
+          type: integer
+          contentEncoding: int64
+        userId:
+          type: integer
+          contentEncoding: int64
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    ReportDashboard:
+      title: ReportDashboard
+      type: object
+      properties:
+        dashboard:
+          $ref: '#/components/schemas/ReportDashboardID'
+        reportVariables:
+          type: object
+        timeRange:
+          $ref: '#/components/schemas/ReportTimeRange'
+    UpdatePlaylistCommand:
+      title: UpdatePlaylistCommand
+      type: object
+      properties:
+        interval:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlaylistItem'
+          description: ''
+        name:
+          type: string
+        uid:
+          type: string
+    RoleDTO:
+      title: RoleDTO
+      required:
+      - created
+      - description
+      - displayName
+      - group
+      - name
+      - uid
+      - updated
+      - version
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        delegatable:
+          type: boolean
+        description:
+          type: string
+        displayName:
+          type: string
+        global:
+          type: boolean
+        group:
+          type: string
+        hidden:
+          type: boolean
+        mapped:
+          type: boolean
+        name:
+          type: string
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+          description: ''
+        uid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        version:
+          type: integer
+          contentEncoding: int64
+    UpdatePrefsCmd:
+      title: UpdatePrefsCmd
+      type: object
+      properties:
+        cookies:
+          type: array
+          items:
+            type: string
+          description: ''
+        homeDashboardId:
+          type: integer
+          description: The numerical :id of a favorited dashboard
+          contentEncoding: int64
+          default: 0
+        homeDashboardUID:
+          type: string
+        language:
+          type: string
+        navbar:
+          $ref: '#/components/schemas/NavbarPreference'
+        queryHistory:
+          $ref: '#/components/schemas/QueryHistoryPreference'
+        regionalFormat:
+          type: string
+        theme:
+          $ref: '#/components/schemas/Theme1'
+        timezone:
+          $ref: '#/components/schemas/Timezone'
+        weekStart:
+          type: string
+    Folder:
+      title: Folder
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+          description: 'Metadata contains user accesses for a given resource
+
+            Ex: map[string]bool{"create":true, "delete": true}'
+        canAdmin:
+          type: boolean
+        canDelete:
+          type: boolean
+        canEdit:
+          type: boolean
+        canSave:
+          type: boolean
+        created:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          type: string
+        hasAcl:
+          type: boolean
+        id:
+          type: integer
+          description: 'Deprecated: use UID instead'
+          contentEncoding: int64
+        managedBy:
+          type: string
+          description: 'It can be a user or a tool or a generic API client.
+
+            +enum'
+        orgId:
+          type: integer
+          contentEncoding: int64
+        parentUid:
+          type: string
+          description: only used if nested folders are enabled
+        parents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Folder'
+          description: the parent folders starting from the root going down
+        title:
+          type: string
+        uid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        updatedBy:
+          type: string
+        url:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+    PatchLibraryElementCommand:
+      title: PatchLibraryElementCommand
+      type: object
+      properties:
+        folderId:
+          type: integer
+          description: 'ID of the folder where the library element is stored.
+
+
+            Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+          description: UID of the folder where the library element is stored.
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/Kind'
+          - description: 'Kind of element to create, Use 1 for library panels or 2 for c.
+
+              Description:
+
+              1 - library panels'
+        model:
+          type: object
+          description: The JSON model for the library element.
+        name:
+          type: string
+          description: Name of the library element.
+        uid:
+          type: string
+        version:
+          type: integer
+          description: Version of the library element you are updating.
+          contentEncoding: int64
+      description: PatchLibraryElementCommand is the command for patching a LibraryElement
+    LibraryElementDTOisthefrontendDTOforentities.:
+      title: LibraryElementDTOisthefrontendDTOforentities.
+      type: object
+      properties:
+        description:
+          type: string
+        folderId:
+          type: integer
+          description: 'Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        kind:
+          type: integer
+          contentEncoding: int64
+        meta:
+          $ref: '#/components/schemas/LibraryElementDTOMetaisthemetainformationforLibraryElementDTO.'
+        model:
+          type: object
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        schemaVersion:
+          type: integer
+          contentEncoding: int64
+        type:
+          type: string
+        uid:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+    RecordingRuleJSON:
+      title: RecordingRuleJSON
+      type: object
+      properties:
+        active:
+          type: boolean
+        count:
+          type: boolean
+        description:
+          type: string
+        dest_data_source_uid:
+          type: string
+        id:
+          type: string
+        interval:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+        prom_name:
+          type: string
+        queries:
+          type: array
+          items: {}
+          description: ''
+        range:
+          type: integer
+          contentEncoding: int64
+        target_ref_id:
+          type: string
+      description: RecordingRuleJSON is the external representation of a recording rule
+    ReportDashboardID:
+      title: ReportDashboardID
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+        uid:
+          type: string
+    UpdateUserCommand:
+      title: UpdateUserCommand
+      type: object
+      properties:
+        email:
+          type: string
+        login:
+          type: string
+        name:
+          type: string
+        theme:
+          type: string
+    ReportSchedule:
+      title: ReportSchedule
+      type: object
+      properties:
+        dayOfMonth:
+          type: string
+        endDate:
+          type: string
+          contentEncoding: date-time
+        frequency:
+          type: string
+        intervalAmount:
+          type: integer
+          contentEncoding: int64
+        intervalFrequency:
+          type: string
+        startDate:
+          type: string
+          contentEncoding: date-time
+        timeZone:
+          type: string
+        workdaysOnly:
+          type: boolean
+    LibraryElementResponseisaresponsestructforLibraryElementDTO.:
+      title: LibraryElementResponseisaresponsestructforLibraryElementDTO.
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/LibraryElementDTOisthefrontendDTOforentities.'
+    Timezone:
+      title: Timezone
+      enum:
+      - utc
+      - browser
+      type: string
+    Theme1:
+      title: Theme1
+      enum:
+      - light
+      - dark
+      - system
+      type: string
+    CorrelationConfig:
+      title: CorrelationConfig
+      required:
+      - field
+      - target
+      type: object
+      properties:
+        field:
+          type: string
+          description: Field used to attach the correlation link
+          examples:
+          - message
+        target:
+          type: object
+          additionalProperties: {}
+          description: Target data query
+          examples:
+          - prop1: value1
+            prop2: value
+        transformations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transformation'
+          description: ''
+        type:
+          type: string
+          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
+
+            +enum'
+    messageResponse:
+      title: messageResponse
+      type: object
+      properties:
+        message:
+          type: string
+    CorrelationConfigUpdateDTO:
+      title: CorrelationConfigUpdateDTO
+      type: object
+      properties:
+        field:
+          type: string
+          description: Field used to attach the correlation link
+          examples:
+          - message
+        target:
+          type: object
+          additionalProperties: {}
+          description: Target data query
+          examples:
+          - prop1: value1
+            prop2: value
+        transformations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transformation'
+          description: Source data transformations
+          examples:
+          - - type: logfmt
+            - expression: (Superman|Batman)
+              type: regex
+              variable: name
+    Kind:
+      title: Kind
+      const: 1
+      type: integer
+      description: 'Kind of element to create, Use 1 for library panels or 2 for c.
+
+        Description:
+
+        1 - library panels'
+    ReportTimeRange:
+      title: ReportTimeRange
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+    ServiceAccountProfileDTO:
+      title: ServiceAccountProfileDTO
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+        avatarUrl:
+          type: string
+          examples:
+          - /avatar/8ea890a677d6a223c591a1beea6ea9d2
+        createdAt:
+          type: string
+          contentEncoding: date-time
+          examples:
+          - '2022-03-21T14:35:33.000Z'
+        id:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 2
+        isDisabled:
+          type: boolean
+          examples:
+          - false
+        isExternal:
+          type: boolean
+          examples:
+          - false
+        login:
+          type: string
+          examples:
+          - sa-grafana
+        name:
+          type: string
+          examples:
+          - test
+        orgId:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 1
+        requiredBy:
+          type: string
+          examples:
+          - grafana-app
+        role:
+          type: string
+          examples:
+          - Editor
+        teams:
+          type: array
+          items:
+            type: string
+          description: ''
+          examples:
+          - []
+        tokens:
+          type: integer
+          contentEncoding: int64
+        uid:
+          type: string
+          examples:
+          - fe1xejlha91xce
+        updatedAt:
+          type: string
+          contentEncoding: date-time
+          examples:
+          - '2022-03-21T14:35:33.000Z'
+    PlaylistDTO:
+      title: PlaylistDTO
+      type: object
+      properties:
+        interval:
+          type: string
+          description: Interval sets the time between switching views in a playlist.
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlaylistItemDTO'
+          description: The ordered list of items that the playlist will iterate over.
+        name:
+          type: string
+          description: Name of the playlist.
+        uid:
+          type: string
+          description: 'Unique playlist identifier. Generated on creation, either by the
+
+            creator of the playlist of by the application.'
+    UpdateQuotaCmd:
+      title: UpdateQuotaCmd
+      type: object
+      properties:
+        limit:
+          type: integer
+          contentEncoding: int64
+        target:
+          type: string
+    PlaylistItemDTO:
+      title: PlaylistItemDTO
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title is an unused property -- it will be removed in the future
+        type:
+          type: string
+          description: Type of the item.
+        value:
+          type: string
+          description: 'Value depends on type and describes the playlist item.
+
+
+            dashboard_by_id: The value is an internal numerical identifier set by Grafana. This
+
+            is not portable as the numerical identifier is non-deterministic between different instances.
+
+            Will be replaced by dashboard_by_uid in the future. (deprecated)
+
+            dashboard_by_tag: The value is a tag which is set on any number of dashboards. All
+
+            dashboards behind the tag will be added to the playlist.
+
+            dashboard_by_uid: The value is the dashboard UID'
+    UpdateOrgForm:
+      title: UpdateOrgForm
+      type: object
+      properties:
+        name:
+          type: string
+    updateTeamLBACRulesResponse:
+      title: updateTeamLBACRulesResponse
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+        name:
+          type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamLBACRule'
+          description: ''
+        uid:
+          type: string
+    AdminUpdateUserPermissionsForm:
+      title: AdminUpdateUserPermissionsForm
+      type: object
+      properties:
+        isGrafanaAdmin:
+          type: boolean
+    Permission:
+      title: Permission
+      type: object
+      properties:
+        action:
+          type: string
+        created:
+          type: string
+          contentEncoding: date-time
+        scope:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+      description: Permission is the model for access control permissions
+    body:
+      title: body
+      type: object
+      properties:
+        id:
+          type: string
+        provider:
+          type: string
+        settings:
+          type: object
+          additionalProperties: {}
+    EmailDTO:
+      title: EmailDTO
+      type: object
+      properties:
+        recipient:
+          type: string
+        uid:
+          type: string
+    GroupAttributes:
+      title: GroupAttributes
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            type: string
+          description: ''
+    Role:
+      title: Role
+      enum:
+      - None
+      - Viewer
+      - Editor
+      - Admin
+      type: string
+    DataSource:
+      title: DataSource
+      type: object
+      properties:
+        access:
+          type: string
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+          description: 'Metadata contains user accesses for a given resource
+
+            Ex: map[string]bool{"create":true, "delete": true}'
+        basicAuth:
+          type: boolean
+        basicAuthUser:
+          type: string
+        database:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        isDefault:
+          type: boolean
+        jsonData:
+          type: object
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        readOnly:
+          type: boolean
+        secureJsonFields:
+          type: object
+          additionalProperties:
+            type: boolean
+        type:
+          type: string
+        typeLogoUrl:
+          type: string
+        uid:
+          type: string
+        url:
+          type: string
+        user:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+        withCredentials:
+          type: boolean
+    PublicDashboardDTO:
+      title: PublicDashboardDTO
+      type: object
+      properties:
+        accessToken:
+          type: string
+        annotationsEnabled:
+          type: boolean
+        isEnabled:
+          type: boolean
+        share:
+          type: string
+        timeSelectionEnabled:
+          type: boolean
+        uid:
+          type: string
+    CreateOrUpdateReport:
+      title: CreateOrUpdateReport
+      type: object
+      properties:
+        dashboards:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportDashboard'
+          description: ''
+        enableCsv:
+          type: boolean
+        enableDashboardUrl:
+          type: boolean
+        formats:
+          type: array
+          items:
+            type: string
+          description: ''
+        message:
+          type: string
+        name:
+          type: string
+        options:
+          $ref: '#/components/schemas/ReportOptions'
+        recipients:
+          type: string
+        replyTo:
+          type: string
+        scaleFactor:
+          type: integer
+          contentEncoding: int64
+        schedule:
+          $ref: '#/components/schemas/ReportSchedule'
+        state:
+          type: string
+          description: +enum
+        subject:
+          type: string
+    PublicDashboard:
+      title: PublicDashboard
+      type: object
+      properties:
+        accessToken:
+          type: string
+        annotationsEnabled:
+          type: boolean
+        createdAt:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          type: integer
+          contentEncoding: int64
+        dashboardUid:
+          type: string
+        isEnabled:
+          type: boolean
+        recipients:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailDTO'
+          description: ''
+        share:
+          type: string
+        timeSelectionEnabled:
+          type: boolean
+        uid:
+          type: string
+        updatedAt:
+          type: string
+          contentEncoding: date-time
+        updatedBy:
+          type: integer
+          contentEncoding: int64
+    updateServiceAccountResponse:
+      title: updateServiceAccountResponse
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+        name:
+          type: string
+        serviceaccount:
+          $ref: '#/components/schemas/ServiceAccountProfileDTO'
+    UpdateOrgUserCommand:
+      title: UpdateOrgUserCommand
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/Role'
+    QueryHistoryPreference:
+      title: QueryHistoryPreference
+      type: object
+      properties:
+        homeTab:
+          type: string
+    UpdateAnnotationsCmd:
+      title: UpdateAnnotationsCmd
+      type: object
+      properties:
+        data:
+          type: object
+        id:
+          type: integer
+          contentEncoding: int64
+        tags:
+          type: array
+          items:
+            type: string
+          description: ''
+        text:
+          type: string
+        time:
+          type: integer
+          contentEncoding: int64
+        timeEnd:
+          type: integer
+          contentEncoding: int64
+    UpdateTeamMemberCommand:
+      title: UpdateTeamMemberCommand
+      type: object
+      properties:
+        permission:
+          type: integer
+          contentEncoding: int64
+    AdminUpdateUserPasswordForm:
+      title: AdminUpdateUserPasswordForm
+      type: object
+      properties:
+        password:
+          type: string
+    UpdateRoleCommand:
+      title: UpdateRoleCommand
+      required:
+      - description
+      - displayName
+      - group
+      type: object
+      properties:
+        description:
+          type: string
+        displayName:
+          type: string
+        global:
+          type: boolean
+        group:
+          type: string
+        hidden:
+          type: boolean
+        name:
+          type: string
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+          description: ''
+        version:
+          type: integer
+          contentEncoding: int64
+    UpdateTeamLBACCommand:
+      title: UpdateTeamLBACCommand
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamLBACRule'
+          description: ''
+    UpdateDashboardACLCommand:
+      title: UpdateDashboardACLCommand
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardACLUpdateItem'
+          description: ''
+    NavbarPreference:
+      title: NavbarPreference
+      type: object
+      properties:
+        bookmarkUrls:
+          type: array
+          items:
+            type: string
+          description: ''
+    Correlation:
+      title: Correlation
+      type: object
+      properties:
+        config:
+          $ref: '#/components/schemas/CorrelationConfig'
+        description:
+          type: string
+          description: Description of the correlation
+          examples:
+          - Logs to Traces
+        label:
+          type: string
+          description: Label identifying the correlation
+          examples:
+          - My Label
+        orgId:
+          type: integer
+          description: OrgID of the data source the correlation originates from
+          contentEncoding: int64
+          examples:
+          - 1
+        provisioned:
+          type: boolean
+          description: Provisioned True if the correlation was created during provisioning
+        sourceUID:
+          type: string
+          description: UID of the data source the correlation originates from
+          examples:
+          - d0oxYRg4z
+        targetUID:
+          type: string
+          description: UID of the data source the correlation points to
+          examples:
+          - PE1C5CBDA0504A6A3
+        type:
+          type: string
+          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
+
+            +enum'
+        uid:
+          type: string
+          description: Unique identifier of the correlation
+          examples:
+          - 50xhMlg9k
+      description: Correlation is the model for correlations definitions
+    Type1:
+      title: Type1
+      enum:
+      - regex
+      - logfmt
+      type: string
+    publicError1:
+      title: publicError1
+      required:
+      - messageId
+      - statusCode
+      type: object
+      properties:
+        extra:
+          type: object
+          additionalProperties: {}
+          description: Extra Additional information about the error
+        message:
+          type: string
+          description: Message A human readable message
+        messageId:
+          type: string
+          description: MessageID A unique identifier for the error
+        statusCode:
+          type: integer
+          description: StatusCode The HTTP status code returned
+          contentEncoding: int64
+      description: 'PublicError is derived from Error and only contains information
+
+        available to the end user.'
+    UpdateDataSourceCommand:
+      title: UpdateDataSourceCommand
+      type: object
+      properties:
+        access:
+          type: string
+        basicAuth:
+          type: boolean
+        basicAuthUser:
+          type: string
+        database:
+          type: string
+        isDefault:
+          type: boolean
+        jsonData:
+          type: object
+        name:
+          type: string
+        secureJsonData:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+        uid:
+          type: string
+        url:
+          type: string
+        user:
+          type: string
+        version:
+          type: integer
+          description: The previous version -- used for optimistic locking
+          contentEncoding: int64
+        withCredentials:
+          type: boolean
+      description: Also acts as api DTO
+    UpdateFolderCommand:
+      title: UpdateFolderCommand
+      type: object
+      properties:
+        description:
+          type: string
+          description: NewDescription it's an optional parameter used for overriding the existing folder description
+        overwrite:
+          type: boolean
+          description: Overwrite only used by the legacy folder implementation
+        title:
+          type: string
+          description: NewTitle it's an optional parameter used for overriding the existing folder title
+        version:
+          type: integer
+          description: Version only used by the legacy folder implementation
+          contentEncoding: int64
+      description: 'UpdateFolderCommand captures the information required by the folder service
+
+        to update a folder. Use Move to update a folder''s parent folder.'
+    UpdateServiceAccountForm:
+      title: UpdateServiceAccountForm
+      type: object
+      properties:
+        isDisabled:
+          type: boolean
+        name:
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+        serviceAccountId:
+          type: integer
+          contentEncoding: int64
+    LibraryElementDTOMetaUser:
+      title: LibraryElementDTOMetaUser
+      type: object
+      properties:
+        avatarUrl:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+    Transformation:
+      title: Transformation
+      type: object
+      properties:
+        expression:
+          type: string
+        field:
+          type: string
+        mapValue:
+          type: string
+        type:
+          $ref: '#/components/schemas/Type1'
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    TeamLBACRule:
+      title: TeamLBACRule
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            type: string
+          description: ''
+        teamId:
+          type: string
+        teamUid:
+          type: string
+    UpdateTeamCommand:
+      title: UpdateTeamCommand
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

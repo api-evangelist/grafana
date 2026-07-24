@@ -1,0 +1,1236 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Queries API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Queries
+paths:
+  /ds/query:
+    parameters: []
+    post:
+      tags:
+      - Queries
+      summary: Grafana Query Metrics With Expressions
+      description: This API operation enables querying of metrics data in Grafana using the datasource query endpoint, supporting advanced query expressions and transformations. It accepts POST requests at the /ds/query endpoint and allows users to execute complex queries against configured data sources, combining multiple queries with mathematical expressions, statistical functions, and data transformations to derive meaningful insights from time-series data. The operation supports various datasource types and returns formatted query results that can be visualized in Grafana dashboards, making it essential for creating dynamic panels with calculated metrics, aggregations, and custom data manipulations.
+      operationId: queryMetricsWithExpressions
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetricRequest'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryDataResponsecontainstheresultsfromaQueryDataRequest.'
+        '207':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryDataResponsecontainstheresultsfromaQueryDataRequest.'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /query-history:
+    parameters: []
+    get:
+      tags:
+      - Queries
+      summary: Grafana Search Queries
+      description: Retrieves a paginated list of query history entries from Grafana based on specified search criteria. This endpoint allows users to filter and search through their saved query history, returning matching queries along with relevant metadata such as query text, timestamp, data source information, and user details. The operation supports various filtering parameters to narrow down results and includes pagination controls to manage large result sets efficiently.
+      operationId: searchQueries
+      parameters:
+      - name: datasourceUid
+        in: query
+        description: List of data source UIDs to search for
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: searchString
+        in: query
+        description: Text inside query or comments that is searched for
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: onlyStarred
+        in: query
+        description: Flag indicating if only starred queries should be returned
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: sort
+        in: query
+        description: Sort method
+        style: form
+        explode: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/sort'
+          - description: Sort method
+      - name: page
+        in: query
+        description: Use this parameter to access hits beyond limit. Numbering starts at 1. limit param acts as page size.
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: limit
+        in: query
+        description: Limit the number of returned results
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: from
+        in: query
+        description: From range for the query history search
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: to
+        in: query
+        description: To range for the query history search
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryHistorySearchResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Queries
+      summary: Grafana Create Query
+      description: This API operation allows users to create a new entry in Grafana's query history by sending a POST request to the /query-history endpoint. It enables users to save queries they've executed for future reference, tracking, or reuse purposes. The operation typically accepts query details such as the datasource, query text, timestamp, and potentially additional metadata like comments or tags. This functionality is particularly useful for maintaining an audit trail of queries, sharing queries among team members, or quickly accessing frequently used queries without having to reconstruct them from scratch. The saved query history can later be retrieved, searched, or managed through other related API endpoints.
+      operationId: createQuery
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateQueryInQueryHistoryCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryHistoryResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /query-history/star/{query_history_uid}:
+    parameters: []
+    post:
+      tags:
+      - Queries
+      summary: Grafana Star Query
+      description: This API operation allows users to mark a specific query in Grafana's query history as a favorite by starring it. By sending a POST request to the endpoint with a unique query history identifier (query_history_uid), users can flag important or frequently used queries for easier access and reference later. The starred status helps organize and prioritize queries within the query history, making it simpler to locate and reuse commonly executed queries without having to search through the entire history or recreate them from scratch.
+      operationId: starQuery
+      parameters:
+      - name: query_history_uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryHistoryResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Queries
+      summary: Grafana Unstar Query
+      description: The Grafana unstar query operation is accessed via a DELETE request to the endpoint /query-history/star/{query_history_uid}, where the query_history_uid parameter represents the unique identifier of a previously executed query in the query history. This operation removes the star or favorite marking from a specific query, effectively unmarking it as a saved or bookmarked item in the user's query history. When invoked, it allows users to unmark queries they no longer wish to highlight or quickly access, helping maintain a cleaner and more relevant collection of starred queries within their Grafana workspace.
+      operationId: unstarQuery
+      parameters:
+      - name: query_history_uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryHistoryResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /query-history/{query_history_uid}:
+    parameters: []
+    delete:
+      tags:
+      - Queries
+      summary: Grafana Delete Query
+      description: This API operation removes a specific query from the Grafana query history by targeting its unique identifier (query_history_uid). When executed, it permanently deletes the query entry associated with the provided UID from the system's query history records. This is useful for cleaning up unwanted or obsolete queries that users no longer need to reference, helping maintain an organized query history within Grafana.
+      operationId: deleteQuery
+      parameters:
+      - name: query_history_uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryHistoryDeleteQueryResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    patch:
+      tags:
+      - Queries
+      summary: Grafana Patch Query Comment
+      description: Updates the comment of a specific query in the query history by its unique identifier. This endpoint allows users to modify the descriptive comment associated with a previously executed query, making it easier to document and organize query history. The operation requires the query history UID as a path parameter and accepts the updated comment data in the request body. This is useful for adding context, notes, or explanations to queries after they have been run, improving collaboration and query management within Grafana.
+      operationId: patchQueryComment
+      parameters:
+      - name: query_history_uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchQueryCommentInQueryHistoryCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryHistoryResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /public/dashboards/{accessToken}/panels/{panelId}/query:
+    parameters: []
+    post:
+      tags:
+      - Queries
+      summary: Grafana Query Public Dashboard
+      description: The Grafana POST endpoint at /public/dashboards/{accessToken}/panels/{panelId}/query enables querying data from a specific panel within a publicly shared dashboard. This operation requires an access token that grants permission to view the public dashboard and a panel ID to identify which panel's data should be retrieved. The endpoint allows external applications or users to programmatically fetch panel data without authentication beyond the public access token, making it useful for embedding dashboard visualizations in external websites, generating reports, or integrating Grafana metrics into other monitoring systems. The query executes the panel's configured data source query and returns the results in a structured format that can be consumed by the requesting application.
+      operationId: queryPublicDashboard
+      parameters:
+      - name: accessToken
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: panelId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryDataResponsecontainstheresultsfromaQueryDataRequest.'
+        '400':
+          description: BadRequestPublicError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '401':
+          description: UnauthorisedPublicError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '403':
+          description: ForbiddenPublicError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '404':
+          description: NotFoundPublicError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '500':
+          description: InternalServerPublicError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams/{teamId}/groups:
+    parameters: []
+    delete:
+      tags:
+      - Queries
+      summary: Grafana Remove Team Group Api Query
+      description: This API operation removes an external group mapping from a specified team in Grafana. When executed, it performs a DELETE request to the endpoint /teams/{teamId}/groups, where {teamId} represents the unique identifier of the team from which the group association should be removed. The operation is used to disconnect external authentication provider groups (such as LDAP, OAuth, or SAML groups) from Grafana teams, effectively revoking the automatic team membership that was granted to users belonging to those external groups. This is particularly useful when reorganizing team structures, removing obsolete group mappings, or adjusting access control policies within Grafana's role-based access control system.
+      operationId: removeTeamGroupApiQuery
+      parameters:
+      - name: groupId
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: teamId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    DataLink:
+      title: DataLink
+      type: object
+      properties:
+        internal:
+          allOf:
+          - $ref: '#/components/schemas/InternalDataLink'
+          - description: InternalDataLink definition to allow Explore links to be constructed in the backend
+        targetBlank:
+          type: boolean
+        title:
+          type: string
+        url:
+          type: string
+      description: DataLink define what
+    PatchQueryCommentInQueryHistoryCommand:
+      title: PatchQueryCommentInQueryHistoryCommand
+      type: object
+      properties:
+        comment:
+          type: string
+          description: Updated comment
+      description: PatchQueryCommentInQueryHistoryCommand is the command for updating comment for query in query history
+    QueryHistoryDTO:
+      title: QueryHistoryDTO
+      type: object
+      properties:
+        comment:
+          type: string
+        createdAt:
+          type: integer
+          contentEncoding: int64
+        createdBy:
+          type: integer
+          contentEncoding: int64
+        datasourceUid:
+          type: string
+        queries:
+          type: object
+        starred:
+          type: boolean
+        uid:
+          type: string
+    QueryHistorySearchResponse:
+      title: QueryHistorySearchResponse
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/QueryHistorySearchResult'
+    FrameMetamatches:
+      title: FrameMetamatches
+      type: object
+      properties:
+        channel:
+          type: string
+          description: Channel is the path to a stream in grafana live that has real-time updates for this data.
+        custom:
+          description: Custom datasource specific values.
+        dataTopic:
+          type: string
+          description: nolint:revive
+        executedQueryString:
+          type: string
+          description: 'ExecutedQueryString is the raw query sent to the underlying system. All macros and templating
+
+            have been applied.  When metadata contains this value, it will be shown in the query inspector.'
+        notices:
+          type: array
+          items:
+            $ref: '#/components/schemas/NoticeprovidesastructureforpresentingnotificationsinGrafanasuserinterface.'
+          description: 'Notices provide additional information about the data in the Frame that
+
+            Grafana can display to the user in the user interface.'
+        path:
+          type: string
+          description: Path is a browsable path on the datasource.
+        pathSeparator:
+          type: string
+          description: PathSeparator defines the separator pattern to decode a hierarchy. The default separator is '/'.
+        preferredVisualisationPluginId:
+          type: string
+          description: 'PreferredVisualizationPluginId sets the panel plugin id to use to render the data when using Explore. If
+
+            the plugin cannot be found will fall back to PreferredVisualization.'
+        preferredVisualisationType:
+          type: string
+        stats:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryStatisusedforstoringarbitrarystatisticsmetadatarelatedtoaqueryanditsresulte.g.totalrequesttimedataprocessingtime.'
+          description: Stats is an array of query result statistics.
+        type:
+          type: string
+          description: 'A FrameType string, when present in a frame''s metadata, asserts that the
+
+            frame''s structure conforms to the FrameType''s specification.
+
+            This property is currently optional, so FrameType may be FrameTypeUnknown even if the properties of
+
+            the Frame correspond to a defined FrameType.
+
+            +enum'
+        typeVersion:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: ''
+        uniqueRowIdFields:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: 'Array of field indices which values create a unique id for each row. Ideally this should be globally unique ID
+
+            but that isn''t guarantied. Should help with keeping track and deduplicating rows in visualizations, especially
+
+            with streaming data with frequent updates.'
+      description: 'https://github.com/grafana/grafana/blob/master/packages/grafana-data/src/types/data.ts#L11
+
+        NOTE -- in javascript this can accept any `[key: string]: any;` however
+
+        this interface only exposes the values we want to be exposed'
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    QueryStatisusedforstoringarbitrarystatisticsmetadatarelatedtoaqueryanditsresulte.g.totalrequesttimedataprocessingtime.:
+      title: QueryStatisusedforstoringarbitrarystatisticsmetadatarelatedtoaqueryanditsresulte.g.totalrequesttimedataprocessingtime.
+      type: object
+      properties:
+        color:
+          type: object
+          additionalProperties: {}
+          description: 'Map values to a display color
+
+            NOTE: this interface is under development in the frontend... so simple map for now'
+        custom:
+          type: object
+          additionalProperties: {}
+          description: Panel Specific Values
+        decimals:
+          type: integer
+          contentEncoding: int32
+        description:
+          type: string
+          description: Description is human readable field metadata
+        displayName:
+          type: string
+          description: DisplayName overrides Grafana default naming, should not be used from a data source
+        displayNameFromDS:
+          type: string
+          description: DisplayNameFromDS overrides Grafana default naming strategy.
+        filterable:
+          type: boolean
+          description: Filterable indicates if the Field's data can be filtered by additional calls.
+        interval:
+          type: number
+          description: 'Interval indicates the expected regular step between values in the series.
+
+            When an interval exists, consumers can identify "missing" values when the expected value is not present.
+
+            The grafana timeseries visualization will render disconnected values when missing values are found it the time field.
+
+            The interval uses the same units as the values.  For time.Time, this is defined in milliseconds.'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataLink'
+          description: The behavior when clicking on a result
+        mappings:
+          type: array
+          items:
+            type: object
+          description: ''
+        max:
+          type: number
+          description: 'ConfFloat64 is a float64. It Marshals float64 values of NaN of Inf
+
+            to null.'
+        min:
+          type: number
+          description: 'ConfFloat64 is a float64. It Marshals float64 values of NaN of Inf
+
+            to null.'
+        noValue:
+          type: string
+          description: Alternative to empty string
+        path:
+          type: string
+          description: 'Path is an explicit path to the field in the datasource. When the frame meta includes a path,
+
+            this will default to `${frame.meta.path}/${field.name}
+
+
+            When defined, this value can be used as an identifier within the datasource scope, and
+
+            may be used as an identifier to update values in a subsequent request'
+        thresholds:
+          allOf:
+          - $ref: '#/components/schemas/ThresholdsConfig'
+          - description: ThresholdsConfig setup thresholds
+        type:
+          allOf:
+          - $ref: '#/components/schemas/FieldTypeConfig'
+          - description: FieldTypeConfig has type specific configs, only one should be active at a time
+        unit:
+          type: string
+          description: Numeric Options
+        value:
+          type: number
+        writeable:
+          type: boolean
+          description: Writeable indicates that the datasource knows how to update this value
+      description: 'The embedded FieldConfig''s display name must be set.
+
+        It corresponds to the QueryResultMetaStat on the frontend (https://github.com/grafana/grafana/blob/master/packages/grafana-data/src/types/data.ts#L53).'
+    LinkTransformationConfig:
+      title: LinkTransformationConfig
+      type: object
+      properties:
+        expression:
+          type: string
+        field:
+          type: string
+        mapValue:
+          type: string
+        type:
+          type: string
+    sort:
+      title: sort
+      enum:
+      - time-desc
+      - time-asc
+      type: string
+    DataResponsecontainstheresultsfromaDataQuery.:
+      title: DataResponsecontainstheresultsfromaDataQuery.
+      type: object
+      properties:
+        Error:
+          type: string
+          description: Error is a property to be set if the corresponding DataQuery has an error.
+        ErrorSource:
+          type: string
+        Frames:
+          type: array
+          items:
+            $ref: '#/components/schemas/FrameisacolumnardatastructurewhereeachcolumnisaField.'
+          description: 'It is the main data container within a backend.DataResponse.
+
+            There should be no `nil` entries in the Frames slice (making them pointers was a mistake).'
+        Status:
+          type: integer
+          contentEncoding: int64
+      description: 'A map of RefIDs (unique query identifiers) to this type makes up the Responses property of a QueryDataResponse.
+
+        The Error property is used to allow for partial success responses from the containing QueryDataResponse.'
+    MetricRequest:
+      title: MetricRequest
+      required:
+      - from
+      - queries
+      - to
+      type: object
+      properties:
+        debug:
+          type: boolean
+        from:
+          type: string
+          description: From Start time in epoch timestamps in milliseconds or relative using Grafana time units.
+          examples:
+          - now-1h
+        queries:
+          type: array
+          items:
+            type: object
+          description: 'queries.refId – Specifies an identifier of the query. Is optional and default to “A”.
+
+            queries.datasourceId – Specifies the data source to be queried. Each query in the request must have an unique datasourceId.
+
+            queries.maxDataPoints - Species maximum amount of data points that dashboard panel can render. Is optional and default to 100.
+
+            queries.intervalMs - Specifies the time interval in milliseconds of time series. Is optional and defaults to 1000.'
+          examples:
+          - - datasource:
+                uid: PD8C576611E62080A
+              format: table
+              intervalMs: 86400000
+              maxDataPoints: 1092
+              rawSql: SELECT 1 as valueOne, 2 as valueTwo
+              refId: A
+        to:
+          type: string
+          description: To End time in epoch timestamps in milliseconds or relative using Grafana time units.
+          examples:
+          - now
+    QueryDataResponsecontainstheresultsfromaQueryDataRequest.:
+      title: QueryDataResponsecontainstheresultsfromaQueryDataRequest.
+      type: object
+      properties:
+        results:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/DataResponsecontainstheresultsfromaDataQuery.'
+          description: 'The QueryData method the QueryDataHandler method will set the RefId
+
+            property on the DataResponses'' frames based on these RefIDs.'
+      description: It is the return type of a QueryData call.
+    QueryHistoryDeleteQueryResponse:
+      title: QueryHistoryDeleteQueryResponse
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+      description: QueryHistoryDeleteQueryResponse is the response struct for deleting a query from query history
+    TimeRange:
+      title: TimeRange
+      type: object
+      properties:
+        from:
+          type: string
+          contentEncoding: date-time
+        to:
+          type: string
+          contentEncoding: date-time
+      description: Redefining this to avoid an import cycle
+    InternalDataLink:
+      title: InternalDataLink
+      type: object
+      properties:
+        datasourceName:
+          type: string
+        datasourceUid:
+          type: string
+        panelsState:
+          description: This is an object constructed with the keys as the values of the enum VisType and the value being a bag of properties
+        query: {}
+        timeRange:
+          allOf:
+          - $ref: '#/components/schemas/TimeRange'
+          - description: Redefining this to avoid an import cycle
+        transformations:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkTransformationConfig'
+          description: ''
+      description: InternalDataLink definition to allow Explore links to be constructed in the backend
+    ThresholdsConfig:
+      title: ThresholdsConfig
+      type: object
+      properties:
+        mode:
+          type: string
+          description: ThresholdsMode absolute or percentage
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/Threshold'
+          description: Must be sorted by 'value', first value is always -Infinity
+      description: ThresholdsConfig setup thresholds
+    FrameisacolumnardatastructurewhereeachcolumnisaField.:
+      title: FrameisacolumnardatastructurewhereeachcolumnisaField.
+      type: object
+      properties:
+        Fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldrepresentsatypedcolumnofdatawithinaFrame.'
+          description: 'Fields are the columns of a frame.
+
+            All Fields must be of the same the length when marshalling the Frame for transmission.
+
+            There should be no `nil` entries in the Fields slice (making them pointers was a mistake).'
+        Meta:
+          allOf:
+          - $ref: '#/components/schemas/FrameMetamatches'
+          - description: 'https://github.com/grafana/grafana/blob/master/packages/grafana-data/src/types/data.ts#L11
+
+              NOTE -- in javascript this can accept any `[key: string]: any;` however
+
+              this interface only exposes the values we want to be exposed'
+        Name:
+          type: string
+          description: Name is used in some Grafana visualizations.
+        RefID:
+          type: string
+          description: RefID is a property that can be set to match a Frame to its originating query.
+      description: 'Each Field is well typed by its FieldType and supports optional Labels.
+
+
+        A Frame is a general data container for Grafana. A Frame can be table data
+
+        or time series data depending on its content and field types.'
+    Threshold:
+      title: Threshold
+      type: object
+      properties:
+        color:
+          type: string
+        state:
+          type: string
+        value:
+          type: number
+          description: 'ConfFloat64 is a float64. It Marshals float64 values of NaN of Inf
+
+            to null.'
+      description: Threshold a single step on the threshold list
+    FieldConfigrepresentsthedisplaypropertiesforaField.:
+      title: FieldConfigrepresentsthedisplaypropertiesforaField.
+      type: object
+      properties:
+        color:
+          type: object
+          additionalProperties: {}
+          description: 'Map values to a display color
+
+            NOTE: this interface is under development in the frontend... so simple map for now'
+        custom:
+          type: object
+          additionalProperties: {}
+          description: Panel Specific Values
+        decimals:
+          type: integer
+          contentEncoding: int32
+        description:
+          type: string
+          description: Description is human readable field metadata
+        displayName:
+          type: string
+          description: DisplayName overrides Grafana default naming, should not be used from a data source
+        displayNameFromDS:
+          type: string
+          description: DisplayNameFromDS overrides Grafana default naming strategy.
+        filterable:
+          type: boolean
+          description: Filterable indicates if the Field's data can be filtered by additional calls.
+        interval:
+          type: number
+          description: 'Interval indicates the expected regular step between values in the series.
+
+            When an interval exists, consumers can identify "missing" values when the expected value is not present.
+
+            The grafana timeseries visualization will render disconnected values when missing values are found it the time field.
+
+            The interval uses the same units as the values.  For time.Time, this is defined in milliseconds.'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataLink'
+          description: The behavior when clicking on a result
+        mappings:
+          type: array
+          items:
+            type: object
+          description: ''
+        max:
+          type: number
+          description: 'ConfFloat64 is a float64. It Marshals float64 values of NaN of Inf
+
+            to null.'
+        min:
+          type: number
+          description: 'ConfFloat64 is a float64. It Marshals float64 values of NaN of Inf
+
+            to null.'
+        noValue:
+          type: string
+          description: Alternative to empty string
+        path:
+          type: string
+          description: 'Path is an explicit path to the field in the datasource. When the frame meta includes a path,
+
+            this will default to `${frame.meta.path}/${field.name}
+
+
+            When defined, this value can be used as an identifier within the datasource scope, and
+
+            may be used as an identifier to update values in a subsequent request'
+        thresholds:
+          allOf:
+          - $ref: '#/components/schemas/ThresholdsConfig'
+          - description: ThresholdsConfig setup thresholds
+        type:
+          allOf:
+          - $ref: '#/components/schemas/FieldTypeConfig'
+          - description: FieldTypeConfig has type specific configs, only one should be active at a time
+        unit:
+          type: string
+          description: Numeric Options
+        writeable:
+          type: boolean
+          description: Writeable indicates that the datasource knows how to update this value
+    CreateQueryInQueryHistoryCommand:
+      title: CreateQueryInQueryHistoryCommand
+      required:
+      - queries
+      type: object
+      properties:
+        datasourceUid:
+          type: string
+          description: UID of the data source for which are queries stored.
+          examples:
+          - PE1C5CBDA0504A6A3
+        queries:
+          type: object
+      description: CreateQueryInQueryHistoryCommand is the command for adding query history
+    publicError1:
+      title: publicError1
+      required:
+      - messageId
+      - statusCode
+      type: object
+      properties:
+        extra:
+          type: object
+          additionalProperties: {}
+          description: Extra Additional information about the error
+        message:
+          type: string
+          description: Message A human readable message
+        messageId:
+          type: string
+          description: MessageID A unique identifier for the error
+        statusCode:
+          type: integer
+          description: StatusCode The HTTP status code returned
+          contentEncoding: int64
+      description: 'PublicError is derived from Error and only contains information
+
+        available to the end user.'
+    EnumFieldConfig:
+      title: EnumFieldConfig
+      type: object
+      properties:
+        color:
+          type: array
+          items:
+            type: string
+          description: Color is the color value for a given index (empty is undefined)
+        description:
+          type: array
+          items:
+            type: string
+          description: Description of the enum state
+        icon:
+          type: array
+          items:
+            type: string
+          description: Icon supports setting an icon for a given index value
+        text:
+          type: array
+          items:
+            type: string
+          description: Value is the string display value for a given index
+      description: 'Enum field config
+
+        Vector values are used as lookup keys into the enum fields'
+    FieldTypeConfig:
+      title: FieldTypeConfig
+      type: object
+      properties:
+        enum:
+          allOf:
+          - $ref: '#/components/schemas/EnumFieldConfig'
+          - description: 'Enum field config
+
+              Vector values are used as lookup keys into the enum fields'
+      description: FieldTypeConfig has type specific configs, only one should be active at a time
+    QueryHistorySearchResult:
+      title: QueryHistorySearchResult
+      type: object
+      properties:
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        queryHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryHistoryDTO'
+          description: ''
+        totalCount:
+          type: integer
+          contentEncoding: int64
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    QueryHistoryResponse:
+      title: QueryHistoryResponse
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/QueryHistoryDTO'
+      description: QueryHistoryResponse is a response struct for QueryHistoryDTO
+    NoticeprovidesastructureforpresentingnotificationsinGrafanasuserinterface.:
+      title: NoticeprovidesastructureforpresentingnotificationsinGrafanasuserinterface.
+      type: object
+      properties:
+        inspect:
+          type: integer
+          contentEncoding: int64
+        link:
+          type: string
+          description: 'Link is an optional link for display in the user interface and can be an
+
+            absolute URL or a path relative to Grafana''s root url.'
+        severity:
+          type: integer
+          contentEncoding: int64
+        text:
+          type: string
+          description: Text is freeform descriptive text for the notice.
+    FieldrepresentsatypedcolumnofdatawithinaFrame.:
+      title: FieldrepresentsatypedcolumnofdatawithinaFrame.
+      type: object
+      properties:
+        config:
+          $ref: '#/components/schemas/FieldConfigrepresentsthedisplaypropertiesforaField.'
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          description: Labels are used to add metadata to an object.  The JSON will always be sorted keys
+        name:
+          type: string
+          description: 'Name is default identifier of the field. The name does not have to be unique, but the combination
+
+            of name and Labels should be unique for proper behavior in all situations.'
+      description: 'A Field is essentially a slice of various types with extra properties and methods.
+
+        See NewField() for supported types.
+
+
+        The slice data in the Field is a not exported, so methods on the Field are used to to manipulate its data.'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

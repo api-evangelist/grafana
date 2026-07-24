@@ -1,0 +1,1620 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Identifiers API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Identifiers
+paths:
+  /datasources/id/{name}:
+    parameters: []
+    get:
+      tags:
+      - Identifiers
+      summary: Grafana Get Data Source Id By Name
+      description: This API operation retrieves the unique identifier of a Grafana data source by providing its name as a path parameter. It performs a GET request to the endpoint '/datasources/id/{name}' where {name} is replaced with the actual name of the data source you want to look up. The operation returns the numeric ID associated with that specific data source, which can be useful for subsequent API calls that require the data source ID rather than its name. This is particularly helpful when you need to programmatically reference data sources in scripts or applications where you know the name but need the ID for other operations.
+      operationId: getDataSourceIdByName
+      parameters:
+      - name: name
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getDataSourceIDResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/{id}:
+    parameters: []
+    get:
+      tags:
+      - Identifiers
+      summary: Grafana Get Data Source By ID
+      description: Retrieves detailed information about a specific data source in Grafana by providing its unique identifier. This endpoint returns comprehensive configuration details for the data source including its name, type, URL, access mode, authentication settings, and other metadata associated with the specified ID. It requires appropriate permissions to view data source configurations and is commonly used when you need to inspect or verify the settings of a particular data source that has already been configured in your Grafana instance.
+      operationId: getDataSourceByID
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSource'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Identifiers
+      summary: Grafana Update Data Source By ID
+      description: Updates an existing data source in Grafana by specifying its unique identifier in the URL path. This PUT operation requires the complete data source configuration including connection details, authentication credentials, and any custom settings. The request must include all data source properties as the PUT method typically replaces the entire resource rather than partially updating it. Users need appropriate permissions to modify data sources, and the operation returns the updated data source configuration upon success. This endpoint is commonly used when reconfiguring database connections, updating credentials, or modifying data source settings through automation or administrative interfaces.
+      operationId: updateDataSourceByID
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDataSourceCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createOrUpdateDatasourceResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Identifiers
+      summary: Grafana Delete Data Source By ID
+      description: This API operation removes a specific data source from Grafana by referencing its unique identifier. When executed, it performs a DELETE request to the endpoint /datasources/{id}, where {id} represents the numeric identifier of the data source to be removed. The operation permanently deletes the data source configuration from Grafana, including all its associated settings and connection details. This action requires appropriate administrative permissions and cannot be undone once completed. Upon successful deletion, the data source will no longer be available for use in dashboards or queries within the Grafana instance.
+      operationId: deleteDataSourceByID
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/{id}/health:
+    parameters: []
+    get:
+      tags:
+      - Identifiers
+      summary: Grafana Check Datasource Health By ID
+      description: Sends a health check request to the data source identified by its numeric ID and returns the current operational status. This endpoint verifies whether Grafana can successfully connect to and communicate with the specified data source, helping administrators diagnose connectivity issues or validate data source configurations. The response typically includes status information indicating whether the data source is reachable and functioning properly, along with any relevant error messages if the health check fails.
+      operationId: checkDatasourceHealthByID
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/{id}/resources/{datasource_proxy_route}:
+    parameters: []
+    get:
+      tags:
+      - Identifiers
+      summary: Grafana Call Datasource Resource By ID
+      description: This API operation allows you to make GET requests to a specific Grafana datasource's custom resources by providing the datasource ID and a resource route path. It acts as a proxy that forwards requests to the underlying datasource plugin's resource handler, enabling access to datasource-specific endpoints and functionality that may not be covered by standard Grafana APIs. The datasource_proxy_route parameter is a wildcard path that gets passed through to the datasource's backend, allowing flexible interaction with various datasource capabilities such as querying metadata, retrieving schema information, or accessing custom features exposed by the particular datasource plugin.
+      operationId: callDatasourceResourceByID
+      parameters:
+      - name: datasource_proxy_route
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /folders/id/{folder_id}:
+    parameters: []
+    get:
+      tags:
+      - Identifiers
+      summary: Grafana Get Folder By ID
+      description: The GET /folders/id/{folder_id} endpoint in Grafana retrieves detailed information about a specific folder using its unique identifier. This operation allows users to fetch folder metadata including its title, UID, permissions, and other configuration details by providing the numeric folder ID in the path parameter. It's particularly useful when you need to access folder information programmatically and have the folder's ID rather than its UID, returning a JSON response with the complete folder object if found or an error if the folder doesn't exist or the user lacks sufficient permissions to view it.
+      operationId: getFolderByID
+      parameters:
+      - name: folder_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Folder'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /annotations/{annotation_id}:
+    parameters: []
+    get:
+      tags:
+      - Identifiers
+      summary: Grafana Get Annotation By ID
+      description: Retrieves detailed information about a specific annotation in Grafana using its unique identifier. This GET operation allows users to fetch a single annotation's complete data including its text, tags, time range, dashboard and panel associations, and metadata by providing the annotation ID as a path parameter. It's useful for viewing or auditing individual annotations, or as part of workflows that need to process or display annotation details programmatically.
+      operationId: getAnnotationByID
+      parameters:
+      - name: annotation_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Annotation'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Identifiers
+      summary: Grafana Delete Annotation By ID
+      description: Deletes a specific annotation from Grafana using its unique identifier. This operation permanently removes the annotation record from the system, including any associated metadata such as tags, text, and time range information. The annotation ID must be provided in the URL path to identify which annotation should be deleted. This is typically used when an annotation is no longer relevant or was created in error. The user making the request must have appropriate permissions to delete annotations in the target dashboard or organization.
+      operationId: deleteAnnotationByID
+      parameters:
+      - name: annotation_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /orgs/{org_id}:
+    parameters: []
+    get:
+      tags:
+      - Identifiers
+      summary: Grafana Get Org By ID
+      description: This API operation retrieves detailed information about a specific organization in Grafana by providing its unique organizational identifier. When called with a valid org_id parameter, it returns the organization's configuration data including name, address, and other organizational metadata. This endpoint requires appropriate authentication and authorization to access the organization's details, making it essential for administrative functions and integrations that need to query or display information about a particular Grafana organization.
+      operationId: getOrgByID
+      parameters:
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgDetailsDTO'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Identifiers
+      summary: Grafana Delete Org By ID
+      description: This API operation allows an authenticated user with appropriate permissions to permanently delete a specific organization from Grafana by providing the organization's unique identifier (org_id) in the URL path. When executed via HTTP DELETE method, it removes the organization and all its associated resources, including dashboards, data sources, users, and configurations that belong to that organization. This is a destructive operation that typically requires administrator-level privileges and should be used with caution as the deletion is irreversible and will affect all users who are members of the specified organization.
+      operationId: deleteOrgByID
+      parameters:
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams/{team_id}:
+    parameters: []
+    get:
+      tags:
+      - Identifiers
+      summary: Grafana Get Team By ID
+      description: This API operation retrieves detailed information about a specific team in Grafana by providing the team's unique identifier in the URL path. When a GET request is made to the /teams/{team_id} endpoint with a valid team ID, the API returns comprehensive data about that team, including properties such as the team name, email address, member count, and other relevant team metadata. This endpoint is typically used by administrators or applications that need to fetch information about a particular team for display purposes, integration workflows, or team management operations within the Grafana platform.
+      operationId: getTeamByID
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: accesscontrol
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Identifiers
+      summary: Grafana Delete Team By ID
+      description: This API operation removes a specific team from a Grafana instance by providing the team's unique identifier in the URL path. When executed, it performs a DELETE request to the endpoint /teams/{team_id}, where {team_id} is replaced with the numerical ID of the team to be deleted. The operation requires appropriate administrative permissions and will permanently remove the team along with its associated configurations, memberships, and permissions. Upon successful execution, the team will no longer exist in the Grafana system, and all users previously assigned to that team will lose their team-based access rights and dashboard permissions granted through that team membership.
+      operationId: deleteTeamByID
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/id/{DashboardID}/permissions:
+    parameters: []
+    get:
+      tags:
+      - Identifiers
+      summary: Grafana Get Dashboard Permissions List By ID
+      description: This API operation retrieves the complete list of permissions associated with a specific Grafana dashboard by providing its unique dashboard identifier. It returns details about which users, teams, or roles have access to the dashboard and what level of permissions they possess (such as view, edit, or admin rights). The GET request to this endpoint allows administrators to audit and review the current access control settings for a dashboard, making it useful for security compliance, permission management, and understanding who can interact with specific dashboards within the Grafana instance.
+      operationId: getDashboardPermissionsListByID
+      parameters:
+      - name: DashboardID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardACLInfoDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Identifiers
+      summary: Grafana Update Dashboard Permissions By ID
+      description: This API operation allows administrators to modify the access control permissions for a specific Grafana dashboard by providing its unique dashboard ID in the URL path. By sending a POST request to this endpoint with the appropriate permission payload, users can grant or revoke access rights for teams, users, or roles, defining who can view, edit, or administer the dashboard. The operation requires proper authentication and authorization, typically at an administrator or dashboard owner level, and accepts a JSON body containing the new permission settings that specify the permission level (viewer, editor, or admin) along with the corresponding user IDs, team IDs, or role identifiers to be applied to the target dashboard.
+      operationId: updateDashboardPermissionsByID
+      parameters:
+      - name: DashboardID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDashboardACLCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/id/{DashboardID}/versions:
+    parameters: []
+    get:
+      tags:
+      - Identifiers
+      summary: Grafana Get Dashboard Versions By ID
+      description: Retrieves the version history of a specific Grafana dashboard identified by its unique dashboard ID. This operation returns a list of all saved versions for the dashboard, including metadata such as version numbers, timestamps, user information who made the changes, and version messages or notes. It allows administrators and users to track changes made to a dashboard over time, compare different versions, and understand the evolution of dashboard configurations, which is useful for auditing purposes, troubleshooting issues introduced by recent changes, or reverting to previous dashboard states if needed.
+      operationId: getDashboardVersionsByID
+      parameters:
+      - name: DashboardID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardVersionResponseMeta'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/id/{DashboardID}/versions/{DashboardVersionID}:
+    parameters: []
+    get:
+      tags:
+      - Identifiers
+      summary: Grafana Get Dashboard Version By ID
+      description: This API operation retrieves a specific version of a Grafana dashboard by providing both the dashboard's unique identifier and the desired version identifier. When invoked using the GET method, it returns the complete configuration and metadata for that particular version of the dashboard, allowing users to view historical snapshots, compare changes between versions, or restore previous dashboard states. This is particularly useful for auditing dashboard modifications, understanding what changes were made over time, and recovering from unwanted updates by accessing earlier working versions of a dashboard's configuration.
+      operationId: getDashboardVersionByID
+      parameters:
+      - name: DashboardID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: DashboardVersionID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardVersionMeta'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /users/{user_id}:
+    parameters: []
+    get:
+      tags:
+      - Identifiers
+      summary: Grafana Get User By ID
+      description: This API operation retrieves detailed information about a specific Grafana user by their unique user identifier. By sending a GET request to the endpoint with a valid user_id parameter, administrators or authorized users can fetch comprehensive user data including username, email, authentication details, organization memberships, and user preferences. This operation is typically used for user management tasks, displaying user profiles, or verifying user information within Grafana instances, and requires appropriate permissions to access user data depending on the Grafana instance's security configuration.
+      operationId: getUserByID
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileDTO'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    DashboardACLInfoDTO:
+      title: DashboardACLInfoDTO
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        dashboardId:
+          type: integer
+          contentEncoding: int64
+        folderId:
+          type: integer
+          description: 'Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+        inherited:
+          type: boolean
+        isFolder:
+          type: boolean
+        permission:
+          type: integer
+          contentEncoding: int64
+        permissionName:
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+        slug:
+          type: string
+        team:
+          type: string
+        teamAvatarUrl:
+          type: string
+        teamEmail:
+          type: string
+        teamId:
+          type: integer
+          contentEncoding: int64
+        teamUid:
+          type: string
+        title:
+          type: string
+        uid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        url:
+          type: string
+        userAvatarUrl:
+          type: string
+        userEmail:
+          type: string
+        userId:
+          type: integer
+          contentEncoding: int64
+        userLogin:
+          type: string
+        userUid:
+          type: string
+    createOrUpdateDatasourceResponse:
+      title: createOrUpdateDatasourceResponse
+      required:
+      - datasource
+      - id
+      - message
+      - name
+      type: object
+      properties:
+        datasource:
+          $ref: '#/components/schemas/DataSource'
+        id:
+          type: integer
+          description: ID Identifier of the new data source.
+          contentEncoding: int64
+          examples:
+          - 65
+        message:
+          type: string
+          description: Message Message of the deleted dashboard.
+          examples:
+          - Data source added
+        name:
+          type: string
+          description: Name of the new data source.
+          examples:
+          - My Data source
+    Folder:
+      title: Folder
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+          description: 'Metadata contains user accesses for a given resource
+
+            Ex: map[string]bool{"create":true, "delete": true}'
+        canAdmin:
+          type: boolean
+        canDelete:
+          type: boolean
+        canEdit:
+          type: boolean
+        canSave:
+          type: boolean
+        created:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          type: string
+        hasAcl:
+          type: boolean
+        id:
+          type: integer
+          description: 'Deprecated: use UID instead'
+          contentEncoding: int64
+        managedBy:
+          type: string
+          description: 'It can be a user or a tool or a generic API client.
+
+            +enum'
+        orgId:
+          type: integer
+          contentEncoding: int64
+        parentUid:
+          type: string
+          description: only used if nested folders are enabled
+        parents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Folder'
+          description: the parent folders starting from the root going down
+        title:
+          type: string
+        uid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        updatedBy:
+          type: string
+        url:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+    TeamDTO:
+      title: TeamDTO
+      required:
+      - id
+      - isProvisioned
+      - memberCount
+      - name
+      - orgId
+      - uid
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+        avatarUrl:
+          type: string
+        email:
+          type: string
+        externalUID:
+          type: string
+        id:
+          type: integer
+          description: '@deprecated Use UID instead'
+          contentEncoding: int64
+        isProvisioned:
+          type: boolean
+        memberCount:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        permission:
+          type: integer
+          contentEncoding: int64
+        uid:
+          type: string
+    UpdateDataSourceCommand:
+      title: UpdateDataSourceCommand
+      type: object
+      properties:
+        access:
+          type: string
+        basicAuth:
+          type: boolean
+        basicAuthUser:
+          type: string
+        database:
+          type: string
+        isDefault:
+          type: boolean
+        jsonData:
+          type: object
+        name:
+          type: string
+        secureJsonData:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+        uid:
+          type: string
+        url:
+          type: string
+        user:
+          type: string
+        version:
+          type: integer
+          description: The previous version -- used for optimistic locking
+          contentEncoding: int64
+        withCredentials:
+          type: boolean
+      description: Also acts as api DTO
+    Role:
+      title: Role
+      enum:
+      - None
+      - Viewer
+      - Editor
+      - Admin
+      type: string
+    getDataSourceIDResponse:
+      title: getDataSourceIDResponse
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID Identifier of the data source.
+          contentEncoding: int64
+          examples:
+          - 65
+    DataSource:
+      title: DataSource
+      type: object
+      properties:
+        access:
+          type: string
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+          description: 'Metadata contains user accesses for a given resource
+
+            Ex: map[string]bool{"create":true, "delete": true}'
+        basicAuth:
+          type: boolean
+        basicAuthUser:
+          type: string
+        database:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        isDefault:
+          type: boolean
+        jsonData:
+          type: object
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        readOnly:
+          type: boolean
+        secureJsonFields:
+          type: object
+          additionalProperties:
+            type: boolean
+        type:
+          type: string
+        typeLogoUrl:
+          type: string
+        uid:
+          type: string
+        url:
+          type: string
+        user:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+        withCredentials:
+          type: boolean
+    DashboardVersionMeta:
+      title: DashboardVersionMeta
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          type: string
+        dashboardId:
+          type: integer
+          contentEncoding: int64
+        data:
+          type: object
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+        parentVersion:
+          type: integer
+          contentEncoding: int64
+        restoredFrom:
+          type: integer
+          contentEncoding: int64
+        uid:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+      description: 'DashboardVersionMeta extends the DashboardVersionDTO with the names
+
+        associated with the UserIds, overriding the field with the same name from
+
+        the DashboardVersionDTO model.'
+    DashboardACLUpdateItem:
+      title: DashboardACLUpdateItem
+      type: object
+      properties:
+        permission:
+          type: integer
+          contentEncoding: int64
+        role:
+          $ref: '#/components/schemas/Role'
+        teamId:
+          type: integer
+          contentEncoding: int64
+        userId:
+          type: integer
+          contentEncoding: int64
+    DashboardVersionResponseMeta:
+      title: DashboardVersionResponseMeta
+      type: object
+      properties:
+        continueToken:
+          type: string
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardVersionMeta'
+          description: ''
+    UserProfileDTO:
+      title: UserProfileDTO
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+        authLabels:
+          type: array
+          items:
+            type: string
+          description: ''
+        avatarUrl:
+          type: string
+        createdAt:
+          type: string
+          contentEncoding: date-time
+        email:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        isDisabled:
+          type: boolean
+        isExternal:
+          type: boolean
+        isExternallySynced:
+          type: boolean
+        isGrafanaAdmin:
+          type: boolean
+        isGrafanaAdminExternallySynced:
+          type: boolean
+        isProvisioned:
+          type: boolean
+        login:
+          type: string
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        theme:
+          type: string
+        uid:
+          type: string
+        updatedAt:
+          type: string
+          contentEncoding: date-time
+    Address:
+      title: Address
+      type: object
+      properties:
+        address1:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        zipCode:
+          type: string
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    OrgDetailsDTO:
+      title: OrgDetailsDTO
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+        id:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+    Annotation:
+      title: Annotation
+      type: object
+      properties:
+        alertId:
+          type: integer
+          contentEncoding: int64
+        alertName:
+          type: string
+        avatarUrl:
+          type: string
+        created:
+          type: integer
+          contentEncoding: int64
+        dashboardId:
+          type: integer
+          description: 'Deprecated: Use DashboardUID and OrgID instead'
+          contentEncoding: int64
+        dashboardUID:
+          type: string
+        data:
+          type: object
+        email:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        login:
+          type: string
+        newState:
+          type: string
+        panelId:
+          type: integer
+          contentEncoding: int64
+        prevState:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+          description: ''
+        text:
+          type: string
+        time:
+          type: integer
+          contentEncoding: int64
+        timeEnd:
+          type: integer
+          contentEncoding: int64
+        updated:
+          type: integer
+          contentEncoding: int64
+        userId:
+          type: integer
+          contentEncoding: int64
+    UpdateDashboardACLCommand:
+      title: UpdateDashboardACLCommand
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardACLUpdateItem'
+          description: ''
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

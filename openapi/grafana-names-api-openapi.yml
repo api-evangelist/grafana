@@ -1,0 +1,510 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Names API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Names
+paths:
+  /datasources/id/{name}:
+    parameters: []
+    get:
+      tags:
+      - Names
+      summary: Grafana Get Data Source Id By Name
+      description: This API operation retrieves the unique identifier of a Grafana data source by providing its name as a path parameter. It performs a GET request to the endpoint '/datasources/id/{name}' where {name} is replaced with the actual name of the data source you want to look up. The operation returns the numeric ID associated with that specific data source, which can be useful for subsequent API calls that require the data source ID rather than its name. This is particularly helpful when you need to programmatically reference data sources in scripts or applications where you know the name but need the ID for other operations.
+      operationId: getDataSourceIdByName
+      parameters:
+      - name: name
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getDataSourceIDResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /datasources/name/{name}:
+    parameters: []
+    get:
+      tags:
+      - Names
+      summary: Grafana Get Data Source By Name
+      description: This API operation retrieves a specific data source configuration from Grafana by using its unique name as an identifier. When you send a GET request to the endpoint with the data source name as a path parameter, Grafana returns the complete configuration details of that data source, including its type, connection settings, authentication credentials, and other relevant metadata. This is particularly useful when you need to programmatically access or verify the configuration of a specific data source without knowing its numeric ID, making it more intuitive for automation scripts and integrations that work with human-readable names rather than database identifiers.
+      operationId: getDataSourceByName
+      parameters:
+      - name: name
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSource'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Names
+      summary: Grafana Delete Data Source By Name
+      description: Removes a data source from Grafana by specifying its unique name rather than its numeric ID. This operation permanently deletes the data source configuration including all associated settings, credentials, and metadata. Once deleted, any dashboards or panels that reference this data source will no longer function properly until reconfigured with an alternative data source. This endpoint is particularly useful when automating data source management through scripts or infrastructure-as-code tools where the data source name is known but the internal ID is not readily available.
+      operationId: deleteDataSourceByName
+      parameters:
+      - name: name
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleteDataSourceByNameResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /library-elements/name/{library_element_name}:
+    parameters: []
+    get:
+      tags:
+      - Names
+      summary: Grafana Get Library Element By Name
+      description: Gets a library element with the specified name from Grafana's library elements collection. This endpoint retrieves a single library element by providing its unique name as a path parameter. Library elements in Grafana are reusable components like panels or data sources that can be shared across multiple dashboards. The operation returns the complete library element object including its configuration, metadata, and any associated properties. This is useful when you need to reference or reuse a specific library element in your dashboard configurations or when you want to retrieve details about a named library element without knowing its numeric ID.
+      operationId: getLibraryElementByName
+      parameters:
+      - name: library_element_name
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryElementArrayResponseisaresponsestructforanarrayofLibraryElementDTO.'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /orgs/name/{org_name}:
+    parameters: []
+    get:
+      tags:
+      - Names
+      summary: Grafana Get Org By Name
+      description: Returns the details of a specific Grafana organization by searching for it using its unique organization name rather than its numeric ID. This endpoint provides an alternative way to retrieve organization information when you know the organization's name but not its ID, returning the same organization data structure including ID, name, and address that would be obtained through the standard ID-based lookup endpoint.
+      operationId: getOrgByName
+      parameters:
+      - name: org_name
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgDetailsDTO'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    deleteDataSourceByNameResponse:
+      title: deleteDataSourceByNameResponse
+      required:
+      - id
+      - message
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID Identifier of the deleted data source.
+          contentEncoding: int64
+          examples:
+          - 65
+        message:
+          type: string
+          description: Message Message of the deleted dashboard.
+          examples:
+          - Dashboard My Dashboard deleted
+    LibraryElementDTOisthefrontendDTOforentities.:
+      title: LibraryElementDTOisthefrontendDTOforentities.
+      type: object
+      properties:
+        description:
+          type: string
+        folderId:
+          type: integer
+          description: 'Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        kind:
+          type: integer
+          contentEncoding: int64
+        meta:
+          $ref: '#/components/schemas/LibraryElementDTOMetaisthemetainformationforLibraryElementDTO.'
+        model:
+          type: object
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        schemaVersion:
+          type: integer
+          contentEncoding: int64
+        type:
+          type: string
+        uid:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+    DataSource:
+      title: DataSource
+      type: object
+      properties:
+        access:
+          type: string
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+          description: 'Metadata contains user accesses for a given resource
+
+            Ex: map[string]bool{"create":true, "delete": true}'
+        basicAuth:
+          type: boolean
+        basicAuthUser:
+          type: string
+        database:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        isDefault:
+          type: boolean
+        jsonData:
+          type: object
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        readOnly:
+          type: boolean
+        secureJsonFields:
+          type: object
+          additionalProperties:
+            type: boolean
+        type:
+          type: string
+        typeLogoUrl:
+          type: string
+        uid:
+          type: string
+        url:
+          type: string
+        user:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+        withCredentials:
+          type: boolean
+    getDataSourceIDResponse:
+      title: getDataSourceIDResponse
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID Identifier of the data source.
+          contentEncoding: int64
+          examples:
+          - 65
+    LibraryElementDTOMetaisthemetainformationforLibraryElementDTO.:
+      title: LibraryElementDTOMetaisthemetainformationforLibraryElementDTO.
+      type: object
+      properties:
+        connectedDashboards:
+          type: integer
+          contentEncoding: int64
+        created:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          $ref: '#/components/schemas/LibraryElementDTOMetaUser'
+        folderName:
+          type: string
+        folderUid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        updatedBy:
+          $ref: '#/components/schemas/LibraryElementDTOMetaUser'
+    LibraryElementDTOMetaUser:
+      title: LibraryElementDTOMetaUser
+      type: object
+      properties:
+        avatarUrl:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+    Address:
+      title: Address
+      type: object
+      properties:
+        address1:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        zipCode:
+          type: string
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    OrgDetailsDTO:
+      title: OrgDetailsDTO
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+        id:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+    LibraryElementArrayResponseisaresponsestructforanarrayofLibraryElementDTO.:
+      title: LibraryElementArrayResponseisaresponsestructforanarrayofLibraryElementDTO.
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/LibraryElementDTOisthefrontendDTOforentities.'
+          description: ''
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

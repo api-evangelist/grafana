@@ -1,0 +1,312 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Send API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Send
+paths:
+  /reports/email:
+    parameters: []
+    post:
+      tags:
+      - Send
+      summary: Grafana Send Report
+      description: This API operation allows you to send a Grafana report via email by making a POST request to the /reports/email endpoint. When invoked, it triggers the generation and delivery of a specified report to one or more email recipients. The operation typically requires authentication and accepts parameters such as report ID, recipient email addresses, and optional customization settings like date ranges or dashboard variables. This is particularly useful for automating report distribution, scheduling periodic updates to stakeholders, or manually triggering ad-hoc report deliveries without accessing the Grafana UI directly.
+      operationId: sendReport
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportEmail'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /reports/test-email:
+    parameters: []
+    post:
+      tags:
+      - Send
+      summary: Grafana Send Test Email
+      description: This API operation allows users to send a test email for Grafana reporting functionality. By making a POST request to the /reports/test-email endpoint, administrators can verify that their email configuration is working correctly before scheduling actual reports. The operation sends a sample email to a specified recipient address, helping to validate SMTP settings, authentication credentials, and email delivery paths within the Grafana instance. This is particularly useful during initial setup or when troubleshooting email-related issues with Grafana's reporting feature.
+      operationId: sendTestEmail
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateReport'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ReportSchedule:
+      title: ReportSchedule
+      type: object
+      properties:
+        dayOfMonth:
+          type: string
+        endDate:
+          type: string
+          contentEncoding: date-time
+        frequency:
+          type: string
+        intervalAmount:
+          type: integer
+          contentEncoding: int64
+        intervalFrequency:
+          type: string
+        startDate:
+          type: string
+          contentEncoding: date-time
+        timeZone:
+          type: string
+        workdaysOnly:
+          type: boolean
+    ReportOptions:
+      title: ReportOptions
+      type: object
+      properties:
+        layout:
+          type: string
+        orientation:
+          type: string
+        pdfCombineOneFile:
+          type: boolean
+        pdfShowTemplateVariables:
+          type: boolean
+        timeRange:
+          $ref: '#/components/schemas/ReportTimeRange'
+    ReportEmail:
+      title: ReportEmail
+      type: object
+      properties:
+        emails:
+          type: string
+          description: Comma-separated list of emails to which to send the report to.
+        id:
+          type: string
+          description: Send the report to the emails specified in the report. Required if emails is not present.
+        useEmailsFromReport:
+          type: boolean
+          description: Send the report to the emails specified in the report. Required if emails is not present.
+    CreateOrUpdateReport:
+      title: CreateOrUpdateReport
+      type: object
+      properties:
+        dashboards:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportDashboard'
+          description: ''
+        enableCsv:
+          type: boolean
+        enableDashboardUrl:
+          type: boolean
+        formats:
+          type: array
+          items:
+            type: string
+          description: ''
+        message:
+          type: string
+        name:
+          type: string
+        options:
+          $ref: '#/components/schemas/ReportOptions'
+        recipients:
+          type: string
+        replyTo:
+          type: string
+        scaleFactor:
+          type: integer
+          contentEncoding: int64
+        schedule:
+          $ref: '#/components/schemas/ReportSchedule'
+        state:
+          type: string
+          description: +enum
+        subject:
+          type: string
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    ReportTimeRange:
+      title: ReportTimeRange
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    ReportDashboardID:
+      title: ReportDashboardID
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+        uid:
+          type: string
+    ReportDashboard:
+      title: ReportDashboard
+      type: object
+      properties:
+        dashboard:
+          $ref: '#/components/schemas/ReportDashboardID'
+        reportVariables:
+          type: object
+        timeRange:
+          $ref: '#/components/schemas/ReportTimeRange'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

@@ -1,0 +1,151 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Comments API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Comments
+paths:
+  /query-history/{query_history_uid}:
+    parameters: []
+    patch:
+      tags:
+      - Comments
+      summary: Grafana Patch Query Comment
+      description: Updates the comment of a specific query in the query history by its unique identifier. This endpoint allows users to modify the descriptive comment associated with a previously executed query, making it easier to document and organize query history. The operation requires the query history UID as a path parameter and accepts the updated comment data in the request body. This is useful for adding context, notes, or explanations to queries after they have been run, improving collaboration and query management within Grafana.
+      operationId: patchQueryComment
+      parameters:
+      - name: query_history_uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchQueryCommentInQueryHistoryCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryHistoryResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    QueryHistoryDTO:
+      title: QueryHistoryDTO
+      type: object
+      properties:
+        comment:
+          type: string
+        createdAt:
+          type: integer
+          contentEncoding: int64
+        createdBy:
+          type: integer
+          contentEncoding: int64
+        datasourceUid:
+          type: string
+        queries:
+          type: object
+        starred:
+          type: boolean
+        uid:
+          type: string
+    QueryHistoryResponse:
+      title: QueryHistoryResponse
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/QueryHistoryDTO'
+      description: QueryHistoryResponse is a response struct for QueryHistoryDTO
+    PatchQueryCommentInQueryHistoryCommand:
+      title: PatchQueryCommentInQueryHistoryCommand
+      type: object
+      properties:
+        comment:
+          type: string
+          description: Updated comment
+      description: PatchQueryCommentInQueryHistoryCommand is the command for updating comment for query in query history
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

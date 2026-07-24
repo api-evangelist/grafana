@@ -1,0 +1,798 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Mute API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Mute
+paths:
+  /v1/provisioning/mute-timings:
+    parameters: []
+    get:
+      tags:
+      - Mute
+      summary: Grafana Route Get Mute Timings
+      description: The Get Mute Timings operation retrieves a list of all configured mute timings from Grafana's alerting system. Mute timings are scheduling rules that define time intervals during which alert notifications should be suppressed, such as during maintenance windows or outside business hours. This GET endpoint at /v1/provisioning/mute-timings returns the complete collection of mute timing configurations, allowing administrators to view when and under what conditions notifications will be automatically silenced. The response typically includes details like timing names, time intervals, days of the week, months, and any other temporal constraints that have been defined for each mute timing rule.
+      operationId: routeGetMuteTimings
+      parameters: []
+      responses:
+        '200':
+          description: MuteTimings
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MuteTimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+                description: ''
+                contentMediaType: application/json
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Mute
+      summary: Grafana Route Post Mute Timing
+      description: The POST /v1/provisioning/mute-timings endpoint in Grafana allows administrators to create a new mute timing configuration through the provisioning API. Mute timings define specific time intervals during which alert notifications should be silenced, such as maintenance windows, weekends, or business hours exclusions. By posting to this endpoint with the appropriate JSON payload containing the timing specifications (including recurrence rules, time ranges, and date intervals), users can programmatically establish when their alerting system should suppress notifications without requiring manual configuration through the Grafana UI. This is particularly useful for implementing infrastructure-as-code practices and automating alert management across multiple Grafana instances.
+      operationId: routePostMuteTiming
+      parameters:
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MuteTimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+        required: false
+      responses:
+        '201':
+          description: MuteTimeInterval
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MuteTimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+        '400':
+          description: ValidationError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/mute-timings/export:
+    parameters: []
+    get:
+      tags:
+      - Mute
+      summary: Grafana Route Export Mute Timings
+      description: The Route Export Mute Timings operation in Grafana's provisioning API allows users to retrieve and export configured mute timing definitions through a GET request to the /v1/provisioning/mute-timings/export endpoint. This endpoint provides a way to extract mute timing configurations, which define time-based rules for suppressing alert notifications during specific periods such as maintenance windows or off-hours. The exported data can be used for backup purposes, migration between Grafana instances, version control of alerting configurations, or as a basis for creating new mute timings with similar settings. This operation is particularly useful for administrators who need to document their alerting infrastructure, replicate configurations across multiple environments, or maintain a programmatic approach to managing notification silencing schedules.
+      operationId: routeExportMuteTimings
+      parameters:
+      - name: download
+        in: query
+        description: Whether to initiate a download of the file or not.
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: format
+        in: query
+        description: Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.
+        style: form
+        explode: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/format'
+          - description: Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.
+      responses:
+        '200':
+          description: AlertingFileExport
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertingFileExportisthefullprovisionedfileexport.'
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+            application/terraform+hcl:
+              schema:
+                contentMediaType: application/terraform+hcl
+            text/yaml:
+              schema:
+                contentMediaType: text/yaml
+            text/hcl:
+              schema:
+                contentMediaType: text/hcl
+        '403':
+          description: PermissionDenied
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                contentMediaType: application/json
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+            application/terraform+hcl:
+              schema:
+                contentMediaType: application/terraform+hcl
+            text/yaml:
+              schema:
+                contentMediaType: text/yaml
+            text/hcl:
+              schema:
+                contentMediaType: text/hcl
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/mute-timings/{name}:
+    parameters: []
+    get:
+      tags:
+      - Mute
+      summary: Grafana Route Get Mute Timing
+      description: The Get Mute Timing operation retrieves a specific mute timing configuration by its unique name from Grafana's alerting system. Mute timings are used to define time intervals during which alert notifications should be suppressed, allowing users to prevent alerts during scheduled maintenance windows or known periods of reduced monitoring. By providing the mute timing name as a path parameter, this GET endpoint returns the complete configuration details of that particular mute timing, including its time intervals, recurrence rules, and any associated metadata, enabling users to review or audit existing notification suppression schedules programmatically.
+      operationId: routeGetMuteTiming
+      parameters:
+      - name: name
+        in: path
+        description: Mute timing name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: MuteTimeInterval
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MuteTimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+        '404':
+          description: Not found.
+          headers: {}
+          content: {}
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Mute
+      summary: Grafana Route Put Mute Timing
+      description: The PUT operation on the `/v1/provisioning/mute-timings/{name}` endpoint in Grafana is used to update or replace an existing mute timing configuration identified by its name parameter. Mute timings define time-based rules that silence alert notifications during specific periods, such as maintenance windows or non-business hours. This endpoint allows administrators to modify the schedule, time intervals, or other properties of a previously created mute timing by providing the complete updated configuration in the request body. The operation requires appropriate authentication and permissions to manage alert notification policies, and it will overwrite the existing mute timing with the new definition provided in the PUT request.
+      operationId: routePutMuteTiming
+      parameters:
+      - name: name
+        in: path
+        description: Mute timing name
+        required: true
+        schema:
+          type: string
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MuteTimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+        required: false
+      responses:
+        '202':
+          description: MuteTimeInterval
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MuteTimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+        '400':
+          description: ValidationError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '409':
+          description: PublicError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Mute
+      summary: Grafana Route Delete Mute Timing
+      description: This API operation deletes a specific mute timing configuration in Grafana's alerting system by its unique name. Mute timings are schedules that define time intervals during which alert notifications should be suppressed, and this DELETE endpoint removes the identified mute timing from the provisioning configuration. The operation requires the mute timing's name as a path parameter and is typically used when a previously configured silence schedule is no longer needed or needs to be replaced with a different configuration.
+      operationId: routeDeleteMuteTiming
+      parameters:
+      - name: name
+        in: path
+        description: Mute timing name
+        required: true
+        schema:
+          type: string
+      - name: version
+        in: query
+        description: Version of mute timing to use for optimistic concurrency. Leave empty to disable validation
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: X-Disable-Provenance
+        in: header
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The mute timing was deleted successfully.
+          headers: {}
+          content: {}
+        '409':
+          description: PublicError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicError'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /v1/provisioning/mute-timings/{name}/export:
+    parameters: []
+    get:
+      tags:
+      - Mute
+      summary: Grafana Route Export Mute Timing
+      description: The Export Mute Timing API operation in Grafana allows users to retrieve and export the configuration details of a specific mute timing by providing its name as a path parameter. This GET endpoint is part of the provisioning API and enables administrators to programmatically access mute timing definitions, which are used to suppress alert notifications during specified time periods. The exported configuration can be used for backup purposes, migrating configurations between Grafana instances, or version controlling alerting infrastructure as code. By calling this endpoint with the mute timing's name, users receive the complete configuration in a format that can be stored, shared, or re-imported into Grafana systems.
+      operationId: routeExportMuteTiming
+      parameters:
+      - name: download
+        in: query
+        description: Whether to initiate a download of the file or not.
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: format
+        in: query
+        description: Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.
+        style: form
+        explode: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/format'
+          - description: Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.
+      - name: name
+        in: path
+        description: Mute timing name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: AlertingFileExport
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertingFileExportisthefullprovisionedfileexport.'
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+            application/terraform+hcl:
+              schema:
+                contentMediaType: application/terraform+hcl
+            text/yaml:
+              schema:
+                contentMediaType: text/yaml
+            text/hcl:
+              schema:
+                contentMediaType: text/hcl
+        '403':
+          description: PermissionDenied
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                contentMediaType: application/json
+            application/yaml:
+              schema:
+                contentMediaType: application/yaml
+            application/terraform+hcl:
+              schema:
+                contentMediaType: application/terraform+hcl
+            text/yaml:
+              schema:
+                contentMediaType: text/yaml
+            text/hcl:
+              schema:
+                contentMediaType: text/hcl
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    RelativeTimeRangeExport:
+      title: RelativeTimeRangeExport
+      type: object
+      properties:
+        from:
+          type: integer
+          contentEncoding: int64
+        to:
+          type: integer
+          contentEncoding: int64
+    ValidationError:
+      title: ValidationError
+      type: object
+      properties:
+        message:
+          type: string
+          examples:
+          - error message
+    AlertRuleGroupExportistheprovisionedfileexportofAlertRuleGroupV1.:
+      title: AlertRuleGroupExportistheprovisionedfileexportofAlertRuleGroupV1.
+      type: object
+      properties:
+        folder:
+          type: string
+        interval:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertRuleExportistheprovisionedfileexportofmodels.AlertRule.'
+          description: ''
+    MuteTimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.:
+      title: MuteTimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.
+      type: object
+      properties:
+        name:
+          type: string
+        time_intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+          description: ''
+    RouteExport:
+      title: RouteExport
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        continue:
+          type: boolean
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        match:
+          type: object
+          additionalProperties:
+            type: string
+          description: Deprecated. Remove before v1.0 release.
+        match_re:
+          type: object
+          additionalProperties:
+            type: string
+        matchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Matchermodelsthematchingofalabel.'
+          description: 'Matchers is a slice of Matchers that is sortable, implements Stringer, and
+
+            provides a Matches method to match a LabelSet against all Matchers in the
+
+            slice. Note that some users of Matchers might require it to be sorted.'
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        object_matchers:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouteExport'
+          description: ''
+      description: 'RouteExport is the provisioned file export of definitions.Route. This is needed to hide fields that aren''t useable in
+
+        provisioning file format. An alternative would be to define a custom MarshalJSON and MarshalYAML that excludes them.'
+    ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.:
+      title: ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.
+      type: object
+      properties:
+        disableResolveMessage:
+          type: boolean
+        settings:
+          type: object
+        type:
+          type: string
+        uid:
+          type: string
+    format:
+      title: format
+      enum:
+      - yaml
+      - json
+      - hcl
+      type: string
+    NoDataState:
+      title: NoDataState
+      enum:
+      - Alerting
+      - NoData
+      - OK
+      type: string
+    AlertRuleNotificationSettingsExportistheprovisionedexportofmodels.NotificationSettings.:
+      title: AlertRuleNotificationSettingsExportistheprovisionedexportofmodels.NotificationSettings.
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+    Matchermodelsthematchingofalabel.:
+      title: Matchermodelsthematchingofalabel.
+      type: object
+      properties:
+        Name:
+          type: string
+        Type:
+          type: integer
+          contentEncoding: int64
+        Value:
+          type: string
+    NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.:
+      title: NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        continue:
+          type: boolean
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        match:
+          type: object
+          additionalProperties:
+            type: string
+          description: Deprecated. Remove before v1.0 release.
+        match_re:
+          type: object
+          additionalProperties:
+            type: string
+        matchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Matchermodelsthematchingofalabel.'
+          description: 'Matchers is a slice of Matchers that is sortable, implements Stringer, and
+
+            provides a Matches method to match a LabelSet against all Matchers in the
+
+            slice. Note that some users of Matchers might require it to be sorted.'
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        object_matchers:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouteExport'
+          description: ''
+    ExecErrState:
+      title: ExecErrState
+      enum:
+      - OK
+      - Alerting
+      - Error
+      type: string
+    AlertingFileExportisthefullprovisionedfileexport.:
+      title: AlertingFileExportisthefullprovisionedfileexport.
+      type: object
+      properties:
+        apiVersion:
+          type: integer
+          contentEncoding: int64
+        contactPoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.'
+          description: ''
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertRuleGroupExportistheprovisionedfileexportofAlertRuleGroupV1.'
+          description: ''
+        muteTimes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MuteTimeIntervalExport'
+          description: ''
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.'
+          description: ''
+    ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.:
+      title: ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.
+      type: object
+      properties:
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        receivers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.'
+          description: ''
+    PublicError:
+      title: PublicError
+      type: object
+      properties:
+        extra:
+          type: object
+          additionalProperties: {}
+        message:
+          type: string
+        messageId:
+          type: string
+        statusCode:
+          type: integer
+          contentEncoding: int64
+      description: 'PublicError is derived from Error and only contains information
+
+        available to the end user.'
+    TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.:
+      title: TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.
+      type: object
+      properties:
+        name:
+          type: string
+        time_intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+          description: ''
+    AlertRuleExportistheprovisionedfileexportofmodels.AlertRule.:
+      title: AlertRuleExportistheprovisionedfileexportofmodels.AlertRule.
+      type: object
+      properties:
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+        condition:
+          type: string
+        dashboardUid:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertQueryExportistheprovisionedexportofmodels.AlertQuery.'
+          description: ''
+        execErrState:
+          $ref: '#/components/schemas/ExecErrState'
+        for:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        isPaused:
+          type: boolean
+        keepFiringFor:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        missing_series_evals_to_resolve:
+          type: integer
+          contentEncoding: int64
+        noDataState:
+          $ref: '#/components/schemas/NoDataState'
+        notification_settings:
+          $ref: '#/components/schemas/AlertRuleNotificationSettingsExportistheprovisionedexportofmodels.NotificationSettings.'
+        panelId:
+          type: integer
+          contentEncoding: int64
+        record:
+          $ref: '#/components/schemas/Recordistheprovisionedexportofmodels.Record.'
+        title:
+          type: string
+        uid:
+          type: string
+    Recordistheprovisionedexportofmodels.Record.:
+      title: Recordistheprovisionedexportofmodels.Record.
+      type: object
+      properties:
+        from:
+          type: string
+        metric:
+          type: string
+        targetDatasourceUid:
+          type: string
+    MuteTimeIntervalExport:
+      title: MuteTimeIntervalExport
+      type: object
+      properties:
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        time_intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+          description: ''
+    AlertQueryExportistheprovisionedexportofmodels.AlertQuery.:
+      title: AlertQueryExportistheprovisionedexportofmodels.AlertQuery.
+      type: object
+      properties:
+        datasourceUid:
+          type: string
+        model:
+          type: object
+          additionalProperties: {}
+        queryType:
+          type: string
+        refId:
+          type: string
+        relativeTimeRange:
+          $ref: '#/components/schemas/RelativeTimeRangeExport'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

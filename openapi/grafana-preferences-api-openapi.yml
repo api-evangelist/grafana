@@ -1,0 +1,611 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Preferences API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Preferences
+paths:
+  /org/preferences:
+    parameters: []
+    get:
+      tags:
+      - Preferences
+      summary: Grafana Get Org Preferences
+      description: This API operation retrieves the current preference settings for the active organization in Grafana. When called, it returns a JSON object containing various organizational preferences such as the default theme, home dashboard ID, timezone settings, and other UI-related configurations that apply to all users within the organization. This is a read-only GET request that requires appropriate permissions to access organizational settings and is commonly used by administrators to review or verify the current preference configuration before making changes or to integrate organizational settings into external tools and automation workflows.
+      operationId: getOrgPreferences
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreferencesSpec'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Preferences
+      summary: Grafana Update Org Preferences
+      description: This API operation allows you to modify the configuration settings and preferences for a specific organization in Grafana. By sending a PUT request to the /org/preferences endpoint, you can update various organizational-level settings such as the UI theme, home dashboard, timezone, and other display or operational preferences that apply to all users within that organization. The request typically requires appropriate administrative permissions and accepts a JSON payload containing the preference keys and their new values. Once successfully executed, the changes take effect immediately and are applied organization-wide, affecting how Grafana behaves and appears for all members of that organization.
+      operationId: updateOrgPreferences
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePrefsCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    patch:
+      tags:
+      - Preferences
+      summary: Grafana Patch Org Preferences
+      description: Updates the preferences for the current organization, allowing administrators to modify settings such as the default theme (light/dark/system), home dashboard ID, timezone preferences, and week start day. This endpoint accepts a partial preferences object via PATCH request, meaning only the fields that need to be changed should be included in the request body while other settings remain unchanged. The operation requires organization admin permissions and returns the updated preferences object upon successful modification, making it useful for customizing the organizational experience without affecting individual user preferences.
+      operationId: patchOrgPreferences
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchPrefsCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams/{team_id}/preferences:
+    parameters: []
+    get:
+      tags:
+      - Preferences
+      summary: Grafana Get Team Preferences
+      description: Returns the preferences for a specific Grafana team identified by the team_id parameter, which includes settings such as the team's home dashboard, timezone, and theme preferences. This GET endpoint allows administrators and team members with appropriate permissions to retrieve the current preference configuration that applies to all members of the specified team, enabling them to view or audit the team-level settings that override individual user preferences when working within the team context.
+      operationId: getTeamPreferences
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreferencesSpec'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Preferences
+      summary: Grafana Update Team Preferences
+      description: Updates the preferences for a specific team in Grafana by making a PUT request to the /teams/{team_id}/preferences endpoint. This operation allows administrators or team members with appropriate permissions to modify team-level settings such as the default home dashboard, timezone, and theme preferences. The team_id parameter in the URL path identifies which team's preferences should be updated, and the request body contains the preference values to be applied. These preferences will affect the default Grafana interface experience for all members of the specified team, overriding individual user preferences when those team members are operating within the team context.
+      operationId: updateTeamPreferences
+      parameters:
+      - name: team_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePrefsCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/preferences:
+    parameters: []
+    get:
+      tags:
+      - Preferences
+      summary: Grafana Get User Preferences
+      description: This API operation retrieves the current preferences for the authenticated user in Grafana. It returns configuration settings such as the user's preferred theme (light or dark mode), home dashboard ID, timezone settings, and UI language preferences. The endpoint requires authentication and returns a JSON object containing all the preference values associated with the logged-in user's account, allowing applications to understand and respect the user's personalized Grafana interface settings.
+      operationId: getUserPreferences
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreferencesSpec'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Preferences
+      summary: Grafana Update User Preferences
+      description: Updates the preferences for the currently authenticated user in Grafana, allowing modification of settings such as theme (light/dark), home dashboard, timezone, and language preferences. This endpoint requires authentication and only affects the preferences of the user making the request. The operation accepts a JSON payload containing the preference fields to be updated, and returns the updated preference object upon successful modification. Changes take effect immediately for the user's session and persist across logins.
+      operationId: updateUserPreferences
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePrefsCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    patch:
+      tags:
+      - Preferences
+      summary: Grafana Patch User Preferences
+      description: Updates the preferences for the currently authenticated user by allowing partial modifications to settings such as theme (light/dark), timezone, home dashboard ID, and UI preferences. This PATCH endpoint enables users to customize their Grafana experience by submitting only the specific preference fields they want to change, without needing to provide all preference values. The operation requires authentication and only affects the preferences of the user making the request, leaving unchanged any preference fields not included in the request body.
+      operationId: patchUserPreferences
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchPrefsCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    UpdatePrefsCmd:
+      title: UpdatePrefsCmd
+      type: object
+      properties:
+        cookies:
+          type: array
+          items:
+            type: string
+          description: ''
+        homeDashboardId:
+          type: integer
+          description: The numerical :id of a favorited dashboard
+          contentEncoding: int64
+          default: 0
+        homeDashboardUID:
+          type: string
+        language:
+          type: string
+        navbar:
+          $ref: '#/components/schemas/NavbarPreference'
+        queryHistory:
+          $ref: '#/components/schemas/QueryHistoryPreference'
+        regionalFormat:
+          type: string
+        theme:
+          $ref: '#/components/schemas/Theme1'
+        timezone:
+          $ref: '#/components/schemas/Timezone'
+        weekStart:
+          type: string
+    PreferencesNavbarPreference:
+      title: PreferencesNavbarPreference
+      type: object
+      properties:
+        bookmarkUrls:
+          type: array
+          items:
+            type: string
+          description: ''
+      description: +k8s:openapi-gen=true
+    Theme1:
+      title: Theme1
+      enum:
+      - light
+      - dark
+      - system
+      type: string
+    Timezone:
+      title: Timezone
+      enum:
+      - utc
+      - browser
+      type: string
+    Theme:
+      title: Theme
+      enum:
+      - light
+      - dark
+      type: string
+    PreferencesQueryHistoryPreference:
+      title: PreferencesQueryHistoryPreference
+      type: object
+      properties:
+        homeTab:
+          type: string
+          description: 'one of: '''' | ''query'' | ''starred'';'
+      description: +k8s:openapi-gen=true
+    PreferencesSpec:
+      title: PreferencesSpec
+      type: object
+      properties:
+        cookiePreferences:
+          allOf:
+          - $ref: '#/components/schemas/PreferencesCookiePreferences'
+          - description: +k8s:openapi-gen=true
+        homeDashboardUID:
+          type: string
+          description: UID for the home dashboard
+        language:
+          type: string
+          description: Selected language (beta)
+        navbar:
+          allOf:
+          - $ref: '#/components/schemas/PreferencesNavbarPreference'
+          - description: +k8s:openapi-gen=true
+        queryHistory:
+          allOf:
+          - $ref: '#/components/schemas/PreferencesQueryHistoryPreference'
+          - description: +k8s:openapi-gen=true
+        regionalFormat:
+          type: string
+          description: Selected locale (beta)
+        theme:
+          type: string
+          description: light, dark, empty is default
+        timezone:
+          type: string
+          description: 'The timezone selection
+
+            TODO: this should use the timezone defined in common'
+        weekStart:
+          type: string
+          description: day of the week (sunday, monday, etc)
+      description: +k8s:openapi-gen=true
+    QueryHistoryPreference:
+      title: QueryHistoryPreference
+      type: object
+      properties:
+        homeTab:
+          type: string
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    PatchPrefsCmd:
+      title: PatchPrefsCmd
+      type: object
+      properties:
+        cookies:
+          type: array
+          items:
+            type: string
+          description: ''
+        homeDashboardId:
+          type: integer
+          description: The numerical :id of a favorited dashboard
+          contentEncoding: int64
+          default: 0
+        homeDashboardUID:
+          type: string
+        language:
+          type: string
+        navbar:
+          $ref: '#/components/schemas/NavbarPreference'
+        queryHistory:
+          $ref: '#/components/schemas/QueryHistoryPreference'
+        regionalFormat:
+          type: string
+        theme:
+          $ref: '#/components/schemas/Theme'
+        timezone:
+          $ref: '#/components/schemas/Timezone'
+        weekStart:
+          type: string
+    NavbarPreference:
+      title: NavbarPreference
+      type: object
+      properties:
+        bookmarkUrls:
+          type: array
+          items:
+            type: string
+          description: ''
+    PreferencesCookiePreferences:
+      title: PreferencesCookiePreferences
+      type: object
+      properties:
+        analytics: {}
+        functional: {}
+        performance: {}
+      description: +k8s:openapi-gen=true
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

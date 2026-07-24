@@ -1,0 +1,142 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Control API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Control
+paths:
+  /access-control/status:
+    parameters: []
+    get:
+      tags:
+      - Control
+      summary: Grafana Get Access Control Status
+      description: This API operation retrieves the current status of Grafana's access control system, providing information about whether fine-grained access control (RBAC) is enabled and operational within the Grafana instance. It returns details about the access control configuration and its current state, allowing administrators to verify that permission management features are functioning correctly and to understand which access control mode is active. This is particularly useful for troubleshooting permission-related issues or confirming that enterprise access control features are properly configured.
+      operationId: getAccessControlStatus
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: integer
+                contentEncoding: int64
+                contentMediaType: application/json
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/provisioning/access-control/reload:
+    parameters: []
+    post:
+      tags:
+      - Control
+      summary: Grafana Admin Provisioning Reload Access Control
+      description: This API operation performs a POST request to the '/admin/provisioning/access-control/reload' endpoint in Grafana's admin provisioning system. It triggers a reload of the access control configuration, allowing administrators to refresh and apply any changes made to access control provisioning files without requiring a full Grafana server restart. This is particularly useful in environments where role-based access control (RBAC) settings are managed through provisioning configurations and need to be updated dynamically. The operation requires administrative privileges to execute and ensures that the latest access control policies and permissions are loaded into the running Grafana instance.
+      operationId: adminProvisioningReloadAccessControl
+      parameters: []
+      responses:
+        '202':
+          description: AcceptedResponse
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

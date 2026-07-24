@@ -1,0 +1,986 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Reports API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Reports
+  description: 'This API allows you to interact programmatically with the Reporting feature.
+
+    Reporting is only available in Grafana Enterprise. Read more about Grafana Enterprise.
+
+    If you have Fine-grained access Control enabled, for some endpoints you would need to have relevant permissions. Refer to specific resources to understand what permissions are required.'
+paths:
+  /licensing/custom-permissions:
+    parameters: []
+    get:
+      tags:
+      - Reports
+      summary: Grafana Get Custom Permissions Report
+      description: This API operation retrieves a custom permissions report from Grafana's licensing endpoint. When invoked via a GET request to the /licensing/custom-permissions path, it returns information about custom permission configurations and their usage within the Grafana instance. This endpoint is typically used by administrators to audit and review customized access control settings, helping them understand how permissions have been tailored beyond the standard roles and ensure compliance with licensing terms and organizational security policies.
+      operationId: getCustomPermissionsReport
+      parameters: []
+      responses:
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /reports:
+    parameters: []
+    get:
+      tags:
+      - Reports
+      summary: Grafana Get Reports
+      description: The Get Reports API operation in Grafana retrieves a list of all configured reports in the system. This endpoint allows administrators and authorized users to fetch comprehensive information about existing reports, including their configurations, schedules, and metadata. When invoked via a GET request to the /reports endpoint, it returns an array of report objects that contain details such as report names, dashboards they're associated with, scheduled delivery times, recipients, and rendering options. This operation is useful for auditing purposes, managing multiple reports, or integrating Grafana's reporting functionality with external systems for automated report distribution and monitoring.
+      operationId: getReports
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Report'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Reports
+      summary: Grafana Create Report
+      description: Creates a new dashboard report in Grafana that can be automatically generated and distributed on a scheduled basis. This operation allows you to configure report parameters including the target dashboard, time range, layout options, orientation, and recipients who will receive the report via email. The report can be set to recur daily, weekly, or monthly, and supports various output formats such as PDF or image. You can customize branding elements, include specific dashboard panels, and define variables or filters to apply when generating the report. Once created, the report will be executed according to the defined schedule and delivered to the specified email addresses with optional custom messages.
+      operationId: createReport
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateReport'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createReportResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /reports/dashboards/{uid}:
+    parameters: []
+    get:
+      tags:
+      - Reports
+      summary: Grafana Get Reports By Dashboard UID
+      description: This API operation retrieves all reports associated with a specific Grafana dashboard by using its unique identifier (UID). When you make a GET request to the endpoint /reports/dashboards/{uid}, where {uid} is replaced with the actual dashboard's UID, Grafana returns a list of all reports that have been configured for that particular dashboard. This is useful for administrators or users who need to view, audit, or manage the reporting configurations linked to a specific dashboard, allowing them to see details such as report schedules, recipients, formats, and other report-specific settings without having to search through all reports in the system.
+      operationId: getReportsByDashboardUID
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Report'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /reports/email:
+    parameters: []
+    post:
+      tags:
+      - Reports
+      summary: Grafana Send Report
+      description: This API operation allows you to send a Grafana report via email by making a POST request to the /reports/email endpoint. When invoked, it triggers the generation and delivery of a specified report to one or more email recipients. The operation typically requires authentication and accepts parameters such as report ID, recipient email addresses, and optional customization settings like date ranges or dashboard variables. This is particularly useful for automating report distribution, scheduling periodic updates to stakeholders, or manually triggering ad-hoc report deliveries without accessing the Grafana UI directly.
+      operationId: sendReport
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportEmail'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /reports/render/csvs:
+    parameters: []
+    get:
+      tags:
+      - Reports
+      summary: Grafana Render Report CS Vs
+      description: This API operation retrieves rendered CSV versions of Grafana reports. When invoked with a GET request to the /reports/render/csvs endpoint, it processes and returns report data in CSV (Comma-Separated Values) format, making it suitable for exporting Grafana dashboard metrics and analytics into spreadsheet applications or for further data processing. This endpoint is particularly useful for users who need to access report information in a structured, tabular format outside of the Grafana interface, enabling integration with external tools, automated data pipelines, or offline analysis workflows.
+      operationId: renderReportCSVs
+      parameters:
+      - name: dashboards
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: title
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/zip:
+              schema:
+                contentMediaType: application/zip
+        '204':
+          description: (empty)
+          headers: {}
+          content:
+            application/zip:
+              schema:
+                contentMediaType: application/zip
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/zip:
+              schema:
+                contentMediaType: application/zip
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/zip:
+              schema:
+                contentMediaType: application/zip
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/zip:
+              schema:
+                contentMediaType: application/zip
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /reports/render/pdfs:
+    parameters: []
+    get:
+      tags:
+      - Reports
+      summary: Grafana Render Report PD Fs
+      description: This API operation retrieves rendered PDF versions of reports from Grafana. When invoked with a GET request to the /reports/render/pdfs endpoint, it allows users to access pre-generated or on-demand PDF renderings of Grafana reports, which typically contain dashboards, panels, and visualizations. The operation is useful for exporting report data in a portable, shareable format that can be distributed to stakeholders or archived for record-keeping purposes. Users would typically need appropriate authentication and permissions to access this endpoint, and may be able to specify parameters to control which reports are rendered or retrieved.
+      operationId: renderReportPDFs
+      parameters:
+      - name: dashboards
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: orientation
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: layout
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: title
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: scaleFactor
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: includeTables
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/pdf:
+              schema:
+                contentMediaType: application/pdf
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/pdf:
+              schema:
+                contentMediaType: application/pdf
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/pdf:
+              schema:
+                contentMediaType: application/pdf
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/pdf:
+              schema:
+                contentMediaType: application/pdf
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /reports/settings:
+    parameters: []
+    get:
+      tags:
+      - Reports
+      summary: Grafana Get Report Settings
+      description: This API operation retrieves the current report settings configuration from Grafana. It is accessed via a GET request to the /reports/settings endpoint and returns the configured parameters that control how reports are generated and delivered within the Grafana instance. These settings typically include options such as branding configurations, email server settings, report scheduling parameters, and other preferences that affect the overall behavior of the reporting functionality. The operation requires appropriate authentication and authorization to access the reporting configuration data.
+      operationId: getReportSettings
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportSettings'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Reports
+      summary: Grafana Save Report Settings
+      description: Saves the configuration settings for the Grafana reporting feature, allowing administrators to define parameters such as email delivery options, branding preferences, report generation schedules, and output formats. This POST endpoint updates the global report settings that will be applied across all generated reports in the Grafana instance, enabling customization of how reports are created, formatted, and distributed to users.
+      operationId: saveReportSettings
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportSettings'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /reports/{id}:
+    parameters: []
+    get:
+      tags:
+      - Reports
+      summary: Grafana Get Report
+      description: Retrieves the details of a specific report in Grafana by its unique identifier. This operation returns comprehensive information about the configured report including its name, dashboard reference, schedule settings, recipients, format options, and other metadata. The report ID must be provided as a path parameter to fetch the corresponding report configuration, allowing users to view or verify the settings of an existing scheduled report before editing or managing it.
+      operationId: getReport
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Reports
+      summary: Grafana Update Report
+      description: Updates an existing report in Grafana by its unique identifier. This operation allows you to modify the configuration of a scheduled report, including parameters such as the report name, dashboard source, recipient list, schedule frequency, time range, and format options. The request requires the report ID in the URL path and accepts a JSON payload containing the updated report properties. Upon successful execution, it returns the modified report object with all current settings. This endpoint is typically used when you need to adjust report recipients, change the reporting schedule, update the associated dashboard, or modify any other report settings after initial creation.
+      operationId: updateReport
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateReport'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    delete:
+      tags:
+      - Reports
+      summary: Grafana Delete Report
+      description: This API operation deletes a specific report in Grafana by providing the unique report identifier in the URL path. When a DELETE request is made to the /reports/{id} endpoint, it permanently removes the report configuration and associated data from the system. The operation requires the report ID as a path parameter and typically requires appropriate authentication and authorization permissions to ensure only authorized users can delete reports. Upon successful execution, the report is removed from Grafana and will no longer be available for viewing, scheduling, or generation.
+      operationId: deleteReport
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    Report:
+      title: Report
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        dashboards:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportDashboard'
+          description: ''
+        enableCsv:
+          type: boolean
+        enableDashboardUrl:
+          type: boolean
+        formats:
+          type: array
+          items:
+            type: string
+          description: ''
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+        name:
+          type: string
+        options:
+          $ref: '#/components/schemas/ReportOptions'
+        orgId:
+          type: integer
+          contentEncoding: int64
+        recipients:
+          type: string
+        replyTo:
+          type: string
+        scaleFactor:
+          type: integer
+          contentEncoding: int64
+        schedule:
+          $ref: '#/components/schemas/ReportSchedule'
+        state:
+          type: string
+          description: +enum
+        subject:
+          type: string
+        uid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        userId:
+          type: integer
+          contentEncoding: int64
+    createReportResponse:
+      title: createReportResponse
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+    ReportSchedule:
+      title: ReportSchedule
+      type: object
+      properties:
+        dayOfMonth:
+          type: string
+        endDate:
+          type: string
+          contentEncoding: date-time
+        frequency:
+          type: string
+        intervalAmount:
+          type: integer
+          contentEncoding: int64
+        intervalFrequency:
+          type: string
+        startDate:
+          type: string
+          contentEncoding: date-time
+        timeZone:
+          type: string
+        workdaysOnly:
+          type: boolean
+    ReportOptions:
+      title: ReportOptions
+      type: object
+      properties:
+        layout:
+          type: string
+        orientation:
+          type: string
+        pdfCombineOneFile:
+          type: boolean
+        pdfShowTemplateVariables:
+          type: boolean
+        timeRange:
+          $ref: '#/components/schemas/ReportTimeRange'
+    ReportBrandingOptions:
+      title: ReportBrandingOptions
+      type: object
+      properties:
+        emailFooterLink:
+          type: string
+        emailFooterMode:
+          type: string
+        emailFooterText:
+          type: string
+        emailLogoUrl:
+          type: string
+        reportLogoUrl:
+          type: string
+    ReportSettings:
+      title: ReportSettings
+      type: object
+      properties:
+        branding:
+          $ref: '#/components/schemas/ReportBrandingOptions'
+        embeddedImageTheme:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        orgId:
+          type: integer
+          contentEncoding: int64
+        pdfTheme:
+          type: string
+        userId:
+          type: integer
+          contentEncoding: int64
+    ReportEmail:
+      title: ReportEmail
+      type: object
+      properties:
+        emails:
+          type: string
+          description: Comma-separated list of emails to which to send the report to.
+        id:
+          type: string
+          description: Send the report to the emails specified in the report. Required if emails is not present.
+        useEmailsFromReport:
+          type: boolean
+          description: Send the report to the emails specified in the report. Required if emails is not present.
+    CreateOrUpdateReport:
+      title: CreateOrUpdateReport
+      type: object
+      properties:
+        dashboards:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportDashboard'
+          description: ''
+        enableCsv:
+          type: boolean
+        enableDashboardUrl:
+          type: boolean
+        formats:
+          type: array
+          items:
+            type: string
+          description: ''
+        message:
+          type: string
+        name:
+          type: string
+        options:
+          $ref: '#/components/schemas/ReportOptions'
+        recipients:
+          type: string
+        replyTo:
+          type: string
+        scaleFactor:
+          type: integer
+          contentEncoding: int64
+        schedule:
+          $ref: '#/components/schemas/ReportSchedule'
+        state:
+          type: string
+          description: +enum
+        subject:
+          type: string
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    ReportTimeRange:
+      title: ReportTimeRange
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    ReportDashboardID:
+      title: ReportDashboardID
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+        uid:
+          type: string
+    ReportDashboard:
+      title: ReportDashboard
+      type: object
+      properties:
+        dashboard:
+          $ref: '#/components/schemas/ReportDashboardID'
+        reportVariables:
+          type: object
+        timeRange:
+          $ref: '#/components/schemas/ReportTimeRange'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

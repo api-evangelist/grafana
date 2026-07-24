@@ -1,0 +1,491 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Versions API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Versions
+paths:
+  /dashboards/id/{DashboardID}/versions:
+    parameters: []
+    get:
+      tags:
+      - Versions
+      summary: Grafana Get Dashboard Versions By ID
+      description: Retrieves the version history of a specific Grafana dashboard identified by its unique dashboard ID. This operation returns a list of all saved versions for the dashboard, including metadata such as version numbers, timestamps, user information who made the changes, and version messages or notes. It allows administrators and users to track changes made to a dashboard over time, compare different versions, and understand the evolution of dashboard configurations, which is useful for auditing purposes, troubleshooting issues introduced by recent changes, or reverting to previous dashboard states if needed.
+      operationId: getDashboardVersionsByID
+      parameters:
+      - name: DashboardID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardVersionResponseMeta'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/id/{DashboardID}/versions/{DashboardVersionID}:
+    parameters: []
+    get:
+      tags:
+      - Versions
+      summary: Grafana Get Dashboard Version By ID
+      description: This API operation retrieves a specific version of a Grafana dashboard by providing both the dashboard's unique identifier and the desired version identifier. When invoked using the GET method, it returns the complete configuration and metadata for that particular version of the dashboard, allowing users to view historical snapshots, compare changes between versions, or restore previous dashboard states. This is particularly useful for auditing dashboard modifications, understanding what changes were made over time, and recovering from unwanted updates by accessing earlier working versions of a dashboard's configuration.
+      operationId: getDashboardVersionByID
+      parameters:
+      - name: DashboardID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: DashboardVersionID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardVersionMeta'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: true
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/uid/{uid}/restore:
+    parameters: []
+    post:
+      tags:
+      - Versions
+      summary: Grafana Restore Dashboard Version By UID
+      description: This API operation restores a specific version of a Grafana dashboard identified by its unique identifier (UID). When invoked via a POST request to the endpoint /dashboards/uid/{uid}/restore, it allows users to revert a dashboard to a previous state by specifying the desired version number in the request body. This is particularly useful for recovering from unwanted changes, comparing different dashboard iterations, or rolling back to a known working configuration. The operation requires appropriate permissions and returns the restored dashboard's metadata upon successful execution.
+      operationId: restoreDashboardVersionByUID
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RestoreDashboardVersionCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/postDashboardResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/uid/{uid}/versions:
+    parameters: []
+    get:
+      tags:
+      - Versions
+      summary: Grafana Get Dashboard Versions By UID
+      description: This API operation retrieves the version history of a specific Grafana dashboard identified by its unique identifier (UID). When called with a GET request to the endpoint /dashboards/uid/{uid}/versions, it returns a list of all saved versions of the dashboard, allowing users to track changes made over time, view metadata about each version such as creation date and author, and potentially restore previous versions if needed. This is particularly useful for auditing dashboard modifications, understanding the evolution of visualizations, and recovering from unwanted changes.
+      operationId: getDashboardVersionsByUID
+      parameters:
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Maximum number of results to return
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 0
+      - name: start
+        in: query
+        description: Version to start from when returning queries
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+          default: 0
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardVersionResponseMeta'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/uid/{uid}/versions/{DashboardVersionID}:
+    parameters: []
+    get:
+      tags:
+      - Versions
+      summary: Grafana Get Dashboard Version By UID
+      description: 'This API operation retrieves a specific version of a Grafana dashboard by providing both the dashboard''s unique identifier (UID) and the desired version ID. It allows users to access historical versions of a dashboard, enabling them to review previous configurations, compare changes over time, or restore an earlier state of the dashboard. The endpoint uses a GET request and requires two path parameters: the dashboard UID which uniquely identifies the dashboard, and the DashboardVersionID which specifies which historical version to retrieve. This is particularly useful for audit purposes, version control, and recovering from unwanted dashboard modifications.'
+      operationId: getDashboardVersionByUID
+      parameters:
+      - name: DashboardVersionID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: uid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardVersionMeta'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    RestoreDashboardVersionCommand:
+      title: RestoreDashboardVersionCommand
+      type: object
+      properties:
+        version:
+          type: integer
+          contentEncoding: int64
+    postDashboardResponse:
+      title: postDashboardResponse
+      required:
+      - id
+      - status
+      - title
+      - uid
+      - url
+      - version
+      type: object
+      properties:
+        folderUid:
+          type: string
+          description: FolderUID The unique identifier (uid) of the folder the dashboard belongs to.
+        id:
+          type: integer
+          description: ID The unique identifier (id) of the created/updated dashboard.
+          contentEncoding: int64
+          examples:
+          - 1
+        status:
+          type: string
+          description: Status status of the response.
+          examples:
+          - success
+        title:
+          type: string
+          description: Slug The slug of the dashboard.
+          examples:
+          - my-dashboard
+        uid:
+          type: string
+          description: UID The unique identifier (uid) of the created/updated dashboard.
+          examples:
+          - nHz3SXiiz
+        url:
+          type: string
+          description: URL The relative URL for accessing the created/updated dashboard.
+          examples:
+          - /d/nHz3SXiiz/my-dashboard
+        version:
+          type: integer
+          description: Version The version of the dashboard.
+          contentEncoding: int64
+          examples:
+          - 2
+    DashboardVersionMeta:
+      title: DashboardVersionMeta
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          type: string
+        dashboardId:
+          type: integer
+          contentEncoding: int64
+        data:
+          type: object
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+        parentVersion:
+          type: integer
+          contentEncoding: int64
+        restoredFrom:
+          type: integer
+          contentEncoding: int64
+        uid:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+      description: 'DashboardVersionMeta extends the DashboardVersionDTO with the names
+
+        associated with the UserIds, overriding the field with the same name from
+
+        the DashboardVersionDTO model.'
+    DashboardVersionResponseMeta:
+      title: DashboardVersionResponseMeta
+      type: object
+      properties:
+        continueToken:
+          type: string
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardVersionMeta'
+          description: ''
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

@@ -1,0 +1,3571 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Users API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Users
+  description: User management
+paths:
+  /admin/users:
+    parameters: []
+    post:
+      tags:
+      - Users
+      operationId: adminCreateUser
+      summary: Create a new user (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserCommand'
+      responses:
+        '200':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUserResponse'
+  /users:
+    parameters: []
+    get:
+      tags:
+      - Users
+      operationId: searchUsers
+      summary: Search users
+      parameters:
+      - name: perpage
+        in: query
+        schema:
+          type: integer
+          default: 1000
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: query
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Users found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserSearchHit'
+  /users/{id}:
+    get:
+      tags:
+      - Users
+      operationId: getUserById
+      summary: Get user by ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags:
+      - Users
+      operationId: updateUser
+      summary: Update user
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserCommand'
+      responses:
+        '200':
+          description: User updated
+  /user:
+    parameters: []
+    get:
+      tags:
+      - Users
+      operationId: getCurrentUser
+      summary: Get current user
+      responses:
+        '200':
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags:
+      - Users
+      summary: Grafana Update Signed In User
+      description: Updates the profile information for the currently authenticated user in Grafana, allowing modification of fields such as email address, name, login username, and theme preferences. This endpoint requires the user to be signed in and operates on the user's own account, making it a self-service operation for managing personal account details. The request accepts a JSON payload containing the user attributes to be updated, and upon successful execution, returns the updated user information along with a confirmation message.
+      operationId: updateSignedInUser
+      parameters: []
+      requestBody:
+        description: To change the email, name, login, theme, provide another one.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateUserCommand_2'
+              - description: To change the email, name, login, theme, provide another one.
+              contentMediaType: application/json
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '409':
+          description: ConflictError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /orgs/{org_id}/users:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Get Org Users
+      description: Retrieves a list of all users that belong to a specific organization in Grafana by providing the organization ID in the URL path. This GET endpoint returns user details including their names, email addresses, roles, and permissions within the specified organization, allowing administrators to view and manage organization membership and access control.
+      operationId: getOrgUsers
+      parameters:
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrgUserDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Users
+      summary: Grafana Add Org User
+      description: Adds a new user to an existing organization in Grafana by sending a POST request to the /orgs/{org_id}/users endpoint, where {org_id} is the unique identifier of the target organization. This operation requires authentication and appropriate permissions to manage organization membership. The request body typically includes the user's login credentials or user ID along with the desired role (such as Viewer, Editor, or Admin) that determines their access level within the organization. Upon successful execution, the specified user becomes a member of the organization with the assigned role and can access resources and dashboards according to their permission level.
+      operationId: addOrgUser
+      parameters:
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddOrgUserCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /orgs/{org_id}/users/search:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Search Org Users
+      description: This API operation allows you to search for users within a specific organization in Grafana by providing the organization ID in the URL path. It uses the GET HTTP method to retrieve a filtered list of users belonging to the specified organization, enabling administrators to query and find specific users based on search criteria. The endpoint is useful for managing organization membership and performing user lookups within the context of a particular Grafana organization.
+      operationId: searchOrgUsers
+      parameters:
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchOrgUsersQueryResult'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /orgs/{org_id}/users/{user_id}:
+    parameters: []
+    delete:
+      tags:
+      - Users
+      summary: Grafana Remove Org User
+      description: This API operation removes a specific user from a designated organization in Grafana by sending a DELETE request to the endpoint /orgs/{org_id}/users/{user_id}, where org_id represents the unique identifier of the organization and user_id represents the unique identifier of the user to be removed. When executed successfully, this operation revokes the user's membership and access rights within the specified organization, effectively disconnecting them from that particular organizational context while potentially maintaining their user account in the Grafana instance for participation in other organizations or contexts.
+      operationId: removeOrgUser
+      parameters:
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    patch:
+      tags:
+      - Users
+      summary: Grafana Update Org User
+      description: This API operation updates an existing user's role within a specific organization in Grafana. It uses a PATCH request to the endpoint /orgs/{org_id}/users/{user_id}, where org_id identifies the target organization and user_id specifies which user's permissions should be modified. The operation allows administrators to change a user's role (such as Viewer, Editor, or Admin) within the organization context, enabling granular control over user permissions and access levels across different Grafana organizations.
+      operationId: updateOrgUser
+      parameters:
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrgUserCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /org/users:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Get Org Users For Current Org
+      description: This API operation retrieves a list of all users who belong to the currently authenticated organization in Grafana. When called, it returns user information for members of the organization context associated with the API request, including details such as user IDs, email addresses, login names, roles within the organization, and authentication information. This is useful for administrators who need to audit organization membership, manage user access, or integrate Grafana's user management with external systems. The operation requires appropriate permissions within the current organization context to execute successfully.
+      operationId: getOrgUsersForCurrentOrg
+      parameters:
+      - name: query
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrgUserDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Users
+      summary: Grafana Add Org User To Current Org
+      description: This API operation allows administrators to add a new user to the current organization in Grafana by sending a POST request to the /org/users endpoint. When invoked, it creates a new membership association between a specified user and the organization that the authenticated user currently belongs to. The request typically requires parameters such as the user's login credentials or user ID, along with the desired role (Viewer, Editor, or Admin) that the new member should have within the organization. This operation requires appropriate administrative permissions and is commonly used when onboarding team members or managing organizational access control in Grafana instances.
+      operationId: addOrgUserToCurrentOrg
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddOrgUserCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /org/users/lookup:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Get Org Users For Current Org Lookup
+      description: This API operation retrieves user information for members of the current organization in Grafana by performing a lookup query. It uses a GET request to the '/org/users/lookup' endpoint and returns details about users belonging to the organization context of the authenticated request. This is typically used when you need to search for or validate specific users within your current Grafana organization without iterating through the entire user list, providing a more efficient way to find user data based on lookup criteria such as login name or email address.
+      operationId: getOrgUsersForCurrentOrgLookup
+      parameters:
+      - name: query
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: ''
+        style: form
+        explode: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserLookupDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /org/users/{user_id}:
+    parameters: []
+    delete:
+      tags:
+      - Users
+      summary: Grafana Remove Org User For Current Org
+      description: This API operation removes a specified user from the current organization in Grafana by making a DELETE request to the endpoint /org/users/{user_id}, where {user_id} is the unique identifier of the user to be removed. When executed, it disassociates the targeted user from the organization context in which the API call is made, effectively revoking their access and permissions within that specific organization. This operation requires appropriate administrative privileges within the current organization and only affects the user's membership in that particular organization, not their overall Grafana account or memberships in other organizations they may belong to.
+      operationId: removeOrgUserForCurrentOrg
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    patch:
+      tags:
+      - Users
+      summary: Grafana Update Org User For Current Org
+      description: This API operation allows you to update an existing organization user's details within the currently authenticated organization in Grafana. By sending a PATCH request to the endpoint with a specific user ID, you can modify properties such as the user's role within the organization without affecting their underlying Grafana user account. This is particularly useful for managing permissions and access levels of team members, allowing administrators to promote users to admin roles or adjust their organizational privileges while maintaining their user identity across multiple organizations they may belong to.
+      operationId: updateOrgUserForCurrentOrg
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrgUserCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/users/roles/search:
+    parameters: []
+    post:
+      tags:
+      - Users
+      summary: Grafana List Users Roles
+      description: This API operation allows you to search and retrieve a list of roles assigned to users within Grafana's access control system. By sending a POST request to the /access-control/users/roles/search endpoint, you can query and filter user role assignments based on various criteria. The operation is useful for administrators who need to audit user permissions, manage access control policies, or retrieve information about which roles are assigned to specific users across the Grafana instance. The POST method enables you to include search parameters in the request body to narrow down results based on your specific requirements.
+      operationId: listUsersRoles
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolesSearchQuery'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                contentMediaType: application/json
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/users/{userId}/roles:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana List User Roles
+      description: This API operation retrieves all roles assigned to a specific user in Grafana's access control system. By making a GET request to the endpoint with a user's unique identifier (userId) in the path, you can obtain a comprehensive list of roles that define the user's permissions and access levels within the Grafana instance. This is useful for auditing user permissions, verifying access levels, or managing role-based access control (RBAC) configurations.
+      operationId: listUserRoles
+      parameters:
+      - name: userId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleDTO'
+                description: ''
+                contentMediaType: application/json
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Users
+      summary: Grafana Set User Roles
+      description: This API operation allows administrators to assign or modify the complete set of roles for a specific user in Grafana's access control system. By making a PUT request to the endpoint with a user's ID, you can replace all existing role assignments for that user with a new set of roles defined in the request body. This is useful for managing user permissions at scale, ensuring users have the appropriate access levels to dashboards, data sources, and other Grafana resources. The operation requires administrative privileges and follows Grafana's role-based access control (RBAC) model to maintain security and proper authorization across the platform.
+      operationId: setUserRoles
+      parameters:
+      - name: userId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetUserRolesCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    post:
+      tags:
+      - Users
+      summary: Grafana Add User Role
+      description: This API operation adds a role to a specific user in Grafana's access control system by sending a POST request to the endpoint /access-control/users/{userId}/roles, where {userId} is replaced with the target user's identifier. The operation allows administrators to grant additional permissions and access rights to users by assigning them predefined or custom roles within the Grafana instance. This is typically used for managing user permissions and implementing role-based access control (RBAC) to ensure users have appropriate levels of access to dashboards, data sources, and other Grafana resources.
+      operationId: addUserRole
+      parameters:
+      - name: userId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddUserRoleCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/users/{userId}/roles/{roleUID}:
+    parameters: []
+    delete:
+      tags:
+      - Users
+      summary: Grafana Remove User Role
+      description: Removes a specific role assignment from a user in Grafana's access control system. This API endpoint deletes the association between a user (identified by userId) and a particular role (identified by roleUID), effectively revoking the permissions granted by that role from the user. The operation requires appropriate administrative privileges and is typically used when managing user permissions, reorganizing team structures, or removing access rights that are no longer needed. Upon successful execution, the user will no longer have the capabilities and access rights defined by the removed role, though they may still retain other role assignments.
+      operationId: removeUserRole
+      parameters:
+      - name: global
+        in: query
+        description: A flag indicating if the assignment is global or not. If set to false, the default org ID of the authenticated user will be used from the request to remove assignment.
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: roleUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/{resource}/{resourceID}/users/{userID}:
+    parameters: []
+    post:
+      tags:
+      - Users
+      summary: Grafana Set Resource Permissions For User
+      description: This API operation allows administrators to configure specific access control permissions for an individual user on a particular Grafana resource. By making a POST request to this endpoint with the resource type, resource ID, and user ID, you can grant or modify the permissions that determine what actions the specified user can perform on that resource. This granular permission management enables fine-tuned control over user access rights within Grafana, allowing administrators to implement role-based access control (RBAC) at the resource level and ensure users have appropriate levels of access to dashboards, folders, data sources, or other Grafana resources based on their organizational responsibilities.
+      operationId: setResourcePermissionsForUser
+      parameters:
+      - name: resource
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: resourceID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: userID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/setPermissionCommand'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/ldap/sync/{user_id}:
+    parameters: []
+    post:
+      tags:
+      - Users
+      summary: Grafana Post Sync User With LDAP
+      description: This API operation triggers a synchronization between a specific Grafana user and LDAP directory services by sending a POST request to the endpoint with the target user's ID. When invoked, it forces Grafana to retrieve the latest user information, groups, and permissions from the configured LDAP server for the specified user, updating their local Grafana profile accordingly. This is particularly useful when LDAP user attributes or group memberships have changed and you need to immediately reflect those changes in Grafana without waiting for the automatic synchronization cycle. The operation requires admin privileges to execute and helps maintain consistency between the LDAP source of truth and Grafana's user database.
+      operationId: postSyncUserWithLDAP
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/ldap/{user_name}:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Get User From LDAP
+      description: This API operation retrieves LDAP user information for a specific username from Grafana's admin interface. By making a GET request to the endpoint with a username parameter, administrators can query the LDAP directory to fetch detailed user data associated with that particular account. This is useful for verifying LDAP user configurations, troubleshooting authentication issues, or confirming user attributes before syncing them into Grafana. The operation requires admin-level permissions and returns user details such as name, email, groups, and other LDAP attributes configured in the Grafana LDAP integration settings.
+      operationId: getUserFromLDAP
+      parameters:
+      - name: user_name
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}:
+    parameters: []
+    delete:
+      tags:
+      - Users
+      summary: Grafana Admin Delete User
+      description: This API operation allows Grafana administrators with appropriate permissions to permanently delete a specific user account from the Grafana instance by making a DELETE request to the /admin/users/{user_id} endpoint, where {user_id} is the unique identifier of the target user. This is a privileged administrative function that removes the user and all associated data from the system, and should be used with caution as the deletion is typically irreversible. The operation requires admin-level authentication and authorization, and upon successful execution, it returns a confirmation response indicating the user has been removed from the Grafana database.
+      operationId: adminDeleteUser
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/auth-tokens:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Admin Get User Auth Tokens
+      description: Retrieves a list of authentication tokens associated with a specific user account in Grafana. This administrative endpoint requires admin privileges and allows system administrators to view all active auth tokens that have been generated for a particular user identified by their user ID. The operation returns token metadata including creation dates, last used timestamps, and token names, which helps administrators audit user access, monitor authentication activity, and identify potentially unauthorized or stale tokens that may need to be revoked for security purposes.
+      operationId: adminGetUserAuthTokens
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserToken'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/disable:
+    parameters: []
+    post:
+      tags:
+      - Users
+      summary: Grafana Admin Disable User
+      description: This API operation allows Grafana administrators to disable a specific user account by sending a POST request to the /admin/users/{user_id}/disable endpoint. The operation requires administrative privileges and targets a user identified by their unique user_id parameter in the URL path. When executed, this endpoint deactivates the specified user account, preventing them from logging in or accessing Grafana resources while preserving their user data and configurations for potential future reactivation. This is a non-destructive administrative action typically used for temporarily suspending user access due to security concerns, policy violations, or when users no longer require access to the system.
+      operationId: adminDisableUser
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/enable:
+    parameters: []
+    post:
+      tags:
+      - Users
+      summary: Grafana Admin Enable User
+      description: This API operation is used by Grafana administrators to re-enable a previously disabled user account. It requires a POST request to the endpoint with the specific user ID as a path parameter. Only users with admin privileges can execute this operation, which restores access for users who may have been temporarily disabled due to security concerns, policy violations, or administrative purposes. Upon successful execution, the specified user account is activated and the user can log in and access Grafana resources according to their assigned permissions and roles.
+      operationId: adminEnableUser
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/logout:
+    parameters: []
+    post:
+      tags:
+      - Users
+      summary: Grafana Admin Logout User
+      description: This API operation allows a Grafana administrator to forcibly log out a specific user by sending a POST request to the endpoint with the target user's ID. When invoked, it invalidates all active sessions for the specified user, effectively disconnecting them from Grafana and requiring them to re-authenticate before accessing the system again. This is typically used for security purposes, such as immediately revoking access when a user account is compromised, when enforcing policy changes, or when an administrator needs to ensure a user re-authenticates with updated permissions or credentials.
+      operationId: adminLogoutUser
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/password:
+    parameters: []
+    put:
+      tags:
+      - Users
+      summary: Grafana Admin Update User Password
+      description: This API operation allows Grafana administrators to programmatically update the password for a specific user account by sending a PUT request to the endpoint with the target user's ID. The administrator must provide the new password in the request body, and this action requires admin-level privileges to execute. This operation is particularly useful for password resets, account recovery scenarios, or when administrators need to enforce password changes for security purposes without requiring the user to go through a standard password reset flow.
+      operationId: adminUpdateUserPassword
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUpdateUserPasswordForm'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/permissions:
+    parameters: []
+    put:
+      tags:
+      - Users
+      summary: Grafana Admin Update User Permissions
+      description: Updates the permissions for a specific user in Grafana through an administrative endpoint. This operation requires admin privileges and allows modification of user permission settings by targeting a specific user via their user_id parameter in the URL path. The PUT method indicates this is a full update of the user's permission configuration, replacing the existing permissions with the new settings provided in the request body. This is typically used by system administrators to grant or revoke access rights, adjust role-based permissions, or modify what resources and features a particular user can access within the Grafana instance.
+      operationId: adminUpdateUserPermissions
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUpdateUserPermissionsForm'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/revoke-auth-token:
+    parameters: []
+    post:
+      tags:
+      - Users
+      summary: Grafana Admin Revoke User Auth Token
+      description: This API operation allows a Grafana administrator to forcibly revoke a specific authentication token for a given user by making a POST request to the endpoint with the target user's ID. When executed, it invalidates the specified auth token, effectively logging out that user from any session using that particular token, which is useful for security purposes such as when a token may have been compromised or when an administrator needs to terminate a user's access immediately without affecting other active sessions the user might have with different tokens.
+      operationId: adminRevokeUserAuthToken
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevokeAuthTokenCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/quotas:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Get User Quota
+      description: This API operation retrieves the current quota limits and usage statistics for a specific user in Grafana. By making a GET request to the /admin/users/{user_id}/quotas endpoint with a valid user ID, administrators can view resource allocation details such as the maximum number of dashboards, data sources, or organizations that the specified user is allowed to create or use. The response provides both the configured quota limits and the current consumption for each quota type, enabling administrators to monitor resource usage, enforce limits, and make informed decisions about quota adjustments for individual users within their Grafana instance.
+      operationId: getUserQuota
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuotaDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users/{user_id}/quotas/{quota_target}:
+    parameters: []
+    put:
+      tags:
+      - Users
+      summary: Grafana Update User Quota
+      description: This API operation allows Grafana administrators to update quota limits for a specific user by targeting a particular quota type. It uses a PUT request to modify the quota value associated with the specified user ID and quota target, which could be related to resources like dashboards, data sources, or other Grafana entities. The operation requires admin-level privileges and accepts the user ID and quota target as path parameters, along with the new quota value in the request body, enabling fine-grained control over individual user resource allocation within the Grafana instance.
+      operationId: updateUserQuota
+      parameters:
+      - name: quota_target
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateQuotaCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/quotas:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Get User Quotas
+      description: This API operation retrieves the current quota limits and usage for a specific user in Grafana. Quotas define resource limitations such as the maximum number of dashboards, data sources, or organizations that a user can create or belong to. By making a GET request to the /user/quotas endpoint, administrators can view the configured quota settings for the authenticated user, which helps in monitoring resource allocation and ensuring users stay within their assigned limits. The response typically includes quota values for various resources along with current usage statistics, enabling better resource management and capacity planning within the Grafana instance.
+      operationId: getUserQuotas
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuotaDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/auth-tokens:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Get User Auth Tokens
+      description: This API operation retrieves a list of authentication tokens associated with the currently authenticated user in Grafana. When called via a GET request to the /user/auth-tokens endpoint, it returns information about active auth tokens that have been generated for the user's account, typically including details such as token IDs, creation timestamps, last used dates, and expiration information. This allows users to view and manage their active sessions and API tokens for security and access control purposes.
+      operationId: getUserAuthTokens
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserToken'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/orgs:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Get Signed In User Org List
+      description: This API endpoint retrieves a list of all organizations associated with the currently authenticated user in Grafana. When called with a GET request to /user/orgs, it returns information about each organization the signed-in user belongs to, typically including details such as organization ID, name, and the user's role within each organization. This is useful for applications that need to display or process the organizational memberships of the current user, allowing them to understand which organizations they have access to and what permissions they may have in each one.
+      operationId: getSignedInUserOrgList
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserOrgDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/password:
+    parameters: []
+    put:
+      tags:
+      - Users
+      summary: Grafana Change User Password
+      description: Changes the password for the currently authenticated user in Grafana. This endpoint requires the user to provide their current password along with the new password they wish to set. The operation is performed as a PUT request to the /user/password endpoint and can only modify the password of the user making the request, not other users in the system. Authentication is required to access this endpoint, and the request must include both the old password for verification and the new password that meets any configured password policy requirements.
+      operationId: changeUserPassword
+      parameters: []
+      requestBody:
+        description: To change the email, name, login, theme, provide another one.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ChangeUserPasswordCommand'
+              - description: To change the email, name, login, theme, provide another one.
+              contentMediaType: application/json
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/preferences:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Get User Preferences
+      description: This API operation retrieves the current preferences for the authenticated user in Grafana. It returns configuration settings such as the user's preferred theme (light or dark mode), home dashboard ID, timezone settings, and UI language preferences. The endpoint requires authentication and returns a JSON object containing all the preference values associated with the logged-in user's account, allowing applications to understand and respect the user's personalized Grafana interface settings.
+      operationId: getUserPreferences
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreferencesSpec'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Users
+      summary: Grafana Update User Preferences
+      description: Updates the preferences for the currently authenticated user in Grafana, allowing modification of settings such as theme (light/dark), home dashboard, timezone, and language preferences. This endpoint requires authentication and only affects the preferences of the user making the request. The operation accepts a JSON payload containing the preference fields to be updated, and returns the updated preference object upon successful modification. Changes take effect immediately for the user's session and persist across logins.
+      operationId: updateUserPreferences
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePrefsCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    patch:
+      tags:
+      - Users
+      summary: Grafana Patch User Preferences
+      description: Updates the preferences for the currently authenticated user by allowing partial modifications to settings such as theme (light/dark), timezone, home dashboard ID, and UI preferences. This PATCH endpoint enables users to customize their Grafana experience by submitting only the specific preference fields they want to change, without needing to provide all preference values. The operation requires authentication and only affects the preferences of the user making the request, leaving unchanged any preference fields not included in the request body.
+      operationId: patchUserPreferences
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchPrefsCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/revoke-auth-token:
+    parameters: []
+    post:
+      tags:
+      - Users
+      summary: Grafana Revoke User Auth Token
+      description: This API operation allows for the revocation of a specific authentication token associated with a user in Grafana. When invoked via a POST request to the /user/revoke-auth-token endpoint, it invalidates the specified auth token, effectively logging out the user from any session using that particular token. This is useful for security purposes when a user wants to manually terminate access from a specific device or session, or when an administrator needs to force a logout. The operation requires proper authentication and authorization to ensure only legitimate revocation requests are processed, helping maintain the security and integrity of user sessions within the Grafana system.
+      operationId: revokeUserAuthToken
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevokeAuthTokenCmd'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/teams:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Get Signed In User Team List
+      description: This API operation retrieves a list of all teams that the currently authenticated user is a member of in Grafana. When called, it returns team information associated with the signed-in user's account, allowing applications to determine which teams the user belongs to and potentially their roles or permissions within those teams. This is useful for displaying team memberships in user interfaces, implementing team-based access controls, or filtering content based on team associations.
+      operationId: getSignedInUserTeamList
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/using/{org_id}:
+    parameters: []
+    post:
+      tags:
+      - Users
+      summary: Grafana User Set Using Org
+      description: This API operation allows a user to switch their current active organization context in Grafana by specifying a target organization ID in the request path. When executed via a POST request to the /user/using/{org_id} endpoint, it changes the user's working context to the specified organization, making that organization the active one for subsequent operations. This is particularly useful in multi-tenant Grafana deployments where users belong to multiple organizations and need to switch between them to access different dashboards, data sources, and settings associated with each organization. The operation requires the user to be authenticated and to have valid membership in the target organization identified by the org_id parameter.
+      operationId: userSetUsingOrg
+      parameters:
+      - name: org_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /user/email/update:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Update User Email
+      description: This API operation allows for updating the email address associated with a user account in Grafana. When invoked via a GET request to the /user/email/update endpoint, it modifies the email address of the currently authenticated user. The operation requires the user to be logged in and typically needs the new email address to be provided as a parameter. This endpoint is useful for maintaining accurate user contact information and ensuring proper communication channels within the Grafana platform.
+      operationId: updateUserEmail
+      parameters: []
+      responses:
+        '302':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /users/lookup:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Get User By Login Or Email
+      description: The Grafana API endpoint /users/lookup with the GET method allows administrators to retrieve detailed information about a specific user by providing either their login username or email address as a query parameter. This operation is particularly useful when you need to fetch user details but only have their login credentials or email rather than their numeric user ID. The endpoint returns comprehensive user information including the user's ID, email, name, login, theme preferences, organization details, and authentication labels. Access to this endpoint typically requires administrator privileges as it exposes sensitive user information across the Grafana instance.
+      operationId: getUserByLoginOrEmail
+      parameters:
+      - name: loginOrEmail
+        in: query
+        description: loginOrEmail of the user
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileDTO'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /users/search:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Search Users With Paging
+      description: This API operation performs a paginated search of users within a Grafana instance, allowing administrators or authorized users to retrieve a list of user accounts based on specific search criteria. The GET request to the /users/search endpoint returns user information in a structured format with pagination support, making it efficient to handle large numbers of users by breaking results into manageable pages. This operation is commonly used in administrative interfaces, user management dashboards, or when implementing features that require user selection or filtering capabilities within Grafana.
+      operationId: searchUsersWithPaging
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchUserQueryResult'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /users/{user_id}:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Get User By ID
+      description: This API operation retrieves detailed information about a specific Grafana user by their unique user identifier. By sending a GET request to the endpoint with a valid user_id parameter, administrators or authorized users can fetch comprehensive user data including username, email, authentication details, organization memberships, and user preferences. This operation is typically used for user management tasks, displaying user profiles, or verifying user information within Grafana instances, and requires appropriate permissions to access user data depending on the Grafana instance's security configuration.
+      operationId: getUserByID
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileDTO'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+    put:
+      tags:
+      - Users
+      summary: Grafana Update User
+      description: The PUT operation on the /users/{user_id} endpoint in Grafana allows administrators to update an existing user's account information by specifying the user's unique identifier in the URL path. This endpoint enables modification of user attributes such as email address, login username, display name, and theme preferences. The request requires appropriate administrative privileges and accepts a JSON payload containing the fields to be updated. Upon successful execution, the API returns the updated user object with all current values, while validation errors or permission issues will result in appropriate error responses. This operation is commonly used for user management tasks like correcting user details, updating contact information, or adjusting user preferences programmatically.
+      operationId: updateUser
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: To change the email, name, login, theme, provide another one.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateUserCommand_2'
+              - description: To change the email, name, login, theme, provide another one.
+              contentMediaType: application/json
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '409':
+          description: ConflictError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /users/{user_id}/orgs:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Get User Org List
+      description: Retrieves a list of all organizations associated with a specific user identified by their user ID in Grafana. This endpoint returns organization membership information for the specified user, including details about each organization they belong to. It requires appropriate authentication and permissions to access user-organization relationship data, making it useful for administrators who need to audit user access across multiple organizations or for displaying a user's organizational affiliations in the Grafana interface.
+      operationId: getUserOrgList
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserOrgDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /users/{user_id}/teams:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Grafana Get User Teams
+      description: This API operation retrieves a list of all teams that a specific user belongs to in Grafana. By making a GET request to the endpoint with a valid user ID parameter, the system returns information about the teams associated with that particular user, including team details such as team names, IDs, and potentially other relevant metadata. This is useful for administrators or applications that need to understand a user's team memberships and access permissions within the Grafana environment.
+      operationId: getUserTeams
+      parameters:
+      - name: user_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamDTO'
+                description: ''
+                contentMediaType: application/json
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    UserToken:
+      title: UserToken
+      type: object
+      properties:
+        AuthToken:
+          type: string
+        AuthTokenSeen:
+          type: boolean
+        ClientIp:
+          type: string
+        CreatedAt:
+          type: integer
+          contentEncoding: int64
+        ExternalSessionId:
+          type: integer
+          contentEncoding: int64
+        Id:
+          type: integer
+          contentEncoding: int64
+        PrevAuthToken:
+          type: string
+        RevokedAt:
+          type: integer
+          contentEncoding: int64
+        RotatedAt:
+          type: integer
+          contentEncoding: int64
+        SeenAt:
+          type: integer
+          contentEncoding: int64
+        UnhashedToken:
+          type: string
+        UpdatedAt:
+          type: integer
+          contentEncoding: int64
+        UserAgent:
+          type: string
+        UserId:
+          type: integer
+          contentEncoding: int64
+      description: UserToken represents a user token
+    RevokeAuthTokenCmd:
+      title: RevokeAuthTokenCmd
+      type: object
+      properties:
+        authTokenId:
+          type: integer
+          contentEncoding: int64
+    RolesSearchQuery:
+      title: RolesSearchQuery
+      type: object
+      properties:
+        includeHidden:
+          type: boolean
+        orgId:
+          type: integer
+          contentEncoding: int64
+        teamIds:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+        userIds:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+    OrgUserDTO:
+      title: OrgUserDTO
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+        authLabels:
+          type: array
+          items:
+            type: string
+          description: ''
+        avatarUrl:
+          type: string
+        email:
+          type: string
+        isDisabled:
+          type: boolean
+        isExternallySynced:
+          type: boolean
+        isProvisioned:
+          type: boolean
+        lastSeenAt:
+          type: string
+          contentEncoding: date-time
+        lastSeenAtAge:
+          type: string
+        login:
+          type: string
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        role:
+          type: string
+        uid:
+          type: string
+        userId:
+          type: integer
+          contentEncoding: int64
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    PatchPrefsCmd:
+      title: PatchPrefsCmd
+      type: object
+      properties:
+        cookies:
+          type: array
+          items:
+            type: string
+          description: ''
+        homeDashboardId:
+          type: integer
+          description: The numerical :id of a favorited dashboard
+          contentEncoding: int64
+          default: 0
+        homeDashboardUID:
+          type: string
+        language:
+          type: string
+        navbar:
+          $ref: '#/components/schemas/NavbarPreference'
+        queryHistory:
+          $ref: '#/components/schemas/QueryHistoryPreference'
+        regionalFormat:
+          type: string
+        theme:
+          $ref: '#/components/schemas/Theme'
+        timezone:
+          $ref: '#/components/schemas/Timezone'
+        weekStart:
+          type: string
+    UpdatePrefsCmd:
+      title: UpdatePrefsCmd
+      type: object
+      properties:
+        cookies:
+          type: array
+          items:
+            type: string
+          description: ''
+        homeDashboardId:
+          type: integer
+          description: The numerical :id of a favorited dashboard
+          contentEncoding: int64
+          default: 0
+        homeDashboardUID:
+          type: string
+        language:
+          type: string
+        navbar:
+          $ref: '#/components/schemas/NavbarPreference'
+        queryHistory:
+          $ref: '#/components/schemas/QueryHistoryPreference'
+        regionalFormat:
+          type: string
+        theme:
+          $ref: '#/components/schemas/Theme1'
+        timezone:
+          $ref: '#/components/schemas/Timezone'
+        weekStart:
+          type: string
+    RoleDTO:
+      title: RoleDTO
+      required:
+      - created
+      - description
+      - displayName
+      - group
+      - name
+      - uid
+      - updated
+      - version
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        delegatable:
+          type: boolean
+        description:
+          type: string
+        displayName:
+          type: string
+        global:
+          type: boolean
+        group:
+          type: string
+        hidden:
+          type: boolean
+        mapped:
+          type: boolean
+        name:
+          type: string
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+          description: ''
+        uid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        version:
+          type: integer
+          contentEncoding: int64
+    CreateUserCommand:
+      type: object
+      required:
+      - login
+      - password
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        login:
+          type: string
+        password:
+          type: string
+        OrgId:
+          type: integer
+    Theme1:
+      title: Theme1
+      enum:
+      - light
+      - dark
+      - system
+      type: string
+    Timezone:
+      title: Timezone
+      enum:
+      - utc
+      - browser
+      type: string
+    TeamDTO:
+      title: TeamDTO
+      required:
+      - id
+      - isProvisioned
+      - memberCount
+      - name
+      - orgId
+      - uid
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+        avatarUrl:
+          type: string
+        email:
+          type: string
+        externalUID:
+          type: string
+        id:
+          type: integer
+          description: '@deprecated Use UID instead'
+          contentEncoding: int64
+        isProvisioned:
+          type: boolean
+        memberCount:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        permission:
+          type: integer
+          contentEncoding: int64
+        uid:
+          type: string
+    QuotaDTO:
+      title: QuotaDTO
+      type: object
+      properties:
+        limit:
+          type: integer
+          contentEncoding: int64
+        org_id:
+          type: integer
+          contentEncoding: int64
+        target:
+          type: string
+        used:
+          type: integer
+          contentEncoding: int64
+        user_id:
+          type: integer
+          contentEncoding: int64
+    UpdateUserCommand:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        login:
+          type: string
+        theme:
+          type: string
+    PreferencesQueryHistoryPreference:
+      title: PreferencesQueryHistoryPreference
+      type: object
+      properties:
+        homeTab:
+          type: string
+          description: 'one of: '''' | ''query'' | ''starred'';'
+      description: +k8s:openapi-gen=true
+    UserOrgDTO:
+      title: UserOrgDTO
+      type: object
+      properties:
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        role:
+          $ref: '#/components/schemas/Role'
+    UpdateQuotaCmd:
+      title: UpdateQuotaCmd
+      type: object
+      properties:
+        limit:
+          type: integer
+          contentEncoding: int64
+        target:
+          type: string
+    AdminUpdateUserPermissionsForm:
+      title: AdminUpdateUserPermissionsForm
+      type: object
+      properties:
+        isGrafanaAdmin:
+          type: boolean
+    SetUserRolesCommand:
+      title: SetUserRolesCommand
+      type: object
+      properties:
+        global:
+          type: boolean
+        includeHidden:
+          type: boolean
+        roleUids:
+          type: array
+          items:
+            type: string
+          description: ''
+    ChangeUserPasswordCommand:
+      title: ChangeUserPasswordCommand
+      type: object
+      properties:
+        newPassword:
+          type: string
+        oldPassword:
+          type: string
+    Permission:
+      title: Permission
+      type: object
+      properties:
+        action:
+          type: string
+        created:
+          type: string
+          contentEncoding: date-time
+        scope:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+      description: Permission is the model for access control permissions
+    Role:
+      title: Role
+      enum:
+      - None
+      - Viewer
+      - Editor
+      - Admin
+      type: string
+    UserSearchHitDTO:
+      title: UserSearchHitDTO
+      type: object
+      properties:
+        authLabels:
+          type: array
+          items:
+            type: string
+          description: ''
+        avatarUrl:
+          type: string
+        email:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        isAdmin:
+          type: boolean
+        isDisabled:
+          type: boolean
+        isProvisioned:
+          type: boolean
+        lastSeenAt:
+          type: string
+          contentEncoding: date-time
+        lastSeenAtAge:
+          type: string
+        login:
+          type: string
+        name:
+          type: string
+        uid:
+          type: string
+    AddUserRoleCommand:
+      title: AddUserRoleCommand
+      type: object
+      properties:
+        global:
+          type: boolean
+        roleUid:
+          type: string
+    UpdateOrgUserCommand:
+      title: UpdateOrgUserCommand
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/Role'
+    QueryHistoryPreference:
+      title: QueryHistoryPreference
+      type: object
+      properties:
+        homeTab:
+          type: string
+    AdminUpdateUserPasswordForm:
+      title: AdminUpdateUserPasswordForm
+      type: object
+      properties:
+        password:
+          type: string
+    NavbarPreference:
+      title: NavbarPreference
+      type: object
+      properties:
+        bookmarkUrls:
+          type: array
+          items:
+            type: string
+          description: ''
+    SearchUserQueryResult:
+      title: SearchUserQueryResult
+      type: object
+      properties:
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        totalCount:
+          type: integer
+          contentEncoding: int64
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserSearchHitDTO'
+          description: ''
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        login:
+          type: string
+        theme:
+          type: string
+        orgId:
+          type: integer
+        isGrafanaAdmin:
+          type: boolean
+        isDisabled:
+          type: boolean
+        isExternal:
+          type: boolean
+        authLabels:
+          type: array
+          items:
+            type: string
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        avatarUrl:
+          type: string
+    AddOrgUserCommand:
+      title: AddOrgUserCommand
+      type: object
+      properties:
+        loginOrEmail:
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+    UpdateUserCommand_2:
+      title: UpdateUserCommand
+      type: object
+      properties:
+        email:
+          type: string
+        login:
+          type: string
+        name:
+          type: string
+        theme:
+          type: string
+    Theme:
+      title: Theme
+      enum:
+      - light
+      - dark
+      type: string
+    setPermissionCommand:
+      title: setPermissionCommand
+      type: object
+      properties:
+        permission:
+          type: string
+    CreateUserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+    PreferencesSpec:
+      title: PreferencesSpec
+      type: object
+      properties:
+        cookiePreferences:
+          allOf:
+          - $ref: '#/components/schemas/PreferencesCookiePreferences'
+          - description: +k8s:openapi-gen=true
+        homeDashboardUID:
+          type: string
+          description: UID for the home dashboard
+        language:
+          type: string
+          description: Selected language (beta)
+        navbar:
+          allOf:
+          - $ref: '#/components/schemas/PreferencesNavbarPreference'
+          - description: +k8s:openapi-gen=true
+        queryHistory:
+          allOf:
+          - $ref: '#/components/schemas/PreferencesQueryHistoryPreference'
+          - description: +k8s:openapi-gen=true
+        regionalFormat:
+          type: string
+          description: Selected locale (beta)
+        theme:
+          type: string
+          description: light, dark, empty is default
+        timezone:
+          type: string
+          description: 'The timezone selection
+
+            TODO: this should use the timezone defined in common'
+        weekStart:
+          type: string
+          description: day of the week (sunday, monday, etc)
+      description: +k8s:openapi-gen=true
+    UserProfileDTO:
+      title: UserProfileDTO
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+        authLabels:
+          type: array
+          items:
+            type: string
+          description: ''
+        avatarUrl:
+          type: string
+        createdAt:
+          type: string
+          contentEncoding: date-time
+        email:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        isDisabled:
+          type: boolean
+        isExternal:
+          type: boolean
+        isExternallySynced:
+          type: boolean
+        isGrafanaAdmin:
+          type: boolean
+        isGrafanaAdminExternallySynced:
+          type: boolean
+        isProvisioned:
+          type: boolean
+        login:
+          type: string
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        theme:
+          type: string
+        uid:
+          type: string
+        updatedAt:
+          type: string
+          contentEncoding: date-time
+    UserSearchHit:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        login:
+          type: string
+        email:
+          type: string
+        avatarUrl:
+          type: string
+        isAdmin:
+          type: boolean
+        isDisabled:
+          type: boolean
+        lastSeenAt:
+          type: string
+          format: date-time
+        lastSeenAtAge:
+          type: string
+        authLabels:
+          type: array
+          items:
+            type: string
+    UserLookupDTO:
+      title: UserLookupDTO
+      type: object
+      properties:
+        avatarUrl:
+          type: string
+        login:
+          type: string
+        uid:
+          type: string
+        userId:
+          type: integer
+          contentEncoding: int64
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    PreferencesNavbarPreference:
+      title: PreferencesNavbarPreference
+      type: object
+      properties:
+        bookmarkUrls:
+          type: array
+          items:
+            type: string
+          description: ''
+      description: +k8s:openapi-gen=true
+    SearchOrgUsersQueryResult:
+      title: SearchOrgUsersQueryResult
+      type: object
+      properties:
+        orgUsers:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrgUserDTO'
+          description: ''
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        totalCount:
+          type: integer
+          contentEncoding: int64
+    PreferencesCookiePreferences:
+      title: PreferencesCookiePreferences
+      type: object
+      properties:
+        analytics: {}
+        functional: {}
+        performance: {}
+      description: +k8s:openapi-gen=true
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'

@@ -1,0 +1,2412 @@
+openapi: 3.0.3
+info:
+  title: Grafana HTTP Access Create API
+  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
+  version: 11.0.0
+  contact:
+    name: Grafana Labs
+    url: https://grafana.com
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: https://{instance}.grafana.net/api
+  description: Grafana Cloud
+  variables:
+    instance:
+      default: your-instance
+- url: http://localhost:3000/api
+  description: Local Grafana instance
+security:
+- BearerAuth: []
+- BasicAuth: []
+- ApiKeyAuth: []
+tags:
+- name: Create
+paths:
+  /datasources/uid/{sourceUID}/correlations:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Correlation
+      description: Creates a new correlation in Grafana between two data sources, allowing users to establish relationships and navigate between different data sources using the specified source data source UID. This operation enables the creation of links that help connect related data across different monitoring or logging systems, facilitating easier investigation and analysis workflows by defining how data in one source relates to data in another source through correlation configurations.
+      operationId: createCorrelation
+      parameters:
+      - name: sourceUID
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCorrelationCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateCorrelationResponseBody'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /folders:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Folder
+      description: Creates a new folder in Grafana's organizational structure, allowing users to group and organize dashboards and other resources hierarchically. This POST endpoint accepts parameters such as the folder title, a unique identifier (UID), and optional metadata to define the new folder's properties. The operation requires appropriate permissions and returns the newly created folder object with its assigned ID and other attributes upon successful execution. Folders created through this endpoint can then be used to organize dashboards, apply consistent permissions across multiple resources, and improve navigation within the Grafana interface.
+      operationId: createFolder
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFolderCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Folder'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '409':
+          description: ConflictError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /library-elements:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Library Element
+      description: Creates a new library element in Grafana, which is a reusable component such as a panel or variable that can be shared across multiple dashboards. This endpoint accepts a POST request with the library element configuration in the request body, including properties like name, model, kind (panel or variable), and folder ID where the element should be stored. Upon successful creation, it returns the newly created library element object with its unique identifier, allowing users to reference and reuse this element across their Grafana instance, promoting consistency and simplifying dashboard maintenance.
+      operationId: createLibraryElement
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLibraryElementCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryElementResponseisaresponsestructforLibraryElementDTO.'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /query-history:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Query
+      description: This API operation allows users to create a new entry in Grafana's query history by sending a POST request to the /query-history endpoint. It enables users to save queries they've executed for future reference, tracking, or reuse purposes. The operation typically accepts query details such as the datasource, query text, timestamp, and potentially additional metadata like comments or tags. This functionality is particularly useful for maintaining an audit trail of queries, sharing queries among team members, or quickly accessing frequently used queries without having to reconstruct them from scratch. The saved query history can later be retrieved, searched, or managed through other related API endpoints.
+      operationId: createQuery
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateQueryInQueryHistoryCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryHistoryResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /orgs:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Org
+      description: Creates a new organization in Grafana with the specified name and optional metadata. This operation requires administrative privileges and returns the newly created organization's ID and details upon successful creation. The request body must include at minimum the organization name, and the API will generate a unique identifier for the new organization that can be used in subsequent API calls for managing users, dashboards, and data sources within that organizational context.
+      operationId: createOrg
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrgCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createOrgResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '409':
+          description: ConflictError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /teams:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Team
+      description: Creates a new team in Grafana with the specified configuration including team name and optional settings such as email and organizational unit identifier. This endpoint requires authentication and appropriate permissions to create teams within the Grafana instance. The request accepts a JSON payload containing team details and returns the newly created team object including its assigned unique identifier upon successful creation. Team creation is essential for organizing users into groups for managing dashboard permissions and access control within Grafana.
+      operationId: createTeam
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTeamCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createTeamResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '409':
+          description: ConflictError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /access-control/roles:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Role
+      description: Creates a new custom role in Grafana's role-based access control (RBAC) system. This endpoint allows administrators to define granular permissions by creating roles with specific sets of permissions that can be assigned to users, teams, or service accounts. The request requires specifying the role name, display name, description, and optionally a set of permissions that define what actions the role can perform within Grafana. Custom roles enable organizations to implement fine-grained access control policies beyond the built-in roles, allowing them to tailor permissions to match their specific security and operational requirements. Upon successful creation, the API returns the newly created role object including its unique identifier and assigned permissions.
+      operationId: createRole
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoleForm'
+        required: true
+      responses:
+        '201':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDTO'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /reports:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Report
+      description: Creates a new dashboard report in Grafana that can be automatically generated and distributed on a scheduled basis. This operation allows you to configure report parameters including the target dashboard, time range, layout options, orientation, and recipients who will receive the report via email. The report can be set to recur daily, weekly, or monthly, and supports various output formats such as PDF or image. You can customize branding elements, include specific dashboard panels, and define variables or filters to apply when generating the report. Once created, the report will be executed according to the defined schedule and delivered to the specified email addresses with optional custom messages.
+      operationId: createReport
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateReport'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createReportResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /serviceaccounts:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Service Account
+      description: Creates a new service account in Grafana, which is a special type of user designed for automated tasks and API interactions rather than human login. Service accounts can be assigned specific permissions and roles to programmatically access Grafana resources, making them ideal for integrations, CI/CD pipelines, monitoring scripts, and other automated workflows. The request requires authentication and appropriate administrative permissions, and upon successful creation, returns details about the newly created service account including its unique identifier, which can then be used to generate tokens for API authentication.
+      operationId: createServiceAccount
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateServiceAccountForm'
+        required: false
+      responses:
+        '201':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceAccountDTO'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /serviceaccounts/{serviceAccountId}/tokens:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Token
+      description: Creates a new API token for a specified service account in Grafana by sending a POST request to the endpoint with the service account ID as a path parameter. This operation generates authentication tokens that allow service accounts to interact with Grafana's API programmatically, enabling automated workflows, integrations, and machine-to-machine communication. The request typically requires specifying token properties such as name, role, and optionally an expiration date, and returns the newly created token details including the token string itself, which should be securely stored as it cannot be retrieved again after the initial response.
+      operationId: createToken
+      parameters:
+      - name: serviceAccountId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          contentEncoding: int64
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddServiceAccountTokenCommand'
+        required: false
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewApiKeyResult'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '409':
+          description: ConflictError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /admin/users:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Admin Create User
+      description: This API operation allows administrators to create new users in Grafana through a POST request to the /admin/users endpoint. It is an administrative function that requires elevated privileges and enables the programmatic addition of user accounts to the Grafana system. When invoked, the operation accepts user details such as username, email, password, and other relevant attributes in the request body, then creates a new user account with the specified credentials and settings. This endpoint is particularly useful for bulk user provisioning, automated user management workflows, or integrating Grafana user creation with external identity management systems.
+      operationId: adminCreateUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminCreateUserForm'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminCreateUserResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '412':
+          description: PreconditionFailedError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      security:
+      - basic: []
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /cloudmigration/migration:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Session
+      description: Creates a new cloud migration session in Grafana that initializes the process for migrating a Grafana instance or its resources to Grafana Cloud. This operation sets up the necessary session context and parameters required to begin transferring dashboards, data sources, folders, and other configuration elements from a self-hosted or existing Grafana installation to a cloud-based environment, returning a session identifier that can be used to track and manage the migration progress throughout its lifecycle.
+      operationId: createSession
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CloudMigrationSessionRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudMigrationSessionResponseDTO'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /cloudmigration/migration/{uid}/snapshot:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Snapshot
+      description: Creates a snapshot of the current Grafana instance configuration and data for a specified cloud migration session identified by its unique identifier (uid). This operation captures the state of dashboards, data sources, users, organizations, and other Grafana resources at a point in time, preparing them for migration to a cloud-hosted Grafana instance. The snapshot serves as a migration package that can be uploaded and restored in the target cloud environment, enabling seamless transfer of Grafana configurations between instances. This is typically used as part of a multi-step migration workflow where users need to move their self-hosted Grafana setup to Grafana Cloud.
+      operationId: createSnapshot
+      parameters:
+      - name: uid
+        in: path
+        description: UID of a session
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSnapshotRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSnapshotResponseDTO'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /cloudmigration/token:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Cloud Migration Token
+      description: Creates a new cloud migration token in Grafana that enables secure data transfer and authentication between a self-hosted Grafana instance and Grafana Cloud during migration operations. This endpoint generates a temporary authentication token that authorizes the migration service to access and migrate dashboards, data sources, alerts, and other Grafana resources from the source instance to the cloud destination. The token serves as a security credential to establish a trusted connection and should be handled securely throughout the migration process.
+      operationId: createCloudMigrationToken
+      parameters: []
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAccessTokenResponseDTO'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /dashboards/uid/{dashboardUid}/public-dashboards:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Public Dashboard
+      description: Creates a public dashboard that enables external users to view a specific Grafana dashboard without authentication. This operation takes a dashboard UID as a path parameter and accepts configuration options in the request body to control how the dashboard is shared publicly, including settings for time range, template variables, and access permissions. Once created, it generates a unique public URL that can be shared with anyone to view the dashboard's visualizations and data without requiring Grafana login credentials, making it useful for embedding dashboards in public websites or sharing metrics with external stakeholders.
+      operationId: createPublicDashboard
+      parameters:
+      - name: dashboardUid
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicDashboardDTO'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicDashboard'
+        '400':
+          description: BadRequestPublicError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '401':
+          description: UnauthorisedPublicError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '403':
+          description: ForbiddenPublicError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+        '500':
+          description: InternalServerPublicError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicError1'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /snapshots:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Dashboard Snapshot
+      description: Creates a new dashboard snapshot in Grafana, allowing users to capture and share the current state of a dashboard at a specific point in time. This operation accepts a POST request containing the dashboard data, metadata, and optional configuration parameters such as expiration time and external sharing settings. The snapshot preserves all panel configurations, queries, and visualizations as they appear at the moment of creation, generating a unique URL that can be shared with others without requiring authentication. The API returns a snapshot identifier and access URLs (both for viewing and deletion) that can be used to retrieve or manage the snapshot later. This is particularly useful for creating static references to dashboard states for reporting, troubleshooting, or sharing data insights with external stakeholders without granting full access to the live Grafana instance.
+      operationId: createDashboardSnapshot
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDashboardSnapshotCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createDashboardSnapshotResponse'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /groupsync/groups/{group_id}:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Group Mappings
+      description: This API operation creates group mappings for a specific group in Grafana's group synchronization system. It uses a POST request to the endpoint /groupsync/groups/{group_id}, where {group_id} is a path parameter identifying the target group for which mappings should be created. The operation establishes connections between external authentication provider groups (such as LDAP, OAuth, or SAML groups) and Grafana's internal groups, enabling automated user group assignment based on their external group memberships. This functionality is essential for organizations implementing single sign-on (SSO) or centralized user management, as it allows administrators to synchronize group memberships from external identity providers to Grafana, ensuring users automatically receive appropriate permissions and access rights based on their organizational roles without manual intervention.
+      operationId: createGroupMappings
+      parameters:
+      - name: group_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupAttributes'
+        required: true
+      responses:
+        '201':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messageResponse'
+        '400':
+          description: BadRequestError is returned when the request is invalid and it cannot be processed.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /playlists:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Playlist
+      description: Creates a new playlist in Grafana by submitting playlist configuration data through a POST request to the /playlists endpoint. This operation allows users to define a playlist containing a collection of dashboards that can be displayed in sequence, specifying properties such as the playlist name, the interval between dashboard transitions, and the list of dashboard items to include. The request requires appropriate authentication and permissions, and upon successful creation, returns the newly created playlist object with its assigned identifier and configuration details.
+      operationId: createPlaylist
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePlaylistCommand'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Playlist'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /recording-rules:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Recording Rule
+      description: Creates a new recording rule in Grafana's alerting system that allows you to pre-compute frequently needed or computationally expensive expressions and save their result as a new set of time series. This POST endpoint accepts a recording rule definition including the rule name, query expression, labels, and evaluation interval, then stores it in the Grafana instance for continuous evaluation. Recording rules are particularly useful for dashboard performance optimization and creating aggregated metrics that can be queried more efficiently than running complex calculations repeatedly.
+      operationId: createRecordingRule
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordingRuleJSON'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordingRuleJSON'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /recording-rules/test:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Test Create Recording Rule
+      description: This API operation allows users to test the creation of a recording rule in Grafana before actually implementing it. By sending a POST request to the /recording-rules/test endpoint, users can validate their recording rule configuration, including the PromQL expression, labels, and other parameters, to ensure it functions as expected without permanently adding it to the system. This testing capability helps prevent errors and allows users to verify that their recording rule will produce the desired metrics aggregation or computation results in their monitoring setup before committing the changes to their Grafana instance.
+      operationId: testCreateRecordingRule
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordingRuleJSON'
+        required: true
+      responses:
+        '200':
+          description: An OKResponse is returned if the request was successful.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseBody'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '422':
+          description: UnprocessableEntityError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+  /recording-rules/writer:
+    parameters: []
+    post:
+      tags:
+      - Create
+      summary: Grafana Create Recording Rule Write Target
+      description: The POST operation on the /recording-rules/writer endpoint in Grafana allows administrators to create a new recording rule write target, which defines a destination where pre-computed metric aggregations (recording rules) should be written. This endpoint accepts configuration details such as the remote write URL, authentication credentials, and other parameters necessary to establish a connection with the target storage system. Recording rule write targets enable Grafana to send the results of recording rule evaluations to external time-series databases or other compatible endpoints, facilitating data distribution, backup strategies, or multi-tenancy scenarios where recording rule results need to be persisted or forwarded to different storage backends.
+      operationId: createRecordingRuleWriteTarget
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrometheusRemoteWriteTargetJSON'
+        required: true
+      responses:
+        '200':
+          description: (empty)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrometheusRemoteWriteTargetJSON'
+        '401':
+          description: UnauthorizedError is returned when the request is not authenticated.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: NotFoundError is returned when the requested resource was not found.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '422':
+          description: UnprocessableEntityError
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: InternalServerError is a general error indicating something went wrong internally.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+      deprecated: false
+      x-api-evangelist-processing:
+        SplitPascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
+components:
+  schemas:
+    createReportResponse:
+      title: createReportResponse
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+    ReportOptions:
+      title: ReportOptions
+      type: object
+      properties:
+        layout:
+          type: string
+        orientation:
+          type: string
+        pdfCombineOneFile:
+          type: boolean
+        pdfShowTemplateVariables:
+          type: boolean
+        timeRange:
+          $ref: '#/components/schemas/ReportTimeRange'
+    LibraryElementDTOMetaisthemetainformationforLibraryElementDTO.:
+      title: LibraryElementDTOMetaisthemetainformationforLibraryElementDTO.
+      type: object
+      properties:
+        connectedDashboards:
+          type: integer
+          contentEncoding: int64
+        created:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          $ref: '#/components/schemas/LibraryElementDTOMetaUser'
+        folderName:
+          type: string
+        folderUid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        updatedBy:
+          $ref: '#/components/schemas/LibraryElementDTOMetaUser'
+    PlaylistItem:
+      title: PlaylistItem
+      type: object
+      properties:
+        Id:
+          type: integer
+          contentEncoding: int64
+        PlaylistId:
+          type: integer
+          contentEncoding: int64
+        order:
+          type: integer
+          contentEncoding: int64
+        title:
+          type: string
+        type:
+          type: string
+        value:
+          type: string
+    QueryHistoryDTO:
+      title: QueryHistoryDTO
+      type: object
+      properties:
+        comment:
+          type: string
+        createdAt:
+          type: integer
+          contentEncoding: int64
+        createdBy:
+          type: integer
+          contentEncoding: int64
+        datasourceUid:
+          type: string
+        queries:
+          type: object
+        starred:
+          type: boolean
+        uid:
+          type: string
+    AddServiceAccountTokenCommand:
+      title: AddServiceAccountTokenCommand
+      type: object
+      properties:
+        name:
+          type: string
+        secondsToLive:
+          type: integer
+          contentEncoding: int64
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    ServiceAccountDTO:
+      title: ServiceAccountDTO
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+          examples:
+          - serviceaccounts:delete: true
+            serviceaccounts:read: true
+            serviceaccounts:write: true
+        avatarUrl:
+          type: string
+          examples:
+          - /avatar/85ec38023d90823d3e5b43ef35646af9
+        id:
+          type: integer
+          contentEncoding: int64
+        isDisabled:
+          type: boolean
+          examples:
+          - false
+        isExternal:
+          type: boolean
+          examples:
+          - false
+        login:
+          type: string
+          examples:
+          - sa-grafana
+        name:
+          type: string
+          examples:
+          - grafana
+        orgId:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 1
+        role:
+          type: string
+          examples:
+          - Viewer
+        tokens:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 0
+        uid:
+          type: string
+          examples:
+          - fe1xejlha91xce
+      description: 'swagger: model'
+    ReportDashboard:
+      title: ReportDashboard
+      type: object
+      properties:
+        dashboard:
+          $ref: '#/components/schemas/ReportDashboardID'
+        reportVariables:
+          type: object
+        timeRange:
+          $ref: '#/components/schemas/ReportTimeRange'
+    RoleDTO:
+      title: RoleDTO
+      required:
+      - created
+      - description
+      - displayName
+      - group
+      - name
+      - uid
+      - updated
+      - version
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        delegatable:
+          type: boolean
+        description:
+          type: string
+        displayName:
+          type: string
+        global:
+          type: boolean
+        group:
+          type: string
+        hidden:
+          type: boolean
+        mapped:
+          type: boolean
+        name:
+          type: string
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+          description: ''
+        uid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        version:
+          type: integer
+          contentEncoding: int64
+    Folder:
+      title: Folder
+      type: object
+      properties:
+        accessControl:
+          type: object
+          additionalProperties:
+            type: boolean
+          description: 'Metadata contains user accesses for a given resource
+
+            Ex: map[string]bool{"create":true, "delete": true}'
+        canAdmin:
+          type: boolean
+        canDelete:
+          type: boolean
+        canEdit:
+          type: boolean
+        canSave:
+          type: boolean
+        created:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          type: string
+        hasAcl:
+          type: boolean
+        id:
+          type: integer
+          description: 'Deprecated: use UID instead'
+          contentEncoding: int64
+        managedBy:
+          type: string
+          description: 'It can be a user or a tool or a generic API client.
+
+            +enum'
+        orgId:
+          type: integer
+          contentEncoding: int64
+        parentUid:
+          type: string
+          description: only used if nested folders are enabled
+        parents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Folder'
+          description: the parent folders starting from the root going down
+        title:
+          type: string
+        uid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        updatedBy:
+          type: string
+        url:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+    LibraryElementDTOisthefrontendDTOforentities.:
+      title: LibraryElementDTOisthefrontendDTOforentities.
+      type: object
+      properties:
+        description:
+          type: string
+        folderId:
+          type: integer
+          description: 'Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        kind:
+          type: integer
+          contentEncoding: int64
+        meta:
+          $ref: '#/components/schemas/LibraryElementDTOMetaisthemetainformationforLibraryElementDTO.'
+        model:
+          type: object
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        schemaVersion:
+          type: integer
+          contentEncoding: int64
+        type:
+          type: string
+        uid:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+    RecordingRuleJSON:
+      title: RecordingRuleJSON
+      type: object
+      properties:
+        active:
+          type: boolean
+        count:
+          type: boolean
+        description:
+          type: string
+        dest_data_source_uid:
+          type: string
+        id:
+          type: string
+        interval:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+        prom_name:
+          type: string
+        queries:
+          type: array
+          items: {}
+          description: ''
+        range:
+          type: integer
+          contentEncoding: int64
+        target_ref_id:
+          type: string
+      description: RecordingRuleJSON is the external representation of a recording rule
+    ReportDashboardID:
+      title: ReportDashboardID
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+        uid:
+          type: string
+    CorrelationConfig:
+      title: CorrelationConfig
+      required:
+      - field
+      - target
+      type: object
+      properties:
+        field:
+          type: string
+          description: Field used to attach the correlation link
+          examples:
+          - message
+        target:
+          type: object
+          additionalProperties: {}
+          description: Target data query
+          examples:
+          - prop1: value1
+            prop2: value
+        transformations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transformation'
+          description: ''
+        type:
+          type: string
+          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
+
+            +enum'
+    ReportSchedule:
+      title: ReportSchedule
+      type: object
+      properties:
+        dayOfMonth:
+          type: string
+        endDate:
+          type: string
+          contentEncoding: date-time
+        frequency:
+          type: string
+        intervalAmount:
+          type: integer
+          contentEncoding: int64
+        intervalFrequency:
+          type: string
+        startDate:
+          type: string
+          contentEncoding: date-time
+        timeZone:
+          type: string
+        workdaysOnly:
+          type: boolean
+    LibraryElementResponseisaresponsestructforLibraryElementDTO.:
+      title: LibraryElementResponseisaresponsestructforLibraryElementDTO.
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/LibraryElementDTOisthefrontendDTOforentities.'
+    messageResponse:
+      title: messageResponse
+      type: object
+      properties:
+        message:
+          type: string
+    CreateAccessTokenResponseDTO:
+      title: CreateAccessTokenResponseDTO
+      type: object
+      properties:
+        token:
+          type: string
+    Playlist:
+      title: Playlist
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        interval:
+          type: string
+        name:
+          type: string
+        uid:
+          type: string
+      description: Playlist model
+    Kind:
+      title: Kind
+      const: 1
+      type: integer
+      description: 'Kind of element to create, Use 1 for library panels or 2 for c.
+
+        Description:
+
+        1 - library panels'
+    AdminCreateUserResponse:
+      title: AdminCreateUserResponse
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+        uid:
+          type: string
+    ReportTimeRange:
+      title: ReportTimeRange
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+    createTeamResponse:
+      title: createTeamResponse
+      type: object
+      properties:
+        message:
+          type: string
+        teamId:
+          type: integer
+          contentEncoding: int64
+        uid:
+          type: string
+    ResourceType:
+      title: ResourceType
+      enum:
+      - DASHBOARD
+      - DATASOURCE
+      - FOLDER
+      - LIBRARY_ELEMENT
+      - ALERT_RULE
+      - ALERT_RULE_GROUP
+      - CONTACT_POINT
+      - NOTIFICATION_POLICY
+      - NOTIFICATION_TEMPLATE
+      - MUTE_TIMING
+      - PLUGIN
+      type: string
+    CreateLibraryElementCommand:
+      title: CreateLibraryElementCommand
+      type: object
+      properties:
+        folderId:
+          type: integer
+          description: 'ID of the folder where the library element is stored.
+
+
+            Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+          description: UID of the folder where the library element is stored.
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/Kind'
+          - description: 'Kind of element to create, Use 1 for library panels or 2 for c.
+
+              Description:
+
+              1 - library panels'
+        model:
+          type: object
+          description: The JSON model for the library element.
+        name:
+          type: string
+          description: Name of the library element.
+        uid:
+          type: string
+      description: CreateLibraryElementCommand is the command for adding a LibraryElement
+    AdminCreateUserForm:
+      title: AdminCreateUserForm
+      type: object
+      properties:
+        email:
+          type: string
+        login:
+          type: string
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        password:
+          type: string
+    Permission:
+      title: Permission
+      type: object
+      properties:
+        action:
+          type: string
+        created:
+          type: string
+          contentEncoding: date-time
+        scope:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+      description: Permission is the model for access control permissions
+    CreateSnapshotRequestDTO:
+      title: CreateSnapshotRequestDTO
+      type: object
+      properties:
+        resourceTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceType'
+          description: ''
+    EmailDTO:
+      title: EmailDTO
+      type: object
+      properties:
+        recipient:
+          type: string
+        uid:
+          type: string
+    GroupAttributes:
+      title: GroupAttributes
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            type: string
+          description: ''
+    Role:
+      title: Role
+      enum:
+      - None
+      - Viewer
+      - Editor
+      - Admin
+      type: string
+    createDashboardSnapshotResponse:
+      title: createDashboardSnapshotResponse
+      type: object
+      properties:
+        deleteKey:
+          type: string
+          description: Unique key used to delete the snapshot. It is different from the key so that only the creator can delete the snapshot.
+        deleteUrl:
+          type: string
+        id:
+          type: integer
+          description: Snapshot id
+          contentEncoding: int64
+        key:
+          type: string
+          description: Unique key
+        url:
+          type: string
+    PrometheusRemoteWriteTargetJSON:
+      title: PrometheusRemoteWriteTargetJSON
+      type: object
+      properties:
+        data_source_uid:
+          type: string
+        id:
+          type: string
+        remote_write_path:
+          type: string
+    PublicDashboardDTO:
+      title: PublicDashboardDTO
+      type: object
+      properties:
+        accessToken:
+          type: string
+        annotationsEnabled:
+          type: boolean
+        isEnabled:
+          type: boolean
+        share:
+          type: string
+        timeSelectionEnabled:
+          type: boolean
+        uid:
+          type: string
+    CreateSnapshotResponseDTO:
+      title: CreateSnapshotResponseDTO
+      type: object
+      properties:
+        uid:
+          type: string
+    PublicDashboard:
+      title: PublicDashboard
+      type: object
+      properties:
+        accessToken:
+          type: string
+        annotationsEnabled:
+          type: boolean
+        createdAt:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          type: integer
+          contentEncoding: int64
+        dashboardUid:
+          type: string
+        isEnabled:
+          type: boolean
+        recipients:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailDTO'
+          description: ''
+        share:
+          type: string
+        timeSelectionEnabled:
+          type: boolean
+        uid:
+          type: string
+        updatedAt:
+          type: string
+          contentEncoding: date-time
+        updatedBy:
+          type: integer
+          contentEncoding: int64
+    CreateServiceAccountForm:
+      title: CreateServiceAccountForm
+      type: object
+      properties:
+        isDisabled:
+          type: boolean
+          examples:
+          - false
+        name:
+          type: string
+          examples:
+          - grafana
+        role:
+          allOf:
+          - $ref: '#/components/schemas/Role'
+          - examples:
+            - Admin
+    CreateFolderCommand:
+      title: CreateFolderCommand
+      type: object
+      properties:
+        description:
+          type: string
+        parentUid:
+          type: string
+        title:
+          type: string
+        uid:
+          type: string
+      description: 'CreateFolderCommand captures the information required by the folder service
+
+        to create a folder.'
+    NewApiKeyResult:
+      title: NewApiKeyResult
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 1
+        key:
+          type: string
+        name:
+          type: string
+          examples:
+          - grafana
+    CreateTeamCommand:
+      title: CreateTeamCommand
+      required:
+      - name
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+    CreateOrgCommand:
+      title: CreateOrgCommand
+      type: object
+      properties:
+        name:
+          type: string
+    Unstructured:
+      title: Unstructured
+      type: object
+      properties:
+        Object:
+          type: object
+          additionalProperties: {}
+          description: 'Object is a JSON compatible map with string, float, int, bool, []any,
+
+            or map[string]any children.'
+      description: 'Unstructured allows objects that do not have Golang structs registered to be manipulated
+
+        generically.'
+    CreateQueryInQueryHistoryCommand:
+      title: CreateQueryInQueryHistoryCommand
+      required:
+      - queries
+      type: object
+      properties:
+        datasourceUid:
+          type: string
+          description: UID of the data source for which are queries stored.
+          examples:
+          - PE1C5CBDA0504A6A3
+        queries:
+          type: object
+      description: CreateQueryInQueryHistoryCommand is the command for adding query history
+    CreateOrUpdateReport:
+      title: CreateOrUpdateReport
+      type: object
+      properties:
+        dashboards:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportDashboard'
+          description: ''
+        enableCsv:
+          type: boolean
+        enableDashboardUrl:
+          type: boolean
+        formats:
+          type: array
+          items:
+            type: string
+          description: ''
+        message:
+          type: string
+        name:
+          type: string
+        options:
+          $ref: '#/components/schemas/ReportOptions'
+        recipients:
+          type: string
+        replyTo:
+          type: string
+        scaleFactor:
+          type: integer
+          contentEncoding: int64
+        schedule:
+          $ref: '#/components/schemas/ReportSchedule'
+        state:
+          type: string
+          description: +enum
+        subject:
+          type: string
+    CreateRoleForm:
+      title: CreateRoleForm
+      type: object
+      properties:
+        description:
+          type: string
+        displayName:
+          type: string
+        global:
+          type: boolean
+        group:
+          type: string
+        hidden:
+          type: boolean
+        name:
+          type: string
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+          description: ''
+        uid:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+    CreatePlaylistCommand:
+      title: CreatePlaylistCommand
+      type: object
+      properties:
+        interval:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlaylistItem'
+          description: ''
+        name:
+          type: string
+    Correlation:
+      title: Correlation
+      type: object
+      properties:
+        config:
+          $ref: '#/components/schemas/CorrelationConfig'
+        description:
+          type: string
+          description: Description of the correlation
+          examples:
+          - Logs to Traces
+        label:
+          type: string
+          description: Label identifying the correlation
+          examples:
+          - My Label
+        orgId:
+          type: integer
+          description: OrgID of the data source the correlation originates from
+          contentEncoding: int64
+          examples:
+          - 1
+        provisioned:
+          type: boolean
+          description: Provisioned True if the correlation was created during provisioning
+        sourceUID:
+          type: string
+          description: UID of the data source the correlation originates from
+          examples:
+          - d0oxYRg4z
+        targetUID:
+          type: string
+          description: UID of the data source the correlation points to
+          examples:
+          - PE1C5CBDA0504A6A3
+        type:
+          type: string
+          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
+
+            +enum'
+        uid:
+          type: string
+          description: Unique identifier of the correlation
+          examples:
+          - 50xhMlg9k
+      description: Correlation is the model for correlations definitions
+    Type1:
+      title: Type1
+      enum:
+      - regex
+      - logfmt
+      type: string
+    CreateCorrelationCommand:
+      title: CreateCorrelationCommand
+      type: object
+      properties:
+        config:
+          $ref: '#/components/schemas/CorrelationConfig'
+        description:
+          type: string
+          description: Optional description of the correlation
+          examples:
+          - Logs to Traces
+        label:
+          type: string
+          description: Optional label identifying the correlation
+          examples:
+          - My label
+        provisioned:
+          type: boolean
+          description: True if correlation was created with provisioning. This makes it read-only.
+        targetUID:
+          type: string
+          description: Target data source UID to which the correlation is created. required if type = query
+          examples:
+          - PE1C5CBDA0504A6A3
+        type:
+          type: string
+          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
+
+            +enum'
+      description: CreateCorrelationCommand is the command for creating a correlation
+    CreateDashboardSnapshotCommand:
+      title: CreateDashboardSnapshotCommand
+      required:
+      - dashboard
+      type: object
+      properties:
+        apiVersion:
+          type: string
+          description: 'APIVersion defines the versioned schema of this representation of an object.
+
+            Servers should convert recognized schemas to the latest internal value, and
+
+            may reject unrecognized values.
+
+            More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+
+            +optional'
+        dashboard:
+          allOf:
+          - $ref: '#/components/schemas/Unstructured'
+          - description: 'Unstructured allows objects that do not have Golang structs registered to be manipulated
+
+              generically.'
+        deleteKey:
+          type: string
+          description: Unique key used to delete the snapshot. It is different from the `key` so that only the creator can delete the snapshot. Required if `external` is `true`.
+        expires:
+          type: integer
+          description: When the snapshot should expire in seconds in seconds. Default is never to expire.
+          contentEncoding: int64
+          default: 0
+        external:
+          type: boolean
+          description: 'these are passed when storing an external snapshot ref
+
+            Save the snapshot on an external server rather than locally.'
+          default: false
+        key:
+          type: string
+          description: Define the unique key. Required if `external` is `true`.
+        kind:
+          type: string
+          description: 'Kind is a string value representing the REST resource this object represents.
+
+            Servers may infer this from the endpoint the client submits requests to.
+
+            Cannot be updated.
+
+            In CamelCase.
+
+            More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+
+            +optional'
+        name:
+          type: string
+          description: Snapshot name
+    publicError1:
+      title: publicError1
+      required:
+      - messageId
+      - statusCode
+      type: object
+      properties:
+        extra:
+          type: object
+          additionalProperties: {}
+          description: Extra Additional information about the error
+        message:
+          type: string
+          description: Message A human readable message
+        messageId:
+          type: string
+          description: MessageID A unique identifier for the error
+        statusCode:
+          type: integer
+          description: StatusCode The HTTP status code returned
+          contentEncoding: int64
+      description: 'PublicError is derived from Error and only contains information
+
+        available to the end user.'
+    CloudMigrationSessionResponseDTO:
+      title: CloudMigrationSessionResponseDTO
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        slug:
+          type: string
+        uid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+    LibraryElementDTOMetaUser:
+      title: LibraryElementDTOMetaUser
+      type: object
+      properties:
+        avatarUrl:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+    Transformation:
+      title: Transformation
+      type: object
+      properties:
+        expression:
+          type: string
+        field:
+          type: string
+        mapValue:
+          type: string
+        type:
+          $ref: '#/components/schemas/Type1'
+    CloudMigrationSessionRequestDTO:
+      title: CloudMigrationSessionRequestDTO
+      type: object
+      properties:
+        authToken:
+          type: string
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    createOrgResponse:
+      title: createOrgResponse
+      required:
+      - message
+      - orgId
+      type: object
+      properties:
+        message:
+          type: string
+          description: Message Message of the created org.
+          examples:
+          - Data source added
+        orgId:
+          type: integer
+          description: ID Identifier of the created org.
+          contentEncoding: int64
+          examples:
+          - 65
+    QueryHistoryResponse:
+      title: QueryHistoryResponse
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/QueryHistoryDTO'
+      description: QueryHistoryResponse is a response struct for QueryHistoryDTO
+    CreateCorrelationResponseBody:
+      title: CreateCorrelationResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+          examples:
+          - Correlation created
+        result:
+          allOf:
+          - $ref: '#/components/schemas/Correlation'
+          - description: Correlation is the model for correlations definitions
+      description: CreateCorrelationResponse is the response struct for CreateCorrelationCommand
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Service account token or API key
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Format: Bearer <api-key>'
