@@ -1,0 +1,784 @@
+{
+  "info": {
+    "_postman_id": "7a0913f3-8b73-43bd-b867-40eee9a23e0d",
+    "name": "Grafana HTTP Access Status API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:56:09.000Z",
+    "updatedAt": "2026-07-28T01:56:10.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-7a0913f3-8b73-43bd-b867-40eee9a23e0d"
+  },
+  "item": [
+    {
+      "name": "access-control",
+      "item": [
+        {
+          "name": "status",
+          "item": [
+            {
+              "name": "Grafana Get Access Control Status",
+              "id": "d77eca9d-d108-46b2-b833-f85e76be7180",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/access-control/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "access-control",
+                    "status"
+                  ]
+                },
+                "description": "This API operation retrieves the current status of Grafana's access control system, providing information about whether fine-grained access control (RBAC) is enabled and operational within the Grafana instance. It returns details about the access control configuration and its current state, allowing administrators to verify that permission management features are functioning correctly and to understand which access control mode is active. This is particularly useful for troubleshooting permission-related issues or confirming that enterprise access control features are properly configured."
+              },
+              "response": [
+                {
+                  "id": "df223d14-a0c5-448a-8db1-5f98a316caea",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/access-control/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "access-control",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "<integer>",
+                  "createdAt": "2026-07-28T01:56:10.000Z",
+                  "updatedAt": "2026-07-28T01:56:10.000Z",
+                  "uid": "35240-df223d14-a0c5-448a-8db1-5f98a316caea"
+                },
+                {
+                  "id": "fa45ff61-405b-499b-b344-caa19a10f0ec",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/access-control/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "access-control",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:10.000Z",
+                  "updatedAt": "2026-07-28T01:56:10.000Z",
+                  "uid": "35240-fa45ff61-405b-499b-b344-caa19a10f0ec"
+                },
+                {
+                  "id": "6a6757d9-2fce-4070-90ac-52dd8588e4c6",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/access-control/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "access-control",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:10.000Z",
+                  "updatedAt": "2026-07-28T01:56:10.000Z",
+                  "uid": "35240-6a6757d9-2fce-4070-90ac-52dd8588e4c6"
+                },
+                {
+                  "id": "503021fb-831a-4d71-98ff-be93e1f71959",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/access-control/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "access-control",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:10.000Z",
+                  "updatedAt": "2026-07-28T01:56:10.000Z",
+                  "uid": "35240-503021fb-831a-4d71-98ff-be93e1f71959"
+                }
+              ],
+              "createdAt": "2026-07-28T01:56:10.000Z",
+              "updatedAt": "2026-07-28T01:56:10.000Z",
+              "uid": "35240-d77eca9d-d108-46b2-b833-f85e76be7180"
+            }
+          ],
+          "id": "5fb00b42-9690-475e-ac43-5f6ff8d0c562",
+          "createdAt": "2026-07-28T01:56:10.000Z",
+          "updatedAt": "2026-07-28T01:56:10.000Z",
+          "uid": "35240-5fb00b42-9690-475e-ac43-5f6ff8d0c562"
+        }
+      ],
+      "id": "2e26be32-b62f-4451-bd64-085976047ee4",
+      "createdAt": "2026-07-28T01:56:10.000Z",
+      "updatedAt": "2026-07-28T01:56:10.000Z",
+      "uid": "35240-2e26be32-b62f-4451-bd64-085976047ee4"
+    },
+    {
+      "name": "licensing",
+      "item": [
+        {
+          "name": "check",
+          "item": [
+            {
+              "name": "Grafana Get Status",
+              "id": "194a1ba3-8745-4a14-8f26-fc672c2190c3",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/licensing/check",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "licensing",
+                    "check"
+                  ]
+                },
+                "description": "This API operation retrieves the current licensing status information from a Grafana instance. When invoked using a GET request to the /licensing/check endpoint, it returns details about the active license, including validity, expiration dates, enabled features, and any limitations or restrictions associated with the current license tier. This endpoint is typically used by administrators to monitor license compliance, verify enterprise feature availability, and ensure the Grafana installation is properly licensed for its intended use case."
+              },
+              "response": [
+                {
+                  "id": "a38c7ec1-3c71-45c5-9e51-cd6a70038ecb",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/licensing/check",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "licensing",
+                        "check"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:56:10.000Z",
+                  "updatedAt": "2026-07-28T01:56:10.000Z",
+                  "uid": "35240-a38c7ec1-3c71-45c5-9e51-cd6a70038ecb"
+                }
+              ],
+              "createdAt": "2026-07-28T01:56:10.000Z",
+              "updatedAt": "2026-07-28T01:56:10.000Z",
+              "uid": "35240-194a1ba3-8745-4a14-8f26-fc672c2190c3"
+            }
+          ],
+          "id": "2f016f0c-cabc-4267-8a48-a2fe68369d75",
+          "createdAt": "2026-07-28T01:56:10.000Z",
+          "updatedAt": "2026-07-28T01:56:10.000Z",
+          "uid": "35240-2f016f0c-cabc-4267-8a48-a2fe68369d75"
+        }
+      ],
+      "id": "09eeaa4a-3e90-4495-9b12-9d150747721e",
+      "createdAt": "2026-07-28T01:56:10.000Z",
+      "updatedAt": "2026-07-28T01:56:10.000Z",
+      "uid": "35240-09eeaa4a-3e90-4495-9b12-9d150747721e"
+    },
+    {
+      "name": "admin",
+      "item": [
+        {
+          "name": "ldap-sync-status",
+          "item": [
+            {
+              "name": "Grafana Get Sync Status",
+              "id": "c38c4322-ea8c-4828-8db9-0b1e7bdbce6c",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/ldap-sync-status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "ldap-sync-status"
+                  ]
+                },
+                "description": "This API endpoint retrieves the current synchronization status between Grafana and LDAP (Lightweight Directory Access Protocol) servers. It is an administrative GET operation that returns information about the last LDAP sync operation, including whether it was successful, when it occurred, and any relevant error messages or warnings. This endpoint is typically used by system administrators to monitor and troubleshoot LDAP integration, ensuring that user accounts and permissions are properly synchronized between the external LDAP directory and Grafana's internal user database."
+              },
+              "response": [
+                {
+                  "id": "dc954073-7425-4a5c-868e-b0b8755d5bf9",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/admin/ldap-sync-status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "ldap-sync-status"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"enabled\": \"<boolean>\",\n  \"nextSync\": \"<string>\",\n  \"prevSync\": {\n    \"Elapsed\": \"<integer>\",\n    \"FailedUsers\": [\n      {\n        \"Error\": \"<string>\",\n        \"Login\": \"<string>\"\n      },\n      {\n        \"Error\": \"<string>\",\n        \"Login\": \"<string>\"\n      }\n    ],\n    \"MissingUserIds\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"Started\": \"<string>\",\n    \"UpdatedUserIds\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  },\n  \"schedule\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:10.000Z",
+                  "updatedAt": "2026-07-28T01:56:10.000Z",
+                  "uid": "35240-dc954073-7425-4a5c-868e-b0b8755d5bf9"
+                },
+                {
+                  "id": "7b6c2ba4-0088-408d-b0a3-529fc9fd7718",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/admin/ldap-sync-status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "ldap-sync-status"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:10.000Z",
+                  "updatedAt": "2026-07-28T01:56:10.000Z",
+                  "uid": "35240-7b6c2ba4-0088-408d-b0a3-529fc9fd7718"
+                },
+                {
+                  "id": "5e4a57e5-d9b3-4de2-85cb-329f4badcbac",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/admin/ldap-sync-status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "ldap-sync-status"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:10.000Z",
+                  "updatedAt": "2026-07-28T01:56:10.000Z",
+                  "uid": "35240-5e4a57e5-d9b3-4de2-85cb-329f4badcbac"
+                },
+                {
+                  "id": "83f32ff5-2dcc-47e9-a0bd-4ead63a93a81",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/admin/ldap-sync-status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "ldap-sync-status"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:10.000Z",
+                  "updatedAt": "2026-07-28T01:56:10.000Z",
+                  "uid": "35240-83f32ff5-2dcc-47e9-a0bd-4ead63a93a81"
+                }
+              ],
+              "createdAt": "2026-07-28T01:56:10.000Z",
+              "updatedAt": "2026-07-28T01:56:10.000Z",
+              "uid": "35240-c38c4322-ea8c-4828-8db9-0b1e7bdbce6c"
+            }
+          ],
+          "id": "da6a175d-1536-4484-b726-326510f88ed3",
+          "createdAt": "2026-07-28T01:56:10.000Z",
+          "updatedAt": "2026-07-28T01:56:10.000Z",
+          "uid": "35240-da6a175d-1536-4484-b726-326510f88ed3"
+        },
+        {
+          "name": "ldap",
+          "item": [
+            {
+              "name": "status",
+              "item": [
+                {
+                  "name": "Grafana Get LDAP Status",
+                  "id": "24b2f6e8-b212-4e15-8c8e-596274cbc1d1",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/admin/ldap/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "ldap",
+                        "status"
+                      ]
+                    },
+                    "description": "This API operation retrieves the current status of LDAP integration in Grafana by sending a GET request to the /admin/ldap/status endpoint. It provides administrators with information about the LDAP connection status, configuration validation, and whether the LDAP authentication system is functioning properly. The endpoint returns details that help verify if Grafana can successfully communicate with the configured LDAP server, making it useful for troubleshooting authentication issues and monitoring the health of LDAP-based user authentication within the Grafana instance."
+                  },
+                  "response": [
+                    {
+                      "id": "6bb8669e-2b42-4547-b73f-d9742968f9d4",
+                      "name": "An OKResponse is returned if the request was successful.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            "status"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:56:10.000Z",
+                      "updatedAt": "2026-07-28T01:56:10.000Z",
+                      "uid": "35240-6bb8669e-2b42-4547-b73f-d9742968f9d4"
+                    },
+                    {
+                      "id": "554c820e-5e64-40aa-ab27-1ec5e5d6342e",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            "status"
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:56:10.000Z",
+                      "updatedAt": "2026-07-28T01:56:10.000Z",
+                      "uid": "35240-554c820e-5e64-40aa-ab27-1ec5e5d6342e"
+                    },
+                    {
+                      "id": "15fb18c9-134d-48ce-8110-3ea33ca075d2",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            "status"
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:56:10.000Z",
+                      "updatedAt": "2026-07-28T01:56:10.000Z",
+                      "uid": "35240-15fb18c9-134d-48ce-8110-3ea33ca075d2"
+                    },
+                    {
+                      "id": "415ef2bf-1ecf-4d98-ae1d-33cb34005121",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            "status"
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:56:10.000Z",
+                      "updatedAt": "2026-07-28T01:56:10.000Z",
+                      "uid": "35240-415ef2bf-1ecf-4d98-ae1d-33cb34005121"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:56:10.000Z",
+                  "updatedAt": "2026-07-28T01:56:10.000Z",
+                  "uid": "35240-24b2f6e8-b212-4e15-8c8e-596274cbc1d1"
+                }
+              ],
+              "id": "a8d2ee42-92e9-4ba7-8f84-d3e2869eb570",
+              "createdAt": "2026-07-28T01:56:10.000Z",
+              "updatedAt": "2026-07-28T01:56:10.000Z",
+              "uid": "35240-a8d2ee42-92e9-4ba7-8f84-d3e2869eb570"
+            }
+          ],
+          "id": "35b45b7d-8e93-4af9-bc9c-613cb3060f2c",
+          "createdAt": "2026-07-28T01:56:10.000Z",
+          "updatedAt": "2026-07-28T01:56:10.000Z",
+          "uid": "35240-35b45b7d-8e93-4af9-bc9c-613cb3060f2c"
+        }
+      ],
+      "id": "06d33b86-45c9-4b68-9d73-e1274e8ad57f",
+      "createdAt": "2026-07-28T01:56:10.000Z",
+      "updatedAt": "2026-07-28T01:56:10.000Z",
+      "uid": "35240-06d33b86-45c9-4b68-9d73-e1274e8ad57f"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

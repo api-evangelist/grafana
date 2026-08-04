@@ -1,0 +1,666 @@
+{
+  "info": {
+    "_postman_id": "f014331c-c8d5-4108-8c78-f945ae316c11",
+    "name": "Grafana HTTP Access Checks API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:51:33.000Z",
+    "updatedAt": "2026-07-28T01:51:33.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-f014331c-c8d5-4108-8c78-f945ae316c11"
+  },
+  "item": [
+    {
+      "name": "datasources",
+      "item": [
+        {
+          "name": "uid",
+          "item": [
+            {
+              "name": "{uid}",
+              "item": [
+                {
+                  "name": "health",
+                  "item": [
+                    {
+                      "name": "Grafana Check Datasource Health With UID",
+                      "id": "d1e18c78-23a0-4252-b749-cdcf2d498019",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/uid/:uid/health",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "uid",
+                            ":uid",
+                            "health"
+                          ],
+                          "variable": [
+                            {
+                              "id": "1056b7dc-d1b7-44f5-8156-77471e71c529",
+                              "key": "uid",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation performs a health check on a specific Grafana datasource identified by its unique identifier (UID). When invoked via a GET request to the endpoint '/datasources/uid/{uid}/health', it verifies the connectivity and operational status of the datasource, returning information about whether the datasource is accessible and functioning correctly. This is useful for monitoring and troubleshooting datasource configurations, allowing administrators to quickly determine if a particular datasource is available and responding as expected without needing to know the datasource's internal ID, instead using the more user-friendly UID reference."
+                      },
+                      "response": [
+                        {
+                          "id": "268b0745-3f80-4963-94fc-77914e07122d",
+                          "name": "An OKResponse is returned if the request was successful.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/uid/:uid/health",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "uid",
+                                ":uid",
+                                "health"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "uid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:34.000Z",
+                          "updatedAt": "2026-07-28T01:51:34.000Z",
+                          "uid": "35240-268b0745-3f80-4963-94fc-77914e07122d"
+                        },
+                        {
+                          "id": "47eecabd-8711-4eb0-9d08-72f595aa7899",
+                          "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/uid/:uid/health",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "uid",
+                                ":uid",
+                                "health"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "uid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:34.000Z",
+                          "updatedAt": "2026-07-28T01:51:34.000Z",
+                          "uid": "35240-47eecabd-8711-4eb0-9d08-72f595aa7899"
+                        },
+                        {
+                          "id": "9fe443ed-7237-4b8d-8c81-cdb29ce8964d",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/uid/:uid/health",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "uid",
+                                ":uid",
+                                "health"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "uid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:34.000Z",
+                          "updatedAt": "2026-07-28T01:51:34.000Z",
+                          "uid": "35240-9fe443ed-7237-4b8d-8c81-cdb29ce8964d"
+                        },
+                        {
+                          "id": "6b483f2a-53cb-4e88-bc33-fac333ac6369",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/uid/:uid/health",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "uid",
+                                ":uid",
+                                "health"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "uid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:34.000Z",
+                          "updatedAt": "2026-07-28T01:51:34.000Z",
+                          "uid": "35240-6b483f2a-53cb-4e88-bc33-fac333ac6369"
+                        },
+                        {
+                          "id": "1808f8b4-0618-45e6-889b-14b834042869",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/uid/:uid/health",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "uid",
+                                ":uid",
+                                "health"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "uid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:34.000Z",
+                          "updatedAt": "2026-07-28T01:51:34.000Z",
+                          "uid": "35240-1808f8b4-0618-45e6-889b-14b834042869"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:51:34.000Z",
+                      "updatedAt": "2026-07-28T01:51:34.000Z",
+                      "uid": "35240-d1e18c78-23a0-4252-b749-cdcf2d498019"
+                    }
+                  ],
+                  "id": "3d35456e-7b83-448f-bb68-4629baf23cb4",
+                  "createdAt": "2026-07-28T01:51:34.000Z",
+                  "updatedAt": "2026-07-28T01:51:34.000Z",
+                  "uid": "35240-3d35456e-7b83-448f-bb68-4629baf23cb4"
+                }
+              ],
+              "id": "c0206232-e5fd-482a-908c-bbd6b010efb8",
+              "createdAt": "2026-07-28T01:51:34.000Z",
+              "updatedAt": "2026-07-28T01:51:34.000Z",
+              "uid": "35240-c0206232-e5fd-482a-908c-bbd6b010efb8"
+            }
+          ],
+          "id": "b4197c23-6c07-44f5-8bb0-1ad2977f5b71",
+          "createdAt": "2026-07-28T01:51:34.000Z",
+          "updatedAt": "2026-07-28T01:51:34.000Z",
+          "uid": "35240-b4197c23-6c07-44f5-8bb0-1ad2977f5b71"
+        },
+        {
+          "name": "{id}",
+          "item": [
+            {
+              "name": "health",
+              "item": [
+                {
+                  "name": "Grafana Check Datasource Health By ID",
+                  "id": "8ab52678-a66d-4e50-a60a-0c081e2f63b4",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/datasources/:id/health",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "datasources",
+                        ":id",
+                        "health"
+                      ],
+                      "variable": [
+                        {
+                          "id": "a73f8bcd-4812-4a5a-bacf-2208e6d6fb97",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Sends a health check request to the data source identified by its numeric ID and returns the current operational status. This endpoint verifies whether Grafana can successfully connect to and communicate with the specified data source, helping administrators diagnose connectivity issues or validate data source configurations. The response typically includes status information indicating whether the data source is reachable and functioning properly, along with any relevant error messages if the health check fails."
+                  },
+                  "response": [
+                    {
+                      "id": "b38c0599-90da-47cb-8869-acc330a17965",
+                      "name": "An OKResponse is returned if the request was successful.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/:id/health",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            ":id",
+                            "health"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:51:34.000Z",
+                      "updatedAt": "2026-07-28T01:51:34.000Z",
+                      "uid": "35240-b38c0599-90da-47cb-8869-acc330a17965"
+                    },
+                    {
+                      "id": "32b288bf-c0e6-48e9-b057-be82a89f3732",
+                      "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/:id/health",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            ":id",
+                            "health"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:51:34.000Z",
+                      "updatedAt": "2026-07-28T01:51:34.000Z",
+                      "uid": "35240-32b288bf-c0e6-48e9-b057-be82a89f3732"
+                    },
+                    {
+                      "id": "2a304064-7639-40e0-8d20-8062c80a81ae",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/:id/health",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            ":id",
+                            "health"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:51:34.000Z",
+                      "updatedAt": "2026-07-28T01:51:34.000Z",
+                      "uid": "35240-2a304064-7639-40e0-8d20-8062c80a81ae"
+                    },
+                    {
+                      "id": "4cce5e10-2b2b-473b-9be3-156e6f71cb1f",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/:id/health",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            ":id",
+                            "health"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:51:34.000Z",
+                      "updatedAt": "2026-07-28T01:51:34.000Z",
+                      "uid": "35240-4cce5e10-2b2b-473b-9be3-156e6f71cb1f"
+                    },
+                    {
+                      "id": "545c706c-60c7-4402-8239-649369ab9961",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/:id/health",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            ":id",
+                            "health"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:51:34.000Z",
+                      "updatedAt": "2026-07-28T01:51:34.000Z",
+                      "uid": "35240-545c706c-60c7-4402-8239-649369ab9961"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:51:34.000Z",
+                  "updatedAt": "2026-07-28T01:51:34.000Z",
+                  "uid": "35240-8ab52678-a66d-4e50-a60a-0c081e2f63b4"
+                }
+              ],
+              "id": "9dc955a0-c116-4f46-a79c-193bad3b5c8b",
+              "createdAt": "2026-07-28T01:51:34.000Z",
+              "updatedAt": "2026-07-28T01:51:34.000Z",
+              "uid": "35240-9dc955a0-c116-4f46-a79c-193bad3b5c8b"
+            }
+          ],
+          "id": "3635d580-17ec-40ca-8143-6c140f2c373b",
+          "createdAt": "2026-07-28T01:51:34.000Z",
+          "updatedAt": "2026-07-28T01:51:34.000Z",
+          "uid": "35240-3635d580-17ec-40ca-8143-6c140f2c373b"
+        }
+      ],
+      "id": "21edede9-8ddd-4b7a-ae49-db79febd9528",
+      "createdAt": "2026-07-28T01:51:34.000Z",
+      "updatedAt": "2026-07-28T01:51:34.000Z",
+      "uid": "35240-21edede9-8ddd-4b7a-ae49-db79febd9528"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

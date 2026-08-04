@@ -1,0 +1,1459 @@
+{
+  "info": {
+    "_postman_id": "10ae3e11-e5bb-41ed-937e-0d3ef07b499c",
+    "name": "Grafana HTTP Access Account API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:51:01.000Z",
+    "updatedAt": "2026-07-28T01:51:01.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-10ae3e11-e5bb-41ed-937e-0d3ef07b499c"
+  },
+  "item": [
+    {
+      "name": "serviceaccounts",
+      "item": [
+        {
+          "name": "{serviceAccountId}",
+          "item": [
+            {
+              "name": "Grafana Retrieve Service Account",
+              "id": "f1c6d52c-3125-42ea-ae00-ccff314f00a9",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "serviceaccounts",
+                    ":serviceAccountId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "b05e43c9-7440-4167-a5cb-1ef0ca16630a",
+                      "key": "serviceAccountId",
+                      "value": "<integer>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Returns detailed information about a specific Grafana service account by its unique identifier. This operation allows administrators to fetch the complete configuration and metadata of a service account, including its name, role, status, and associated permissions. The service account ID must be provided as a path parameter to identify which service account to retrieve. This is useful for auditing purposes, verifying service account configurations, or retrieving details before performing updates or deletions."
+              },
+              "response": [
+                {
+                  "id": "b9c208b6-1907-4c0f-84e2-70c510b3d63b",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"accessControl\": {\n    \"cillum15\": \"<boolean>\",\n    \"dolor09\": \"<boolean>\",\n    \"est_8_\": \"<boolean>\"\n  },\n  \"avatarUrl\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"isDisabled\": \"<boolean>\",\n  \"isExternal\": \"<boolean>\",\n  \"login\": \"<string>\",\n  \"name\": \"<string>\",\n  \"orgId\": \"<integer>\",\n  \"role\": \"<string>\",\n  \"tokens\": \"<integer>\",\n  \"uid\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-b9c208b6-1907-4c0f-84e2-70c510b3d63b"
+                },
+                {
+                  "id": "6cdabf2f-ddd6-49a3-8ad3-f16bebd145c3",
+                  "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-6cdabf2f-ddd6-49a3-8ad3-f16bebd145c3"
+                },
+                {
+                  "id": "369a80c4-e7ca-478d-afa8-8237a556ca94",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-369a80c4-e7ca-478d-afa8-8237a556ca94"
+                },
+                {
+                  "id": "18b35b36-eefd-4ab2-acea-0380b8920dbf",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-18b35b36-eefd-4ab2-acea-0380b8920dbf"
+                },
+                {
+                  "id": "8c454fa2-e8cd-4610-97fb-a1d0a353fad8",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-8c454fa2-e8cd-4610-97fb-a1d0a353fad8"
+                },
+                {
+                  "id": "58438ecb-72ce-4678-8507-e98a45724615",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-58438ecb-72ce-4678-8507-e98a45724615"
+                }
+              ],
+              "createdAt": "2026-07-28T01:51:02.000Z",
+              "updatedAt": "2026-07-28T01:51:02.000Z",
+              "uid": "35240-f1c6d52c-3125-42ea-ae00-ccff314f00a9"
+            },
+            {
+              "name": "Grafana Delete Service Account",
+              "id": "69902fc2-9a93-41ac-a990-133c1e3c931b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "serviceaccounts",
+                    ":serviceAccountId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "62cdfaba-cb47-489d-9587-6be9b9d6fbc8",
+                      "key": "serviceAccountId",
+                      "value": "<integer>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Deletes a specific service account from Grafana by its unique identifier. This operation permanently removes the service account and revokes all associated tokens and permissions. The service account ID must be provided in the URL path parameter. Once deleted, the service account cannot be recovered and any integrations or automations using this account will cease to function. This is a destructive operation that requires appropriate administrative permissions to execute."
+              },
+              "response": [
+                {
+                  "id": "2bb8e119-0620-497c-9e9a-2a24d9be5233",
+                  "name": "An OKResponse is returned if the request was successful.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-2bb8e119-0620-497c-9e9a-2a24d9be5233"
+                },
+                {
+                  "id": "536e8736-a82c-4bd1-a78a-53321d5d4c8d",
+                  "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-536e8736-a82c-4bd1-a78a-53321d5d4c8d"
+                },
+                {
+                  "id": "61413a78-4f67-4fe7-9c76-fbd6b22cfa7b",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-61413a78-4f67-4fe7-9c76-fbd6b22cfa7b"
+                },
+                {
+                  "id": "84446cbd-e100-43ff-b489-5315287e55ad",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-84446cbd-e100-43ff-b489-5315287e55ad"
+                },
+                {
+                  "id": "db101af8-e11e-45ae-9353-413d86c89505",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-db101af8-e11e-45ae-9353-413d86c89505"
+                },
+                {
+                  "id": "4904f98d-8ae3-4af0-943c-801a03ecef00",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-4904f98d-8ae3-4af0-943c-801a03ecef00"
+                }
+              ],
+              "createdAt": "2026-07-28T01:51:02.000Z",
+              "updatedAt": "2026-07-28T01:51:02.000Z",
+              "uid": "35240-69902fc2-9a93-41ac-a990-133c1e3c931b"
+            },
+            {
+              "name": "Grafana Update Service Account",
+              "id": "35b59144-b5a1-4f7b-9c41-b2ace9d9a49d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isDisabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"role\": \"Admin\",\n  \"serviceAccountId\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "serviceaccounts",
+                    ":serviceAccountId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "7b94d71a-36f0-4ab2-b4c8-6f47347f692c",
+                      "key": "serviceAccountId",
+                      "value": "<integer>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Updates an existing service account in Grafana by modifying its properties such as name, role, or other configuration settings. This PATCH operation targets a specific service account identified by its unique serviceAccountId in the URL path, allowing administrators to make partial updates to the service account without replacing the entire resource. Service accounts are commonly used for programmatic access to Grafana, enabling applications and automated systems to authenticate and interact with Grafana APIs without requiring a regular user account."
+              },
+              "response": [
+                {
+                  "id": "e636d599-8403-447f-ad1c-5ed91a04b1b2",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"isDisabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"role\": \"Admin\",\n  \"serviceAccountId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"serviceaccount\": {\n    \"accessControl\": {\n      \"inc7d\": \"<boolean>\",\n      \"fugiat_4e9\": \"<boolean>\"\n    },\n    \"avatarUrl\": \"<string>\",\n    \"createdAt\": \"<string>\",\n    \"id\": \"<integer>\",\n    \"isDisabled\": \"<boolean>\",\n    \"isExternal\": \"<boolean>\",\n    \"login\": \"<string>\",\n    \"name\": \"<string>\",\n    \"orgId\": \"<integer>\",\n    \"requiredBy\": \"<string>\",\n    \"role\": \"<string>\",\n    \"teams\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"tokens\": \"<integer>\",\n    \"uid\": \"<string>\",\n    \"updatedAt\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-e636d599-8403-447f-ad1c-5ed91a04b1b2"
+                },
+                {
+                  "id": "8d61fe9d-8614-4612-8c38-a1b374a58f66",
+                  "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"isDisabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"role\": \"Admin\",\n  \"serviceAccountId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-8d61fe9d-8614-4612-8c38-a1b374a58f66"
+                },
+                {
+                  "id": "9b3b6687-0027-45bf-a263-dab662a6c2a5",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"isDisabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"role\": \"Admin\",\n  \"serviceAccountId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-9b3b6687-0027-45bf-a263-dab662a6c2a5"
+                },
+                {
+                  "id": "4b3fa511-e03a-4676-934f-768612289ca7",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"isDisabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"role\": \"Admin\",\n  \"serviceAccountId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-4b3fa511-e03a-4676-934f-768612289ca7"
+                },
+                {
+                  "id": "8219cb7a-8a7b-4d93-b928-41d785b405ca",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"isDisabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"role\": \"Admin\",\n  \"serviceAccountId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-8219cb7a-8a7b-4d93-b928-41d785b405ca"
+                },
+                {
+                  "id": "97cf3b43-075f-496c-b6a0-8b789d97fb5c",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"isDisabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"role\": \"Admin\",\n  \"serviceAccountId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:02.000Z",
+                  "updatedAt": "2026-07-28T01:51:02.000Z",
+                  "uid": "35240-97cf3b43-075f-496c-b6a0-8b789d97fb5c"
+                }
+              ],
+              "createdAt": "2026-07-28T01:51:02.000Z",
+              "updatedAt": "2026-07-28T01:51:02.000Z",
+              "uid": "35240-35b59144-b5a1-4f7b-9c41-b2ace9d9a49d"
+            }
+          ],
+          "id": "0b78b486-8d75-4991-89d4-9c57a6670f19",
+          "createdAt": "2026-07-28T01:51:02.000Z",
+          "updatedAt": "2026-07-28T01:51:02.000Z",
+          "uid": "35240-0b78b486-8d75-4991-89d4-9c57a6670f19"
+        },
+        {
+          "name": "Grafana Create Service Account",
+          "id": "001bec98-2e01-4a04-a8ca-43bc15afa41c",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isDisabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"role\": \"Admin\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/serviceaccounts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "serviceaccounts"
+              ]
+            },
+            "description": "Creates a new service account in Grafana, which is a special type of user designed for automated tasks and API interactions rather than human login. Service accounts can be assigned specific permissions and roles to programmatically access Grafana resources, making them ideal for integrations, CI/CD pipelines, monitoring scripts, and other automated workflows. The request requires authentication and appropriate administrative permissions, and upon successful creation, returns details about the newly created service account including its unique identifier, which can then be used to generate tokens for API authentication."
+          },
+          "response": [
+            {
+              "id": "c4bc7067-9e6f-4e97-b9c0-5f925b8877f3",
+              "name": "(empty)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isDisabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"role\": \"Admin\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/serviceaccounts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "serviceaccounts"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"accessControl\": {\n    \"cillum15\": \"<boolean>\",\n    \"dolor09\": \"<boolean>\",\n    \"est_8_\": \"<boolean>\"\n  },\n  \"avatarUrl\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"isDisabled\": \"<boolean>\",\n  \"isExternal\": \"<boolean>\",\n  \"login\": \"<string>\",\n  \"name\": \"<string>\",\n  \"orgId\": \"<integer>\",\n  \"role\": \"<string>\",\n  \"tokens\": \"<integer>\",\n  \"uid\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:51:02.000Z",
+              "updatedAt": "2026-07-28T01:51:02.000Z",
+              "uid": "35240-c4bc7067-9e6f-4e97-b9c0-5f925b8877f3"
+            },
+            {
+              "id": "07a51822-a154-40ae-9cf4-dbbc363f8375",
+              "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isDisabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"role\": \"Admin\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/serviceaccounts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "serviceaccounts"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:51:02.000Z",
+              "updatedAt": "2026-07-28T01:51:02.000Z",
+              "uid": "35240-07a51822-a154-40ae-9cf4-dbbc363f8375"
+            },
+            {
+              "id": "4607316c-514f-4558-a7ce-b5b95d149f43",
+              "name": "UnauthorizedError is returned when the request is not authenticated.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isDisabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"role\": \"Admin\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/serviceaccounts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "serviceaccounts"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:51:02.000Z",
+              "updatedAt": "2026-07-28T01:51:02.000Z",
+              "uid": "35240-4607316c-514f-4558-a7ce-b5b95d149f43"
+            },
+            {
+              "id": "d5312e3c-cf20-4001-88ae-13dd9f39bb88",
+              "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isDisabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"role\": \"Admin\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/serviceaccounts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "serviceaccounts"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:51:02.000Z",
+              "updatedAt": "2026-07-28T01:51:02.000Z",
+              "uid": "35240-d5312e3c-cf20-4001-88ae-13dd9f39bb88"
+            },
+            {
+              "id": "bec7278e-9206-4b9f-a74d-9e342dd99a5d",
+              "name": "InternalServerError is a general error indicating something went wrong internally.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isDisabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"role\": \"Admin\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/serviceaccounts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "serviceaccounts"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:51:02.000Z",
+              "updatedAt": "2026-07-28T01:51:02.000Z",
+              "uid": "35240-bec7278e-9206-4b9f-a74d-9e342dd99a5d"
+            }
+          ],
+          "createdAt": "2026-07-28T01:51:02.000Z",
+          "updatedAt": "2026-07-28T01:51:02.000Z",
+          "uid": "35240-001bec98-2e01-4a04-a8ca-43bc15afa41c"
+        }
+      ],
+      "id": "7d1316ba-386d-49cf-9a34-79619da017ff",
+      "createdAt": "2026-07-28T01:51:02.000Z",
+      "updatedAt": "2026-07-28T01:51:02.000Z",
+      "uid": "35240-7d1316ba-386d-49cf-9a34-79619da017ff"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

@@ -1,0 +1,1858 @@
+{
+  "info": {
+    "_postman_id": "97d6135d-a75b-40fa-861c-2de42dffa210",
+    "name": "Grafana HTTP Access Versions API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:56:43.000Z",
+    "updatedAt": "2026-07-28T01:56:43.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-97d6135d-a75b-40fa-861c-2de42dffa210"
+  },
+  "item": [
+    {
+      "name": "dashboards",
+      "item": [
+        {
+          "name": "id",
+          "item": [
+            {
+              "name": "{DashboardID}",
+              "item": [
+                {
+                  "name": "versions",
+                  "item": [
+                    {
+                      "name": "{DashboardVersionID}",
+                      "item": [
+                        {
+                          "name": "Grafana Get Dashboard Version By ID",
+                          "id": "ae68f9c5-2d68-4f1e-b37d-558984e9f252",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/id/:DashboardID/versions/:DashboardVersionID",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "id",
+                                ":DashboardID",
+                                "versions",
+                                ":DashboardVersionID"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "f0e15035-2123-41b3-9956-6f1610703731",
+                                  "key": "DashboardID",
+                                  "value": "<integer>",
+                                  "description": "(Required) "
+                                },
+                                {
+                                  "id": "b5325697-0cd6-462f-a464-ce52e4309f64",
+                                  "key": "DashboardVersionID",
+                                  "value": "<integer>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "This API operation retrieves a specific version of a Grafana dashboard by providing both the dashboard's unique identifier and the desired version identifier. When invoked using the GET method, it returns the complete configuration and metadata for that particular version of the dashboard, allowing users to view historical snapshots, compare changes between versions, or restore previous dashboard states. This is particularly useful for auditing dashboard modifications, understanding what changes were made over time, and recovering from unwanted updates by accessing earlier working versions of a dashboard's configuration."
+                          },
+                          "response": [
+                            {
+                              "id": "1c6b5d90-1f3e-409f-b1e7-fac32690600f",
+                              "name": "(empty)",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/dashboards/id/:DashboardID/versions/:DashboardVersionID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "dashboards",
+                                    "id",
+                                    ":DashboardID",
+                                    "versions",
+                                    ":DashboardVersionID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "DashboardID"
+                                    },
+                                    {
+                                      "key": "DashboardVersionID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"created\": \"<string>\",\n  \"createdBy\": \"<string>\",\n  \"dashboardId\": \"<integer>\",\n  \"data\": {},\n  \"id\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"parentVersion\": \"<integer>\",\n  \"restoredFrom\": \"<integer>\",\n  \"uid\": \"<string>\",\n  \"version\": \"<integer>\"\n}",
+                              "createdAt": "2026-07-28T01:56:43.000Z",
+                              "updatedAt": "2026-07-28T01:56:43.000Z",
+                              "uid": "35240-1c6b5d90-1f3e-409f-b1e7-fac32690600f"
+                            },
+                            {
+                              "id": "16126f29-377c-4f8c-8442-85dd594c6655",
+                              "name": "UnauthorizedError is returned when the request is not authenticated.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/dashboards/id/:DashboardID/versions/:DashboardVersionID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "dashboards",
+                                    "id",
+                                    ":DashboardID",
+                                    "versions",
+                                    ":DashboardVersionID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "DashboardID"
+                                    },
+                                    {
+                                      "key": "DashboardVersionID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:56:43.000Z",
+                              "updatedAt": "2026-07-28T01:56:43.000Z",
+                              "uid": "35240-16126f29-377c-4f8c-8442-85dd594c6655"
+                            },
+                            {
+                              "id": "a0b482c2-8002-4c15-8000-f4f7c576525b",
+                              "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/dashboards/id/:DashboardID/versions/:DashboardVersionID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "dashboards",
+                                    "id",
+                                    ":DashboardID",
+                                    "versions",
+                                    ":DashboardVersionID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "DashboardID"
+                                    },
+                                    {
+                                      "key": "DashboardVersionID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:56:43.000Z",
+                              "updatedAt": "2026-07-28T01:56:43.000Z",
+                              "uid": "35240-a0b482c2-8002-4c15-8000-f4f7c576525b"
+                            },
+                            {
+                              "id": "c608822f-dfaa-4eac-95d8-67a461c42047",
+                              "name": "NotFoundError is returned when the requested resource was not found.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/dashboards/id/:DashboardID/versions/:DashboardVersionID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "dashboards",
+                                    "id",
+                                    ":DashboardID",
+                                    "versions",
+                                    ":DashboardVersionID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "DashboardID"
+                                    },
+                                    {
+                                      "key": "DashboardVersionID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:56:43.000Z",
+                              "updatedAt": "2026-07-28T01:56:43.000Z",
+                              "uid": "35240-c608822f-dfaa-4eac-95d8-67a461c42047"
+                            },
+                            {
+                              "id": "6c8905c1-85c1-4e14-9514-6ec12f1d29a6",
+                              "name": "InternalServerError is a general error indicating something went wrong internally.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/dashboards/id/:DashboardID/versions/:DashboardVersionID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "dashboards",
+                                    "id",
+                                    ":DashboardID",
+                                    "versions",
+                                    ":DashboardVersionID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "DashboardID"
+                                    },
+                                    {
+                                      "key": "DashboardVersionID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:56:43.000Z",
+                              "updatedAt": "2026-07-28T01:56:43.000Z",
+                              "uid": "35240-6c8905c1-85c1-4e14-9514-6ec12f1d29a6"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-ae68f9c5-2d68-4f1e-b37d-558984e9f252"
+                        }
+                      ],
+                      "id": "3635d484-1168-4d9f-ab94-d64ea8f4751b",
+                      "createdAt": "2026-07-28T01:56:43.000Z",
+                      "updatedAt": "2026-07-28T01:56:43.000Z",
+                      "uid": "35240-3635d484-1168-4d9f-ab94-d64ea8f4751b"
+                    },
+                    {
+                      "name": "Grafana Get Dashboard Versions By ID",
+                      "id": "fa4d863d-6d30-4778-86f9-fc5426d6eac2",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/dashboards/id/:DashboardID/versions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "dashboards",
+                            "id",
+                            ":DashboardID",
+                            "versions"
+                          ],
+                          "variable": [
+                            {
+                              "id": "4d2e0a4d-b3a2-4f01-a059-3b55c455a9f6",
+                              "key": "DashboardID",
+                              "value": "<integer>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Retrieves the version history of a specific Grafana dashboard identified by its unique dashboard ID. This operation returns a list of all saved versions for the dashboard, including metadata such as version numbers, timestamps, user information who made the changes, and version messages or notes. It allows administrators and users to track changes made to a dashboard over time, compare different versions, and understand the evolution of dashboard configurations, which is useful for auditing purposes, troubleshooting issues introduced by recent changes, or reverting to previous dashboard states if needed."
+                      },
+                      "response": [
+                        {
+                          "id": "ad8e0f1b-f455-4997-b341-669149bf4847",
+                          "name": "(empty)",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/id/:DashboardID/versions",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "id",
+                                ":DashboardID",
+                                "versions"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "DashboardID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"continueToken\": \"<string>\",\n  \"versions\": [\n    {\n      \"created\": \"<string>\",\n      \"createdBy\": \"<string>\",\n      \"dashboardId\": \"<integer>\",\n      \"data\": {},\n      \"id\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"parentVersion\": \"<integer>\",\n      \"restoredFrom\": \"<integer>\",\n      \"uid\": \"<string>\",\n      \"version\": \"<integer>\"\n    },\n    {\n      \"created\": \"<string>\",\n      \"createdBy\": \"<string>\",\n      \"dashboardId\": \"<integer>\",\n      \"data\": {},\n      \"id\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"parentVersion\": \"<integer>\",\n      \"restoredFrom\": \"<integer>\",\n      \"uid\": \"<string>\",\n      \"version\": \"<integer>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-ad8e0f1b-f455-4997-b341-669149bf4847"
+                        },
+                        {
+                          "id": "e968febc-3986-4b40-a35f-ceb252b0ab5f",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/id/:DashboardID/versions",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "id",
+                                ":DashboardID",
+                                "versions"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "DashboardID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-e968febc-3986-4b40-a35f-ceb252b0ab5f"
+                        },
+                        {
+                          "id": "d36cc6c0-3e0a-42ad-832f-b1f6b02cfd08",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/id/:DashboardID/versions",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "id",
+                                ":DashboardID",
+                                "versions"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "DashboardID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-d36cc6c0-3e0a-42ad-832f-b1f6b02cfd08"
+                        },
+                        {
+                          "id": "b05fe8cc-a66b-47c9-8190-52ae470759dd",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/id/:DashboardID/versions",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "id",
+                                ":DashboardID",
+                                "versions"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "DashboardID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-b05fe8cc-a66b-47c9-8190-52ae470759dd"
+                        },
+                        {
+                          "id": "97b98a3e-0918-45ed-ad22-162f8912dbfe",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/id/:DashboardID/versions",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "id",
+                                ":DashboardID",
+                                "versions"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "DashboardID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-97b98a3e-0918-45ed-ad22-162f8912dbfe"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:56:43.000Z",
+                      "updatedAt": "2026-07-28T01:56:43.000Z",
+                      "uid": "35240-fa4d863d-6d30-4778-86f9-fc5426d6eac2"
+                    }
+                  ],
+                  "id": "8be023a6-73ba-47ca-b42e-363c6c0c7fc3",
+                  "createdAt": "2026-07-28T01:56:43.000Z",
+                  "updatedAt": "2026-07-28T01:56:43.000Z",
+                  "uid": "35240-8be023a6-73ba-47ca-b42e-363c6c0c7fc3"
+                }
+              ],
+              "id": "c0abdab1-ce22-4d86-bfa9-7f7c21a57355",
+              "createdAt": "2026-07-28T01:56:43.000Z",
+              "updatedAt": "2026-07-28T01:56:43.000Z",
+              "uid": "35240-c0abdab1-ce22-4d86-bfa9-7f7c21a57355"
+            }
+          ],
+          "id": "f3beda23-f9cd-4d15-8756-b29b8337e516",
+          "createdAt": "2026-07-28T01:56:43.000Z",
+          "updatedAt": "2026-07-28T01:56:43.000Z",
+          "uid": "35240-f3beda23-f9cd-4d15-8756-b29b8337e516"
+        },
+        {
+          "name": "uid",
+          "item": [
+            {
+              "name": "{uid}",
+              "item": [
+                {
+                  "name": "restore",
+                  "item": [
+                    {
+                      "name": "Grafana Restore Dashboard Version By UID",
+                      "id": "944ae15c-944b-4151-9f8d-14674ca01c46",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"version\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/dashboards/uid/:uid/restore",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "dashboards",
+                            "uid",
+                            ":uid",
+                            "restore"
+                          ],
+                          "variable": [
+                            {
+                              "id": "7473160d-19df-4606-95aa-b6ad01d0b6ae",
+                              "key": "uid",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation restores a specific version of a Grafana dashboard identified by its unique identifier (UID). When invoked via a POST request to the endpoint /dashboards/uid/{uid}/restore, it allows users to revert a dashboard to a previous state by specifying the desired version number in the request body. This is particularly useful for recovering from unwanted changes, comparing different dashboard iterations, or rolling back to a known working configuration. The operation requires appropriate permissions and returns the restored dashboard's metadata upon successful execution."
+                      },
+                      "response": [
+                        {
+                          "id": "6eb892c3-e96a-4697-8f98-753a2f5c3011",
+                          "name": "(empty)",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"version\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/uid/:uid/restore",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "uid",
+                                ":uid",
+                                "restore"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "uid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<integer>\",\n  \"status\": \"<string>\",\n  \"title\": \"<string>\",\n  \"uid\": \"<string>\",\n  \"url\": \"<string>\",\n  \"version\": \"<integer>\",\n  \"folderUid\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-6eb892c3-e96a-4697-8f98-753a2f5c3011"
+                        },
+                        {
+                          "id": "e1d2f29d-6c82-423e-91f9-bbf6370c1472",
+                          "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"version\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/uid/:uid/restore",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "uid",
+                                ":uid",
+                                "restore"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "uid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-e1d2f29d-6c82-423e-91f9-bbf6370c1472"
+                        },
+                        {
+                          "id": "ff2c5ce1-9acb-4213-9991-94b583f0fb84",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"version\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/uid/:uid/restore",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "uid",
+                                ":uid",
+                                "restore"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "uid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-ff2c5ce1-9acb-4213-9991-94b583f0fb84"
+                        },
+                        {
+                          "id": "bf4f9112-70ce-4bf4-8698-c18514745cd9",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"version\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/uid/:uid/restore",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "uid",
+                                ":uid",
+                                "restore"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "uid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-bf4f9112-70ce-4bf4-8698-c18514745cd9"
+                        },
+                        {
+                          "id": "0c3a2dce-83bd-4c77-bc9e-4273c14ad93c",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"version\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/uid/:uid/restore",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "uid",
+                                ":uid",
+                                "restore"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "uid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-0c3a2dce-83bd-4c77-bc9e-4273c14ad93c"
+                        },
+                        {
+                          "id": "1f44b60f-c751-43e8-aa79-189a2825eb54",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"version\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/uid/:uid/restore",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "uid",
+                                ":uid",
+                                "restore"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "uid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-1f44b60f-c751-43e8-aa79-189a2825eb54"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:56:43.000Z",
+                      "updatedAt": "2026-07-28T01:56:43.000Z",
+                      "uid": "35240-944ae15c-944b-4151-9f8d-14674ca01c46"
+                    }
+                  ],
+                  "id": "089de956-fa87-4152-a312-ea6d00e8d632",
+                  "createdAt": "2026-07-28T01:56:43.000Z",
+                  "updatedAt": "2026-07-28T01:56:43.000Z",
+                  "uid": "35240-089de956-fa87-4152-a312-ea6d00e8d632"
+                },
+                {
+                  "name": "versions",
+                  "item": [
+                    {
+                      "name": "{DashboardVersionID}",
+                      "item": [
+                        {
+                          "name": "Grafana Get Dashboard Version By UID",
+                          "id": "f0866eb9-80e8-470d-a650-3e03504f283e",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/uid/:uid/versions/:DashboardVersionID",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "uid",
+                                ":uid",
+                                "versions",
+                                ":DashboardVersionID"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "08daa726-df7e-4282-88f6-69f096d5f35d",
+                                  "key": "uid",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                },
+                                {
+                                  "id": "bf2bbabc-2ebc-4003-828a-212c4b620d95",
+                                  "key": "DashboardVersionID",
+                                  "value": "<integer>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "This API operation retrieves a specific version of a Grafana dashboard by providing both the dashboard's unique identifier (UID) and the desired version ID. It allows users to access historical versions of a dashboard, enabling them to review previous configurations, compare changes over time, or restore an earlier state of the dashboard. The endpoint uses a GET request and requires two path parameters: the dashboard UID which uniquely identifies the dashboard, and the DashboardVersionID which specifies which historical version to retrieve. This is particularly useful for audit purposes, version control, and recovering from unwanted dashboard modifications."
+                          },
+                          "response": [
+                            {
+                              "id": "7416850c-f87e-4bee-83af-bda5f83c4d6a",
+                              "name": "(empty)",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/dashboards/uid/:uid/versions/:DashboardVersionID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "dashboards",
+                                    "uid",
+                                    ":uid",
+                                    "versions",
+                                    ":DashboardVersionID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "DashboardVersionID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"created\": \"<string>\",\n  \"createdBy\": \"<string>\",\n  \"dashboardId\": \"<integer>\",\n  \"data\": {},\n  \"id\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"parentVersion\": \"<integer>\",\n  \"restoredFrom\": \"<integer>\",\n  \"uid\": \"<string>\",\n  \"version\": \"<integer>\"\n}",
+                              "createdAt": "2026-07-28T01:56:43.000Z",
+                              "updatedAt": "2026-07-28T01:56:43.000Z",
+                              "uid": "35240-7416850c-f87e-4bee-83af-bda5f83c4d6a"
+                            },
+                            {
+                              "id": "01ce7f25-5f23-4d6d-9c66-bc50f25d4175",
+                              "name": "UnauthorizedError is returned when the request is not authenticated.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/dashboards/uid/:uid/versions/:DashboardVersionID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "dashboards",
+                                    "uid",
+                                    ":uid",
+                                    "versions",
+                                    ":DashboardVersionID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "DashboardVersionID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:56:43.000Z",
+                              "updatedAt": "2026-07-28T01:56:43.000Z",
+                              "uid": "35240-01ce7f25-5f23-4d6d-9c66-bc50f25d4175"
+                            },
+                            {
+                              "id": "20bbe243-cb35-4750-bacd-c6f0f0830e44",
+                              "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/dashboards/uid/:uid/versions/:DashboardVersionID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "dashboards",
+                                    "uid",
+                                    ":uid",
+                                    "versions",
+                                    ":DashboardVersionID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "DashboardVersionID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:56:43.000Z",
+                              "updatedAt": "2026-07-28T01:56:43.000Z",
+                              "uid": "35240-20bbe243-cb35-4750-bacd-c6f0f0830e44"
+                            },
+                            {
+                              "id": "8e14abfa-6544-4fe8-b017-fa4b7e85cfe7",
+                              "name": "NotFoundError is returned when the requested resource was not found.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/dashboards/uid/:uid/versions/:DashboardVersionID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "dashboards",
+                                    "uid",
+                                    ":uid",
+                                    "versions",
+                                    ":DashboardVersionID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "DashboardVersionID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:56:43.000Z",
+                              "updatedAt": "2026-07-28T01:56:43.000Z",
+                              "uid": "35240-8e14abfa-6544-4fe8-b017-fa4b7e85cfe7"
+                            },
+                            {
+                              "id": "46f9dde0-c84f-40d8-b651-04d0624dedc8",
+                              "name": "InternalServerError is a general error indicating something went wrong internally.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/dashboards/uid/:uid/versions/:DashboardVersionID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "dashboards",
+                                    "uid",
+                                    ":uid",
+                                    "versions",
+                                    ":DashboardVersionID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "DashboardVersionID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:56:43.000Z",
+                              "updatedAt": "2026-07-28T01:56:43.000Z",
+                              "uid": "35240-46f9dde0-c84f-40d8-b651-04d0624dedc8"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-f0866eb9-80e8-470d-a650-3e03504f283e"
+                        }
+                      ],
+                      "id": "e08effdc-dac4-44b7-93df-8b1b71c2f5ad",
+                      "createdAt": "2026-07-28T01:56:43.000Z",
+                      "updatedAt": "2026-07-28T01:56:43.000Z",
+                      "uid": "35240-e08effdc-dac4-44b7-93df-8b1b71c2f5ad"
+                    },
+                    {
+                      "name": "Grafana Get Dashboard Versions By UID",
+                      "id": "164c8084-7385-4f70-8fb6-8f70f0398f38",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/dashboards/uid/:uid/versions?limit=0&start=0",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "dashboards",
+                            "uid",
+                            ":uid",
+                            "versions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Maximum number of results to return",
+                              "key": "limit",
+                              "value": "0"
+                            },
+                            {
+                              "description": "Version to start from when returning queries",
+                              "key": "start",
+                              "value": "0"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "713664b1-6bd3-4087-982c-8718120eaec0",
+                              "key": "uid",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation retrieves the version history of a specific Grafana dashboard identified by its unique identifier (UID). When called with a GET request to the endpoint /dashboards/uid/{uid}/versions, it returns a list of all saved versions of the dashboard, allowing users to track changes made over time, view metadata about each version such as creation date and author, and potentially restore previous versions if needed. This is particularly useful for auditing dashboard modifications, understanding the evolution of visualizations, and recovering from unwanted changes."
+                      },
+                      "response": [
+                        {
+                          "id": "74da1b66-b5cf-4384-a3d1-19cdd628ddd3",
+                          "name": "(empty)",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/uid/:uid/versions?limit=0&start=0",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "uid",
+                                ":uid",
+                                "versions"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Maximum number of results to return",
+                                  "key": "limit",
+                                  "value": "0"
+                                },
+                                {
+                                  "description": "Version to start from when returning queries",
+                                  "key": "start",
+                                  "value": "0"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "uid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"continueToken\": \"<string>\",\n  \"versions\": [\n    {\n      \"created\": \"<string>\",\n      \"createdBy\": \"<string>\",\n      \"dashboardId\": \"<integer>\",\n      \"data\": {},\n      \"id\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"parentVersion\": \"<integer>\",\n      \"restoredFrom\": \"<integer>\",\n      \"uid\": \"<string>\",\n      \"version\": \"<integer>\"\n    },\n    {\n      \"created\": \"<string>\",\n      \"createdBy\": \"<string>\",\n      \"dashboardId\": \"<integer>\",\n      \"data\": {},\n      \"id\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"parentVersion\": \"<integer>\",\n      \"restoredFrom\": \"<integer>\",\n      \"uid\": \"<string>\",\n      \"version\": \"<integer>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-74da1b66-b5cf-4384-a3d1-19cdd628ddd3"
+                        },
+                        {
+                          "id": "ce37fbe4-917a-4e0c-817e-66ec33db0d55",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/uid/:uid/versions?limit=0&start=0",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "uid",
+                                ":uid",
+                                "versions"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Maximum number of results to return",
+                                  "key": "limit",
+                                  "value": "0"
+                                },
+                                {
+                                  "description": "Version to start from when returning queries",
+                                  "key": "start",
+                                  "value": "0"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "uid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-ce37fbe4-917a-4e0c-817e-66ec33db0d55"
+                        },
+                        {
+                          "id": "b786db7e-63d0-42c2-922b-99b72e84f52a",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/uid/:uid/versions?limit=0&start=0",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "uid",
+                                ":uid",
+                                "versions"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Maximum number of results to return",
+                                  "key": "limit",
+                                  "value": "0"
+                                },
+                                {
+                                  "description": "Version to start from when returning queries",
+                                  "key": "start",
+                                  "value": "0"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "uid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-b786db7e-63d0-42c2-922b-99b72e84f52a"
+                        },
+                        {
+                          "id": "4b50f675-7e72-41cc-ab9f-8d5728951254",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/uid/:uid/versions?limit=0&start=0",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "uid",
+                                ":uid",
+                                "versions"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Maximum number of results to return",
+                                  "key": "limit",
+                                  "value": "0"
+                                },
+                                {
+                                  "description": "Version to start from when returning queries",
+                                  "key": "start",
+                                  "value": "0"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "uid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-4b50f675-7e72-41cc-ab9f-8d5728951254"
+                        },
+                        {
+                          "id": "27660995-9892-447d-9f15-49e532702271",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/dashboards/uid/:uid/versions?limit=0&start=0",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "dashboards",
+                                "uid",
+                                ":uid",
+                                "versions"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Maximum number of results to return",
+                                  "key": "limit",
+                                  "value": "0"
+                                },
+                                {
+                                  "description": "Version to start from when returning queries",
+                                  "key": "start",
+                                  "value": "0"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "uid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:56:43.000Z",
+                          "updatedAt": "2026-07-28T01:56:43.000Z",
+                          "uid": "35240-27660995-9892-447d-9f15-49e532702271"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:56:43.000Z",
+                      "updatedAt": "2026-07-28T01:56:43.000Z",
+                      "uid": "35240-164c8084-7385-4f70-8fb6-8f70f0398f38"
+                    }
+                  ],
+                  "id": "0e269615-51c2-48a2-8151-81c50e8520af",
+                  "createdAt": "2026-07-28T01:56:43.000Z",
+                  "updatedAt": "2026-07-28T01:56:43.000Z",
+                  "uid": "35240-0e269615-51c2-48a2-8151-81c50e8520af"
+                }
+              ],
+              "id": "d5356e86-7c5f-4256-8cc1-8ff19112d09d",
+              "createdAt": "2026-07-28T01:56:43.000Z",
+              "updatedAt": "2026-07-28T01:56:43.000Z",
+              "uid": "35240-d5356e86-7c5f-4256-8cc1-8ff19112d09d"
+            }
+          ],
+          "id": "4366011a-85f0-4ac4-8af7-8514edf9e31b",
+          "createdAt": "2026-07-28T01:56:43.000Z",
+          "updatedAt": "2026-07-28T01:56:43.000Z",
+          "uid": "35240-4366011a-85f0-4ac4-8af7-8514edf9e31b"
+        }
+      ],
+      "id": "7919a66f-60c4-454f-934a-4fcbacc32746",
+      "createdAt": "2026-07-28T01:56:43.000Z",
+      "updatedAt": "2026-07-28T01:56:43.000Z",
+      "uid": "35240-7919a66f-60c4-454f-934a-4fcbacc32746"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

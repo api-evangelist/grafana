@@ -1,0 +1,298 @@
+{
+  "info": {
+    "_postman_id": "4a54f889-0026-4ff8-91bd-a2d96a7f1ef1",
+    "name": "Grafana HTTP Access Flag API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:52:35.000Z",
+    "updatedAt": "2026-07-28T01:52:36.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-4a54f889-0026-4ff8-91bd-a2d96a7f1ef1"
+  },
+  "item": [
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "helpflags",
+          "item": [
+            {
+              "name": "{flag_id}",
+              "item": [
+                {
+                  "name": "Grafana Set Help Flag",
+                  "id": "f571ee36-68f3-4b61-b93d-67c07b0de30e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/user/helpflags/:flag_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "helpflags",
+                        ":flag_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "1a154e43-8b15-4c22-9032-4fd315f2a25f",
+                          "key": "flag_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "The PUT operation on the /user/helpflags/{flag_id} endpoint in Grafana allows authenticated users to set or update a specific help flag identified by the flag_id parameter in the URL path. Help flags are typically used to track which help tooltips, tutorials, or onboarding messages a user has already seen or dismissed within the Grafana interface, enabling a personalized user experience by preventing repetitive display of guidance elements. When invoked, this endpoint modifies the state of the specified help flag for the current user, marking it as acknowledged or completed. This operation is commonly triggered automatically by the Grafana frontend when users interact with help features, close informational popups, or complete walkthrough steps, ensuring that these interface elements don't appear again on subsequent visits. The endpoint requires proper authentication and the flag_id must correspond to a valid help flag identifier recognized by the Grafana system."
+                  },
+                  "response": [
+                    {
+                      "id": "eb56cc48-548f-43ab-aa54-92e96ba8fed9",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/user/helpflags/:flag_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "user",
+                            "helpflags",
+                            ":flag_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "flag_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"helpFlags1\": \"<integer>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:52:36.000Z",
+                      "updatedAt": "2026-07-28T01:52:36.000Z",
+                      "uid": "35240-eb56cc48-548f-43ab-aa54-92e96ba8fed9"
+                    },
+                    {
+                      "id": "7f426c6b-7e57-4d97-ab01-501e492bd8ef",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/user/helpflags/:flag_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "user",
+                            "helpflags",
+                            ":flag_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "flag_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:52:36.000Z",
+                      "updatedAt": "2026-07-28T01:52:36.000Z",
+                      "uid": "35240-7f426c6b-7e57-4d97-ab01-501e492bd8ef"
+                    },
+                    {
+                      "id": "cedf1858-fbb1-4506-a34f-917943c2f877",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/user/helpflags/:flag_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "user",
+                            "helpflags",
+                            ":flag_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "flag_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:52:36.000Z",
+                      "updatedAt": "2026-07-28T01:52:36.000Z",
+                      "uid": "35240-cedf1858-fbb1-4506-a34f-917943c2f877"
+                    },
+                    {
+                      "id": "29787f24-e864-4468-b2fa-284777564186",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/user/helpflags/:flag_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "user",
+                            "helpflags",
+                            ":flag_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "flag_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:52:36.000Z",
+                      "updatedAt": "2026-07-28T01:52:36.000Z",
+                      "uid": "35240-29787f24-e864-4468-b2fa-284777564186"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:52:36.000Z",
+                  "updatedAt": "2026-07-28T01:52:36.000Z",
+                  "uid": "35240-f571ee36-68f3-4b61-b93d-67c07b0de30e"
+                }
+              ],
+              "id": "e256cc91-63fd-492a-be16-5771437af632",
+              "createdAt": "2026-07-28T01:52:36.000Z",
+              "updatedAt": "2026-07-28T01:52:36.000Z",
+              "uid": "35240-e256cc91-63fd-492a-be16-5771437af632"
+            }
+          ],
+          "id": "b0210c97-7a1c-4068-9c67-89c21490c5d1",
+          "createdAt": "2026-07-28T01:52:36.000Z",
+          "updatedAt": "2026-07-28T01:52:36.000Z",
+          "uid": "35240-b0210c97-7a1c-4068-9c67-89c21490c5d1"
+        }
+      ],
+      "id": "91b0df2e-c633-44f5-8dcb-8cbad182c4a5",
+      "createdAt": "2026-07-28T01:52:36.000Z",
+      "updatedAt": "2026-07-28T01:52:36.000Z",
+      "uid": "35240-91b0df2e-c633-44f5-8dcb-8cbad182c4a5"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

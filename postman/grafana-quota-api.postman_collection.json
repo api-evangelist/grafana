@@ -1,0 +1,1758 @@
+{
+  "info": {
+    "_postman_id": "4ae378a4-a294-4b76-b1ac-9052dc253273",
+    "name": "Grafana HTTP Access Quota API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:54:43.000Z",
+    "updatedAt": "2026-07-28T01:54:43.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-4ae378a4-a294-4b76-b1ac-9052dc253273"
+  },
+  "item": [
+    {
+      "name": "admin",
+      "item": [
+        {
+          "name": "users",
+          "item": [
+            {
+              "name": "{user_id}",
+              "item": [
+                {
+                  "name": "quotas",
+                  "item": [
+                    {
+                      "name": "{quota_target}",
+                      "item": [
+                        {
+                          "name": "Grafana Update User Quota",
+                          "id": "69504e43-43f1-48fc-9806-786df1f853ed",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"limit\": \"<integer>\",\n  \"target\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/quotas/:quota_target",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "quotas",
+                                ":quota_target"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "f5efa5c4-d4cc-47af-afd6-5ffd8d8306fb",
+                                  "key": "user_id",
+                                  "value": "<integer>",
+                                  "description": "(Required) "
+                                },
+                                {
+                                  "id": "8ab86bf9-d6f1-4682-a65d-c13b6f1f4783",
+                                  "key": "quota_target",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "This API operation allows Grafana administrators to update quota limits for a specific user by targeting a particular quota type. It uses a PUT request to modify the quota value associated with the specified user ID and quota target, which could be related to resources like dashboards, data sources, or other Grafana entities. The operation requires admin-level privileges and accepts the user ID and quota target as path parameters, along with the new quota value in the request body, enabling fine-grained control over individual user resource allocation within the Grafana instance."
+                          },
+                          "response": [
+                            {
+                              "id": "53ae87da-9d60-47a9-a351-d141de04a869",
+                              "name": "An OKResponse is returned if the request was successful.",
+                              "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"limit\": \"<integer>\",\n  \"target\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/admin/users/:user_id/quotas/:quota_target",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "admin",
+                                    "users",
+                                    ":user_id",
+                                    "quotas",
+                                    ":quota_target"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "user_id"
+                                    },
+                                    {
+                                      "key": "quota_target"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:54:43.000Z",
+                              "updatedAt": "2026-07-28T01:54:43.000Z",
+                              "uid": "35240-53ae87da-9d60-47a9-a351-d141de04a869"
+                            },
+                            {
+                              "id": "f812081a-5c68-4f85-82b0-6e3618572c1f",
+                              "name": "UnauthorizedError is returned when the request is not authenticated.",
+                              "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"limit\": \"<integer>\",\n  \"target\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/admin/users/:user_id/quotas/:quota_target",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "admin",
+                                    "users",
+                                    ":user_id",
+                                    "quotas",
+                                    ":quota_target"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "user_id"
+                                    },
+                                    {
+                                      "key": "quota_target"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:54:43.000Z",
+                              "updatedAt": "2026-07-28T01:54:43.000Z",
+                              "uid": "35240-f812081a-5c68-4f85-82b0-6e3618572c1f"
+                            },
+                            {
+                              "id": "6f1d862b-baa0-4064-8195-aec980fd08c1",
+                              "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                              "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"limit\": \"<integer>\",\n  \"target\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/admin/users/:user_id/quotas/:quota_target",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "admin",
+                                    "users",
+                                    ":user_id",
+                                    "quotas",
+                                    ":quota_target"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "user_id"
+                                    },
+                                    {
+                                      "key": "quota_target"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:54:43.000Z",
+                              "updatedAt": "2026-07-28T01:54:43.000Z",
+                              "uid": "35240-6f1d862b-baa0-4064-8195-aec980fd08c1"
+                            },
+                            {
+                              "id": "886833c0-cd43-4389-b818-3f5776e2e4a8",
+                              "name": "NotFoundError is returned when the requested resource was not found.",
+                              "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"limit\": \"<integer>\",\n  \"target\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/admin/users/:user_id/quotas/:quota_target",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "admin",
+                                    "users",
+                                    ":user_id",
+                                    "quotas",
+                                    ":quota_target"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "user_id"
+                                    },
+                                    {
+                                      "key": "quota_target"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:54:43.000Z",
+                              "updatedAt": "2026-07-28T01:54:43.000Z",
+                              "uid": "35240-886833c0-cd43-4389-b818-3f5776e2e4a8"
+                            },
+                            {
+                              "id": "0632e2d8-e320-4f45-9789-a031a014d5d5",
+                              "name": "InternalServerError is a general error indicating something went wrong internally.",
+                              "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"limit\": \"<integer>\",\n  \"target\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/admin/users/:user_id/quotas/:quota_target",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "admin",
+                                    "users",
+                                    ":user_id",
+                                    "quotas",
+                                    ":quota_target"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "user_id"
+                                    },
+                                    {
+                                      "key": "quota_target"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:54:43.000Z",
+                              "updatedAt": "2026-07-28T01:54:43.000Z",
+                              "uid": "35240-0632e2d8-e320-4f45-9789-a031a014d5d5"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T01:54:43.000Z",
+                          "updatedAt": "2026-07-28T01:54:43.000Z",
+                          "uid": "35240-69504e43-43f1-48fc-9806-786df1f853ed"
+                        }
+                      ],
+                      "id": "65973f58-8390-4303-a6e9-a411392c0c99",
+                      "createdAt": "2026-07-28T01:54:43.000Z",
+                      "updatedAt": "2026-07-28T01:54:43.000Z",
+                      "uid": "35240-65973f58-8390-4303-a6e9-a411392c0c99"
+                    },
+                    {
+                      "name": "Grafana Get User Quota",
+                      "id": "f17c2f41-5f62-48a0-84da-da115d14426c",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/users/:user_id/quotas",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "users",
+                            ":user_id",
+                            "quotas"
+                          ],
+                          "variable": [
+                            {
+                              "id": "7f82d7cc-c413-460d-b00f-1e44686dea4e",
+                              "key": "user_id",
+                              "value": "<integer>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation retrieves the current quota limits and usage statistics for a specific user in Grafana. By making a GET request to the /admin/users/{user_id}/quotas endpoint with a valid user ID, administrators can view resource allocation details such as the maximum number of dashboards, data sources, or organizations that the specified user is allowed to create or use. The response provides both the configured quota limits and the current consumption for each quota type, enabling administrators to monitor resource usage, enforce limits, and make informed decisions about quota adjustments for individual users within their Grafana instance."
+                      },
+                      "response": [
+                        {
+                          "id": "c4e43890-9bc7-418b-9cfc-139f6a9efc91",
+                          "name": "(empty)",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/quotas",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "quotas"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "[\n  {\n    \"limit\": \"<integer>\",\n    \"org_id\": \"<integer>\",\n    \"target\": \"<string>\",\n    \"used\": \"<integer>\",\n    \"user_id\": \"<integer>\"\n  },\n  {\n    \"limit\": \"<integer>\",\n    \"org_id\": \"<integer>\",\n    \"target\": \"<string>\",\n    \"used\": \"<integer>\",\n    \"user_id\": \"<integer>\"\n  }\n]",
+                          "createdAt": "2026-07-28T01:54:43.000Z",
+                          "updatedAt": "2026-07-28T01:54:43.000Z",
+                          "uid": "35240-c4e43890-9bc7-418b-9cfc-139f6a9efc91"
+                        },
+                        {
+                          "id": "6aaa9c1d-5a37-4fcf-9eaa-676051e4dfbd",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/quotas",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "quotas"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:54:43.000Z",
+                          "updatedAt": "2026-07-28T01:54:43.000Z",
+                          "uid": "35240-6aaa9c1d-5a37-4fcf-9eaa-676051e4dfbd"
+                        },
+                        {
+                          "id": "44d3ebc8-19f8-477f-a89f-1e4f31dfa437",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/quotas",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "quotas"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:54:43.000Z",
+                          "updatedAt": "2026-07-28T01:54:43.000Z",
+                          "uid": "35240-44d3ebc8-19f8-477f-a89f-1e4f31dfa437"
+                        },
+                        {
+                          "id": "1d503601-f81c-45f6-86e5-f400a5732aab",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/quotas",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "quotas"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:54:43.000Z",
+                          "updatedAt": "2026-07-28T01:54:43.000Z",
+                          "uid": "35240-1d503601-f81c-45f6-86e5-f400a5732aab"
+                        },
+                        {
+                          "id": "8c51637e-0004-4438-b3b4-55e9a99b042e",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/quotas",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "quotas"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:54:43.000Z",
+                          "updatedAt": "2026-07-28T01:54:43.000Z",
+                          "uid": "35240-8c51637e-0004-4438-b3b4-55e9a99b042e"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:54:43.000Z",
+                      "updatedAt": "2026-07-28T01:54:43.000Z",
+                      "uid": "35240-f17c2f41-5f62-48a0-84da-da115d14426c"
+                    }
+                  ],
+                  "id": "016ec32f-cfb1-4faa-8adf-e79b142f8d5b",
+                  "createdAt": "2026-07-28T01:54:43.000Z",
+                  "updatedAt": "2026-07-28T01:54:43.000Z",
+                  "uid": "35240-016ec32f-cfb1-4faa-8adf-e79b142f8d5b"
+                }
+              ],
+              "id": "744cb7c4-4f14-4301-8682-5b1168bcf6ad",
+              "createdAt": "2026-07-28T01:54:43.000Z",
+              "updatedAt": "2026-07-28T01:54:43.000Z",
+              "uid": "35240-744cb7c4-4f14-4301-8682-5b1168bcf6ad"
+            }
+          ],
+          "id": "cecaaa1f-4374-47d2-8565-7393c4666e4d",
+          "createdAt": "2026-07-28T01:54:43.000Z",
+          "updatedAt": "2026-07-28T01:54:43.000Z",
+          "uid": "35240-cecaaa1f-4374-47d2-8565-7393c4666e4d"
+        }
+      ],
+      "id": "2812ff05-343c-45f6-aafa-92cb1de5c7e1",
+      "createdAt": "2026-07-28T01:54:43.000Z",
+      "updatedAt": "2026-07-28T01:54:43.000Z",
+      "uid": "35240-2812ff05-343c-45f6-aafa-92cb1de5c7e1"
+    },
+    {
+      "name": "org",
+      "item": [
+        {
+          "name": "quotas",
+          "item": [
+            {
+              "name": "Grafana Get Current Org Quota",
+              "id": "271fd46f-d444-4886-ad8d-d8b4040d4f25",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/org/quotas",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "org",
+                    "quotas"
+                  ]
+                },
+                "description": "This API operation retrieves the current resource quotas configured for the organization in Grafana. When called, it returns the quota limits that have been set for various resources such as the maximum number of users, dashboards, data sources, and API keys allowed within the organization. This is useful for administrators who need to monitor or verify the current quota settings to ensure they align with organizational policies and resource management requirements. The operation requires appropriate authentication and authorization, typically at the organization administrator level, to access this information."
+              },
+              "response": [
+                {
+                  "id": "2f41a4e2-9eae-4d63-9916-b574f44796cf",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/org/quotas",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "quotas"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  {\n    \"limit\": \"<integer>\",\n    \"org_id\": \"<integer>\",\n    \"target\": \"<string>\",\n    \"used\": \"<integer>\",\n    \"user_id\": \"<integer>\"\n  },\n  {\n    \"limit\": \"<integer>\",\n    \"org_id\": \"<integer>\",\n    \"target\": \"<string>\",\n    \"used\": \"<integer>\",\n    \"user_id\": \"<integer>\"\n  }\n]",
+                  "createdAt": "2026-07-28T01:54:43.000Z",
+                  "updatedAt": "2026-07-28T01:54:43.000Z",
+                  "uid": "35240-2f41a4e2-9eae-4d63-9916-b574f44796cf"
+                },
+                {
+                  "id": "8a075fdd-b3f9-48fd-b3c9-0152af92de34",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/org/quotas",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "quotas"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:43.000Z",
+                  "updatedAt": "2026-07-28T01:54:43.000Z",
+                  "uid": "35240-8a075fdd-b3f9-48fd-b3c9-0152af92de34"
+                },
+                {
+                  "id": "55b97732-e49d-4074-95e4-4bd19012bb47",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/org/quotas",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "quotas"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:43.000Z",
+                  "updatedAt": "2026-07-28T01:54:43.000Z",
+                  "uid": "35240-55b97732-e49d-4074-95e4-4bd19012bb47"
+                },
+                {
+                  "id": "12934089-724a-42c8-ad66-191e33375a9c",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/org/quotas",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "quotas"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:43.000Z",
+                  "updatedAt": "2026-07-28T01:54:43.000Z",
+                  "uid": "35240-12934089-724a-42c8-ad66-191e33375a9c"
+                },
+                {
+                  "id": "2b9e48ba-507a-4239-80d6-c32d41148763",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/org/quotas",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "quotas"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:43.000Z",
+                  "updatedAt": "2026-07-28T01:54:43.000Z",
+                  "uid": "35240-2b9e48ba-507a-4239-80d6-c32d41148763"
+                }
+              ],
+              "createdAt": "2026-07-28T01:54:43.000Z",
+              "updatedAt": "2026-07-28T01:54:43.000Z",
+              "uid": "35240-271fd46f-d444-4886-ad8d-d8b4040d4f25"
+            }
+          ],
+          "id": "2edc2f04-e1d1-4068-80de-81f6b6bc5df9",
+          "createdAt": "2026-07-28T01:54:43.000Z",
+          "updatedAt": "2026-07-28T01:54:43.000Z",
+          "uid": "35240-2edc2f04-e1d1-4068-80de-81f6b6bc5df9"
+        }
+      ],
+      "id": "dc21c3a2-0def-43f1-8c14-6b77f28e451a",
+      "createdAt": "2026-07-28T01:54:43.000Z",
+      "updatedAt": "2026-07-28T01:54:43.000Z",
+      "uid": "35240-dc21c3a2-0def-43f1-8c14-6b77f28e451a"
+    },
+    {
+      "name": "orgs",
+      "item": [
+        {
+          "name": "{org_id}",
+          "item": [
+            {
+              "name": "quotas",
+              "item": [
+                {
+                  "name": "{quota_target}",
+                  "item": [
+                    {
+                      "name": "Grafana Update Org Quota",
+                      "id": "f52b219f-ccd3-4fa2-bf93-4d9033d95b15",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"limit\": \"<integer>\",\n  \"target\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orgs/:org_id/quotas/:quota_target",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orgs",
+                            ":org_id",
+                            "quotas",
+                            ":quota_target"
+                          ],
+                          "variable": [
+                            {
+                              "id": "d3044546-df6d-4bb7-93f8-26e94ac062a5",
+                              "key": "org_id",
+                              "value": "<integer>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "52e4608b-308f-4387-8d75-f1d7be566635",
+                              "key": "quota_target",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation allows administrators to update a specific quota limit for an organization in Grafana by making a PUT request to the endpoint with the organization ID and quota target specified in the path. The quota target represents the type of resource being limited, such as users, dashboards, data sources, or API keys. The request body should contain the new quota limit value to be applied. This operation requires administrative privileges and is typically used for managing resource allocation and consumption limits across different organizations in a multi-tenant Grafana deployment. Upon successful execution, the specified quota limit for the target organization will be updated to the new value, helping administrators control resource usage and maintain system performance."
+                      },
+                      "response": [
+                        {
+                          "id": "eb575a51-909b-4dcb-a0af-aa6a262c6959",
+                          "name": "An OKResponse is returned if the request was successful.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"limit\": \"<integer>\",\n  \"target\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/orgs/:org_id/quotas/:quota_target",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "orgs",
+                                ":org_id",
+                                "quotas",
+                                ":quota_target"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "org_id"
+                                },
+                                {
+                                  "key": "quota_target"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:54:43.000Z",
+                          "updatedAt": "2026-07-28T01:54:43.000Z",
+                          "uid": "35240-eb575a51-909b-4dcb-a0af-aa6a262c6959"
+                        },
+                        {
+                          "id": "2566015d-d18a-48ef-b39d-ceaba112eecc",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"limit\": \"<integer>\",\n  \"target\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/orgs/:org_id/quotas/:quota_target",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "orgs",
+                                ":org_id",
+                                "quotas",
+                                ":quota_target"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "org_id"
+                                },
+                                {
+                                  "key": "quota_target"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:54:43.000Z",
+                          "updatedAt": "2026-07-28T01:54:43.000Z",
+                          "uid": "35240-2566015d-d18a-48ef-b39d-ceaba112eecc"
+                        },
+                        {
+                          "id": "d0f4c234-28ad-431b-b419-185a7c0d283b",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"limit\": \"<integer>\",\n  \"target\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/orgs/:org_id/quotas/:quota_target",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "orgs",
+                                ":org_id",
+                                "quotas",
+                                ":quota_target"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "org_id"
+                                },
+                                {
+                                  "key": "quota_target"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:54:43.000Z",
+                          "updatedAt": "2026-07-28T01:54:43.000Z",
+                          "uid": "35240-d0f4c234-28ad-431b-b419-185a7c0d283b"
+                        },
+                        {
+                          "id": "00f9ed63-49cb-4a66-a637-0ff5000ea8d6",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"limit\": \"<integer>\",\n  \"target\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/orgs/:org_id/quotas/:quota_target",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "orgs",
+                                ":org_id",
+                                "quotas",
+                                ":quota_target"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "org_id"
+                                },
+                                {
+                                  "key": "quota_target"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:54:43.000Z",
+                          "updatedAt": "2026-07-28T01:54:43.000Z",
+                          "uid": "35240-00f9ed63-49cb-4a66-a637-0ff5000ea8d6"
+                        },
+                        {
+                          "id": "4db1065a-4c57-488e-8a37-22a00f697711",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"limit\": \"<integer>\",\n  \"target\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/orgs/:org_id/quotas/:quota_target",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "orgs",
+                                ":org_id",
+                                "quotas",
+                                ":quota_target"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "org_id"
+                                },
+                                {
+                                  "key": "quota_target"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:54:43.000Z",
+                          "updatedAt": "2026-07-28T01:54:43.000Z",
+                          "uid": "35240-4db1065a-4c57-488e-8a37-22a00f697711"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:54:43.000Z",
+                      "updatedAt": "2026-07-28T01:54:43.000Z",
+                      "uid": "35240-f52b219f-ccd3-4fa2-bf93-4d9033d95b15"
+                    }
+                  ],
+                  "id": "e7979e4d-4884-411c-b5d3-7bd3a6b328ce",
+                  "createdAt": "2026-07-28T01:54:43.000Z",
+                  "updatedAt": "2026-07-28T01:54:43.000Z",
+                  "uid": "35240-e7979e4d-4884-411c-b5d3-7bd3a6b328ce"
+                },
+                {
+                  "name": "Grafana Get Org Quota",
+                  "id": "15a60bd9-4825-4040-ab55-9e2ad52025a4",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/orgs/:org_id/quotas",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orgs",
+                        ":org_id",
+                        "quotas"
+                      ],
+                      "variable": [
+                        {
+                          "id": "c8bb05dd-5440-4e94-a806-d19182b30550",
+                          "key": "org_id",
+                          "value": "<integer>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "```\nRetrieves the current resource quota settings for a specific organization in Grafana identified by its organization ID. This endpoint returns quota limits that define resource constraints for the organization, such as maximum number of users, dashboards, data sources, and API keys allowed. The response provides visibility into the configured thresholds that govern resource allocation and help administrators manage and control organizational resource consumption within their Grafana instance.\n```"
+                  },
+                  "response": [
+                    {
+                      "id": "e5f10a77-4974-496c-ac71-aef226fa3098",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/orgs/:org_id/quotas",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orgs",
+                            ":org_id",
+                            "quotas"
+                          ],
+                          "variable": [
+                            {
+                              "key": "org_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"limit\": \"<integer>\",\n    \"org_id\": \"<integer>\",\n    \"target\": \"<string>\",\n    \"used\": \"<integer>\",\n    \"user_id\": \"<integer>\"\n  },\n  {\n    \"limit\": \"<integer>\",\n    \"org_id\": \"<integer>\",\n    \"target\": \"<string>\",\n    \"used\": \"<integer>\",\n    \"user_id\": \"<integer>\"\n  }\n]",
+                      "createdAt": "2026-07-28T01:54:43.000Z",
+                      "updatedAt": "2026-07-28T01:54:43.000Z",
+                      "uid": "35240-e5f10a77-4974-496c-ac71-aef226fa3098"
+                    },
+                    {
+                      "id": "f8fb05d3-8f00-4831-a591-42fecabbd431",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/orgs/:org_id/quotas",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orgs",
+                            ":org_id",
+                            "quotas"
+                          ],
+                          "variable": [
+                            {
+                              "key": "org_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:43.000Z",
+                      "updatedAt": "2026-07-28T01:54:43.000Z",
+                      "uid": "35240-f8fb05d3-8f00-4831-a591-42fecabbd431"
+                    },
+                    {
+                      "id": "3d958d4d-7539-41ce-9e24-ba36966ada9f",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/orgs/:org_id/quotas",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orgs",
+                            ":org_id",
+                            "quotas"
+                          ],
+                          "variable": [
+                            {
+                              "key": "org_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:43.000Z",
+                      "updatedAt": "2026-07-28T01:54:43.000Z",
+                      "uid": "35240-3d958d4d-7539-41ce-9e24-ba36966ada9f"
+                    },
+                    {
+                      "id": "09bb6a9a-a46f-472c-9734-4abf85ed4515",
+                      "name": "NotFoundError is returned when the requested resource was not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/orgs/:org_id/quotas",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orgs",
+                            ":org_id",
+                            "quotas"
+                          ],
+                          "variable": [
+                            {
+                              "key": "org_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:43.000Z",
+                      "updatedAt": "2026-07-28T01:54:43.000Z",
+                      "uid": "35240-09bb6a9a-a46f-472c-9734-4abf85ed4515"
+                    },
+                    {
+                      "id": "cce866ee-6f0d-4bf5-a921-3a4278397b41",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/orgs/:org_id/quotas",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orgs",
+                            ":org_id",
+                            "quotas"
+                          ],
+                          "variable": [
+                            {
+                              "key": "org_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:43.000Z",
+                      "updatedAt": "2026-07-28T01:54:43.000Z",
+                      "uid": "35240-cce866ee-6f0d-4bf5-a921-3a4278397b41"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:54:43.000Z",
+                  "updatedAt": "2026-07-28T01:54:43.000Z",
+                  "uid": "35240-15a60bd9-4825-4040-ab55-9e2ad52025a4"
+                }
+              ],
+              "id": "d161d182-c8e7-4dd9-a849-3156c663cf81",
+              "createdAt": "2026-07-28T01:54:43.000Z",
+              "updatedAt": "2026-07-28T01:54:43.000Z",
+              "uid": "35240-d161d182-c8e7-4dd9-a849-3156c663cf81"
+            }
+          ],
+          "id": "005dd0f5-c396-4302-849d-98d56fe0fcf7",
+          "createdAt": "2026-07-28T01:54:43.000Z",
+          "updatedAt": "2026-07-28T01:54:43.000Z",
+          "uid": "35240-005dd0f5-c396-4302-849d-98d56fe0fcf7"
+        }
+      ],
+      "id": "b39350db-7409-4772-b022-644bcffdced3",
+      "createdAt": "2026-07-28T01:54:43.000Z",
+      "updatedAt": "2026-07-28T01:54:43.000Z",
+      "uid": "35240-b39350db-7409-4772-b022-644bcffdced3"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

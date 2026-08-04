@@ -1,0 +1,3682 @@
+{
+  "info": {
+    "_postman_id": "2bd436b1-eea4-42a3-bbd3-21efe4fc7d23",
+    "name": "Grafana HTTP Access Reports API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:55:22.000Z",
+    "updatedAt": "2026-07-28T01:55:23.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-2bd436b1-eea4-42a3-bbd3-21efe4fc7d23"
+  },
+  "item": [
+    {
+      "name": "licensing",
+      "item": [
+        {
+          "name": "custom-permissions",
+          "item": [
+            {
+              "name": "Grafana Get Custom Permissions Report",
+              "id": "8f685a4f-f178-4232-9eb2-3317f75b4fc1",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/licensing/custom-permissions",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "licensing",
+                    "custom-permissions"
+                  ]
+                },
+                "description": "This API operation retrieves a custom permissions report from Grafana's licensing endpoint. When invoked via a GET request to the /licensing/custom-permissions path, it returns information about custom permission configurations and their usage within the Grafana instance. This endpoint is typically used by administrators to audit and review customized access control settings, helping them understand how permissions have been tailored beyond the standard roles and ensure compliance with licensing terms and organizational security policies."
+              },
+              "response": [
+                {
+                  "id": "676b5ddd-396c-4d1c-bb7c-629fa8d11455",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/licensing/custom-permissions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "licensing",
+                        "custom-permissions"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-676b5ddd-396c-4d1c-bb7c-629fa8d11455"
+                }
+              ],
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-8f685a4f-f178-4232-9eb2-3317f75b4fc1"
+            }
+          ],
+          "id": "6f28c7f4-c927-48f4-8327-da3b55f1f17a",
+          "createdAt": "2026-07-28T01:55:23.000Z",
+          "updatedAt": "2026-07-28T01:55:23.000Z",
+          "uid": "35240-6f28c7f4-c927-48f4-8327-da3b55f1f17a"
+        }
+      ],
+      "id": "d99b0150-cec8-4382-86e7-20d7f8781038",
+      "createdAt": "2026-07-28T01:55:23.000Z",
+      "updatedAt": "2026-07-28T01:55:23.000Z",
+      "uid": "35240-d99b0150-cec8-4382-86e7-20d7f8781038"
+    },
+    {
+      "name": "reports",
+      "item": [
+        {
+          "name": "dashboards",
+          "item": [
+            {
+              "name": "{uid}",
+              "item": [
+                {
+                  "name": "Grafana Get Reports By Dashboard UID",
+                  "id": "81d08ca8-1a64-4f2c-9d51-4898ea45ed4b",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/dashboards/:uid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "dashboards",
+                        ":uid"
+                      ],
+                      "variable": [
+                        {
+                          "id": "1e34bfb6-1f9d-4106-b1a1-20c19c9ce960",
+                          "key": "uid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This API operation retrieves all reports associated with a specific Grafana dashboard by using its unique identifier (UID). When you make a GET request to the endpoint /reports/dashboards/{uid}, where {uid} is replaced with the actual dashboard's UID, Grafana returns a list of all reports that have been configured for that particular dashboard. This is useful for administrators or users who need to view, audit, or manage the reporting configurations linked to a specific dashboard, allowing them to see details such as report schedules, recipients, formats, and other report-specific settings without having to search through all reports in the system."
+                  },
+                  "response": [
+                    {
+                      "id": "fabf9946-04d2-41a1-b535-bb78434193d5",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/dashboards/:uid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "dashboards",
+                            ":uid"
+                          ],
+                          "variable": [
+                            {
+                              "key": "uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"created\": \"<string>\",\n    \"dashboards\": [\n      {\n        \"dashboard\": {\n          \"id\": \"<integer>\",\n          \"name\": \"<string>\",\n          \"uid\": \"<string>\"\n        },\n        \"reportVariables\": {},\n        \"timeRange\": {\n          \"from\": \"<string>\",\n          \"to\": \"<string>\"\n        }\n      },\n      {\n        \"dashboard\": {\n          \"id\": \"<integer>\",\n          \"name\": \"<string>\",\n          \"uid\": \"<string>\"\n        },\n        \"reportVariables\": {},\n        \"timeRange\": {\n          \"from\": \"<string>\",\n          \"to\": \"<string>\"\n        }\n      }\n    ],\n    \"enableCsv\": \"<boolean>\",\n    \"enableDashboardUrl\": \"<boolean>\",\n    \"formats\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"id\": \"<integer>\",\n    \"message\": \"<string>\",\n    \"name\": \"<string>\",\n    \"options\": {\n      \"layout\": \"<string>\",\n      \"orientation\": \"<string>\",\n      \"pdfCombineOneFile\": \"<boolean>\",\n      \"pdfShowTemplateVariables\": \"<boolean>\",\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    \"orgId\": \"<integer>\",\n    \"recipients\": \"<string>\",\n    \"replyTo\": \"<string>\",\n    \"scaleFactor\": \"<integer>\",\n    \"schedule\": {\n      \"dayOfMonth\": \"<string>\",\n      \"endDate\": \"<string>\",\n      \"frequency\": \"<string>\",\n      \"intervalAmount\": \"<integer>\",\n      \"intervalFrequency\": \"<string>\",\n      \"startDate\": \"<string>\",\n      \"timeZone\": \"<string>\",\n      \"workdaysOnly\": \"<boolean>\"\n    },\n    \"state\": \"<string>\",\n    \"subject\": \"<string>\",\n    \"uid\": \"<string>\",\n    \"updated\": \"<string>\",\n    \"userId\": \"<integer>\"\n  },\n  {\n    \"created\": \"<string>\",\n    \"dashboards\": [\n      {\n        \"dashboard\": {\n          \"id\": \"<integer>\",\n          \"name\": \"<string>\",\n          \"uid\": \"<string>\"\n        },\n        \"reportVariables\": {},\n        \"timeRange\": {\n          \"from\": \"<string>\",\n          \"to\": \"<string>\"\n        }\n      },\n      {\n        \"dashboard\": {\n          \"id\": \"<integer>\",\n          \"name\": \"<string>\",\n          \"uid\": \"<string>\"\n        },\n        \"reportVariables\": {},\n        \"timeRange\": {\n          \"from\": \"<string>\",\n          \"to\": \"<string>\"\n        }\n      }\n    ],\n    \"enableCsv\": \"<boolean>\",\n    \"enableDashboardUrl\": \"<boolean>\",\n    \"formats\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"id\": \"<integer>\",\n    \"message\": \"<string>\",\n    \"name\": \"<string>\",\n    \"options\": {\n      \"layout\": \"<string>\",\n      \"orientation\": \"<string>\",\n      \"pdfCombineOneFile\": \"<boolean>\",\n      \"pdfShowTemplateVariables\": \"<boolean>\",\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    \"orgId\": \"<integer>\",\n    \"recipients\": \"<string>\",\n    \"replyTo\": \"<string>\",\n    \"scaleFactor\": \"<integer>\",\n    \"schedule\": {\n      \"dayOfMonth\": \"<string>\",\n      \"endDate\": \"<string>\",\n      \"frequency\": \"<string>\",\n      \"intervalAmount\": \"<integer>\",\n      \"intervalFrequency\": \"<string>\",\n      \"startDate\": \"<string>\",\n      \"timeZone\": \"<string>\",\n      \"workdaysOnly\": \"<boolean>\"\n    },\n    \"state\": \"<string>\",\n    \"subject\": \"<string>\",\n    \"uid\": \"<string>\",\n    \"updated\": \"<string>\",\n    \"userId\": \"<integer>\"\n  }\n]",
+                      "createdAt": "2026-07-28T01:55:23.000Z",
+                      "updatedAt": "2026-07-28T01:55:23.000Z",
+                      "uid": "35240-fabf9946-04d2-41a1-b535-bb78434193d5"
+                    },
+                    {
+                      "id": "7f991186-6af4-4f27-91d1-cce0b462e1cd",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/dashboards/:uid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "dashboards",
+                            ":uid"
+                          ],
+                          "variable": [
+                            {
+                              "key": "uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:55:23.000Z",
+                      "updatedAt": "2026-07-28T01:55:23.000Z",
+                      "uid": "35240-7f991186-6af4-4f27-91d1-cce0b462e1cd"
+                    },
+                    {
+                      "id": "d85f26e3-5219-423b-b33f-cbd4ff96a102",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/dashboards/:uid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "dashboards",
+                            ":uid"
+                          ],
+                          "variable": [
+                            {
+                              "key": "uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:55:23.000Z",
+                      "updatedAt": "2026-07-28T01:55:23.000Z",
+                      "uid": "35240-d85f26e3-5219-423b-b33f-cbd4ff96a102"
+                    },
+                    {
+                      "id": "b0ea7441-02d4-4866-8b68-34537b42c553",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/dashboards/:uid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "dashboards",
+                            ":uid"
+                          ],
+                          "variable": [
+                            {
+                              "key": "uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:55:23.000Z",
+                      "updatedAt": "2026-07-28T01:55:23.000Z",
+                      "uid": "35240-b0ea7441-02d4-4866-8b68-34537b42c553"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-81d08ca8-1a64-4f2c-9d51-4898ea45ed4b"
+                }
+              ],
+              "id": "b4a6520e-9c37-47e6-9756-62411373c764",
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-b4a6520e-9c37-47e6-9756-62411373c764"
+            }
+          ],
+          "id": "9a5a7eac-be44-4b9e-a011-16bb53589f1c",
+          "createdAt": "2026-07-28T01:55:23.000Z",
+          "updatedAt": "2026-07-28T01:55:23.000Z",
+          "uid": "35240-9a5a7eac-be44-4b9e-a011-16bb53589f1c"
+        },
+        {
+          "name": "email",
+          "item": [
+            {
+              "name": "Grafana Send Report",
+              "id": "46ebb95e-65d4-42eb-be86-de44daf65c91",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"emails\": \"<string>\",\n  \"id\": \"<string>\",\n  \"useEmailsFromReport\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/reports/email",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports",
+                    "email"
+                  ]
+                },
+                "description": "This API operation allows you to send a Grafana report via email by making a POST request to the /reports/email endpoint. When invoked, it triggers the generation and delivery of a specified report to one or more email recipients. The operation typically requires authentication and accepts parameters such as report ID, recipient email addresses, and optional customization settings like date ranges or dashboard variables. This is particularly useful for automating report distribution, scheduling periodic updates to stakeholders, or manually triggering ad-hoc report deliveries without accessing the Grafana UI directly."
+              },
+              "response": [
+                {
+                  "id": "95c5ca8c-7baa-443f-9988-4058d8a17ac7",
+                  "name": "An OKResponse is returned if the request was successful.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"emails\": \"<string>\",\n  \"id\": \"<string>\",\n  \"useEmailsFromReport\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/email",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "email"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-95c5ca8c-7baa-443f-9988-4058d8a17ac7"
+                },
+                {
+                  "id": "04d3e5c8-6a48-40a7-bbf8-354f4ae76d1d",
+                  "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"emails\": \"<string>\",\n  \"id\": \"<string>\",\n  \"useEmailsFromReport\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/email",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "email"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-04d3e5c8-6a48-40a7-bbf8-354f4ae76d1d"
+                },
+                {
+                  "id": "0e4cd257-f246-4c7e-bbe5-9997b388e7b3",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"emails\": \"<string>\",\n  \"id\": \"<string>\",\n  \"useEmailsFromReport\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/email",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "email"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-0e4cd257-f246-4c7e-bbe5-9997b388e7b3"
+                },
+                {
+                  "id": "6b079694-4681-4ea0-a6ac-3d72a546e5a3",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"emails\": \"<string>\",\n  \"id\": \"<string>\",\n  \"useEmailsFromReport\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/email",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "email"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-6b079694-4681-4ea0-a6ac-3d72a546e5a3"
+                },
+                {
+                  "id": "cb5c601c-1a99-44bd-8ff5-44756029e37a",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"emails\": \"<string>\",\n  \"id\": \"<string>\",\n  \"useEmailsFromReport\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/email",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "email"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-cb5c601c-1a99-44bd-8ff5-44756029e37a"
+                },
+                {
+                  "id": "b554d536-d254-4f1b-984a-086ccc7f719c",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"emails\": \"<string>\",\n  \"id\": \"<string>\",\n  \"useEmailsFromReport\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/email",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "email"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-b554d536-d254-4f1b-984a-086ccc7f719c"
+                }
+              ],
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-46ebb95e-65d4-42eb-be86-de44daf65c91"
+            }
+          ],
+          "id": "78d279da-1d45-4e54-8923-fa3cf45c01de",
+          "createdAt": "2026-07-28T01:55:23.000Z",
+          "updatedAt": "2026-07-28T01:55:23.000Z",
+          "uid": "35240-78d279da-1d45-4e54-8923-fa3cf45c01de"
+        },
+        {
+          "name": "render",
+          "item": [
+            {
+              "name": "csvs",
+              "item": [
+                {
+                  "name": "Grafana Render Report CS Vs",
+                  "id": "70a4f01d-ed3c-4b2e-a9bf-13e352ac106f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/zip"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/render/csvs?dashboards=<string>&title=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "render",
+                        "csvs"
+                      ],
+                      "query": [
+                        {
+                          "key": "dashboards",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "title",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "description": "This API operation retrieves rendered CSV versions of Grafana reports. When invoked with a GET request to the /reports/render/csvs endpoint, it processes and returns report data in CSV (Comma-Separated Values) format, making it suitable for exporting Grafana dashboard metrics and analytics into spreadsheet applications or for further data processing. This endpoint is particularly useful for users who need to access report information in a structured, tabular format outside of the Grafana interface, enabling integration with external tools, automated data pipelines, or offline analysis workflows."
+                  },
+                  "response": [
+                    {
+                      "id": "1a1672a7-08b9-4575-a319-2173040145cf",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/zip"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/render/csvs?dashboards=<string>&title=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "render",
+                            "csvs"
+                          ],
+                          "query": [
+                            {
+                              "key": "dashboards",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "title",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/zip"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"contentMediaType\": \"application/zip\"\n}",
+                      "createdAt": "2026-07-28T01:55:23.000Z",
+                      "updatedAt": "2026-07-28T01:55:23.000Z",
+                      "uid": "35240-1a1672a7-08b9-4575-a319-2173040145cf"
+                    },
+                    {
+                      "id": "d2327048-bab3-4fff-9044-043f603bf973",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/zip"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/render/csvs?dashboards=<string>&title=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "render",
+                            "csvs"
+                          ],
+                          "query": [
+                            {
+                              "key": "dashboards",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "title",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/zip"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"contentMediaType\": \"application/zip\"\n}",
+                      "createdAt": "2026-07-28T01:55:23.000Z",
+                      "updatedAt": "2026-07-28T01:55:23.000Z",
+                      "uid": "35240-d2327048-bab3-4fff-9044-043f603bf973"
+                    },
+                    {
+                      "id": "c3752b39-ae93-4c6d-ab7a-88c3bbedb700",
+                      "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/zip"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/render/csvs?dashboards=<string>&title=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "render",
+                            "csvs"
+                          ],
+                          "query": [
+                            {
+                              "key": "dashboards",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "title",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/zip"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"contentMediaType\": \"application/zip\"\n}",
+                      "createdAt": "2026-07-28T01:55:23.000Z",
+                      "updatedAt": "2026-07-28T01:55:23.000Z",
+                      "uid": "35240-c3752b39-ae93-4c6d-ab7a-88c3bbedb700"
+                    },
+                    {
+                      "id": "5c2618cd-d56a-4e10-981d-8005a4fb66f5",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/zip"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/render/csvs?dashboards=<string>&title=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "render",
+                            "csvs"
+                          ],
+                          "query": [
+                            {
+                              "key": "dashboards",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "title",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/zip"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"contentMediaType\": \"application/zip\"\n}",
+                      "createdAt": "2026-07-28T01:55:23.000Z",
+                      "updatedAt": "2026-07-28T01:55:23.000Z",
+                      "uid": "35240-5c2618cd-d56a-4e10-981d-8005a4fb66f5"
+                    },
+                    {
+                      "id": "030f20ad-2a83-4e38-becf-bee1742dc824",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/zip"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/render/csvs?dashboards=<string>&title=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "render",
+                            "csvs"
+                          ],
+                          "query": [
+                            {
+                              "key": "dashboards",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "title",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/zip"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"contentMediaType\": \"application/zip\"\n}",
+                      "createdAt": "2026-07-28T01:55:23.000Z",
+                      "updatedAt": "2026-07-28T01:55:23.000Z",
+                      "uid": "35240-030f20ad-2a83-4e38-becf-bee1742dc824"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-70a4f01d-ed3c-4b2e-a9bf-13e352ac106f"
+                }
+              ],
+              "id": "6c8cae9a-8f30-4a74-b940-f1d717b3f371",
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-6c8cae9a-8f30-4a74-b940-f1d717b3f371"
+            },
+            {
+              "name": "pdfs",
+              "item": [
+                {
+                  "name": "Grafana Render Report PD Fs",
+                  "id": "610bb5aa-cdea-4241-b960-ab487fae454f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/pdf"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/render/pdfs?dashboards=<string>&orientation=<string>&layout=<string>&title=<string>&scaleFactor=<string>&includeTables=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "render",
+                        "pdfs"
+                      ],
+                      "query": [
+                        {
+                          "key": "dashboards",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "orientation",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "layout",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "title",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "scaleFactor",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "includeTables",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "description": "This API operation retrieves rendered PDF versions of reports from Grafana. When invoked with a GET request to the /reports/render/pdfs endpoint, it allows users to access pre-generated or on-demand PDF renderings of Grafana reports, which typically contain dashboards, panels, and visualizations. The operation is useful for exporting report data in a portable, shareable format that can be distributed to stakeholders or archived for record-keeping purposes. Users would typically need appropriate authentication and permissions to access this endpoint, and may be able to specify parameters to control which reports are rendered or retrieved."
+                  },
+                  "response": [
+                    {
+                      "id": "91a6635a-e75a-48e2-aa9c-54ecdf31ead3",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/pdf"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/render/pdfs?dashboards=<string>&orientation=<string>&layout=<string>&title=<string>&scaleFactor=<string>&includeTables=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "render",
+                            "pdfs"
+                          ],
+                          "query": [
+                            {
+                              "key": "dashboards",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "orientation",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "layout",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "title",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "scaleFactor",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "includeTables",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/pdf"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"contentMediaType\": \"application/pdf\"\n}",
+                      "createdAt": "2026-07-28T01:55:23.000Z",
+                      "updatedAt": "2026-07-28T01:55:23.000Z",
+                      "uid": "35240-91a6635a-e75a-48e2-aa9c-54ecdf31ead3"
+                    },
+                    {
+                      "id": "7e2d701d-1f04-4aeb-82b3-24bdf79aacb1",
+                      "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/pdf"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/render/pdfs?dashboards=<string>&orientation=<string>&layout=<string>&title=<string>&scaleFactor=<string>&includeTables=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "render",
+                            "pdfs"
+                          ],
+                          "query": [
+                            {
+                              "key": "dashboards",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "orientation",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "layout",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "title",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "scaleFactor",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "includeTables",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/pdf"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"contentMediaType\": \"application/pdf\"\n}",
+                      "createdAt": "2026-07-28T01:55:23.000Z",
+                      "updatedAt": "2026-07-28T01:55:23.000Z",
+                      "uid": "35240-7e2d701d-1f04-4aeb-82b3-24bdf79aacb1"
+                    },
+                    {
+                      "id": "b91e5ef1-b98a-4b62-8dd8-eb6ee5b70048",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/pdf"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/render/pdfs?dashboards=<string>&orientation=<string>&layout=<string>&title=<string>&scaleFactor=<string>&includeTables=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "render",
+                            "pdfs"
+                          ],
+                          "query": [
+                            {
+                              "key": "dashboards",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "orientation",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "layout",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "title",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "scaleFactor",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "includeTables",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/pdf"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"contentMediaType\": \"application/pdf\"\n}",
+                      "createdAt": "2026-07-28T01:55:23.000Z",
+                      "updatedAt": "2026-07-28T01:55:23.000Z",
+                      "uid": "35240-b91e5ef1-b98a-4b62-8dd8-eb6ee5b70048"
+                    },
+                    {
+                      "id": "1d3f7f37-a38b-4800-9f8c-4daab5082204",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/pdf"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/render/pdfs?dashboards=<string>&orientation=<string>&layout=<string>&title=<string>&scaleFactor=<string>&includeTables=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "render",
+                            "pdfs"
+                          ],
+                          "query": [
+                            {
+                              "key": "dashboards",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "orientation",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "layout",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "title",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "scaleFactor",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "includeTables",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/pdf"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"contentMediaType\": \"application/pdf\"\n}",
+                      "createdAt": "2026-07-28T01:55:23.000Z",
+                      "updatedAt": "2026-07-28T01:55:23.000Z",
+                      "uid": "35240-1d3f7f37-a38b-4800-9f8c-4daab5082204"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-610bb5aa-cdea-4241-b960-ab487fae454f"
+                }
+              ],
+              "id": "264003e1-3fe2-4ff3-907d-68871e0e34db",
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-264003e1-3fe2-4ff3-907d-68871e0e34db"
+            }
+          ],
+          "id": "c04d46d7-760a-4290-b61f-1d3116ceaa09",
+          "createdAt": "2026-07-28T01:55:23.000Z",
+          "updatedAt": "2026-07-28T01:55:23.000Z",
+          "uid": "35240-c04d46d7-760a-4290-b61f-1d3116ceaa09"
+        },
+        {
+          "name": "settings",
+          "item": [
+            {
+              "name": "Grafana Get Report Settings",
+              "id": "da9c6e07-762f-452d-b97a-57801d1b8a1c",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/reports/settings",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports",
+                    "settings"
+                  ]
+                },
+                "description": "This API operation retrieves the current report settings configuration from Grafana. It is accessed via a GET request to the /reports/settings endpoint and returns the configured parameters that control how reports are generated and delivered within the Grafana instance. These settings typically include options such as branding configurations, email server settings, report scheduling parameters, and other preferences that affect the overall behavior of the reporting functionality. The operation requires appropriate authentication and authorization to access the reporting configuration data."
+              },
+              "response": [
+                {
+                  "id": "93a89d3b-614c-41c3-bdb3-1ed240663d81",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/settings",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "settings"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"branding\": {\n    \"emailFooterLink\": \"<string>\",\n    \"emailFooterMode\": \"<string>\",\n    \"emailFooterText\": \"<string>\",\n    \"emailLogoUrl\": \"<string>\",\n    \"reportLogoUrl\": \"<string>\"\n  },\n  \"embeddedImageTheme\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"orgId\": \"<integer>\",\n  \"pdfTheme\": \"<string>\",\n  \"userId\": \"<integer>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-93a89d3b-614c-41c3-bdb3-1ed240663d81"
+                },
+                {
+                  "id": "5dafeabf-4bcc-4f74-b456-3b1329ca79d0",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/settings",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "settings"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-5dafeabf-4bcc-4f74-b456-3b1329ca79d0"
+                },
+                {
+                  "id": "2d73a5e9-476e-4a43-a0c3-df5454c52851",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/settings",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "settings"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-2d73a5e9-476e-4a43-a0c3-df5454c52851"
+                },
+                {
+                  "id": "aa5ecde1-2642-4f79-9846-37233980c725",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/settings",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "settings"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-aa5ecde1-2642-4f79-9846-37233980c725"
+                }
+              ],
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-da9c6e07-762f-452d-b97a-57801d1b8a1c"
+            },
+            {
+              "name": "Grafana Save Report Settings",
+              "id": "2be8bb2f-fd36-44bb-9b7f-d4040bdd1dae",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"branding\": {\n    \"emailFooterLink\": \"<string>\",\n    \"emailFooterMode\": \"<string>\",\n    \"emailFooterText\": \"<string>\",\n    \"emailLogoUrl\": \"<string>\",\n    \"reportLogoUrl\": \"<string>\"\n  },\n  \"embeddedImageTheme\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"orgId\": \"<integer>\",\n  \"pdfTheme\": \"<string>\",\n  \"userId\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/reports/settings",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports",
+                    "settings"
+                  ]
+                },
+                "description": "Saves the configuration settings for the Grafana reporting feature, allowing administrators to define parameters such as email delivery options, branding preferences, report generation schedules, and output formats. This POST endpoint updates the global report settings that will be applied across all generated reports in the Grafana instance, enabling customization of how reports are created, formatted, and distributed to users."
+              },
+              "response": [
+                {
+                  "id": "9d8a88ab-8730-4f5c-811c-31a0efecbb59",
+                  "name": "An OKResponse is returned if the request was successful.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"branding\": {\n    \"emailFooterLink\": \"<string>\",\n    \"emailFooterMode\": \"<string>\",\n    \"emailFooterText\": \"<string>\",\n    \"emailLogoUrl\": \"<string>\",\n    \"reportLogoUrl\": \"<string>\"\n  },\n  \"embeddedImageTheme\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"orgId\": \"<integer>\",\n  \"pdfTheme\": \"<string>\",\n  \"userId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/settings",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "settings"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-9d8a88ab-8730-4f5c-811c-31a0efecbb59"
+                },
+                {
+                  "id": "734c3480-1711-4968-8601-9193f9a02fa0",
+                  "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"branding\": {\n    \"emailFooterLink\": \"<string>\",\n    \"emailFooterMode\": \"<string>\",\n    \"emailFooterText\": \"<string>\",\n    \"emailLogoUrl\": \"<string>\",\n    \"reportLogoUrl\": \"<string>\"\n  },\n  \"embeddedImageTheme\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"orgId\": \"<integer>\",\n  \"pdfTheme\": \"<string>\",\n  \"userId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/settings",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "settings"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-734c3480-1711-4968-8601-9193f9a02fa0"
+                },
+                {
+                  "id": "f5784377-fd49-4618-97a5-85b3c7495912",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"branding\": {\n    \"emailFooterLink\": \"<string>\",\n    \"emailFooterMode\": \"<string>\",\n    \"emailFooterText\": \"<string>\",\n    \"emailLogoUrl\": \"<string>\",\n    \"reportLogoUrl\": \"<string>\"\n  },\n  \"embeddedImageTheme\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"orgId\": \"<integer>\",\n  \"pdfTheme\": \"<string>\",\n  \"userId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/settings",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "settings"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-f5784377-fd49-4618-97a5-85b3c7495912"
+                },
+                {
+                  "id": "642d1240-a7cc-4589-9401-cf67e4fc59ce",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"branding\": {\n    \"emailFooterLink\": \"<string>\",\n    \"emailFooterMode\": \"<string>\",\n    \"emailFooterText\": \"<string>\",\n    \"emailLogoUrl\": \"<string>\",\n    \"reportLogoUrl\": \"<string>\"\n  },\n  \"embeddedImageTheme\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"orgId\": \"<integer>\",\n  \"pdfTheme\": \"<string>\",\n  \"userId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/settings",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "settings"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-642d1240-a7cc-4589-9401-cf67e4fc59ce"
+                },
+                {
+                  "id": "d27884a1-988a-4b19-ab67-dd6ac2717368",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"branding\": {\n    \"emailFooterLink\": \"<string>\",\n    \"emailFooterMode\": \"<string>\",\n    \"emailFooterText\": \"<string>\",\n    \"emailLogoUrl\": \"<string>\",\n    \"reportLogoUrl\": \"<string>\"\n  },\n  \"embeddedImageTheme\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"orgId\": \"<integer>\",\n  \"pdfTheme\": \"<string>\",\n  \"userId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/settings",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "settings"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-d27884a1-988a-4b19-ab67-dd6ac2717368"
+                }
+              ],
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-2be8bb2f-fd36-44bb-9b7f-d4040bdd1dae"
+            }
+          ],
+          "id": "56c468d8-9110-460a-8128-fa2df791bfae",
+          "createdAt": "2026-07-28T01:55:23.000Z",
+          "updatedAt": "2026-07-28T01:55:23.000Z",
+          "uid": "35240-56c468d8-9110-460a-8128-fa2df791bfae"
+        },
+        {
+          "name": "{id}",
+          "item": [
+            {
+              "name": "Grafana Get Report",
+              "id": "83868232-28a3-4302-a7f6-3c61f631ddc7",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/reports/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "92608845-1889-4991-9bce-b37f071b66ca",
+                      "key": "id",
+                      "value": "<integer>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Retrieves the details of a specific report in Grafana by its unique identifier. This operation returns comprehensive information about the configured report including its name, dashboard reference, schedule settings, recipients, format options, and other metadata. The report ID must be provided as a path parameter to fetch the corresponding report configuration, allowing users to view or verify the settings of an existing scheduled report before editing or managing it."
+              },
+              "response": [
+                {
+                  "id": "9f4ac1e9-6e4d-47cc-b735-123c4fbfba4b",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"created\": \"<string>\",\n  \"dashboards\": [\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    }\n  ],\n  \"enableCsv\": \"<boolean>\",\n  \"enableDashboardUrl\": \"<boolean>\",\n  \"formats\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"id\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"options\": {\n    \"layout\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"pdfCombineOneFile\": \"<boolean>\",\n    \"pdfShowTemplateVariables\": \"<boolean>\",\n    \"timeRange\": {\n      \"from\": \"<string>\",\n      \"to\": \"<string>\"\n    }\n  },\n  \"orgId\": \"<integer>\",\n  \"recipients\": \"<string>\",\n  \"replyTo\": \"<string>\",\n  \"scaleFactor\": \"<integer>\",\n  \"schedule\": {\n    \"dayOfMonth\": \"<string>\",\n    \"endDate\": \"<string>\",\n    \"frequency\": \"<string>\",\n    \"intervalAmount\": \"<integer>\",\n    \"intervalFrequency\": \"<string>\",\n    \"startDate\": \"<string>\",\n    \"timeZone\": \"<string>\",\n    \"workdaysOnly\": \"<boolean>\"\n  },\n  \"state\": \"<string>\",\n  \"subject\": \"<string>\",\n  \"uid\": \"<string>\",\n  \"updated\": \"<string>\",\n  \"userId\": \"<integer>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-9f4ac1e9-6e4d-47cc-b735-123c4fbfba4b"
+                },
+                {
+                  "id": "80239e02-de37-4123-851e-991e08a1854c",
+                  "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-80239e02-de37-4123-851e-991e08a1854c"
+                },
+                {
+                  "id": "9f13c026-e427-48f1-bd0f-60e7731bf3c5",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-9f13c026-e427-48f1-bd0f-60e7731bf3c5"
+                },
+                {
+                  "id": "83802adb-f367-4c4e-ab6f-25f07d939786",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-83802adb-f367-4c4e-ab6f-25f07d939786"
+                },
+                {
+                  "id": "9fb95e67-07ad-48dd-a908-abf409c495bd",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-9fb95e67-07ad-48dd-a908-abf409c495bd"
+                },
+                {
+                  "id": "207e8c42-af01-4416-9a88-e8d8d9cac4ba",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-207e8c42-af01-4416-9a88-e8d8d9cac4ba"
+                }
+              ],
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-83868232-28a3-4302-a7f6-3c61f631ddc7"
+            },
+            {
+              "name": "Grafana Update Report",
+              "id": "cde8b6d1-2835-4668-ba42-58c24f2e0ce2",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dashboards\": [\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    }\n  ],\n  \"enableCsv\": \"<boolean>\",\n  \"enableDashboardUrl\": \"<boolean>\",\n  \"formats\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"options\": {\n    \"layout\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"pdfCombineOneFile\": \"<boolean>\",\n    \"pdfShowTemplateVariables\": \"<boolean>\",\n    \"timeRange\": {\n      \"from\": \"<string>\",\n      \"to\": \"<string>\"\n    }\n  },\n  \"recipients\": \"<string>\",\n  \"replyTo\": \"<string>\",\n  \"scaleFactor\": \"<integer>\",\n  \"schedule\": {\n    \"dayOfMonth\": \"<string>\",\n    \"endDate\": \"<string>\",\n    \"frequency\": \"<string>\",\n    \"intervalAmount\": \"<integer>\",\n    \"intervalFrequency\": \"<string>\",\n    \"startDate\": \"<string>\",\n    \"timeZone\": \"<string>\",\n    \"workdaysOnly\": \"<boolean>\"\n  },\n  \"state\": \"<string>\",\n  \"subject\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/reports/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "f7de04fa-ec7d-481c-825a-c8e5b6c31c23",
+                      "key": "id",
+                      "value": "<integer>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Updates an existing report in Grafana by its unique identifier. This operation allows you to modify the configuration of a scheduled report, including parameters such as the report name, dashboard source, recipient list, schedule frequency, time range, and format options. The request requires the report ID in the URL path and accepts a JSON payload containing the updated report properties. Upon successful execution, it returns the modified report object with all current settings. This endpoint is typically used when you need to adjust report recipients, change the reporting schedule, update the associated dashboard, or modify any other report settings after initial creation."
+              },
+              "response": [
+                {
+                  "id": "151f68dc-127d-4514-b480-53f38e5b77f7",
+                  "name": "An OKResponse is returned if the request was successful.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"dashboards\": [\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    }\n  ],\n  \"enableCsv\": \"<boolean>\",\n  \"enableDashboardUrl\": \"<boolean>\",\n  \"formats\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"options\": {\n    \"layout\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"pdfCombineOneFile\": \"<boolean>\",\n    \"pdfShowTemplateVariables\": \"<boolean>\",\n    \"timeRange\": {\n      \"from\": \"<string>\",\n      \"to\": \"<string>\"\n    }\n  },\n  \"recipients\": \"<string>\",\n  \"replyTo\": \"<string>\",\n  \"scaleFactor\": \"<integer>\",\n  \"schedule\": {\n    \"dayOfMonth\": \"<string>\",\n    \"endDate\": \"<string>\",\n    \"frequency\": \"<string>\",\n    \"intervalAmount\": \"<integer>\",\n    \"intervalFrequency\": \"<string>\",\n    \"startDate\": \"<string>\",\n    \"timeZone\": \"<string>\",\n    \"workdaysOnly\": \"<boolean>\"\n  },\n  \"state\": \"<string>\",\n  \"subject\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-151f68dc-127d-4514-b480-53f38e5b77f7"
+                },
+                {
+                  "id": "9560ba1f-4750-4fe5-9556-fb242eec43c1",
+                  "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"dashboards\": [\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    }\n  ],\n  \"enableCsv\": \"<boolean>\",\n  \"enableDashboardUrl\": \"<boolean>\",\n  \"formats\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"options\": {\n    \"layout\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"pdfCombineOneFile\": \"<boolean>\",\n    \"pdfShowTemplateVariables\": \"<boolean>\",\n    \"timeRange\": {\n      \"from\": \"<string>\",\n      \"to\": \"<string>\"\n    }\n  },\n  \"recipients\": \"<string>\",\n  \"replyTo\": \"<string>\",\n  \"scaleFactor\": \"<integer>\",\n  \"schedule\": {\n    \"dayOfMonth\": \"<string>\",\n    \"endDate\": \"<string>\",\n    \"frequency\": \"<string>\",\n    \"intervalAmount\": \"<integer>\",\n    \"intervalFrequency\": \"<string>\",\n    \"startDate\": \"<string>\",\n    \"timeZone\": \"<string>\",\n    \"workdaysOnly\": \"<boolean>\"\n  },\n  \"state\": \"<string>\",\n  \"subject\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-9560ba1f-4750-4fe5-9556-fb242eec43c1"
+                },
+                {
+                  "id": "b0c54152-cc6f-42e6-b1c8-3788d16d6fbf",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"dashboards\": [\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    }\n  ],\n  \"enableCsv\": \"<boolean>\",\n  \"enableDashboardUrl\": \"<boolean>\",\n  \"formats\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"options\": {\n    \"layout\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"pdfCombineOneFile\": \"<boolean>\",\n    \"pdfShowTemplateVariables\": \"<boolean>\",\n    \"timeRange\": {\n      \"from\": \"<string>\",\n      \"to\": \"<string>\"\n    }\n  },\n  \"recipients\": \"<string>\",\n  \"replyTo\": \"<string>\",\n  \"scaleFactor\": \"<integer>\",\n  \"schedule\": {\n    \"dayOfMonth\": \"<string>\",\n    \"endDate\": \"<string>\",\n    \"frequency\": \"<string>\",\n    \"intervalAmount\": \"<integer>\",\n    \"intervalFrequency\": \"<string>\",\n    \"startDate\": \"<string>\",\n    \"timeZone\": \"<string>\",\n    \"workdaysOnly\": \"<boolean>\"\n  },\n  \"state\": \"<string>\",\n  \"subject\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-b0c54152-cc6f-42e6-b1c8-3788d16d6fbf"
+                },
+                {
+                  "id": "ab212a67-547d-41b8-bde7-6e7398303a44",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"dashboards\": [\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    }\n  ],\n  \"enableCsv\": \"<boolean>\",\n  \"enableDashboardUrl\": \"<boolean>\",\n  \"formats\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"options\": {\n    \"layout\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"pdfCombineOneFile\": \"<boolean>\",\n    \"pdfShowTemplateVariables\": \"<boolean>\",\n    \"timeRange\": {\n      \"from\": \"<string>\",\n      \"to\": \"<string>\"\n    }\n  },\n  \"recipients\": \"<string>\",\n  \"replyTo\": \"<string>\",\n  \"scaleFactor\": \"<integer>\",\n  \"schedule\": {\n    \"dayOfMonth\": \"<string>\",\n    \"endDate\": \"<string>\",\n    \"frequency\": \"<string>\",\n    \"intervalAmount\": \"<integer>\",\n    \"intervalFrequency\": \"<string>\",\n    \"startDate\": \"<string>\",\n    \"timeZone\": \"<string>\",\n    \"workdaysOnly\": \"<boolean>\"\n  },\n  \"state\": \"<string>\",\n  \"subject\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-ab212a67-547d-41b8-bde7-6e7398303a44"
+                },
+                {
+                  "id": "13f69a53-9f80-471f-9c4d-5b720f3ad04a",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"dashboards\": [\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    }\n  ],\n  \"enableCsv\": \"<boolean>\",\n  \"enableDashboardUrl\": \"<boolean>\",\n  \"formats\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"options\": {\n    \"layout\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"pdfCombineOneFile\": \"<boolean>\",\n    \"pdfShowTemplateVariables\": \"<boolean>\",\n    \"timeRange\": {\n      \"from\": \"<string>\",\n      \"to\": \"<string>\"\n    }\n  },\n  \"recipients\": \"<string>\",\n  \"replyTo\": \"<string>\",\n  \"scaleFactor\": \"<integer>\",\n  \"schedule\": {\n    \"dayOfMonth\": \"<string>\",\n    \"endDate\": \"<string>\",\n    \"frequency\": \"<string>\",\n    \"intervalAmount\": \"<integer>\",\n    \"intervalFrequency\": \"<string>\",\n    \"startDate\": \"<string>\",\n    \"timeZone\": \"<string>\",\n    \"workdaysOnly\": \"<boolean>\"\n  },\n  \"state\": \"<string>\",\n  \"subject\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-13f69a53-9f80-471f-9c4d-5b720f3ad04a"
+                },
+                {
+                  "id": "59408e35-bf2c-4c7a-b2e6-ba1f91431ae3",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"dashboards\": [\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    }\n  ],\n  \"enableCsv\": \"<boolean>\",\n  \"enableDashboardUrl\": \"<boolean>\",\n  \"formats\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"options\": {\n    \"layout\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"pdfCombineOneFile\": \"<boolean>\",\n    \"pdfShowTemplateVariables\": \"<boolean>\",\n    \"timeRange\": {\n      \"from\": \"<string>\",\n      \"to\": \"<string>\"\n    }\n  },\n  \"recipients\": \"<string>\",\n  \"replyTo\": \"<string>\",\n  \"scaleFactor\": \"<integer>\",\n  \"schedule\": {\n    \"dayOfMonth\": \"<string>\",\n    \"endDate\": \"<string>\",\n    \"frequency\": \"<string>\",\n    \"intervalAmount\": \"<integer>\",\n    \"intervalFrequency\": \"<string>\",\n    \"startDate\": \"<string>\",\n    \"timeZone\": \"<string>\",\n    \"workdaysOnly\": \"<boolean>\"\n  },\n  \"state\": \"<string>\",\n  \"subject\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-59408e35-bf2c-4c7a-b2e6-ba1f91431ae3"
+                }
+              ],
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-cde8b6d1-2835-4668-ba42-58c24f2e0ce2"
+            },
+            {
+              "name": "Grafana Delete Report",
+              "id": "2a729096-1a8c-4ca6-ac64-c2c36bf9cfd4",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/reports/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "b59e222a-1bde-4e9b-9070-7578b65027fb",
+                      "key": "id",
+                      "value": "<integer>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "This API operation deletes a specific report in Grafana by providing the unique report identifier in the URL path. When a DELETE request is made to the /reports/{id} endpoint, it permanently removes the report configuration and associated data from the system. The operation requires the report ID as a path parameter and typically requires appropriate authentication and authorization permissions to ensure only authorized users can delete reports. Upon successful execution, the report is removed from Grafana and will no longer be available for viewing, scheduling, or generation."
+              },
+              "response": [
+                {
+                  "id": "ceb4f48a-8a11-4a6a-9588-5a0cd3b55586",
+                  "name": "An OKResponse is returned if the request was successful.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-ceb4f48a-8a11-4a6a-9588-5a0cd3b55586"
+                },
+                {
+                  "id": "d72e205f-1246-4e62-abdc-211eba82df44",
+                  "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-d72e205f-1246-4e62-abdc-211eba82df44"
+                },
+                {
+                  "id": "7aa18afc-2e55-4f8c-8bb9-b407411020f6",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-7aa18afc-2e55-4f8c-8bb9-b407411020f6"
+                },
+                {
+                  "id": "4a8f558e-8324-4b0d-99ad-5a69063b13f3",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-4a8f558e-8324-4b0d-99ad-5a69063b13f3"
+                },
+                {
+                  "id": "e6e80843-56a8-4dac-95ff-b87bf1e7b581",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-e6e80843-56a8-4dac-95ff-b87bf1e7b581"
+                },
+                {
+                  "id": "ed63d23d-261f-4de7-8113-b07632f8b063",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:23.000Z",
+                  "updatedAt": "2026-07-28T01:55:23.000Z",
+                  "uid": "35240-ed63d23d-261f-4de7-8113-b07632f8b063"
+                }
+              ],
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-2a729096-1a8c-4ca6-ac64-c2c36bf9cfd4"
+            }
+          ],
+          "id": "c5db3833-2689-44fc-84db-e50c5fa4b9f9",
+          "createdAt": "2026-07-28T01:55:23.000Z",
+          "updatedAt": "2026-07-28T01:55:23.000Z",
+          "uid": "35240-c5db3833-2689-44fc-84db-e50c5fa4b9f9"
+        },
+        {
+          "name": "Grafana Get Reports",
+          "id": "5f28929d-8e06-4199-8533-ccc6abd5e63f",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports"
+              ]
+            },
+            "description": "The Get Reports API operation in Grafana retrieves a list of all configured reports in the system. This endpoint allows administrators and authorized users to fetch comprehensive information about existing reports, including their configurations, schedules, and metadata. When invoked via a GET request to the /reports endpoint, it returns an array of report objects that contain details such as report names, dashboards they're associated with, scheduled delivery times, recipients, and rendering options. This operation is useful for auditing purposes, managing multiple reports, or integrating Grafana's reporting functionality with external systems for automated report distribution and monitoring."
+          },
+          "response": [
+            {
+              "id": "76e87d93-6d1a-4985-a90f-510617ec8358",
+              "name": "(empty)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "[\n  {\n    \"created\": \"<string>\",\n    \"dashboards\": [\n      {\n        \"dashboard\": {\n          \"id\": \"<integer>\",\n          \"name\": \"<string>\",\n          \"uid\": \"<string>\"\n        },\n        \"reportVariables\": {},\n        \"timeRange\": {\n          \"from\": \"<string>\",\n          \"to\": \"<string>\"\n        }\n      },\n      {\n        \"dashboard\": {\n          \"id\": \"<integer>\",\n          \"name\": \"<string>\",\n          \"uid\": \"<string>\"\n        },\n        \"reportVariables\": {},\n        \"timeRange\": {\n          \"from\": \"<string>\",\n          \"to\": \"<string>\"\n        }\n      }\n    ],\n    \"enableCsv\": \"<boolean>\",\n    \"enableDashboardUrl\": \"<boolean>\",\n    \"formats\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"id\": \"<integer>\",\n    \"message\": \"<string>\",\n    \"name\": \"<string>\",\n    \"options\": {\n      \"layout\": \"<string>\",\n      \"orientation\": \"<string>\",\n      \"pdfCombineOneFile\": \"<boolean>\",\n      \"pdfShowTemplateVariables\": \"<boolean>\",\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    \"orgId\": \"<integer>\",\n    \"recipients\": \"<string>\",\n    \"replyTo\": \"<string>\",\n    \"scaleFactor\": \"<integer>\",\n    \"schedule\": {\n      \"dayOfMonth\": \"<string>\",\n      \"endDate\": \"<string>\",\n      \"frequency\": \"<string>\",\n      \"intervalAmount\": \"<integer>\",\n      \"intervalFrequency\": \"<string>\",\n      \"startDate\": \"<string>\",\n      \"timeZone\": \"<string>\",\n      \"workdaysOnly\": \"<boolean>\"\n    },\n    \"state\": \"<string>\",\n    \"subject\": \"<string>\",\n    \"uid\": \"<string>\",\n    \"updated\": \"<string>\",\n    \"userId\": \"<integer>\"\n  },\n  {\n    \"created\": \"<string>\",\n    \"dashboards\": [\n      {\n        \"dashboard\": {\n          \"id\": \"<integer>\",\n          \"name\": \"<string>\",\n          \"uid\": \"<string>\"\n        },\n        \"reportVariables\": {},\n        \"timeRange\": {\n          \"from\": \"<string>\",\n          \"to\": \"<string>\"\n        }\n      },\n      {\n        \"dashboard\": {\n          \"id\": \"<integer>\",\n          \"name\": \"<string>\",\n          \"uid\": \"<string>\"\n        },\n        \"reportVariables\": {},\n        \"timeRange\": {\n          \"from\": \"<string>\",\n          \"to\": \"<string>\"\n        }\n      }\n    ],\n    \"enableCsv\": \"<boolean>\",\n    \"enableDashboardUrl\": \"<boolean>\",\n    \"formats\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"id\": \"<integer>\",\n    \"message\": \"<string>\",\n    \"name\": \"<string>\",\n    \"options\": {\n      \"layout\": \"<string>\",\n      \"orientation\": \"<string>\",\n      \"pdfCombineOneFile\": \"<boolean>\",\n      \"pdfShowTemplateVariables\": \"<boolean>\",\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    \"orgId\": \"<integer>\",\n    \"recipients\": \"<string>\",\n    \"replyTo\": \"<string>\",\n    \"scaleFactor\": \"<integer>\",\n    \"schedule\": {\n      \"dayOfMonth\": \"<string>\",\n      \"endDate\": \"<string>\",\n      \"frequency\": \"<string>\",\n      \"intervalAmount\": \"<integer>\",\n      \"intervalFrequency\": \"<string>\",\n      \"startDate\": \"<string>\",\n      \"timeZone\": \"<string>\",\n      \"workdaysOnly\": \"<boolean>\"\n    },\n    \"state\": \"<string>\",\n    \"subject\": \"<string>\",\n    \"uid\": \"<string>\",\n    \"updated\": \"<string>\",\n    \"userId\": \"<integer>\"\n  }\n]",
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-76e87d93-6d1a-4985-a90f-510617ec8358"
+            },
+            {
+              "id": "751059a7-4f6b-4d85-a452-867e2311f90e",
+              "name": "UnauthorizedError is returned when the request is not authenticated.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-751059a7-4f6b-4d85-a452-867e2311f90e"
+            },
+            {
+              "id": "b692d820-5e3c-4bda-88a7-79b9fc8187c8",
+              "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-b692d820-5e3c-4bda-88a7-79b9fc8187c8"
+            },
+            {
+              "id": "2d0813fa-6f5d-4c54-9b32-3cf503650beb",
+              "name": "InternalServerError is a general error indicating something went wrong internally.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-2d0813fa-6f5d-4c54-9b32-3cf503650beb"
+            }
+          ],
+          "createdAt": "2026-07-28T01:55:23.000Z",
+          "updatedAt": "2026-07-28T01:55:23.000Z",
+          "uid": "35240-5f28929d-8e06-4199-8533-ccc6abd5e63f"
+        },
+        {
+          "name": "Grafana Create Report",
+          "id": "c28e14a9-f2b2-450f-8b7b-dbddcd79dd31",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dashboards\": [\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    }\n  ],\n  \"enableCsv\": \"<boolean>\",\n  \"enableDashboardUrl\": \"<boolean>\",\n  \"formats\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"options\": {\n    \"layout\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"pdfCombineOneFile\": \"<boolean>\",\n    \"pdfShowTemplateVariables\": \"<boolean>\",\n    \"timeRange\": {\n      \"from\": \"<string>\",\n      \"to\": \"<string>\"\n    }\n  },\n  \"recipients\": \"<string>\",\n  \"replyTo\": \"<string>\",\n  \"scaleFactor\": \"<integer>\",\n  \"schedule\": {\n    \"dayOfMonth\": \"<string>\",\n    \"endDate\": \"<string>\",\n    \"frequency\": \"<string>\",\n    \"intervalAmount\": \"<integer>\",\n    \"intervalFrequency\": \"<string>\",\n    \"startDate\": \"<string>\",\n    \"timeZone\": \"<string>\",\n    \"workdaysOnly\": \"<boolean>\"\n  },\n  \"state\": \"<string>\",\n  \"subject\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reports",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports"
+              ]
+            },
+            "description": "Creates a new dashboard report in Grafana that can be automatically generated and distributed on a scheduled basis. This operation allows you to configure report parameters including the target dashboard, time range, layout options, orientation, and recipients who will receive the report via email. The report can be set to recur daily, weekly, or monthly, and supports various output formats such as PDF or image. You can customize branding elements, include specific dashboard panels, and define variables or filters to apply when generating the report. Once created, the report will be executed according to the defined schedule and delivered to the specified email addresses with optional custom messages."
+          },
+          "response": [
+            {
+              "id": "9cb35c4e-906e-4b59-aed5-5e236a09dc53",
+              "name": "(empty)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dashboards\": [\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    }\n  ],\n  \"enableCsv\": \"<boolean>\",\n  \"enableDashboardUrl\": \"<boolean>\",\n  \"formats\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"options\": {\n    \"layout\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"pdfCombineOneFile\": \"<boolean>\",\n    \"pdfShowTemplateVariables\": \"<boolean>\",\n    \"timeRange\": {\n      \"from\": \"<string>\",\n      \"to\": \"<string>\"\n    }\n  },\n  \"recipients\": \"<string>\",\n  \"replyTo\": \"<string>\",\n  \"scaleFactor\": \"<integer>\",\n  \"schedule\": {\n    \"dayOfMonth\": \"<string>\",\n    \"endDate\": \"<string>\",\n    \"frequency\": \"<string>\",\n    \"intervalAmount\": \"<integer>\",\n    \"intervalFrequency\": \"<string>\",\n    \"startDate\": \"<string>\",\n    \"timeZone\": \"<string>\",\n    \"workdaysOnly\": \"<boolean>\"\n  },\n  \"state\": \"<string>\",\n  \"subject\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<integer>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-9cb35c4e-906e-4b59-aed5-5e236a09dc53"
+            },
+            {
+              "id": "96eecb2a-d280-4ab4-88ef-d69d4f5bfe80",
+              "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dashboards\": [\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    }\n  ],\n  \"enableCsv\": \"<boolean>\",\n  \"enableDashboardUrl\": \"<boolean>\",\n  \"formats\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"options\": {\n    \"layout\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"pdfCombineOneFile\": \"<boolean>\",\n    \"pdfShowTemplateVariables\": \"<boolean>\",\n    \"timeRange\": {\n      \"from\": \"<string>\",\n      \"to\": \"<string>\"\n    }\n  },\n  \"recipients\": \"<string>\",\n  \"replyTo\": \"<string>\",\n  \"scaleFactor\": \"<integer>\",\n  \"schedule\": {\n    \"dayOfMonth\": \"<string>\",\n    \"endDate\": \"<string>\",\n    \"frequency\": \"<string>\",\n    \"intervalAmount\": \"<integer>\",\n    \"intervalFrequency\": \"<string>\",\n    \"startDate\": \"<string>\",\n    \"timeZone\": \"<string>\",\n    \"workdaysOnly\": \"<boolean>\"\n  },\n  \"state\": \"<string>\",\n  \"subject\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-96eecb2a-d280-4ab4-88ef-d69d4f5bfe80"
+            },
+            {
+              "id": "f8ac9919-f587-4243-b97b-2b086b5e90c8",
+              "name": "UnauthorizedError is returned when the request is not authenticated.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dashboards\": [\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    }\n  ],\n  \"enableCsv\": \"<boolean>\",\n  \"enableDashboardUrl\": \"<boolean>\",\n  \"formats\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"options\": {\n    \"layout\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"pdfCombineOneFile\": \"<boolean>\",\n    \"pdfShowTemplateVariables\": \"<boolean>\",\n    \"timeRange\": {\n      \"from\": \"<string>\",\n      \"to\": \"<string>\"\n    }\n  },\n  \"recipients\": \"<string>\",\n  \"replyTo\": \"<string>\",\n  \"scaleFactor\": \"<integer>\",\n  \"schedule\": {\n    \"dayOfMonth\": \"<string>\",\n    \"endDate\": \"<string>\",\n    \"frequency\": \"<string>\",\n    \"intervalAmount\": \"<integer>\",\n    \"intervalFrequency\": \"<string>\",\n    \"startDate\": \"<string>\",\n    \"timeZone\": \"<string>\",\n    \"workdaysOnly\": \"<boolean>\"\n  },\n  \"state\": \"<string>\",\n  \"subject\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-f8ac9919-f587-4243-b97b-2b086b5e90c8"
+            },
+            {
+              "id": "ee045ce2-8cd4-481f-ad5e-49d9c2bd96f4",
+              "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dashboards\": [\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    }\n  ],\n  \"enableCsv\": \"<boolean>\",\n  \"enableDashboardUrl\": \"<boolean>\",\n  \"formats\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"options\": {\n    \"layout\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"pdfCombineOneFile\": \"<boolean>\",\n    \"pdfShowTemplateVariables\": \"<boolean>\",\n    \"timeRange\": {\n      \"from\": \"<string>\",\n      \"to\": \"<string>\"\n    }\n  },\n  \"recipients\": \"<string>\",\n  \"replyTo\": \"<string>\",\n  \"scaleFactor\": \"<integer>\",\n  \"schedule\": {\n    \"dayOfMonth\": \"<string>\",\n    \"endDate\": \"<string>\",\n    \"frequency\": \"<string>\",\n    \"intervalAmount\": \"<integer>\",\n    \"intervalFrequency\": \"<string>\",\n    \"startDate\": \"<string>\",\n    \"timeZone\": \"<string>\",\n    \"workdaysOnly\": \"<boolean>\"\n  },\n  \"state\": \"<string>\",\n  \"subject\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-ee045ce2-8cd4-481f-ad5e-49d9c2bd96f4"
+            },
+            {
+              "id": "253a5707-02fe-4cb9-b9be-c615f88d1148",
+              "name": "NotFoundError is returned when the requested resource was not found.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dashboards\": [\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    }\n  ],\n  \"enableCsv\": \"<boolean>\",\n  \"enableDashboardUrl\": \"<boolean>\",\n  \"formats\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"options\": {\n    \"layout\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"pdfCombineOneFile\": \"<boolean>\",\n    \"pdfShowTemplateVariables\": \"<boolean>\",\n    \"timeRange\": {\n      \"from\": \"<string>\",\n      \"to\": \"<string>\"\n    }\n  },\n  \"recipients\": \"<string>\",\n  \"replyTo\": \"<string>\",\n  \"scaleFactor\": \"<integer>\",\n  \"schedule\": {\n    \"dayOfMonth\": \"<string>\",\n    \"endDate\": \"<string>\",\n    \"frequency\": \"<string>\",\n    \"intervalAmount\": \"<integer>\",\n    \"intervalFrequency\": \"<string>\",\n    \"startDate\": \"<string>\",\n    \"timeZone\": \"<string>\",\n    \"workdaysOnly\": \"<boolean>\"\n  },\n  \"state\": \"<string>\",\n  \"subject\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-253a5707-02fe-4cb9-b9be-c615f88d1148"
+            },
+            {
+              "id": "dc5225ca-6c83-4a72-8205-ad122d794709",
+              "name": "InternalServerError is a general error indicating something went wrong internally.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dashboards\": [\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    },\n    {\n      \"dashboard\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"uid\": \"<string>\"\n      },\n      \"reportVariables\": {},\n      \"timeRange\": {\n        \"from\": \"<string>\",\n        \"to\": \"<string>\"\n      }\n    }\n  ],\n  \"enableCsv\": \"<boolean>\",\n  \"enableDashboardUrl\": \"<boolean>\",\n  \"formats\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"options\": {\n    \"layout\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"pdfCombineOneFile\": \"<boolean>\",\n    \"pdfShowTemplateVariables\": \"<boolean>\",\n    \"timeRange\": {\n      \"from\": \"<string>\",\n      \"to\": \"<string>\"\n    }\n  },\n  \"recipients\": \"<string>\",\n  \"replyTo\": \"<string>\",\n  \"scaleFactor\": \"<integer>\",\n  \"schedule\": {\n    \"dayOfMonth\": \"<string>\",\n    \"endDate\": \"<string>\",\n    \"frequency\": \"<string>\",\n    \"intervalAmount\": \"<integer>\",\n    \"intervalFrequency\": \"<string>\",\n    \"startDate\": \"<string>\",\n    \"timeZone\": \"<string>\",\n    \"workdaysOnly\": \"<boolean>\"\n  },\n  \"state\": \"<string>\",\n  \"subject\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:55:23.000Z",
+              "updatedAt": "2026-07-28T01:55:23.000Z",
+              "uid": "35240-dc5225ca-6c83-4a72-8205-ad122d794709"
+            }
+          ],
+          "createdAt": "2026-07-28T01:55:23.000Z",
+          "updatedAt": "2026-07-28T01:55:23.000Z",
+          "uid": "35240-c28e14a9-f2b2-450f-8b7b-dbddcd79dd31"
+        }
+      ],
+      "id": "b1e5e7aa-4464-4738-9c8e-9f11d64c9767",
+      "createdAt": "2026-07-28T01:55:23.000Z",
+      "updatedAt": "2026-07-28T01:55:23.000Z",
+      "uid": "35240-b1e5e7aa-4464-4738-9c8e-9f11d64c9767"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

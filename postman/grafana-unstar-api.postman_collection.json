@@ -1,0 +1,592 @@
+{
+  "info": {
+    "_postman_id": "27f7a617-ac68-40b9-8863-7deb9a3544ce",
+    "name": "Grafana HTTP Access Unstar API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:56:35.000Z",
+    "updatedAt": "2026-07-28T01:56:35.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-27f7a617-ac68-40b9-8863-7deb9a3544ce"
+  },
+  "item": [
+    {
+      "name": "query-history",
+      "item": [
+        {
+          "name": "star",
+          "item": [
+            {
+              "name": "{query_history_uid}",
+              "item": [
+                {
+                  "name": "Grafana Unstar Query",
+                  "id": "3bdc3ae0-72a4-4c33-8222-22c85e80593f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/query-history/star/:query_history_uid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "query-history",
+                        "star",
+                        ":query_history_uid"
+                      ],
+                      "variable": [
+                        {
+                          "id": "f20434c4-22fe-42b2-a6ee-d0e7e2564793",
+                          "key": "query_history_uid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "The Grafana unstar query operation is accessed via a DELETE request to the endpoint /query-history/star/{query_history_uid}, where the query_history_uid parameter represents the unique identifier of a previously executed query in the query history. This operation removes the star or favorite marking from a specific query, effectively unmarking it as a saved or bookmarked item in the user's query history. When invoked, it allows users to unmark queries they no longer wish to highlight or quickly access, helping maintain a cleaner and more relevant collection of starred queries within their Grafana workspace."
+                  },
+                  "response": [
+                    {
+                      "id": "a452a60c-c75e-4084-a4a3-ba60005f7784",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/query-history/star/:query_history_uid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "query-history",
+                            "star",
+                            ":query_history_uid"
+                          ],
+                          "variable": [
+                            {
+                              "key": "query_history_uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"result\": {\n    \"comment\": \"<string>\",\n    \"createdAt\": \"<integer>\",\n    \"createdBy\": \"<integer>\",\n    \"datasourceUid\": \"<string>\",\n    \"queries\": {},\n    \"starred\": \"<boolean>\",\n    \"uid\": \"<string>\"\n  }\n}",
+                      "createdAt": "2026-07-28T01:56:35.000Z",
+                      "updatedAt": "2026-07-28T01:56:35.000Z",
+                      "uid": "35240-a452a60c-c75e-4084-a4a3-ba60005f7784"
+                    },
+                    {
+                      "id": "febe0555-076c-423e-90ed-eb7e17b4c758",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/query-history/star/:query_history_uid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "query-history",
+                            "star",
+                            ":query_history_uid"
+                          ],
+                          "variable": [
+                            {
+                              "key": "query_history_uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:56:35.000Z",
+                      "updatedAt": "2026-07-28T01:56:35.000Z",
+                      "uid": "35240-febe0555-076c-423e-90ed-eb7e17b4c758"
+                    },
+                    {
+                      "id": "e0e72c2b-29ce-41c8-9a01-9868496265e4",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/query-history/star/:query_history_uid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "query-history",
+                            "star",
+                            ":query_history_uid"
+                          ],
+                          "variable": [
+                            {
+                              "key": "query_history_uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:56:35.000Z",
+                      "updatedAt": "2026-07-28T01:56:35.000Z",
+                      "uid": "35240-e0e72c2b-29ce-41c8-9a01-9868496265e4"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:56:35.000Z",
+                  "updatedAt": "2026-07-28T01:56:35.000Z",
+                  "uid": "35240-3bdc3ae0-72a4-4c33-8222-22c85e80593f"
+                }
+              ],
+              "id": "85c1f70d-a831-4bcb-9eef-8eb71b76aebb",
+              "createdAt": "2026-07-28T01:56:35.000Z",
+              "updatedAt": "2026-07-28T01:56:35.000Z",
+              "uid": "35240-85c1f70d-a831-4bcb-9eef-8eb71b76aebb"
+            }
+          ],
+          "id": "c4057a8d-b2b5-4bf8-9bfb-ad086710a13f",
+          "createdAt": "2026-07-28T01:56:35.000Z",
+          "updatedAt": "2026-07-28T01:56:35.000Z",
+          "uid": "35240-c4057a8d-b2b5-4bf8-9bfb-ad086710a13f"
+        }
+      ],
+      "id": "3c41ed77-7147-4d0f-916e-25895d1143a3",
+      "createdAt": "2026-07-28T01:56:35.000Z",
+      "updatedAt": "2026-07-28T01:56:35.000Z",
+      "uid": "35240-3c41ed77-7147-4d0f-916e-25895d1143a3"
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "stars",
+          "item": [
+            {
+              "name": "dashboard",
+              "item": [
+                {
+                  "name": "uid",
+                  "item": [
+                    {
+                      "name": "{dashboard_uid}",
+                      "item": [
+                        {
+                          "name": "Grafana Unstar Dashboard By UID",
+                          "id": "6120084f-c460-4f5f-854c-24a1eef83b58",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/user/stars/dashboard/uid/:dashboard_uid",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "user",
+                                "stars",
+                                "dashboard",
+                                "uid",
+                                ":dashboard_uid"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "deb31bb1-951b-4f52-ac27-58790ed02d83",
+                                  "key": "dashboard_uid",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "This API operation removes a star from a specific Grafana dashboard for the currently authenticated user by using the dashboard's unique identifier (UID). When executed via an HTTP DELETE request to the endpoint /user/stars/dashboard/uid/{dashboard_uid}, it unmarks the specified dashboard as a favorite, effectively removing it from the user's starred dashboards collection. The operation requires the dashboard_uid parameter to be provided in the URL path to identify which dashboard should be unstarred, and authentication is necessary to determine which user's star list should be modified."
+                          },
+                          "response": [
+                            {
+                              "id": "73020a39-d4a0-43f4-bfa9-19491ae79d82",
+                              "name": "An OKResponse is returned if the request was successful.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/user/stars/dashboard/uid/:dashboard_uid",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "user",
+                                    "stars",
+                                    "dashboard",
+                                    "uid",
+                                    ":dashboard_uid"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "dashboard_uid"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:56:35.000Z",
+                              "updatedAt": "2026-07-28T01:56:35.000Z",
+                              "uid": "35240-73020a39-d4a0-43f4-bfa9-19491ae79d82"
+                            },
+                            {
+                              "id": "5fde5d7b-721a-485f-be48-9778e281e2a6",
+                              "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/user/stars/dashboard/uid/:dashboard_uid",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "user",
+                                    "stars",
+                                    "dashboard",
+                                    "uid",
+                                    ":dashboard_uid"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "dashboard_uid"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:56:35.000Z",
+                              "updatedAt": "2026-07-28T01:56:35.000Z",
+                              "uid": "35240-5fde5d7b-721a-485f-be48-9778e281e2a6"
+                            },
+                            {
+                              "id": "c9c650c6-3c87-4daa-a8c1-d68252c2f8d7",
+                              "name": "UnauthorizedError is returned when the request is not authenticated.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/user/stars/dashboard/uid/:dashboard_uid",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "user",
+                                    "stars",
+                                    "dashboard",
+                                    "uid",
+                                    ":dashboard_uid"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "dashboard_uid"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:56:35.000Z",
+                              "updatedAt": "2026-07-28T01:56:35.000Z",
+                              "uid": "35240-c9c650c6-3c87-4daa-a8c1-d68252c2f8d7"
+                            },
+                            {
+                              "id": "24817d0d-e232-44ed-b487-64a971d8cae0",
+                              "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/user/stars/dashboard/uid/:dashboard_uid",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "user",
+                                    "stars",
+                                    "dashboard",
+                                    "uid",
+                                    ":dashboard_uid"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "dashboard_uid"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:56:35.000Z",
+                              "updatedAt": "2026-07-28T01:56:35.000Z",
+                              "uid": "35240-24817d0d-e232-44ed-b487-64a971d8cae0"
+                            },
+                            {
+                              "id": "08e3a4ce-d69d-4f1b-b733-9835452bb85c",
+                              "name": "InternalServerError is a general error indicating something went wrong internally.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/user/stars/dashboard/uid/:dashboard_uid",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "user",
+                                    "stars",
+                                    "dashboard",
+                                    "uid",
+                                    ":dashboard_uid"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "dashboard_uid"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:56:35.000Z",
+                              "updatedAt": "2026-07-28T01:56:35.000Z",
+                              "uid": "35240-08e3a4ce-d69d-4f1b-b733-9835452bb85c"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T01:56:35.000Z",
+                          "updatedAt": "2026-07-28T01:56:35.000Z",
+                          "uid": "35240-6120084f-c460-4f5f-854c-24a1eef83b58"
+                        }
+                      ],
+                      "id": "3611f790-0ae0-4296-8387-33ddb2312e52",
+                      "createdAt": "2026-07-28T01:56:35.000Z",
+                      "updatedAt": "2026-07-28T01:56:35.000Z",
+                      "uid": "35240-3611f790-0ae0-4296-8387-33ddb2312e52"
+                    }
+                  ],
+                  "id": "cde7ff4b-28cc-4dad-9275-8b1dafd03e5a",
+                  "createdAt": "2026-07-28T01:56:35.000Z",
+                  "updatedAt": "2026-07-28T01:56:35.000Z",
+                  "uid": "35240-cde7ff4b-28cc-4dad-9275-8b1dafd03e5a"
+                }
+              ],
+              "id": "b1dbb64e-e469-488f-b03c-39f8a862edd9",
+              "createdAt": "2026-07-28T01:56:35.000Z",
+              "updatedAt": "2026-07-28T01:56:35.000Z",
+              "uid": "35240-b1dbb64e-e469-488f-b03c-39f8a862edd9"
+            }
+          ],
+          "id": "149367bb-f7d4-4950-ab62-0a5ee87af1eb",
+          "createdAt": "2026-07-28T01:56:35.000Z",
+          "updatedAt": "2026-07-28T01:56:35.000Z",
+          "uid": "35240-149367bb-f7d4-4950-ab62-0a5ee87af1eb"
+        }
+      ],
+      "id": "28df96e9-d005-4cb9-8161-03a33ba77a4d",
+      "createdAt": "2026-07-28T01:56:35.000Z",
+      "updatedAt": "2026-07-28T01:56:35.000Z",
+      "uid": "35240-28df96e9-d005-4cb9-8161-03a33ba77a4d"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

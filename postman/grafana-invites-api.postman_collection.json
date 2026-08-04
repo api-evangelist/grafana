@@ -1,0 +1,945 @@
+{
+  "info": {
+    "_postman_id": "5a8bab6b-442e-45f6-974e-e60685590b49",
+    "name": "Grafana HTTP Access Invites API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:53:12.000Z",
+    "updatedAt": "2026-07-28T01:53:12.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-5a8bab6b-442e-45f6-974e-e60685590b49"
+  },
+  "item": [
+    {
+      "name": "org",
+      "item": [
+        {
+          "name": "invites",
+          "item": [
+            {
+              "name": "{invitation_code}",
+              "item": [
+                {
+                  "name": "revoke",
+                  "item": [
+                    {
+                      "name": "Grafana Revoke Invite",
+                      "id": "909b957f-15a7-4ae1-8d80-8afdb1f08dd0",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/org/invites/:invitation_code/revoke",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "org",
+                            "invites",
+                            ":invitation_code",
+                            "revoke"
+                          ],
+                          "variable": [
+                            {
+                              "id": "e9278f0f-e3c1-4b6f-b2af-7499560f21c9",
+                              "key": "invitation_code",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation revokes a pending organization invitation in Grafana by deleting it using the specified invitation code. When executed via a DELETE request to the endpoint /org/invites/{invitation_code}/revoke, it cancels an outstanding invitation that was previously sent to a user, preventing them from accepting it and joining the organization. The invitation_code path parameter uniquely identifies which pending invite should be revoked, and successful execution removes the invitation from the system entirely, requiring a new invitation to be sent if the user should still be granted access."
+                      },
+                      "response": [
+                        {
+                          "id": "5f1aec26-09df-4297-b507-ed41dd226e57",
+                          "name": "An OKResponse is returned if the request was successful.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/org/invites/:invitation_code/revoke",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "org",
+                                "invites",
+                                ":invitation_code",
+                                "revoke"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "invitation_code"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:12.000Z",
+                          "updatedAt": "2026-07-28T01:53:12.000Z",
+                          "uid": "35240-5f1aec26-09df-4297-b507-ed41dd226e57"
+                        },
+                        {
+                          "id": "b92c0add-5bfe-4e97-bf52-f1b30c4c3d5e",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/org/invites/:invitation_code/revoke",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "org",
+                                "invites",
+                                ":invitation_code",
+                                "revoke"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "invitation_code"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:12.000Z",
+                          "updatedAt": "2026-07-28T01:53:12.000Z",
+                          "uid": "35240-b92c0add-5bfe-4e97-bf52-f1b30c4c3d5e"
+                        },
+                        {
+                          "id": "7b553164-37ca-484e-9063-2411a9c516f9",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/org/invites/:invitation_code/revoke",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "org",
+                                "invites",
+                                ":invitation_code",
+                                "revoke"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "invitation_code"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:12.000Z",
+                          "updatedAt": "2026-07-28T01:53:12.000Z",
+                          "uid": "35240-7b553164-37ca-484e-9063-2411a9c516f9"
+                        },
+                        {
+                          "id": "81888b20-9b16-4a47-8066-aa8b2c0e642a",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/org/invites/:invitation_code/revoke",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "org",
+                                "invites",
+                                ":invitation_code",
+                                "revoke"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "invitation_code"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:12.000Z",
+                          "updatedAt": "2026-07-28T01:53:12.000Z",
+                          "uid": "35240-81888b20-9b16-4a47-8066-aa8b2c0e642a"
+                        },
+                        {
+                          "id": "1e8f743e-cf76-484f-893f-93500f1db506",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/org/invites/:invitation_code/revoke",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "org",
+                                "invites",
+                                ":invitation_code",
+                                "revoke"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "invitation_code"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:12.000Z",
+                          "updatedAt": "2026-07-28T01:53:12.000Z",
+                          "uid": "35240-1e8f743e-cf76-484f-893f-93500f1db506"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:53:12.000Z",
+                      "updatedAt": "2026-07-28T01:53:12.000Z",
+                      "uid": "35240-909b957f-15a7-4ae1-8d80-8afdb1f08dd0"
+                    }
+                  ],
+                  "id": "10804e2d-2b14-4c2c-86d7-941eaed4dabc",
+                  "createdAt": "2026-07-28T01:53:12.000Z",
+                  "updatedAt": "2026-07-28T01:53:12.000Z",
+                  "uid": "35240-10804e2d-2b14-4c2c-86d7-941eaed4dabc"
+                }
+              ],
+              "id": "60828a87-1ae9-4333-a6b1-a0974ff1c9cd",
+              "createdAt": "2026-07-28T01:53:12.000Z",
+              "updatedAt": "2026-07-28T01:53:12.000Z",
+              "uid": "35240-60828a87-1ae9-4333-a6b1-a0974ff1c9cd"
+            },
+            {
+              "name": "Grafana Get Pending Org Invites",
+              "id": "ece85991-997a-48a6-b9df-770da47fc1a1",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/org/invites",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "org",
+                    "invites"
+                  ]
+                },
+                "description": "This API operation retrieves a list of all pending invitations for the current organization in Grafana. When called using a GET request to the /org/invites endpoint, it returns information about users who have been invited to join the organization but have not yet accepted their invitations. The response typically includes details such as the invitee's email address, invitation date, role assigned, and invitation status. This endpoint is useful for organization administrators to monitor outstanding invitations, track who has been invited but hasn't joined, and manage the invitation lifecycle within their Grafana instance."
+              },
+              "response": [
+                {
+                  "id": "a4c5b1bd-5c78-4c2f-960b-ca4ae384f53d",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/org/invites",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "invites"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  {\n    \"code\": \"<string>\",\n    \"createdOn\": \"<string>\",\n    \"email\": \"<string>\",\n    \"emailSent\": \"<boolean>\",\n    \"emailSentOn\": \"<string>\",\n    \"id\": \"<integer>\",\n    \"invitedByEmail\": \"<string>\",\n    \"invitedByLogin\": \"<string>\",\n    \"invitedByName\": \"<string>\",\n    \"name\": \"<string>\",\n    \"orgId\": \"<integer>\",\n    \"role\": \"None\",\n    \"status\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  {\n    \"code\": \"<string>\",\n    \"createdOn\": \"<string>\",\n    \"email\": \"<string>\",\n    \"emailSent\": \"<boolean>\",\n    \"emailSentOn\": \"<string>\",\n    \"id\": \"<integer>\",\n    \"invitedByEmail\": \"<string>\",\n    \"invitedByLogin\": \"<string>\",\n    \"invitedByName\": \"<string>\",\n    \"name\": \"<string>\",\n    \"orgId\": \"<integer>\",\n    \"role\": \"Viewer\",\n    \"status\": \"<string>\",\n    \"url\": \"<string>\"\n  }\n]",
+                  "createdAt": "2026-07-28T01:53:12.000Z",
+                  "updatedAt": "2026-07-28T01:53:12.000Z",
+                  "uid": "35240-a4c5b1bd-5c78-4c2f-960b-ca4ae384f53d"
+                },
+                {
+                  "id": "9ac9d842-5bf5-49ee-95b2-ce1bd930380d",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/org/invites",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "invites"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:12.000Z",
+                  "updatedAt": "2026-07-28T01:53:12.000Z",
+                  "uid": "35240-9ac9d842-5bf5-49ee-95b2-ce1bd930380d"
+                },
+                {
+                  "id": "56febbb0-bf98-4aca-a648-2e06a81bf211",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/org/invites",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "invites"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:12.000Z",
+                  "updatedAt": "2026-07-28T01:53:12.000Z",
+                  "uid": "35240-56febbb0-bf98-4aca-a648-2e06a81bf211"
+                },
+                {
+                  "id": "f80a7702-db22-4d77-ac82-179f2acaf8be",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/org/invites",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "invites"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:12.000Z",
+                  "updatedAt": "2026-07-28T01:53:12.000Z",
+                  "uid": "35240-f80a7702-db22-4d77-ac82-179f2acaf8be"
+                }
+              ],
+              "createdAt": "2026-07-28T01:53:12.000Z",
+              "updatedAt": "2026-07-28T01:53:12.000Z",
+              "uid": "35240-ece85991-997a-48a6-b9df-770da47fc1a1"
+            },
+            {
+              "name": "Grafana Add Org Invite",
+              "id": "0c2cd1cc-cfbe-4059-99ea-b37d507a5079",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"loginOrEmail\": \"<string>\",\n  \"name\": \"<string>\",\n  \"role\": \"Viewer\",\n  \"sendEmail\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/org/invites",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "org",
+                    "invites"
+                  ]
+                },
+                "description": "This API operation allows you to create and send an invitation for a user to join a specific organization in Grafana. By making a POST request to the /org/invites endpoint, administrators can invite new members by providing details such as the invitee's email address, username, and the role they should have within the organization. The invitation generates a unique token that is sent to the specified user, allowing them to accept the invitation and gain access to the organization with the assigned permissions. This endpoint is typically used for managing team membership and controlling access to Grafana resources at the organization level, requiring appropriate administrative privileges to execute successfully."
+              },
+              "response": [
+                {
+                  "id": "473cdd48-f219-41b3-9904-e9394160b1d5",
+                  "name": "An OKResponse is returned if the request was successful.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"loginOrEmail\": \"<string>\",\n  \"name\": \"<string>\",\n  \"role\": \"Viewer\",\n  \"sendEmail\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/org/invites",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "invites"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:12.000Z",
+                  "updatedAt": "2026-07-28T01:53:12.000Z",
+                  "uid": "35240-473cdd48-f219-41b3-9904-e9394160b1d5"
+                },
+                {
+                  "id": "bd14c99b-75fa-49b6-aa6e-b858dc58e280",
+                  "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"loginOrEmail\": \"<string>\",\n  \"name\": \"<string>\",\n  \"role\": \"Viewer\",\n  \"sendEmail\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/org/invites",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "invites"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:12.000Z",
+                  "updatedAt": "2026-07-28T01:53:12.000Z",
+                  "uid": "35240-bd14c99b-75fa-49b6-aa6e-b858dc58e280"
+                },
+                {
+                  "id": "4b65afe8-2fdf-44c8-8386-45b5cb7e6605",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"loginOrEmail\": \"<string>\",\n  \"name\": \"<string>\",\n  \"role\": \"Viewer\",\n  \"sendEmail\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/org/invites",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "invites"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:12.000Z",
+                  "updatedAt": "2026-07-28T01:53:12.000Z",
+                  "uid": "35240-4b65afe8-2fdf-44c8-8386-45b5cb7e6605"
+                },
+                {
+                  "id": "55431420-3a2e-42b7-9d1a-783651430aa9",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"loginOrEmail\": \"<string>\",\n  \"name\": \"<string>\",\n  \"role\": \"Viewer\",\n  \"sendEmail\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/org/invites",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "invites"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:12.000Z",
+                  "updatedAt": "2026-07-28T01:53:12.000Z",
+                  "uid": "35240-55431420-3a2e-42b7-9d1a-783651430aa9"
+                },
+                {
+                  "id": "84b0df36-ff7d-4f4c-b3a4-ce40b3ccf543",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"loginOrEmail\": \"<string>\",\n  \"name\": \"<string>\",\n  \"role\": \"Viewer\",\n  \"sendEmail\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/org/invites",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "invites"
+                      ]
+                    }
+                  },
+                  "status": "Precondition Failed",
+                  "code": 412,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:53:12.000Z",
+                  "updatedAt": "2026-07-28T01:53:12.000Z",
+                  "uid": "35240-84b0df36-ff7d-4f4c-b3a4-ce40b3ccf543"
+                },
+                {
+                  "id": "89a43b2b-d34c-4fe3-94e9-d0b077742c1e",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"loginOrEmail\": \"<string>\",\n  \"name\": \"<string>\",\n  \"role\": \"Viewer\",\n  \"sendEmail\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/org/invites",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "invites"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:12.000Z",
+                  "updatedAt": "2026-07-28T01:53:12.000Z",
+                  "uid": "35240-89a43b2b-d34c-4fe3-94e9-d0b077742c1e"
+                }
+              ],
+              "createdAt": "2026-07-28T01:53:12.000Z",
+              "updatedAt": "2026-07-28T01:53:12.000Z",
+              "uid": "35240-0c2cd1cc-cfbe-4059-99ea-b37d507a5079"
+            }
+          ],
+          "id": "ad089769-fbe9-4b96-95c0-3c850903b3e9",
+          "createdAt": "2026-07-28T01:53:12.000Z",
+          "updatedAt": "2026-07-28T01:53:12.000Z",
+          "uid": "35240-ad089769-fbe9-4b96-95c0-3c850903b3e9"
+        }
+      ],
+      "id": "9af3ed97-67d4-4845-ad1c-d8a54931990e",
+      "createdAt": "2026-07-28T01:53:12.000Z",
+      "updatedAt": "2026-07-28T01:53:12.000Z",
+      "uid": "35240-9af3ed97-67d4-4845-ad1c-d8a54931990e"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

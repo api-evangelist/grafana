@@ -1,0 +1,2120 @@
+{
+  "info": {
+    "_postman_id": "1bbb1fad-8f52-4511-97bb-86ca521c9b6d",
+    "name": "Grafana HTTP Access Calls API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:51:30.000Z",
+    "updatedAt": "2026-07-28T01:51:30.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-1bbb1fad-8f52-4511-97bb-86ca521c9b6d"
+  },
+  "item": [
+    {
+      "name": "datasources",
+      "item": [
+        {
+          "name": "proxy",
+          "item": [
+            {
+              "name": "uid",
+              "item": [
+                {
+                  "name": "{uid}",
+                  "item": [
+                    {
+                      "name": "{datasource_proxy_route}",
+                      "item": [
+                        {
+                          "name": "Grafana Datasource Proxy GET By UID Calls",
+                          "id": "fad23fd4-8b89-4f43-ab22-34676c32187e",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "proxy",
+                                "uid",
+                                ":uid",
+                                ":datasource_proxy_route"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "e6f0a529-62ec-4a6d-96f5-439b69675b4e",
+                                  "key": "uid",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                },
+                                {
+                                  "id": "699fd0d4-89b7-4bfe-b363-a6858bd85035",
+                                  "key": "datasource_proxy_route",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "This API operation performs a GET request to proxy datasource calls through Grafana using a datasource's unique identifier (UID). It forwards requests to the configured datasource via the specified proxy route, allowing Grafana to act as an intermediary between the client and the actual datasource. The operation uses the path pattern '/datasources/proxy/uid/{uid}/{datasource_proxy_route}' where {uid} identifies the specific datasource and {datasource_proxy_route} represents the downstream API path to be called on that datasource. This proxying mechanism enables secure datasource access while maintaining Grafana's authentication and authorization controls, eliminating the need for clients to have direct access to datasource credentials or endpoints."
+                          },
+                          "response": [
+                            {
+                              "id": "eab84e47-1dce-4950-a253-2265d974a3f8",
+                              "name": "(empty)",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-eab84e47-1dce-4950-a253-2265d974a3f8"
+                            },
+                            {
+                              "id": "58fd9df2-ff31-4195-8c06-d1b42dc531de",
+                              "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-58fd9df2-ff31-4195-8c06-d1b42dc531de"
+                            },
+                            {
+                              "id": "d331d444-ab74-4dde-94c4-78807e5f51e7",
+                              "name": "UnauthorizedError is returned when the request is not authenticated.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-d331d444-ab74-4dde-94c4-78807e5f51e7"
+                            },
+                            {
+                              "id": "5928908e-199e-49ac-9ff6-59a0e44ad6f1",
+                              "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-5928908e-199e-49ac-9ff6-59a0e44ad6f1"
+                            },
+                            {
+                              "id": "89a2a074-b9c1-4183-a0fb-346084056f5b",
+                              "name": "NotFoundError is returned when the requested resource was not found.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-89a2a074-b9c1-4183-a0fb-346084056f5b"
+                            },
+                            {
+                              "id": "ada350fd-6135-4bcc-a14a-27094073b822",
+                              "name": "InternalServerError is a general error indicating something went wrong internally.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-ada350fd-6135-4bcc-a14a-27094073b822"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T01:51:31.000Z",
+                          "updatedAt": "2026-07-28T01:51:31.000Z",
+                          "uid": "35240-fad23fd4-8b89-4f43-ab22-34676c32187e"
+                        },
+                        {
+                          "name": "Grafana Datasource Proxy POST By UID Calls",
+                          "id": "c5faa9ce-00da-423f-afcb-5bc1d86c8b15",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "text/plain"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"contentMediaType\": \"text/plain\"\n}"
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "proxy",
+                                "uid",
+                                ":uid",
+                                ":datasource_proxy_route"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "fd4768cf-bd70-42cd-98d3-d04e690cc1f6",
+                                  "key": "uid",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                },
+                                {
+                                  "id": "6dd2bd95-c3d4-4ffe-8222-2f41d0631d1f",
+                                  "key": "datasource_proxy_route",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "This API operation enables POST requests to be proxied through Grafana to a configured datasource identified by its unique identifier (UID). The endpoint acts as an intermediary, forwarding requests from the Grafana UI to the target datasource using the specified proxy route path. This allows Grafana to securely communicate with various datasources without exposing their direct endpoints to clients, while maintaining authentication and authorization controls. The datasource_proxy_route parameter provides flexibility to target specific endpoints or paths within the datasource's API, making it particularly useful for executing queries, sending data, or performing operations that require POST method semantics through Grafana's unified interface."
+                          },
+                          "response": [
+                            {
+                              "id": "264af911-958b-47ed-957d-2c6308a6baa7",
+                              "name": "(empty)",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "text/plain"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"contentMediaType\": \"text/plain\"\n}"
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Created",
+                              "code": 201,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-264af911-958b-47ed-957d-2c6308a6baa7"
+                            },
+                            {
+                              "id": "b4ce3f00-d128-4045-b7e2-42b7abe5d53a",
+                              "name": "(empty)",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "text/plain"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"contentMediaType\": \"text/plain\"\n}"
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Accepted",
+                              "code": 202,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-b4ce3f00-d128-4045-b7e2-42b7abe5d53a"
+                            },
+                            {
+                              "id": "d97e8ecd-9564-40c7-9e33-cb6e21391e1c",
+                              "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "text/plain"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"contentMediaType\": \"text/plain\"\n}"
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-d97e8ecd-9564-40c7-9e33-cb6e21391e1c"
+                            },
+                            {
+                              "id": "35f184bc-9017-4b5e-8352-224603b30bc0",
+                              "name": "UnauthorizedError is returned when the request is not authenticated.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "text/plain"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"contentMediaType\": \"text/plain\"\n}"
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-35f184bc-9017-4b5e-8352-224603b30bc0"
+                            },
+                            {
+                              "id": "ff28cf73-9167-45c4-8a36-1def451bd47f",
+                              "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "text/plain"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"contentMediaType\": \"text/plain\"\n}"
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-ff28cf73-9167-45c4-8a36-1def451bd47f"
+                            },
+                            {
+                              "id": "410ea1fd-d05b-4107-82ab-0e544607af50",
+                              "name": "NotFoundError is returned when the requested resource was not found.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "text/plain"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"contentMediaType\": \"text/plain\"\n}"
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-410ea1fd-d05b-4107-82ab-0e544607af50"
+                            },
+                            {
+                              "id": "57cefa22-a965-4b77-a317-ff19c9ea869c",
+                              "name": "InternalServerError is a general error indicating something went wrong internally.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "text/plain"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"contentMediaType\": \"text/plain\"\n}"
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-57cefa22-a965-4b77-a317-ff19c9ea869c"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T01:51:31.000Z",
+                          "updatedAt": "2026-07-28T01:51:31.000Z",
+                          "uid": "35240-c5faa9ce-00da-423f-afcb-5bc1d86c8b15"
+                        },
+                        {
+                          "name": "Grafana Datasource Proxy DELETE By UID Calls",
+                          "id": "33f3ac64-0b74-4cf7-9ca7-0c5c9317a327",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "proxy",
+                                "uid",
+                                ":uid",
+                                ":datasource_proxy_route"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "5d4d5d6a-7592-42e1-8fe5-01530db212fa",
+                                  "key": "uid",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                },
+                                {
+                                  "id": "ab7b133d-421e-4444-85b8-ce3100ca7640",
+                                  "key": "datasource_proxy_route",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "This API operation performs a DELETE request to a Grafana datasource through the proxy endpoint, utilizing the datasource's unique identifier (UID) and a specific proxy route. It allows clients to make DELETE operations against the underlying datasource via Grafana's proxy layer, which handles authentication, authorization, and request routing. The operation is typically invoked by Grafana's user interface to delete resources or data from configured datasources without direct client access to the datasource itself. The UID parameter identifies the specific datasource configuration in Grafana, while the datasource_proxy_route defines the target path within that datasource's API structure."
+                          },
+                          "response": [
+                            {
+                              "id": "39f9580e-ea98-4f6a-a97a-875c0e2cb1d6",
+                              "name": "(empty)",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Accepted",
+                              "code": 202,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-39f9580e-ea98-4f6a-a97a-875c0e2cb1d6"
+                            },
+                            {
+                              "id": "bda5718b-0461-4fc6-bf63-76a38b856731",
+                              "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-bda5718b-0461-4fc6-bf63-76a38b856731"
+                            },
+                            {
+                              "id": "bbcad76a-5f4b-47fd-a768-e569db569f9e",
+                              "name": "UnauthorizedError is returned when the request is not authenticated.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-bbcad76a-5f4b-47fd-a768-e569db569f9e"
+                            },
+                            {
+                              "id": "9434649a-6508-4fd7-b930-3bd73bcd64e7",
+                              "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-9434649a-6508-4fd7-b930-3bd73bcd64e7"
+                            },
+                            {
+                              "id": "cbd7661a-3bdf-4e92-bfc7-92a8c4c2cc11",
+                              "name": "NotFoundError is returned when the requested resource was not found.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-cbd7661a-3bdf-4e92-bfc7-92a8c4c2cc11"
+                            },
+                            {
+                              "id": "8a40bb5f-57dd-4cb4-b97a-325a86e81c45",
+                              "name": "InternalServerError is a general error indicating something went wrong internally.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/proxy/uid/:uid/:datasource_proxy_route",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "proxy",
+                                    "uid",
+                                    ":uid",
+                                    ":datasource_proxy_route"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "datasource_proxy_route"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:31.000Z",
+                              "updatedAt": "2026-07-28T01:51:31.000Z",
+                              "uid": "35240-8a40bb5f-57dd-4cb4-b97a-325a86e81c45"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T01:51:31.000Z",
+                          "updatedAt": "2026-07-28T01:51:31.000Z",
+                          "uid": "35240-33f3ac64-0b74-4cf7-9ca7-0c5c9317a327"
+                        }
+                      ],
+                      "id": "63fe3753-5f60-4709-a44f-41a0da9e95d7",
+                      "createdAt": "2026-07-28T01:51:30.000Z",
+                      "updatedAt": "2026-07-28T01:51:30.000Z",
+                      "uid": "35240-63fe3753-5f60-4709-a44f-41a0da9e95d7"
+                    }
+                  ],
+                  "id": "45cbfaed-99ec-4e55-b1c8-ab4ff2e29726",
+                  "createdAt": "2026-07-28T01:51:30.000Z",
+                  "updatedAt": "2026-07-28T01:51:30.000Z",
+                  "uid": "35240-45cbfaed-99ec-4e55-b1c8-ab4ff2e29726"
+                }
+              ],
+              "id": "b684aaa6-19c3-4131-8107-84bf8fe7fe99",
+              "createdAt": "2026-07-28T01:51:30.000Z",
+              "updatedAt": "2026-07-28T01:51:30.000Z",
+              "uid": "35240-b684aaa6-19c3-4131-8107-84bf8fe7fe99"
+            },
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "{datasource_proxy_route}",
+                  "item": [
+                    {
+                      "name": "Grafana Datasource Proxy GET calls",
+                      "id": "0ab1962a-5c20-44d0-a8dc-9c3f92134cc7",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/proxy/:id/:datasource_proxy_route",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "proxy",
+                            ":id",
+                            ":datasource_proxy_route"
+                          ],
+                          "variable": [
+                            {
+                              "id": "7ffc3ec5-e660-4ff6-b5e6-9c41eda11501",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "ab2b6c90-99b8-47ef-9957-dc3e1e7e48a7",
+                              "key": "datasource_proxy_route",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation provides a proxy endpoint for executing GET requests against a configured datasource in Grafana. By specifying the datasource ID and a custom proxy route, it allows Grafana to forward requests to the underlying data source while handling authentication, CORS, and other middleware concerns transparently. This is particularly useful for querying data sources that may have complex authentication requirements or need to be accessed from the browser without exposing credentials, as Grafana acts as an intermediary that securely manages the connection to the data source and returns the results to the client."
+                      },
+                      "response": [
+                        {
+                          "id": "936c6e18-2e34-4747-adf8-bc11bf492788",
+                          "name": "(empty)",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/proxy/:id/:datasource_proxy_route",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "proxy",
+                                ":id",
+                                ":datasource_proxy_route"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "datasource_proxy_route"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:51:31.000Z",
+                          "updatedAt": "2026-07-28T01:51:31.000Z",
+                          "uid": "35240-936c6e18-2e34-4747-adf8-bc11bf492788"
+                        },
+                        {
+                          "id": "962a1981-96ad-43ea-9343-87613ebc8293",
+                          "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/proxy/:id/:datasource_proxy_route",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "proxy",
+                                ":id",
+                                ":datasource_proxy_route"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "datasource_proxy_route"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:31.000Z",
+                          "updatedAt": "2026-07-28T01:51:31.000Z",
+                          "uid": "35240-962a1981-96ad-43ea-9343-87613ebc8293"
+                        },
+                        {
+                          "id": "1466eb48-9284-4d76-9bb4-2a746f5c9fea",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/proxy/:id/:datasource_proxy_route",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "proxy",
+                                ":id",
+                                ":datasource_proxy_route"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "datasource_proxy_route"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:31.000Z",
+                          "updatedAt": "2026-07-28T01:51:31.000Z",
+                          "uid": "35240-1466eb48-9284-4d76-9bb4-2a746f5c9fea"
+                        },
+                        {
+                          "id": "67b72b35-befe-4cfe-b48b-71afecb6c0c9",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/proxy/:id/:datasource_proxy_route",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "proxy",
+                                ":id",
+                                ":datasource_proxy_route"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "datasource_proxy_route"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:31.000Z",
+                          "updatedAt": "2026-07-28T01:51:31.000Z",
+                          "uid": "35240-67b72b35-befe-4cfe-b48b-71afecb6c0c9"
+                        },
+                        {
+                          "id": "b3ed49ea-a6cb-45aa-af45-a769e3b34e00",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/proxy/:id/:datasource_proxy_route",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "proxy",
+                                ":id",
+                                ":datasource_proxy_route"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "datasource_proxy_route"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:31.000Z",
+                          "updatedAt": "2026-07-28T01:51:31.000Z",
+                          "uid": "35240-b3ed49ea-a6cb-45aa-af45-a769e3b34e00"
+                        },
+                        {
+                          "id": "90578ffd-20ac-4107-b045-53a8b1dfe179",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/proxy/:id/:datasource_proxy_route",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "proxy",
+                                ":id",
+                                ":datasource_proxy_route"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "datasource_proxy_route"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:31.000Z",
+                          "updatedAt": "2026-07-28T01:51:31.000Z",
+                          "uid": "35240-90578ffd-20ac-4107-b045-53a8b1dfe179"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:51:31.000Z",
+                      "updatedAt": "2026-07-28T01:51:31.000Z",
+                      "uid": "35240-0ab1962a-5c20-44d0-a8dc-9c3f92134cc7"
+                    },
+                    {
+                      "name": "Grafana Datasource Proxy POST Calls",
+                      "id": "1cc1ac42-3717-438b-862a-486524713e66",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "text/plain"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"contentMediaType\": \"text/plain\"\n}"
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/proxy/:id/:datasource_proxy_route",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "proxy",
+                            ":id",
+                            ":datasource_proxy_route"
+                          ],
+                          "variable": [
+                            {
+                              "id": "41cddfdb-0842-4cf3-9c6e-91945494581d",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "8b8c06dd-a823-4ee1-8417-bbd8ccab28aa",
+                              "key": "datasource_proxy_route",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "The Grafana datasource proxy POST operation allows users to send POST requests to a configured datasource through Grafana's proxy endpoint by specifying the datasource ID and the target route. This API call acts as an intermediary that forwards HTTP POST requests to the underlying datasource while handling authentication, connection management, and security concerns on behalf of the client. The endpoint accepts a datasource identifier in the path along with a dynamic route parameter that determines the specific datasource endpoint to be invoked, enabling users to interact with various datasource APIs such as querying data, executing commands, or performing write operations without directly exposing datasource credentials or connection details to the frontend application."
+                      },
+                      "response": [
+                        {
+                          "id": "b359149d-644c-4b5e-ada0-88944530334c",
+                          "name": "(empty)",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "text/plain"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"contentMediaType\": \"text/plain\"\n}"
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/proxy/:id/:datasource_proxy_route",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "proxy",
+                                ":id",
+                                ":datasource_proxy_route"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "datasource_proxy_route"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Created",
+                          "code": 201,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:51:31.000Z",
+                          "updatedAt": "2026-07-28T01:51:31.000Z",
+                          "uid": "35240-b359149d-644c-4b5e-ada0-88944530334c"
+                        },
+                        {
+                          "id": "57f69009-01b1-4f09-af16-9c9bd63d443c",
+                          "name": "(empty)",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "text/plain"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"contentMediaType\": \"text/plain\"\n}"
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/proxy/:id/:datasource_proxy_route",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "proxy",
+                                ":id",
+                                ":datasource_proxy_route"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "datasource_proxy_route"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Accepted",
+                          "code": 202,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:51:31.000Z",
+                          "updatedAt": "2026-07-28T01:51:31.000Z",
+                          "uid": "35240-57f69009-01b1-4f09-af16-9c9bd63d443c"
+                        },
+                        {
+                          "id": "54e47aec-446f-4138-936f-6c2f866e943e",
+                          "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "text/plain"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"contentMediaType\": \"text/plain\"\n}"
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/proxy/:id/:datasource_proxy_route",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "proxy",
+                                ":id",
+                                ":datasource_proxy_route"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "datasource_proxy_route"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:31.000Z",
+                          "updatedAt": "2026-07-28T01:51:31.000Z",
+                          "uid": "35240-54e47aec-446f-4138-936f-6c2f866e943e"
+                        },
+                        {
+                          "id": "6ca9885e-0f8a-4a34-a2f3-7d910168d4fc",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "text/plain"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"contentMediaType\": \"text/plain\"\n}"
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/proxy/:id/:datasource_proxy_route",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "proxy",
+                                ":id",
+                                ":datasource_proxy_route"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "datasource_proxy_route"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:31.000Z",
+                          "updatedAt": "2026-07-28T01:51:31.000Z",
+                          "uid": "35240-6ca9885e-0f8a-4a34-a2f3-7d910168d4fc"
+                        },
+                        {
+                          "id": "636613cd-287a-4d55-815f-9963ecf20c38",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "text/plain"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"contentMediaType\": \"text/plain\"\n}"
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/proxy/:id/:datasource_proxy_route",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "proxy",
+                                ":id",
+                                ":datasource_proxy_route"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "datasource_proxy_route"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:31.000Z",
+                          "updatedAt": "2026-07-28T01:51:31.000Z",
+                          "uid": "35240-636613cd-287a-4d55-815f-9963ecf20c38"
+                        },
+                        {
+                          "id": "074c297a-835f-4f71-99fe-26f62fcb2a2f",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "text/plain"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"contentMediaType\": \"text/plain\"\n}"
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/proxy/:id/:datasource_proxy_route",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "proxy",
+                                ":id",
+                                ":datasource_proxy_route"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "datasource_proxy_route"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:31.000Z",
+                          "updatedAt": "2026-07-28T01:51:31.000Z",
+                          "uid": "35240-074c297a-835f-4f71-99fe-26f62fcb2a2f"
+                        },
+                        {
+                          "id": "a847819d-d533-4391-84b0-7faf44c352f7",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "text/plain"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"contentMediaType\": \"text/plain\"\n}"
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/proxy/:id/:datasource_proxy_route",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "proxy",
+                                ":id",
+                                ":datasource_proxy_route"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                },
+                                {
+                                  "key": "datasource_proxy_route"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:31.000Z",
+                          "updatedAt": "2026-07-28T01:51:31.000Z",
+                          "uid": "35240-a847819d-d533-4391-84b0-7faf44c352f7"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:51:31.000Z",
+                      "updatedAt": "2026-07-28T01:51:31.000Z",
+                      "uid": "35240-1cc1ac42-3717-438b-862a-486524713e66"
+                    }
+                  ],
+                  "id": "71491d5a-8bbf-42c4-b583-fd06d2e006f9",
+                  "createdAt": "2026-07-28T01:51:30.000Z",
+                  "updatedAt": "2026-07-28T01:51:30.000Z",
+                  "uid": "35240-71491d5a-8bbf-42c4-b583-fd06d2e006f9"
+                }
+              ],
+              "id": "7ef1271e-68e9-4fe5-a0a2-b8fd7b9980b1",
+              "createdAt": "2026-07-28T01:51:30.000Z",
+              "updatedAt": "2026-07-28T01:51:30.000Z",
+              "uid": "35240-7ef1271e-68e9-4fe5-a0a2-b8fd7b9980b1"
+            }
+          ],
+          "id": "54946a6a-622e-47b0-8f15-b6ef9b2f2943",
+          "createdAt": "2026-07-28T01:51:30.000Z",
+          "updatedAt": "2026-07-28T01:51:30.000Z",
+          "uid": "35240-54946a6a-622e-47b0-8f15-b6ef9b2f2943"
+        }
+      ],
+      "id": "48a9e161-fd3c-4e93-940e-5b3f956152dd",
+      "createdAt": "2026-07-28T01:51:30.000Z",
+      "updatedAt": "2026-07-28T01:51:30.000Z",
+      "uid": "35240-48a9e161-fd3c-4e93-940e-5b3f956152dd"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

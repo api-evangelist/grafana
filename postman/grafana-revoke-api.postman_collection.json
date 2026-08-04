@@ -1,0 +1,1187 @@
+{
+  "info": {
+    "_postman_id": "dc46d13b-a484-4426-9202-e7c724523f24",
+    "name": "Grafana HTTP Access Revoke API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:55:33.000Z",
+    "updatedAt": "2026-07-28T01:55:33.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-dc46d13b-a484-4426-9202-e7c724523f24"
+  },
+  "item": [
+    {
+      "name": "org",
+      "item": [
+        {
+          "name": "invites",
+          "item": [
+            {
+              "name": "{invitation_code}",
+              "item": [
+                {
+                  "name": "revoke",
+                  "item": [
+                    {
+                      "name": "Grafana Revoke Invite",
+                      "id": "d8ef8025-556f-4e06-a454-41a65e484f63",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/org/invites/:invitation_code/revoke",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "org",
+                            "invites",
+                            ":invitation_code",
+                            "revoke"
+                          ],
+                          "variable": [
+                            {
+                              "id": "41b500b4-b195-476f-8ab5-af55a6658b15",
+                              "key": "invitation_code",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation revokes a pending organization invitation in Grafana by deleting it using the specified invitation code. When executed via a DELETE request to the endpoint /org/invites/{invitation_code}/revoke, it cancels an outstanding invitation that was previously sent to a user, preventing them from accepting it and joining the organization. The invitation_code path parameter uniquely identifies which pending invite should be revoked, and successful execution removes the invitation from the system entirely, requiring a new invitation to be sent if the user should still be granted access."
+                      },
+                      "response": [
+                        {
+                          "id": "f70380f7-5308-4539-858d-32cb3974a691",
+                          "name": "An OKResponse is returned if the request was successful.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/org/invites/:invitation_code/revoke",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "org",
+                                "invites",
+                                ":invitation_code",
+                                "revoke"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "invitation_code"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:33.000Z",
+                          "updatedAt": "2026-07-28T01:55:33.000Z",
+                          "uid": "35240-f70380f7-5308-4539-858d-32cb3974a691"
+                        },
+                        {
+                          "id": "b0a9872e-9aaf-45df-86f5-7fa5beae09b4",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/org/invites/:invitation_code/revoke",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "org",
+                                "invites",
+                                ":invitation_code",
+                                "revoke"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "invitation_code"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:33.000Z",
+                          "updatedAt": "2026-07-28T01:55:33.000Z",
+                          "uid": "35240-b0a9872e-9aaf-45df-86f5-7fa5beae09b4"
+                        },
+                        {
+                          "id": "b0c173c4-3adb-4a16-830a-a87febe438bb",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/org/invites/:invitation_code/revoke",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "org",
+                                "invites",
+                                ":invitation_code",
+                                "revoke"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "invitation_code"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:33.000Z",
+                          "updatedAt": "2026-07-28T01:55:33.000Z",
+                          "uid": "35240-b0c173c4-3adb-4a16-830a-a87febe438bb"
+                        },
+                        {
+                          "id": "7ce079b5-dfb3-4183-a8f5-4174a4476099",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/org/invites/:invitation_code/revoke",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "org",
+                                "invites",
+                                ":invitation_code",
+                                "revoke"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "invitation_code"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:33.000Z",
+                          "updatedAt": "2026-07-28T01:55:33.000Z",
+                          "uid": "35240-7ce079b5-dfb3-4183-a8f5-4174a4476099"
+                        },
+                        {
+                          "id": "b0667b11-c98a-4365-aa8b-a0e3a78ab412",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/org/invites/:invitation_code/revoke",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "org",
+                                "invites",
+                                ":invitation_code",
+                                "revoke"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "invitation_code"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:33.000Z",
+                          "updatedAt": "2026-07-28T01:55:33.000Z",
+                          "uid": "35240-b0667b11-c98a-4365-aa8b-a0e3a78ab412"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:55:33.000Z",
+                      "updatedAt": "2026-07-28T01:55:33.000Z",
+                      "uid": "35240-d8ef8025-556f-4e06-a454-41a65e484f63"
+                    }
+                  ],
+                  "id": "506d9d08-2ea0-4e6d-9d2f-6921d815a5b1",
+                  "createdAt": "2026-07-28T01:55:33.000Z",
+                  "updatedAt": "2026-07-28T01:55:33.000Z",
+                  "uid": "35240-506d9d08-2ea0-4e6d-9d2f-6921d815a5b1"
+                }
+              ],
+              "id": "45a6d07b-c749-41bc-be22-61227386163b",
+              "createdAt": "2026-07-28T01:55:33.000Z",
+              "updatedAt": "2026-07-28T01:55:33.000Z",
+              "uid": "35240-45a6d07b-c749-41bc-be22-61227386163b"
+            }
+          ],
+          "id": "c3018e4c-cee3-45d7-8478-74b6b281c17c",
+          "createdAt": "2026-07-28T01:55:33.000Z",
+          "updatedAt": "2026-07-28T01:55:33.000Z",
+          "uid": "35240-c3018e4c-cee3-45d7-8478-74b6b281c17c"
+        }
+      ],
+      "id": "2b7366c4-cb5c-459f-819e-02b651d28016",
+      "createdAt": "2026-07-28T01:55:33.000Z",
+      "updatedAt": "2026-07-28T01:55:33.000Z",
+      "uid": "35240-2b7366c4-cb5c-459f-819e-02b651d28016"
+    },
+    {
+      "name": "admin",
+      "item": [
+        {
+          "name": "users",
+          "item": [
+            {
+              "name": "{user_id}",
+              "item": [
+                {
+                  "name": "revoke-auth-token",
+                  "item": [
+                    {
+                      "name": "Grafana Admin Revoke User Auth Token",
+                      "id": "ce371200-7ba6-4c3e-a9f3-d223556b6c27",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"authTokenId\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/users/:user_id/revoke-auth-token",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "users",
+                            ":user_id",
+                            "revoke-auth-token"
+                          ],
+                          "variable": [
+                            {
+                              "id": "19bf1a0b-9b92-4de1-b1fe-f86ff90a4e4b",
+                              "key": "user_id",
+                              "value": "<integer>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation allows a Grafana administrator to forcibly revoke a specific authentication token for a given user by making a POST request to the endpoint with the target user's ID. When executed, it invalidates the specified auth token, effectively logging out that user from any session using that particular token, which is useful for security purposes such as when a token may have been compromised or when an administrator needs to terminate a user's access immediately without affecting other active sessions the user might have with different tokens."
+                      },
+                      "response": [
+                        {
+                          "id": "efe0bd28-07e6-4807-b8b0-1324b9b64b27",
+                          "name": "An OKResponse is returned if the request was successful.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"authTokenId\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/revoke-auth-token",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "revoke-auth-token"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:33.000Z",
+                          "updatedAt": "2026-07-28T01:55:33.000Z",
+                          "uid": "35240-efe0bd28-07e6-4807-b8b0-1324b9b64b27"
+                        },
+                        {
+                          "id": "79e61a93-4c1e-401c-93ff-1f79a0569806",
+                          "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"authTokenId\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/revoke-auth-token",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "revoke-auth-token"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:33.000Z",
+                          "updatedAt": "2026-07-28T01:55:33.000Z",
+                          "uid": "35240-79e61a93-4c1e-401c-93ff-1f79a0569806"
+                        },
+                        {
+                          "id": "9e7829b4-eebd-4475-be4e-1272c8fff048",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"authTokenId\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/revoke-auth-token",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "revoke-auth-token"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:33.000Z",
+                          "updatedAt": "2026-07-28T01:55:33.000Z",
+                          "uid": "35240-9e7829b4-eebd-4475-be4e-1272c8fff048"
+                        },
+                        {
+                          "id": "2f8efa68-5531-4b30-8ec1-de83821ba6e8",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"authTokenId\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/revoke-auth-token",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "revoke-auth-token"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:33.000Z",
+                          "updatedAt": "2026-07-28T01:55:33.000Z",
+                          "uid": "35240-2f8efa68-5531-4b30-8ec1-de83821ba6e8"
+                        },
+                        {
+                          "id": "608fa1ae-c2af-4c13-ba40-b907ac8e5ea7",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"authTokenId\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/revoke-auth-token",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "revoke-auth-token"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:33.000Z",
+                          "updatedAt": "2026-07-28T01:55:33.000Z",
+                          "uid": "35240-608fa1ae-c2af-4c13-ba40-b907ac8e5ea7"
+                        },
+                        {
+                          "id": "924671cb-caa8-495e-96fb-76d8d5c164da",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"authTokenId\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/revoke-auth-token",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "revoke-auth-token"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:33.000Z",
+                          "updatedAt": "2026-07-28T01:55:33.000Z",
+                          "uid": "35240-924671cb-caa8-495e-96fb-76d8d5c164da"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:55:33.000Z",
+                      "updatedAt": "2026-07-28T01:55:33.000Z",
+                      "uid": "35240-ce371200-7ba6-4c3e-a9f3-d223556b6c27"
+                    }
+                  ],
+                  "id": "54c6d395-3152-4caa-980e-042f1a1ca2c3",
+                  "createdAt": "2026-07-28T01:55:33.000Z",
+                  "updatedAt": "2026-07-28T01:55:33.000Z",
+                  "uid": "35240-54c6d395-3152-4caa-980e-042f1a1ca2c3"
+                }
+              ],
+              "id": "ca6eedde-fc10-4735-a155-a6f7615d8383",
+              "createdAt": "2026-07-28T01:55:33.000Z",
+              "updatedAt": "2026-07-28T01:55:33.000Z",
+              "uid": "35240-ca6eedde-fc10-4735-a155-a6f7615d8383"
+            }
+          ],
+          "id": "9c7af9e0-2ff9-4a32-ac0e-0e4d0c60e708",
+          "createdAt": "2026-07-28T01:55:33.000Z",
+          "updatedAt": "2026-07-28T01:55:33.000Z",
+          "uid": "35240-9c7af9e0-2ff9-4a32-ac0e-0e4d0c60e708"
+        }
+      ],
+      "id": "31a7f723-c158-4105-8886-0a251c6efe42",
+      "createdAt": "2026-07-28T01:55:33.000Z",
+      "updatedAt": "2026-07-28T01:55:33.000Z",
+      "uid": "35240-31a7f723-c158-4105-8886-0a251c6efe42"
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "revoke-auth-token",
+          "item": [
+            {
+              "name": "Grafana Revoke User Auth Token",
+              "id": "bf4cc925-71c7-4352-96df-4b57fa77946b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"authTokenId\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user/revoke-auth-token",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "revoke-auth-token"
+                  ]
+                },
+                "description": "This API operation allows for the revocation of a specific authentication token associated with a user in Grafana. When invoked via a POST request to the /user/revoke-auth-token endpoint, it invalidates the specified auth token, effectively logging out the user from any session using that particular token. This is useful for security purposes when a user wants to manually terminate access from a specific device or session, or when an administrator needs to force a logout. The operation requires proper authentication and authorization to ensure only legitimate revocation requests are processed, helping maintain the security and integrity of user sessions within the Grafana system."
+              },
+              "response": [
+                {
+                  "id": "6e467568-3bcc-421c-9158-d56b5134cba2",
+                  "name": "An OKResponse is returned if the request was successful.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"authTokenId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/user/revoke-auth-token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "revoke-auth-token"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:33.000Z",
+                  "updatedAt": "2026-07-28T01:55:33.000Z",
+                  "uid": "35240-6e467568-3bcc-421c-9158-d56b5134cba2"
+                },
+                {
+                  "id": "127398da-16bf-4dc4-99d6-6e205775274b",
+                  "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"authTokenId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/user/revoke-auth-token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "revoke-auth-token"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:33.000Z",
+                  "updatedAt": "2026-07-28T01:55:33.000Z",
+                  "uid": "35240-127398da-16bf-4dc4-99d6-6e205775274b"
+                },
+                {
+                  "id": "a8d57143-abec-45c9-8f88-666f51c94aac",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"authTokenId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/user/revoke-auth-token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "revoke-auth-token"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:33.000Z",
+                  "updatedAt": "2026-07-28T01:55:33.000Z",
+                  "uid": "35240-a8d57143-abec-45c9-8f88-666f51c94aac"
+                },
+                {
+                  "id": "13c10be5-5296-4554-af50-2a91a0c232d1",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"authTokenId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/user/revoke-auth-token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "revoke-auth-token"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:33.000Z",
+                  "updatedAt": "2026-07-28T01:55:33.000Z",
+                  "uid": "35240-13c10be5-5296-4554-af50-2a91a0c232d1"
+                },
+                {
+                  "id": "41468c18-fea0-4e01-8587-171520c8a259",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"authTokenId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/user/revoke-auth-token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "revoke-auth-token"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:33.000Z",
+                  "updatedAt": "2026-07-28T01:55:33.000Z",
+                  "uid": "35240-41468c18-fea0-4e01-8587-171520c8a259"
+                }
+              ],
+              "createdAt": "2026-07-28T01:55:33.000Z",
+              "updatedAt": "2026-07-28T01:55:33.000Z",
+              "uid": "35240-bf4cc925-71c7-4352-96df-4b57fa77946b"
+            }
+          ],
+          "id": "f25b73c0-9673-4582-ad13-c2a7faf4cdae",
+          "createdAt": "2026-07-28T01:55:33.000Z",
+          "updatedAt": "2026-07-28T01:55:33.000Z",
+          "uid": "35240-f25b73c0-9673-4582-ad13-c2a7faf4cdae"
+        }
+      ],
+      "id": "0f0ba8e1-c4be-4d7d-87e7-f556bb15b65e",
+      "createdAt": "2026-07-28T01:55:33.000Z",
+      "updatedAt": "2026-07-28T01:55:33.000Z",
+      "uid": "35240-0f0ba8e1-c4be-4d7d-87e7-f556bb15b65e"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

@@ -1,0 +1,1416 @@
+{
+  "info": {
+    "_postman_id": "cc5e2887-1cf6-48f0-b571-ed0c8bd14dce",
+    "name": "Grafana HTTP Access Names API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:54:20.000Z",
+    "updatedAt": "2026-07-28T01:54:20.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-cc5e2887-1cf6-48f0-b571-ed0c8bd14dce"
+  },
+  "item": [
+    {
+      "name": "datasources",
+      "item": [
+        {
+          "name": "id",
+          "item": [
+            {
+              "name": "{name}",
+              "item": [
+                {
+                  "name": "Grafana Get Data Source Id By Name",
+                  "id": "44e13914-bc4a-4773-a094-633aa6173ee3",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/datasources/id/:name",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "datasources",
+                        "id",
+                        ":name"
+                      ],
+                      "variable": [
+                        {
+                          "id": "686081ba-87cf-4b20-9d83-5973f7582f62",
+                          "key": "name",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This API operation retrieves the unique identifier of a Grafana data source by providing its name as a path parameter. It performs a GET request to the endpoint '/datasources/id/{name}' where {name} is replaced with the actual name of the data source you want to look up. The operation returns the numeric ID associated with that specific data source, which can be useful for subsequent API calls that require the data source ID rather than its name. This is particularly helpful when you need to programmatically reference data sources in scripts or applications where you know the name but need the ID for other operations."
+                  },
+                  "response": [
+                    {
+                      "id": "1990a5d4-c614-4ac6-9bfe-d5a0487b3c09",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/id/:name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "id",
+                            ":name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<integer>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-1990a5d4-c614-4ac6-9bfe-d5a0487b3c09"
+                    },
+                    {
+                      "id": "b9a00368-a1f5-4a7a-beac-a868a1f3921c",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/id/:name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "id",
+                            ":name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-b9a00368-a1f5-4a7a-beac-a868a1f3921c"
+                    },
+                    {
+                      "id": "fd773d7d-6fff-4295-9238-7d9a4243d82c",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/id/:name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "id",
+                            ":name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-fd773d7d-6fff-4295-9238-7d9a4243d82c"
+                    },
+                    {
+                      "id": "c7085502-6819-4d84-b03b-37c9dd9357d1",
+                      "name": "NotFoundError is returned when the requested resource was not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/id/:name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "id",
+                            ":name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-c7085502-6819-4d84-b03b-37c9dd9357d1"
+                    },
+                    {
+                      "id": "fa40208f-b950-4dc6-8fc2-89fceabce8ae",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/id/:name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "id",
+                            ":name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-fa40208f-b950-4dc6-8fc2-89fceabce8ae"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:54:21.000Z",
+                  "updatedAt": "2026-07-28T01:54:21.000Z",
+                  "uid": "35240-44e13914-bc4a-4773-a094-633aa6173ee3"
+                }
+              ],
+              "id": "a6598ede-c450-4556-9ab9-a6206cb153b8",
+              "createdAt": "2026-07-28T01:54:21.000Z",
+              "updatedAt": "2026-07-28T01:54:21.000Z",
+              "uid": "35240-a6598ede-c450-4556-9ab9-a6206cb153b8"
+            }
+          ],
+          "id": "40f704f7-d6bf-4fa3-8a9c-914fbfcda204",
+          "createdAt": "2026-07-28T01:54:21.000Z",
+          "updatedAt": "2026-07-28T01:54:21.000Z",
+          "uid": "35240-40f704f7-d6bf-4fa3-8a9c-914fbfcda204"
+        },
+        {
+          "name": "name",
+          "item": [
+            {
+              "name": "{name}",
+              "item": [
+                {
+                  "name": "Grafana Get Data Source By Name",
+                  "id": "05015c99-56ff-44a1-8f1f-b7fda864430f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/datasources/name/:name",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "datasources",
+                        "name",
+                        ":name"
+                      ],
+                      "variable": [
+                        {
+                          "id": "c727f76a-0b49-4043-a566-1fe30cf6c201",
+                          "key": "name",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This API operation retrieves a specific data source configuration from Grafana by using its unique name as an identifier. When you send a GET request to the endpoint with the data source name as a path parameter, Grafana returns the complete configuration details of that data source, including its type, connection settings, authentication credentials, and other relevant metadata. This is particularly useful when you need to programmatically access or verify the configuration of a specific data source without knowing its numeric ID, making it more intuitive for automation scripts and integrations that work with human-readable names rather than database identifiers."
+                  },
+                  "response": [
+                    {
+                      "id": "04f45f65-1585-4cae-9e01-e3f1fbdd38c2",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/name/:name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "name",
+                            ":name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"access\": \"<string>\",\n  \"accessControl\": {\n    \"laboris383\": \"<boolean>\"\n  },\n  \"basicAuth\": \"<boolean>\",\n  \"basicAuthUser\": \"<string>\",\n  \"database\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"isDefault\": \"<boolean>\",\n  \"jsonData\": {},\n  \"name\": \"<string>\",\n  \"orgId\": \"<integer>\",\n  \"readOnly\": \"<boolean>\",\n  \"secureJsonFields\": {\n    \"irure_c78\": \"<boolean>\",\n    \"dolore_6\": \"<boolean>\",\n    \"incididunt4c0\": \"<boolean>\"\n  },\n  \"type\": \"<string>\",\n  \"typeLogoUrl\": \"<string>\",\n  \"uid\": \"<string>\",\n  \"url\": \"<string>\",\n  \"user\": \"<string>\",\n  \"version\": \"<integer>\",\n  \"withCredentials\": \"<boolean>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-04f45f65-1585-4cae-9e01-e3f1fbdd38c2"
+                    },
+                    {
+                      "id": "b76539bc-3cdd-4c62-8528-9fd359fa13a2",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/name/:name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "name",
+                            ":name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-b76539bc-3cdd-4c62-8528-9fd359fa13a2"
+                    },
+                    {
+                      "id": "630220ec-b91e-4cc1-a8d9-5d73228c963c",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/name/:name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "name",
+                            ":name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-630220ec-b91e-4cc1-a8d9-5d73228c963c"
+                    },
+                    {
+                      "id": "bee4b4fe-329f-41e5-81c5-19667c32c4cc",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/name/:name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "name",
+                            ":name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-bee4b4fe-329f-41e5-81c5-19667c32c4cc"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:54:21.000Z",
+                  "updatedAt": "2026-07-28T01:54:21.000Z",
+                  "uid": "35240-05015c99-56ff-44a1-8f1f-b7fda864430f"
+                },
+                {
+                  "name": "Grafana Delete Data Source By Name",
+                  "id": "715168dc-b9cc-4fcb-8d9b-11de239feec2",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/datasources/name/:name",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "datasources",
+                        "name",
+                        ":name"
+                      ],
+                      "variable": [
+                        {
+                          "id": "b9fcd3c3-5e75-46e6-ab12-4cb584deb7ff",
+                          "key": "name",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Removes a data source from Grafana by specifying its unique name rather than its numeric ID. This operation permanently deletes the data source configuration including all associated settings, credentials, and metadata. Once deleted, any dashboards or panels that reference this data source will no longer function properly until reconfigured with an alternative data source. This endpoint is particularly useful when automating data source management through scripts or infrastructure-as-code tools where the data source name is known but the internal ID is not readily available."
+                  },
+                  "response": [
+                    {
+                      "id": "6810f57f-784b-4f78-9d27-2995e7fbf661",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/name/:name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "name",
+                            ":name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<integer>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-6810f57f-784b-4f78-9d27-2995e7fbf661"
+                    },
+                    {
+                      "id": "ffd45beb-3bc3-4d3e-95d9-e38387e6f1ba",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/name/:name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "name",
+                            ":name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-ffd45beb-3bc3-4d3e-95d9-e38387e6f1ba"
+                    },
+                    {
+                      "id": "019002c0-255e-4630-82c1-27783889ace8",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/name/:name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "name",
+                            ":name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-019002c0-255e-4630-82c1-27783889ace8"
+                    },
+                    {
+                      "id": "b45a262d-6901-46f0-a8ab-e64349e6264b",
+                      "name": "NotFoundError is returned when the requested resource was not found.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/name/:name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "name",
+                            ":name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-b45a262d-6901-46f0-a8ab-e64349e6264b"
+                    },
+                    {
+                      "id": "c38b0a2c-d118-4b2c-bb18-9558e5996fe5",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/name/:name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "name",
+                            ":name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-c38b0a2c-d118-4b2c-bb18-9558e5996fe5"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:54:21.000Z",
+                  "updatedAt": "2026-07-28T01:54:21.000Z",
+                  "uid": "35240-715168dc-b9cc-4fcb-8d9b-11de239feec2"
+                }
+              ],
+              "id": "a11fd79e-223c-461c-a116-f82315baa256",
+              "createdAt": "2026-07-28T01:54:21.000Z",
+              "updatedAt": "2026-07-28T01:54:21.000Z",
+              "uid": "35240-a11fd79e-223c-461c-a116-f82315baa256"
+            }
+          ],
+          "id": "e5ea122d-a0f2-472a-8794-1fc5fc6a5deb",
+          "createdAt": "2026-07-28T01:54:21.000Z",
+          "updatedAt": "2026-07-28T01:54:21.000Z",
+          "uid": "35240-e5ea122d-a0f2-472a-8794-1fc5fc6a5deb"
+        }
+      ],
+      "id": "28ac808e-8122-4e4d-bfb4-1c246be2962c",
+      "createdAt": "2026-07-28T01:54:21.000Z",
+      "updatedAt": "2026-07-28T01:54:21.000Z",
+      "uid": "35240-28ac808e-8122-4e4d-bfb4-1c246be2962c"
+    },
+    {
+      "name": "library-elements",
+      "item": [
+        {
+          "name": "name",
+          "item": [
+            {
+              "name": "{library_element_name}",
+              "item": [
+                {
+                  "name": "Grafana Get Library Element By Name",
+                  "id": "ab63b3ba-d969-4ae7-b7d6-7e8ae2e5c844",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/library-elements/name/:library_element_name",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "library-elements",
+                        "name",
+                        ":library_element_name"
+                      ],
+                      "variable": [
+                        {
+                          "id": "2cd6c9a7-3a6b-4816-9594-b25d26cc615f",
+                          "key": "library_element_name",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Gets a library element with the specified name from Grafana's library elements collection. This endpoint retrieves a single library element by providing its unique name as a path parameter. Library elements in Grafana are reusable components like panels or data sources that can be shared across multiple dashboards. The operation returns the complete library element object including its configuration, metadata, and any associated properties. This is useful when you need to reference or reuse a specific library element in your dashboard configurations or when you want to retrieve details about a named library element without knowing its numeric ID."
+                  },
+                  "response": [
+                    {
+                      "id": "43bbb786-7fb6-44d5-94ad-07e90aeb0d8c",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/library-elements/name/:library_element_name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "library-elements",
+                            "name",
+                            ":library_element_name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "library_element_name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"result\": [\n    {\n      \"description\": \"<string>\",\n      \"folderId\": \"<integer>\",\n      \"folderUid\": \"<string>\",\n      \"id\": \"<integer>\",\n      \"kind\": \"<integer>\",\n      \"meta\": {\n        \"connectedDashboards\": \"<integer>\",\n        \"created\": \"<string>\",\n        \"createdBy\": {\n          \"avatarUrl\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"name\": \"<string>\"\n        },\n        \"folderName\": \"<string>\",\n        \"folderUid\": \"<string>\",\n        \"updated\": \"<string>\",\n        \"updatedBy\": {\n          \"avatarUrl\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"name\": \"<string>\"\n        }\n      },\n      \"model\": {},\n      \"name\": \"<string>\",\n      \"orgId\": \"<integer>\",\n      \"schemaVersion\": \"<integer>\",\n      \"type\": \"<string>\",\n      \"uid\": \"<string>\",\n      \"version\": \"<integer>\"\n    },\n    {\n      \"description\": \"<string>\",\n      \"folderId\": \"<integer>\",\n      \"folderUid\": \"<string>\",\n      \"id\": \"<integer>\",\n      \"kind\": \"<integer>\",\n      \"meta\": {\n        \"connectedDashboards\": \"<integer>\",\n        \"created\": \"<string>\",\n        \"createdBy\": {\n          \"avatarUrl\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"name\": \"<string>\"\n        },\n        \"folderName\": \"<string>\",\n        \"folderUid\": \"<string>\",\n        \"updated\": \"<string>\",\n        \"updatedBy\": {\n          \"avatarUrl\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"name\": \"<string>\"\n        }\n      },\n      \"model\": {},\n      \"name\": \"<string>\",\n      \"orgId\": \"<integer>\",\n      \"schemaVersion\": \"<integer>\",\n      \"type\": \"<string>\",\n      \"uid\": \"<string>\",\n      \"version\": \"<integer>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-43bbb786-7fb6-44d5-94ad-07e90aeb0d8c"
+                    },
+                    {
+                      "id": "9ad981a8-2746-421e-853d-f61bcf43f070",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/library-elements/name/:library_element_name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "library-elements",
+                            "name",
+                            ":library_element_name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "library_element_name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-9ad981a8-2746-421e-853d-f61bcf43f070"
+                    },
+                    {
+                      "id": "1e0559b9-304c-441d-b31b-5708d5d0f2fb",
+                      "name": "NotFoundError is returned when the requested resource was not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/library-elements/name/:library_element_name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "library-elements",
+                            "name",
+                            ":library_element_name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "library_element_name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-1e0559b9-304c-441d-b31b-5708d5d0f2fb"
+                    },
+                    {
+                      "id": "9bac4e1e-8d5b-4911-a8f7-d616463921a4",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/library-elements/name/:library_element_name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "library-elements",
+                            "name",
+                            ":library_element_name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "library_element_name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-9bac4e1e-8d5b-4911-a8f7-d616463921a4"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:54:21.000Z",
+                  "updatedAt": "2026-07-28T01:54:21.000Z",
+                  "uid": "35240-ab63b3ba-d969-4ae7-b7d6-7e8ae2e5c844"
+                }
+              ],
+              "id": "aa612804-1386-47c2-b124-d3e19978974e",
+              "createdAt": "2026-07-28T01:54:21.000Z",
+              "updatedAt": "2026-07-28T01:54:21.000Z",
+              "uid": "35240-aa612804-1386-47c2-b124-d3e19978974e"
+            }
+          ],
+          "id": "5254a8e7-da83-44f4-b38a-63ce84328721",
+          "createdAt": "2026-07-28T01:54:21.000Z",
+          "updatedAt": "2026-07-28T01:54:21.000Z",
+          "uid": "35240-5254a8e7-da83-44f4-b38a-63ce84328721"
+        }
+      ],
+      "id": "037db769-09cb-4257-91af-cc5b517a771e",
+      "createdAt": "2026-07-28T01:54:21.000Z",
+      "updatedAt": "2026-07-28T01:54:21.000Z",
+      "uid": "35240-037db769-09cb-4257-91af-cc5b517a771e"
+    },
+    {
+      "name": "orgs",
+      "item": [
+        {
+          "name": "name",
+          "item": [
+            {
+              "name": "{org_name}",
+              "item": [
+                {
+                  "name": "Grafana Get Org By Name",
+                  "id": "a72a3bca-77fd-4e6c-85f1-00c96aa02176",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/orgs/name/:org_name",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orgs",
+                        "name",
+                        ":org_name"
+                      ],
+                      "variable": [
+                        {
+                          "id": "94825514-f4b5-4198-83a0-1a7e0b700be6",
+                          "key": "org_name",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Returns the details of a specific Grafana organization by searching for it using its unique organization name rather than its numeric ID. This endpoint provides an alternative way to retrieve organization information when you know the organization's name but not its ID, returning the same organization data structure including ID, name, and address that would be obtained through the standard ID-based lookup endpoint."
+                  },
+                  "response": [
+                    {
+                      "id": "c7f7699a-151a-4a44-a355-a50a94cdd54b",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/orgs/name/:org_name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orgs",
+                            "name",
+                            ":org_name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "org_name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"address\": {\n    \"address1\": \"<string>\",\n    \"address2\": \"<string>\",\n    \"city\": \"<string>\",\n    \"country\": \"<string>\",\n    \"state\": \"<string>\",\n    \"zipCode\": \"<string>\"\n  },\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-c7f7699a-151a-4a44-a355-a50a94cdd54b"
+                    },
+                    {
+                      "id": "5a765f19-abe1-4c81-8305-9b56f873a893",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/orgs/name/:org_name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orgs",
+                            "name",
+                            ":org_name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "org_name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-5a765f19-abe1-4c81-8305-9b56f873a893"
+                    },
+                    {
+                      "id": "747e53b2-99a3-4707-84a8-7ac04c5904c2",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/orgs/name/:org_name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orgs",
+                            "name",
+                            ":org_name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "org_name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-747e53b2-99a3-4707-84a8-7ac04c5904c2"
+                    },
+                    {
+                      "id": "dcad4858-0687-4d66-966a-3a0035061712",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/orgs/name/:org_name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orgs",
+                            "name",
+                            ":org_name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "org_name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:21.000Z",
+                      "updatedAt": "2026-07-28T01:54:21.000Z",
+                      "uid": "35240-dcad4858-0687-4d66-966a-3a0035061712"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:54:21.000Z",
+                  "updatedAt": "2026-07-28T01:54:21.000Z",
+                  "uid": "35240-a72a3bca-77fd-4e6c-85f1-00c96aa02176"
+                }
+              ],
+              "id": "1a890d13-91d0-40a7-acaf-097af5834758",
+              "createdAt": "2026-07-28T01:54:21.000Z",
+              "updatedAt": "2026-07-28T01:54:21.000Z",
+              "uid": "35240-1a890d13-91d0-40a7-acaf-097af5834758"
+            }
+          ],
+          "id": "7ee30c62-710a-4c6c-ad45-0a603284a452",
+          "createdAt": "2026-07-28T01:54:21.000Z",
+          "updatedAt": "2026-07-28T01:54:21.000Z",
+          "uid": "35240-7ee30c62-710a-4c6c-ad45-0a603284a452"
+        }
+      ],
+      "id": "06c88013-e8d4-426e-af7e-f37e0db82992",
+      "createdAt": "2026-07-28T01:54:21.000Z",
+      "updatedAt": "2026-07-28T01:54:21.000Z",
+      "uid": "35240-06c88013-e8d4-426e-af7e-f37e0db82992"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

@@ -1,0 +1,341 @@
+{
+  "info": {
+    "_postman_id": "89b9f7b5-3f0a-4b1a-ade0-281d82d86826",
+    "name": "Grafana HTTP Access Login API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:53:20.000Z",
+    "updatedAt": "2026-07-28T01:53:20.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-89b9f7b5-3f0a-4b1a-ade0-281d82d86826"
+  },
+  "item": [
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "lookup",
+          "item": [
+            {
+              "name": "Grafana Get User By Login Or Email",
+              "id": "4da930aa-b28c-47e2-b105-68cba495f09c",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/users/lookup?loginOrEmail=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "lookup"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) loginOrEmail of the user",
+                      "key": "loginOrEmail",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "The Grafana API endpoint /users/lookup with the GET method allows administrators to retrieve detailed information about a specific user by providing either their login username or email address as a query parameter. This operation is particularly useful when you need to fetch user details but only have their login credentials or email rather than their numeric user ID. The endpoint returns comprehensive user information including the user's ID, email, name, login, theme preferences, organization details, and authentication labels. Access to this endpoint typically requires administrator privileges as it exposes sensitive user information across the Grafana instance."
+              },
+              "response": [
+                {
+                  "id": "ec7baa7a-8ad8-4705-b5b0-70151e9a1526",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/lookup?loginOrEmail=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        "lookup"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) loginOrEmail of the user",
+                          "key": "loginOrEmail",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"accessControl\": {\n    \"qui_1c\": \"<boolean>\",\n    \"officia_74\": \"<boolean>\"\n  },\n  \"authLabels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"avatarUrl\": \"<string>\",\n  \"createdAt\": \"<string>\",\n  \"email\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"isDisabled\": \"<boolean>\",\n  \"isExternal\": \"<boolean>\",\n  \"isExternallySynced\": \"<boolean>\",\n  \"isGrafanaAdmin\": \"<boolean>\",\n  \"isGrafanaAdminExternallySynced\": \"<boolean>\",\n  \"isProvisioned\": \"<boolean>\",\n  \"login\": \"<string>\",\n  \"name\": \"<string>\",\n  \"orgId\": \"<integer>\",\n  \"theme\": \"<string>\",\n  \"uid\": \"<string>\",\n  \"updatedAt\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:20.000Z",
+                  "updatedAt": "2026-07-28T01:53:20.000Z",
+                  "uid": "35240-ec7baa7a-8ad8-4705-b5b0-70151e9a1526"
+                },
+                {
+                  "id": "5b653520-6542-4887-9e27-62ff11b63413",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/lookup?loginOrEmail=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        "lookup"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) loginOrEmail of the user",
+                          "key": "loginOrEmail",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:20.000Z",
+                  "updatedAt": "2026-07-28T01:53:20.000Z",
+                  "uid": "35240-5b653520-6542-4887-9e27-62ff11b63413"
+                },
+                {
+                  "id": "900e7d7b-04ac-46c0-99b9-8e72ce9c86d1",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/lookup?loginOrEmail=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        "lookup"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) loginOrEmail of the user",
+                          "key": "loginOrEmail",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:20.000Z",
+                  "updatedAt": "2026-07-28T01:53:20.000Z",
+                  "uid": "35240-900e7d7b-04ac-46c0-99b9-8e72ce9c86d1"
+                },
+                {
+                  "id": "48b51446-a1e1-423d-b263-4770f65c3e04",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/lookup?loginOrEmail=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        "lookup"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) loginOrEmail of the user",
+                          "key": "loginOrEmail",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:20.000Z",
+                  "updatedAt": "2026-07-28T01:53:20.000Z",
+                  "uid": "35240-48b51446-a1e1-423d-b263-4770f65c3e04"
+                },
+                {
+                  "id": "55a12829-7449-4071-af08-4d748cce6141",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/lookup?loginOrEmail=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        "lookup"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) loginOrEmail of the user",
+                          "key": "loginOrEmail",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:20.000Z",
+                  "updatedAt": "2026-07-28T01:53:20.000Z",
+                  "uid": "35240-55a12829-7449-4071-af08-4d748cce6141"
+                }
+              ],
+              "createdAt": "2026-07-28T01:53:20.000Z",
+              "updatedAt": "2026-07-28T01:53:20.000Z",
+              "uid": "35240-4da930aa-b28c-47e2-b105-68cba495f09c"
+            }
+          ],
+          "id": "b049f250-eead-41a9-8a7e-07fba28c596c",
+          "createdAt": "2026-07-28T01:53:20.000Z",
+          "updatedAt": "2026-07-28T01:53:20.000Z",
+          "uid": "35240-b049f250-eead-41a9-8a7e-07fba28c596c"
+        }
+      ],
+      "id": "1a77cc4a-3803-454f-9550-f1fe712aa9cc",
+      "createdAt": "2026-07-28T01:53:20.000Z",
+      "updatedAt": "2026-07-28T01:53:20.000Z",
+      "uid": "35240-1a77cc4a-3803-454f-9550-f1fe712aa9cc"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

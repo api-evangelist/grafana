@@ -1,0 +1,347 @@
+{
+  "info": {
+    "_postman_id": "ad5ef8ce-1703-4f72-9f14-b64e8aa49380",
+    "name": "Grafana HTTP Access Items API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:53:13.000Z",
+    "updatedAt": "2026-07-28T01:53:13.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-ad5ef8ce-1703-4f72-9f14-b64e8aa49380"
+  },
+  "item": [
+    {
+      "name": "playlists",
+      "item": [
+        {
+          "name": "{uid}",
+          "item": [
+            {
+              "name": "items",
+              "item": [
+                {
+                  "name": "Grafana Get Playlist Items",
+                  "id": "9768bf54-32e8-4df1-9f92-e7bc740f02cf",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/playlists/:uid/items",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "playlists",
+                        ":uid",
+                        "items"
+                      ],
+                      "variable": [
+                        {
+                          "id": "d838feec-08a6-4ddf-93b4-3fb4cf7805a5",
+                          "key": "uid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This API operation retrieves all items associated with a specific playlist in Grafana by providing the playlist's unique identifier (uid) in the URL path. When called with a GET request, it returns a list of dashboard references that are configured to be displayed in sequence as part of the specified playlist, including details such as the dashboard titles, IDs, and their order within the playlist rotation."
+                  },
+                  "response": [
+                    {
+                      "id": "82ca0583-7378-46ba-9597-871d735a6861",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/playlists/:uid/items",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "playlists",
+                            ":uid",
+                            "items"
+                          ],
+                          "variable": [
+                            {
+                              "key": "uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"title\": \"<string>\",\n    \"type\": \"<string>\",\n    \"value\": \"<string>\"\n  },\n  {\n    \"title\": \"<string>\",\n    \"type\": \"<string>\",\n    \"value\": \"<string>\"\n  }\n]",
+                      "createdAt": "2026-07-28T01:53:13.000Z",
+                      "updatedAt": "2026-07-28T01:53:13.000Z",
+                      "uid": "35240-82ca0583-7378-46ba-9597-871d735a6861"
+                    },
+                    {
+                      "id": "830de9d8-e7d2-43a5-aa2e-ff0e710b63a0",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/playlists/:uid/items",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "playlists",
+                            ":uid",
+                            "items"
+                          ],
+                          "variable": [
+                            {
+                              "key": "uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:13.000Z",
+                      "updatedAt": "2026-07-28T01:53:13.000Z",
+                      "uid": "35240-830de9d8-e7d2-43a5-aa2e-ff0e710b63a0"
+                    },
+                    {
+                      "id": "b903a4f5-8d9b-4509-94e9-bb67891271ca",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/playlists/:uid/items",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "playlists",
+                            ":uid",
+                            "items"
+                          ],
+                          "variable": [
+                            {
+                              "key": "uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:13.000Z",
+                      "updatedAt": "2026-07-28T01:53:13.000Z",
+                      "uid": "35240-b903a4f5-8d9b-4509-94e9-bb67891271ca"
+                    },
+                    {
+                      "id": "fe2fffc8-ca51-4c1c-888c-cb3bfff17c6c",
+                      "name": "NotFoundError is returned when the requested resource was not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/playlists/:uid/items",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "playlists",
+                            ":uid",
+                            "items"
+                          ],
+                          "variable": [
+                            {
+                              "key": "uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:13.000Z",
+                      "updatedAt": "2026-07-28T01:53:13.000Z",
+                      "uid": "35240-fe2fffc8-ca51-4c1c-888c-cb3bfff17c6c"
+                    },
+                    {
+                      "id": "ea07d9e5-1563-4791-8016-a603fe46b41c",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/playlists/:uid/items",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "playlists",
+                            ":uid",
+                            "items"
+                          ],
+                          "variable": [
+                            {
+                              "key": "uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:13.000Z",
+                      "updatedAt": "2026-07-28T01:53:13.000Z",
+                      "uid": "35240-ea07d9e5-1563-4791-8016-a603fe46b41c"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:53:13.000Z",
+                  "updatedAt": "2026-07-28T01:53:13.000Z",
+                  "uid": "35240-9768bf54-32e8-4df1-9f92-e7bc740f02cf"
+                }
+              ],
+              "id": "fdfce5f7-4d2c-4534-bab7-4e67b60b9818",
+              "createdAt": "2026-07-28T01:53:13.000Z",
+              "updatedAt": "2026-07-28T01:53:13.000Z",
+              "uid": "35240-fdfce5f7-4d2c-4534-bab7-4e67b60b9818"
+            }
+          ],
+          "id": "d24173a7-08ca-46d0-b8b0-bee8fd625f0a",
+          "createdAt": "2026-07-28T01:53:13.000Z",
+          "updatedAt": "2026-07-28T01:53:13.000Z",
+          "uid": "35240-d24173a7-08ca-46d0-b8b0-bee8fd625f0a"
+        }
+      ],
+      "id": "ad2f8ae8-c536-4b90-853b-fb2c5c4f1a4e",
+      "createdAt": "2026-07-28T01:53:13.000Z",
+      "updatedAt": "2026-07-28T01:53:13.000Z",
+      "uid": "35240-ad2f8ae8-c536-4b90-853b-fb2c5c4f1a4e"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

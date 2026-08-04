@@ -1,0 +1,516 @@
+{
+  "info": {
+    "_postman_id": "116b7f6c-eff9-448a-af90-096f1517344b",
+    "name": "Grafana HTTP Access Retrieve API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:55:32.000Z",
+    "updatedAt": "2026-07-28T01:55:32.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-116b7f6c-eff9-448a-af90-096f1517344b"
+  },
+  "item": [
+    {
+      "name": "serviceaccounts",
+      "item": [
+        {
+          "name": "{serviceAccountId}",
+          "item": [
+            {
+              "name": "Grafana Retrieve Service Account",
+              "id": "0e693d87-1cb6-49b1-b281-2ea5f96dd542",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "serviceaccounts",
+                    ":serviceAccountId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "9096eedb-83c0-47bd-858b-509e061b4d98",
+                      "key": "serviceAccountId",
+                      "value": "<integer>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Returns detailed information about a specific Grafana service account by its unique identifier. This operation allows administrators to fetch the complete configuration and metadata of a service account, including its name, role, status, and associated permissions. The service account ID must be provided as a path parameter to identify which service account to retrieve. This is useful for auditing purposes, verifying service account configurations, or retrieving details before performing updates or deletions."
+              },
+              "response": [
+                {
+                  "id": "2df92693-2a6f-496c-b61d-798bfdedb74a",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"accessControl\": {\n    \"idbdc\": \"<boolean>\",\n    \"in5d2\": \"<boolean>\"\n  },\n  \"avatarUrl\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"isDisabled\": \"<boolean>\",\n  \"isExternal\": \"<boolean>\",\n  \"login\": \"<string>\",\n  \"name\": \"<string>\",\n  \"orgId\": \"<integer>\",\n  \"role\": \"<string>\",\n  \"tokens\": \"<integer>\",\n  \"uid\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:32.000Z",
+                  "updatedAt": "2026-07-28T01:55:32.000Z",
+                  "uid": "35240-2df92693-2a6f-496c-b61d-798bfdedb74a"
+                },
+                {
+                  "id": "f491259c-1a39-4240-9b87-ae46a8a4ca1e",
+                  "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:32.000Z",
+                  "updatedAt": "2026-07-28T01:55:32.000Z",
+                  "uid": "35240-f491259c-1a39-4240-9b87-ae46a8a4ca1e"
+                },
+                {
+                  "id": "4b2eef6d-426e-4bf6-9896-2dcee45fad8a",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:32.000Z",
+                  "updatedAt": "2026-07-28T01:55:32.000Z",
+                  "uid": "35240-4b2eef6d-426e-4bf6-9896-2dcee45fad8a"
+                },
+                {
+                  "id": "c6cd8ffd-e24e-4a95-bc7d-38dca1aa6460",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:32.000Z",
+                  "updatedAt": "2026-07-28T01:55:32.000Z",
+                  "uid": "35240-c6cd8ffd-e24e-4a95-bc7d-38dca1aa6460"
+                },
+                {
+                  "id": "7a3d0e67-5311-4cd4-8f54-4b02aa12287f",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:32.000Z",
+                  "updatedAt": "2026-07-28T01:55:32.000Z",
+                  "uid": "35240-7a3d0e67-5311-4cd4-8f54-4b02aa12287f"
+                },
+                {
+                  "id": "2a64c433-2bdb-4e04-bfb5-17c8b9d411c6",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/serviceaccounts/:serviceAccountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "serviceaccounts",
+                        ":serviceAccountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceAccountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:32.000Z",
+                  "updatedAt": "2026-07-28T01:55:32.000Z",
+                  "uid": "35240-2a64c433-2bdb-4e04-bfb5-17c8b9d411c6"
+                }
+              ],
+              "createdAt": "2026-07-28T01:55:32.000Z",
+              "updatedAt": "2026-07-28T01:55:32.000Z",
+              "uid": "35240-0e693d87-1cb6-49b1-b281-2ea5f96dd542"
+            }
+          ],
+          "id": "29385961-222a-4bec-b517-450d08bc5e37",
+          "createdAt": "2026-07-28T01:55:32.000Z",
+          "updatedAt": "2026-07-28T01:55:32.000Z",
+          "uid": "35240-29385961-222a-4bec-b517-450d08bc5e37"
+        }
+      ],
+      "id": "3ffad4ca-7feb-4ef6-b11e-535494c64d5f",
+      "createdAt": "2026-07-28T01:55:32.000Z",
+      "updatedAt": "2026-07-28T01:55:32.000Z",
+      "uid": "35240-3ffad4ca-7feb-4ef6-b11e-535494c64d5f"
+    },
+    {
+      "name": "signing-keys",
+      "item": [
+        {
+          "name": "keys",
+          "item": [
+            {
+              "name": "Grafana Retrieve JWKS",
+              "id": "cdee966a-765e-480e-a9ba-dc12dab19227",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/signing-keys/keys",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "signing-keys",
+                    "keys"
+                  ]
+                },
+                "description": "The Grafana API endpoint `/signing-keys/keys` using the GET method retrieves the JSON Web Key Set (JWKS) for the Grafana instance. This endpoint returns the public keys used for verifying JSON Web Tokens (JWTs) issued by Grafana, which is essential for validating authentication tokens in distributed systems or when integrating with external services. The JWKS contains cryptographic key information in a standardized format that allows clients to verify the signature of JWTs without needing to store the keys locally, supporting secure token-based authentication workflows."
+              },
+              "response": [
+                {
+                  "id": "9252a8ef-f5b9-4831-8454-fefb78fa75d2",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/signing-keys/keys",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "signing-keys",
+                        "keys"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"keys\": [\n    {\n      \"Algorithm\": \"<string>\",\n      \"CertificateThumbprintSHA1\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"CertificateThumbprintSHA256\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"Certificates\": [\n        {\n          \"AuthorityKeyId\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"BasicConstraintsValid\": \"<boolean>\",\n          \"CRLDistributionPoints\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"DNSNames\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"EmailAddresses\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"ExcludedDNSDomains\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"ExcludedEmailAddresses\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"ExcludedIPRanges\": [\n            {\n              \"IP\": \"<string>\",\n              \"Mask\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            },\n            {\n              \"IP\": \"<string>\",\n              \"Mask\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            }\n          ],\n          \"ExcludedURIDomains\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"ExtKeyUsage\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"Extensions\": [\n            {\n              \"Critical\": \"<boolean>\",\n              \"Id\": [\n                \"<integer>\",\n                \"<integer>\"\n              ],\n              \"Value\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            },\n            {\n              \"Critical\": \"<boolean>\",\n              \"Id\": [\n                \"<integer>\",\n                \"<integer>\"\n              ],\n              \"Value\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            }\n          ],\n          \"ExtraExtensions\": [\n            {\n              \"Critical\": \"<boolean>\",\n              \"Id\": [\n                \"<integer>\",\n                \"<integer>\"\n              ],\n              \"Value\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            },\n            {\n              \"Critical\": \"<boolean>\",\n              \"Id\": [\n                \"<integer>\",\n                \"<integer>\"\n              ],\n              \"Value\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            }\n          ],\n          \"IPAddresses\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"InhibitAnyPolicy\": \"<integer>\",\n          \"InhibitAnyPolicyZero\": \"<boolean>\",\n          \"InhibitPolicyMapping\": \"<integer>\",\n          \"InhibitPolicyMappingZero\": \"<boolean>\",\n          \"IsCA\": \"<boolean>\",\n          \"Issuer\": {\n            \"Country\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"ExtraNames\": [\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              },\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              }\n            ],\n            \"Locality\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"Names\": [\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              },\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              }\n            ],\n            \"SerialNumber\": \"<string>\",\n            \"StreetAddress\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          },\n          \"IssuingCertificateURL\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"KeyUsage\": \"<integer>\",\n          \"MaxPathLen\": \"<integer>\",\n          \"MaxPathLenZero\": \"<boolean>\",\n          \"NotBefore\": \"<string>\",\n          \"OCSPServer\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"PermittedDNSDomains\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"PermittedDNSDomainsCritical\": \"<boolean>\",\n          \"PermittedEmailAddresses\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"PermittedIPRanges\": [\n            {\n              \"IP\": \"<string>\",\n              \"Mask\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            },\n            {\n              \"IP\": \"<string>\",\n              \"Mask\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            }\n          ],\n          \"PermittedURIDomains\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"Policies\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"PolicyIdentifiers\": [\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ]\n          ],\n          \"PolicyMappings\": [\n            {\n              \"IssuerDomainPolicy\": \"<string>\",\n              \"SubjectDomainPolicy\": \"<string>\"\n            },\n            {\n              \"IssuerDomainPolicy\": \"<string>\",\n              \"SubjectDomainPolicy\": \"<string>\"\n            }\n          ],\n          \"PublicKey\": {},\n          \"PublicKeyAlgorithm\": \"<integer>\",\n          \"Raw\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RawIssuer\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RawSubject\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RawSubjectPublicKeyInfo\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RawTBSCertificate\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RequireExplicitPolicy\": \"<integer>\",\n          \"RequireExplicitPolicyZero\": \"<boolean>\",\n          \"SerialNumber\": \"<string>\",\n          \"Signature\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"SignatureAlgorithm\": \"<integer>\",\n          \"Subject\": {\n            \"Country\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"ExtraNames\": [\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              },\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              }\n            ],\n            \"Locality\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"Names\": [\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              },\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              }\n            ],\n            \"SerialNumber\": \"<string>\",\n            \"StreetAddress\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          },\n          \"SubjectKeyId\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"URIs\": [\n            {\n              \"ForceQuery\": \"<boolean>\",\n              \"Fragment\": \"<string>\",\n              \"Host\": \"<string>\",\n              \"OmitHost\": \"<boolean>\",\n              \"Opaque\": \"<string>\",\n              \"Path\": \"<string>\",\n              \"RawFragment\": \"<string>\",\n              \"RawPath\": \"<string>\",\n              \"RawQuery\": \"<string>\",\n              \"Scheme\": \"<string>\",\n              \"User\": {}\n            },\n            {\n              \"ForceQuery\": \"<boolean>\",\n              \"Fragment\": \"<string>\",\n              \"Host\": \"<string>\",\n              \"OmitHost\": \"<boolean>\",\n              \"Opaque\": \"<string>\",\n              \"Path\": \"<string>\",\n              \"RawFragment\": \"<string>\",\n              \"RawPath\": \"<string>\",\n              \"RawQuery\": \"<string>\",\n              \"Scheme\": \"<string>\",\n              \"User\": {}\n            }\n          ],\n          \"UnhandledCriticalExtensions\": [\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ]\n          ],\n          \"UnknownExtKeyUsage\": [\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ]\n          ],\n          \"Version\": \"<integer>\"\n        },\n        {\n          \"AuthorityKeyId\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"BasicConstraintsValid\": \"<boolean>\",\n          \"CRLDistributionPoints\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"DNSNames\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"EmailAddresses\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"ExcludedDNSDomains\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"ExcludedEmailAddresses\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"ExcludedIPRanges\": [\n            {\n              \"IP\": \"<string>\",\n              \"Mask\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            },\n            {\n              \"IP\": \"<string>\",\n              \"Mask\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            }\n          ],\n          \"ExcludedURIDomains\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"ExtKeyUsage\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"Extensions\": [\n            {\n              \"Critical\": \"<boolean>\",\n              \"Id\": [\n                \"<integer>\",\n                \"<integer>\"\n              ],\n              \"Value\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            },\n            {\n              \"Critical\": \"<boolean>\",\n              \"Id\": [\n                \"<integer>\",\n                \"<integer>\"\n              ],\n              \"Value\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            }\n          ],\n          \"ExtraExtensions\": [\n            {\n              \"Critical\": \"<boolean>\",\n              \"Id\": [\n                \"<integer>\",\n                \"<integer>\"\n              ],\n              \"Value\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            },\n            {\n              \"Critical\": \"<boolean>\",\n              \"Id\": [\n                \"<integer>\",\n                \"<integer>\"\n              ],\n              \"Value\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            }\n          ],\n          \"IPAddresses\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"InhibitAnyPolicy\": \"<integer>\",\n          \"InhibitAnyPolicyZero\": \"<boolean>\",\n          \"InhibitPolicyMapping\": \"<integer>\",\n          \"InhibitPolicyMappingZero\": \"<boolean>\",\n          \"IsCA\": \"<boolean>\",\n          \"Issuer\": {\n            \"Country\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"ExtraNames\": [\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              },\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              }\n            ],\n            \"Locality\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"Names\": [\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              },\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              }\n            ],\n            \"SerialNumber\": \"<string>\",\n            \"StreetAddress\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          },\n          \"IssuingCertificateURL\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"KeyUsage\": \"<integer>\",\n          \"MaxPathLen\": \"<integer>\",\n          \"MaxPathLenZero\": \"<boolean>\",\n          \"NotBefore\": \"<string>\",\n          \"OCSPServer\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"PermittedDNSDomains\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"PermittedDNSDomainsCritical\": \"<boolean>\",\n          \"PermittedEmailAddresses\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"PermittedIPRanges\": [\n            {\n              \"IP\": \"<string>\",\n              \"Mask\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            },\n            {\n              \"IP\": \"<string>\",\n              \"Mask\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            }\n          ],\n          \"PermittedURIDomains\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"Policies\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"PolicyIdentifiers\": [\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ]\n          ],\n          \"PolicyMappings\": [\n            {\n              \"IssuerDomainPolicy\": \"<string>\",\n              \"SubjectDomainPolicy\": \"<string>\"\n            },\n            {\n              \"IssuerDomainPolicy\": \"<string>\",\n              \"SubjectDomainPolicy\": \"<string>\"\n            }\n          ],\n          \"PublicKey\": {},\n          \"PublicKeyAlgorithm\": \"<integer>\",\n          \"Raw\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RawIssuer\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RawSubject\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RawSubjectPublicKeyInfo\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RawTBSCertificate\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RequireExplicitPolicy\": \"<integer>\",\n          \"RequireExplicitPolicyZero\": \"<boolean>\",\n          \"SerialNumber\": \"<string>\",\n          \"Signature\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"SignatureAlgorithm\": \"<integer>\",\n          \"Subject\": {\n            \"Country\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"ExtraNames\": [\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              },\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              }\n            ],\n            \"Locality\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"Names\": [\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              },\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              }\n            ],\n            \"SerialNumber\": \"<string>\",\n            \"StreetAddress\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          },\n          \"SubjectKeyId\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"URIs\": [\n            {\n              \"ForceQuery\": \"<boolean>\",\n              \"Fragment\": \"<string>\",\n              \"Host\": \"<string>\",\n              \"OmitHost\": \"<boolean>\",\n              \"Opaque\": \"<string>\",\n              \"Path\": \"<string>\",\n              \"RawFragment\": \"<string>\",\n              \"RawPath\": \"<string>\",\n              \"RawQuery\": \"<string>\",\n              \"Scheme\": \"<string>\",\n              \"User\": {}\n            },\n            {\n              \"ForceQuery\": \"<boolean>\",\n              \"Fragment\": \"<string>\",\n              \"Host\": \"<string>\",\n              \"OmitHost\": \"<boolean>\",\n              \"Opaque\": \"<string>\",\n              \"Path\": \"<string>\",\n              \"RawFragment\": \"<string>\",\n              \"RawPath\": \"<string>\",\n              \"RawQuery\": \"<string>\",\n              \"Scheme\": \"<string>\",\n              \"User\": {}\n            }\n          ],\n          \"UnhandledCriticalExtensions\": [\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ]\n          ],\n          \"UnknownExtKeyUsage\": [\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ]\n          ],\n          \"Version\": \"<integer>\"\n        }\n      ],\n      \"CertificatesURL\": {\n        \"ForceQuery\": \"<boolean>\",\n        \"Fragment\": \"<string>\",\n        \"Host\": \"<string>\",\n        \"OmitHost\": \"<boolean>\",\n        \"Opaque\": \"<string>\",\n        \"Path\": \"<string>\",\n        \"RawFragment\": \"<string>\",\n        \"RawPath\": \"<string>\",\n        \"RawQuery\": \"<string>\",\n        \"Scheme\": \"<string>\",\n        \"User\": {}\n      },\n      \"Key\": {\n        \"description\": \"Key is the Go in-memory representation of this key. It must have one\\nof these types:\\ned25519.PublicKey\\ned25519.PrivateKey\\necdsa.PublicKey\\necdsa.PrivateKey\\nrsa.PublicKey\\nrsa.PrivateKey\\n[]byte (a symmetric key)\\n\\nWhen marshaling this JSONWebKey into JSON, the \\\"kty\\\" header parameter\\nwill be automatically set based on the type of this field.\"\n      },\n      \"KeyID\": \"<string>\",\n      \"Use\": \"<string>\"\n    },\n    {\n      \"Algorithm\": \"<string>\",\n      \"CertificateThumbprintSHA1\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"CertificateThumbprintSHA256\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"Certificates\": [\n        {\n          \"AuthorityKeyId\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"BasicConstraintsValid\": \"<boolean>\",\n          \"CRLDistributionPoints\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"DNSNames\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"EmailAddresses\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"ExcludedDNSDomains\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"ExcludedEmailAddresses\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"ExcludedIPRanges\": [\n            {\n              \"IP\": \"<string>\",\n              \"Mask\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            },\n            {\n              \"IP\": \"<string>\",\n              \"Mask\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            }\n          ],\n          \"ExcludedURIDomains\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"ExtKeyUsage\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"Extensions\": [\n            {\n              \"Critical\": \"<boolean>\",\n              \"Id\": [\n                \"<integer>\",\n                \"<integer>\"\n              ],\n              \"Value\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            },\n            {\n              \"Critical\": \"<boolean>\",\n              \"Id\": [\n                \"<integer>\",\n                \"<integer>\"\n              ],\n              \"Value\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            }\n          ],\n          \"ExtraExtensions\": [\n            {\n              \"Critical\": \"<boolean>\",\n              \"Id\": [\n                \"<integer>\",\n                \"<integer>\"\n              ],\n              \"Value\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            },\n            {\n              \"Critical\": \"<boolean>\",\n              \"Id\": [\n                \"<integer>\",\n                \"<integer>\"\n              ],\n              \"Value\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            }\n          ],\n          \"IPAddresses\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"InhibitAnyPolicy\": \"<integer>\",\n          \"InhibitAnyPolicyZero\": \"<boolean>\",\n          \"InhibitPolicyMapping\": \"<integer>\",\n          \"InhibitPolicyMappingZero\": \"<boolean>\",\n          \"IsCA\": \"<boolean>\",\n          \"Issuer\": {\n            \"Country\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"ExtraNames\": [\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              },\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              }\n            ],\n            \"Locality\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"Names\": [\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              },\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              }\n            ],\n            \"SerialNumber\": \"<string>\",\n            \"StreetAddress\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          },\n          \"IssuingCertificateURL\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"KeyUsage\": \"<integer>\",\n          \"MaxPathLen\": \"<integer>\",\n          \"MaxPathLenZero\": \"<boolean>\",\n          \"NotBefore\": \"<string>\",\n          \"OCSPServer\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"PermittedDNSDomains\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"PermittedDNSDomainsCritical\": \"<boolean>\",\n          \"PermittedEmailAddresses\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"PermittedIPRanges\": [\n            {\n              \"IP\": \"<string>\",\n              \"Mask\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            },\n            {\n              \"IP\": \"<string>\",\n              \"Mask\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            }\n          ],\n          \"PermittedURIDomains\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"Policies\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"PolicyIdentifiers\": [\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ]\n          ],\n          \"PolicyMappings\": [\n            {\n              \"IssuerDomainPolicy\": \"<string>\",\n              \"SubjectDomainPolicy\": \"<string>\"\n            },\n            {\n              \"IssuerDomainPolicy\": \"<string>\",\n              \"SubjectDomainPolicy\": \"<string>\"\n            }\n          ],\n          \"PublicKey\": {},\n          \"PublicKeyAlgorithm\": \"<integer>\",\n          \"Raw\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RawIssuer\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RawSubject\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RawSubjectPublicKeyInfo\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RawTBSCertificate\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RequireExplicitPolicy\": \"<integer>\",\n          \"RequireExplicitPolicyZero\": \"<boolean>\",\n          \"SerialNumber\": \"<string>\",\n          \"Signature\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"SignatureAlgorithm\": \"<integer>\",\n          \"Subject\": {\n            \"Country\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"ExtraNames\": [\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              },\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              }\n            ],\n            \"Locality\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"Names\": [\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              },\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              }\n            ],\n            \"SerialNumber\": \"<string>\",\n            \"StreetAddress\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          },\n          \"SubjectKeyId\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"URIs\": [\n            {\n              \"ForceQuery\": \"<boolean>\",\n              \"Fragment\": \"<string>\",\n              \"Host\": \"<string>\",\n              \"OmitHost\": \"<boolean>\",\n              \"Opaque\": \"<string>\",\n              \"Path\": \"<string>\",\n              \"RawFragment\": \"<string>\",\n              \"RawPath\": \"<string>\",\n              \"RawQuery\": \"<string>\",\n              \"Scheme\": \"<string>\",\n              \"User\": {}\n            },\n            {\n              \"ForceQuery\": \"<boolean>\",\n              \"Fragment\": \"<string>\",\n              \"Host\": \"<string>\",\n              \"OmitHost\": \"<boolean>\",\n              \"Opaque\": \"<string>\",\n              \"Path\": \"<string>\",\n              \"RawFragment\": \"<string>\",\n              \"RawPath\": \"<string>\",\n              \"RawQuery\": \"<string>\",\n              \"Scheme\": \"<string>\",\n              \"User\": {}\n            }\n          ],\n          \"UnhandledCriticalExtensions\": [\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ]\n          ],\n          \"UnknownExtKeyUsage\": [\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ]\n          ],\n          \"Version\": \"<integer>\"\n        },\n        {\n          \"AuthorityKeyId\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"BasicConstraintsValid\": \"<boolean>\",\n          \"CRLDistributionPoints\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"DNSNames\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"EmailAddresses\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"ExcludedDNSDomains\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"ExcludedEmailAddresses\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"ExcludedIPRanges\": [\n            {\n              \"IP\": \"<string>\",\n              \"Mask\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            },\n            {\n              \"IP\": \"<string>\",\n              \"Mask\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            }\n          ],\n          \"ExcludedURIDomains\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"ExtKeyUsage\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"Extensions\": [\n            {\n              \"Critical\": \"<boolean>\",\n              \"Id\": [\n                \"<integer>\",\n                \"<integer>\"\n              ],\n              \"Value\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            },\n            {\n              \"Critical\": \"<boolean>\",\n              \"Id\": [\n                \"<integer>\",\n                \"<integer>\"\n              ],\n              \"Value\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            }\n          ],\n          \"ExtraExtensions\": [\n            {\n              \"Critical\": \"<boolean>\",\n              \"Id\": [\n                \"<integer>\",\n                \"<integer>\"\n              ],\n              \"Value\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            },\n            {\n              \"Critical\": \"<boolean>\",\n              \"Id\": [\n                \"<integer>\",\n                \"<integer>\"\n              ],\n              \"Value\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            }\n          ],\n          \"IPAddresses\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"InhibitAnyPolicy\": \"<integer>\",\n          \"InhibitAnyPolicyZero\": \"<boolean>\",\n          \"InhibitPolicyMapping\": \"<integer>\",\n          \"InhibitPolicyMappingZero\": \"<boolean>\",\n          \"IsCA\": \"<boolean>\",\n          \"Issuer\": {\n            \"Country\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"ExtraNames\": [\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              },\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              }\n            ],\n            \"Locality\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"Names\": [\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              },\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              }\n            ],\n            \"SerialNumber\": \"<string>\",\n            \"StreetAddress\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          },\n          \"IssuingCertificateURL\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"KeyUsage\": \"<integer>\",\n          \"MaxPathLen\": \"<integer>\",\n          \"MaxPathLenZero\": \"<boolean>\",\n          \"NotBefore\": \"<string>\",\n          \"OCSPServer\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"PermittedDNSDomains\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"PermittedDNSDomainsCritical\": \"<boolean>\",\n          \"PermittedEmailAddresses\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"PermittedIPRanges\": [\n            {\n              \"IP\": \"<string>\",\n              \"Mask\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            },\n            {\n              \"IP\": \"<string>\",\n              \"Mask\": [\n                \"<integer>\",\n                \"<integer>\"\n              ]\n            }\n          ],\n          \"PermittedURIDomains\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"Policies\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"PolicyIdentifiers\": [\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ]\n          ],\n          \"PolicyMappings\": [\n            {\n              \"IssuerDomainPolicy\": \"<string>\",\n              \"SubjectDomainPolicy\": \"<string>\"\n            },\n            {\n              \"IssuerDomainPolicy\": \"<string>\",\n              \"SubjectDomainPolicy\": \"<string>\"\n            }\n          ],\n          \"PublicKey\": {},\n          \"PublicKeyAlgorithm\": \"<integer>\",\n          \"Raw\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RawIssuer\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RawSubject\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RawSubjectPublicKeyInfo\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RawTBSCertificate\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"RequireExplicitPolicy\": \"<integer>\",\n          \"RequireExplicitPolicyZero\": \"<boolean>\",\n          \"SerialNumber\": \"<string>\",\n          \"Signature\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"SignatureAlgorithm\": \"<integer>\",\n          \"Subject\": {\n            \"Country\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"ExtraNames\": [\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              },\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              }\n            ],\n            \"Locality\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"Names\": [\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              },\n              {\n                \"Type\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ],\n                \"Value\": {}\n              }\n            ],\n            \"SerialNumber\": \"<string>\",\n            \"StreetAddress\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          },\n          \"SubjectKeyId\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"URIs\": [\n            {\n              \"ForceQuery\": \"<boolean>\",\n              \"Fragment\": \"<string>\",\n              \"Host\": \"<string>\",\n              \"OmitHost\": \"<boolean>\",\n              \"Opaque\": \"<string>\",\n              \"Path\": \"<string>\",\n              \"RawFragment\": \"<string>\",\n              \"RawPath\": \"<string>\",\n              \"RawQuery\": \"<string>\",\n              \"Scheme\": \"<string>\",\n              \"User\": {}\n            },\n            {\n              \"ForceQuery\": \"<boolean>\",\n              \"Fragment\": \"<string>\",\n              \"Host\": \"<string>\",\n              \"OmitHost\": \"<boolean>\",\n              \"Opaque\": \"<string>\",\n              \"Path\": \"<string>\",\n              \"RawFragment\": \"<string>\",\n              \"RawPath\": \"<string>\",\n              \"RawQuery\": \"<string>\",\n              \"Scheme\": \"<string>\",\n              \"User\": {}\n            }\n          ],\n          \"UnhandledCriticalExtensions\": [\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ]\n          ],\n          \"UnknownExtKeyUsage\": [\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            [\n              \"<integer>\",\n              \"<integer>\"\n            ]\n          ],\n          \"Version\": \"<integer>\"\n        }\n      ],\n      \"CertificatesURL\": {\n        \"ForceQuery\": \"<boolean>\",\n        \"Fragment\": \"<string>\",\n        \"Host\": \"<string>\",\n        \"OmitHost\": \"<boolean>\",\n        \"Opaque\": \"<string>\",\n        \"Path\": \"<string>\",\n        \"RawFragment\": \"<string>\",\n        \"RawPath\": \"<string>\",\n        \"RawQuery\": \"<string>\",\n        \"Scheme\": \"<string>\",\n        \"User\": {}\n      },\n      \"Key\": {\n        \"description\": \"Key is the Go in-memory representation of this key. It must have one\\nof these types:\\ned25519.PublicKey\\ned25519.PrivateKey\\necdsa.PublicKey\\necdsa.PrivateKey\\nrsa.PublicKey\\nrsa.PrivateKey\\n[]byte (a symmetric key)\\n\\nWhen marshaling this JSONWebKey into JSON, the \\\"kty\\\" header parameter\\nwill be automatically set based on the type of this field.\"\n      },\n      \"KeyID\": \"<string>\",\n      \"Use\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:55:32.000Z",
+                  "updatedAt": "2026-07-28T01:55:32.000Z",
+                  "uid": "35240-9252a8ef-f5b9-4831-8454-fefb78fa75d2"
+                },
+                {
+                  "id": "6fe5548b-ab08-403a-9e69-85dfe1852291",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/signing-keys/keys",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "signing-keys",
+                        "keys"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:32.000Z",
+                  "updatedAt": "2026-07-28T01:55:32.000Z",
+                  "uid": "35240-6fe5548b-ab08-403a-9e69-85dfe1852291"
+                }
+              ],
+              "createdAt": "2026-07-28T01:55:32.000Z",
+              "updatedAt": "2026-07-28T01:55:32.000Z",
+              "uid": "35240-cdee966a-765e-480e-a9ba-dc12dab19227"
+            }
+          ],
+          "id": "d3e71ae6-74d2-4601-869d-14247aff7a5d",
+          "createdAt": "2026-07-28T01:55:32.000Z",
+          "updatedAt": "2026-07-28T01:55:32.000Z",
+          "uid": "35240-d3e71ae6-74d2-4601-869d-14247aff7a5d"
+        }
+      ],
+      "id": "26c6b198-ad48-415c-aa41-5c015c6dafa3",
+      "createdAt": "2026-07-28T01:55:32.000Z",
+      "updatedAt": "2026-07-28T01:55:32.000Z",
+      "uid": "35240-26c6b198-ad48-415c-aa41-5c015c6dafa3"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

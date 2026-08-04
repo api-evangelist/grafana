@@ -1,0 +1,1150 @@
+{
+  "info": {
+    "_postman_id": "9e56e404-146b-40c0-af74-c75399d9921d",
+    "name": "Grafana HTTP Access Member API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:53:27.000Z",
+    "updatedAt": "2026-07-28T01:53:27.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-9e56e404-146b-40c0-af74-c75399d9921d"
+  },
+  "item": [
+    {
+      "name": "teams",
+      "item": [
+        {
+          "name": "{team_id}",
+          "item": [
+            {
+              "name": "members",
+              "item": [
+                {
+                  "name": "{user_id}",
+                  "item": [
+                    {
+                      "name": "Grafana Update Team Member",
+                      "id": "c61a201c-56ab-41e1-b1f0-76d69639fe90",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"permission\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_id/members/:user_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_id",
+                            "members",
+                            ":user_id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "3da10860-1609-49c7-a63f-94ef2ed0da49",
+                              "key": "team_id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "d698ec84-c724-46a9-a95b-754ac101d0bd",
+                              "key": "user_id",
+                              "value": "<integer>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Updates the permissions of an existing team member in Grafana by specifying the team ID and user ID in the request path. This PUT operation allows administrators to modify a user's role or permission level within a specific team, such as changing them from a member to an admin or vice versa. The request typically requires authentication and appropriate administrative privileges to execute successfully, and it modifies the existing team membership record rather than creating a new one."
+                      },
+                      "response": [
+                        {
+                          "id": "b5ad2b03-9bf6-4afc-bf1d-34f84ff24eaf",
+                          "name": "An OKResponse is returned if the request was successful.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"permission\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/teams/:team_id/members/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "teams",
+                                ":team_id",
+                                "members",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "team_id"
+                                },
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:28.000Z",
+                          "updatedAt": "2026-07-28T01:53:28.000Z",
+                          "uid": "35240-b5ad2b03-9bf6-4afc-bf1d-34f84ff24eaf"
+                        },
+                        {
+                          "id": "284566ba-0c9a-4729-bb69-173cc4a553b9",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"permission\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/teams/:team_id/members/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "teams",
+                                ":team_id",
+                                "members",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "team_id"
+                                },
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:28.000Z",
+                          "updatedAt": "2026-07-28T01:53:28.000Z",
+                          "uid": "35240-284566ba-0c9a-4729-bb69-173cc4a553b9"
+                        },
+                        {
+                          "id": "d11e352a-1026-472e-80b5-b766616c50e6",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"permission\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/teams/:team_id/members/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "teams",
+                                ":team_id",
+                                "members",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "team_id"
+                                },
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:28.000Z",
+                          "updatedAt": "2026-07-28T01:53:28.000Z",
+                          "uid": "35240-d11e352a-1026-472e-80b5-b766616c50e6"
+                        },
+                        {
+                          "id": "e5b998c8-cbab-43c3-9859-87eb6e0f7e4a",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"permission\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/teams/:team_id/members/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "teams",
+                                ":team_id",
+                                "members",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "team_id"
+                                },
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:28.000Z",
+                          "updatedAt": "2026-07-28T01:53:28.000Z",
+                          "uid": "35240-e5b998c8-cbab-43c3-9859-87eb6e0f7e4a"
+                        },
+                        {
+                          "id": "52c050b6-df41-4a90-a9bd-4d788510e728",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"permission\": \"<integer>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/teams/:team_id/members/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "teams",
+                                ":team_id",
+                                "members",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "team_id"
+                                },
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:28.000Z",
+                          "updatedAt": "2026-07-28T01:53:28.000Z",
+                          "uid": "35240-52c050b6-df41-4a90-a9bd-4d788510e728"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:53:28.000Z",
+                      "updatedAt": "2026-07-28T01:53:28.000Z",
+                      "uid": "35240-c61a201c-56ab-41e1-b1f0-76d69639fe90"
+                    },
+                    {
+                      "name": "Grafana Remove Team Member",
+                      "id": "b361cf48-12f3-4dfb-b4b8-716eb4d323a5",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_id/members/:user_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_id",
+                            "members",
+                            ":user_id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "a1cff579-3638-4a42-9044-983ca650aca2",
+                              "key": "team_id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "a9c990bb-1d7b-474e-9d7c-f5c945ba6fe5",
+                              "key": "user_id",
+                              "value": "<integer>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Removes a specific user from a team by their user ID. This operation requires the team ID and user ID as path parameters. When executed, it deletes the membership association between the specified user and team, effectively revoking the user's access to team-specific resources and permissions. This is typically used when a user no longer needs to be part of a team or when reorganizing team structures within Grafana."
+                      },
+                      "response": [
+                        {
+                          "id": "a4fa582e-3ad5-4b9d-9b53-48a915b5ba19",
+                          "name": "An OKResponse is returned if the request was successful.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/teams/:team_id/members/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "teams",
+                                ":team_id",
+                                "members",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "team_id"
+                                },
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:28.000Z",
+                          "updatedAt": "2026-07-28T01:53:28.000Z",
+                          "uid": "35240-a4fa582e-3ad5-4b9d-9b53-48a915b5ba19"
+                        },
+                        {
+                          "id": "acceac2d-2c6e-4a35-adf9-4e8fa98bc073",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/teams/:team_id/members/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "teams",
+                                ":team_id",
+                                "members",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "team_id"
+                                },
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:28.000Z",
+                          "updatedAt": "2026-07-28T01:53:28.000Z",
+                          "uid": "35240-acceac2d-2c6e-4a35-adf9-4e8fa98bc073"
+                        },
+                        {
+                          "id": "99322d6c-4234-482d-a500-7aa86c8a0e12",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/teams/:team_id/members/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "teams",
+                                ":team_id",
+                                "members",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "team_id"
+                                },
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:28.000Z",
+                          "updatedAt": "2026-07-28T01:53:28.000Z",
+                          "uid": "35240-99322d6c-4234-482d-a500-7aa86c8a0e12"
+                        },
+                        {
+                          "id": "4eb3922c-e1de-46d8-9076-2f1892758ab5",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/teams/:team_id/members/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "teams",
+                                ":team_id",
+                                "members",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "team_id"
+                                },
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:28.000Z",
+                          "updatedAt": "2026-07-28T01:53:28.000Z",
+                          "uid": "35240-4eb3922c-e1de-46d8-9076-2f1892758ab5"
+                        },
+                        {
+                          "id": "9b5dcba3-233c-498d-a0d7-75849b8f2d25",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/teams/:team_id/members/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "teams",
+                                ":team_id",
+                                "members",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "team_id"
+                                },
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:28.000Z",
+                          "updatedAt": "2026-07-28T01:53:28.000Z",
+                          "uid": "35240-9b5dcba3-233c-498d-a0d7-75849b8f2d25"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:53:28.000Z",
+                      "updatedAt": "2026-07-28T01:53:28.000Z",
+                      "uid": "35240-b361cf48-12f3-4dfb-b4b8-716eb4d323a5"
+                    }
+                  ],
+                  "id": "cd19a887-a6ac-4939-ba8a-ac3d8656392c",
+                  "createdAt": "2026-07-28T01:53:28.000Z",
+                  "updatedAt": "2026-07-28T01:53:28.000Z",
+                  "uid": "35240-cd19a887-a6ac-4939-ba8a-ac3d8656392c"
+                },
+                {
+                  "name": "Grafana Add Team Member",
+                  "id": "1c00072a-b2a1-4003-9367-3a71504abfaa",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"userId\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/teams/:team_id/members",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "teams",
+                        ":team_id",
+                        "members"
+                      ],
+                      "variable": [
+                        {
+                          "id": "325826a0-9ce8-444d-84af-907da341763d",
+                          "key": "team_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This API operation adds a new member to a specific team in Grafana by making a POST request to the /teams/{team_id}/members endpoint, where {team_id} is the unique identifier of the team. The operation allows administrators or users with appropriate permissions to expand team membership by associating additional users with an existing team, typically requiring the user ID or username to be specified in the request body to identify which user should be added to the team."
+                  },
+                  "response": [
+                    {
+                      "id": "5ea150de-4a56-4ca3-9de0-be78d5c334ab",
+                      "name": "An OKResponse is returned if the request was successful.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"userId\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_id/members",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_id",
+                            "members"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:28.000Z",
+                      "updatedAt": "2026-07-28T01:53:28.000Z",
+                      "uid": "35240-5ea150de-4a56-4ca3-9de0-be78d5c334ab"
+                    },
+                    {
+                      "id": "07d0e112-b587-49aa-89bc-1a708606ddcb",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"userId\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_id/members",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_id",
+                            "members"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:28.000Z",
+                      "updatedAt": "2026-07-28T01:53:28.000Z",
+                      "uid": "35240-07d0e112-b587-49aa-89bc-1a708606ddcb"
+                    },
+                    {
+                      "id": "1bc18b48-e299-4f9c-8a29-e4bcb756fe8e",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"userId\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_id/members",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_id",
+                            "members"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:28.000Z",
+                      "updatedAt": "2026-07-28T01:53:28.000Z",
+                      "uid": "35240-1bc18b48-e299-4f9c-8a29-e4bcb756fe8e"
+                    },
+                    {
+                      "id": "de865043-f95a-46da-b57a-ebaa37acd251",
+                      "name": "NotFoundError is returned when the requested resource was not found.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"userId\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_id/members",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_id",
+                            "members"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:28.000Z",
+                      "updatedAt": "2026-07-28T01:53:28.000Z",
+                      "uid": "35240-de865043-f95a-46da-b57a-ebaa37acd251"
+                    },
+                    {
+                      "id": "48fd846d-4966-44e6-8e02-9b4498fbf33a",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"userId\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_id/members",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_id",
+                            "members"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:28.000Z",
+                      "updatedAt": "2026-07-28T01:53:28.000Z",
+                      "uid": "35240-48fd846d-4966-44e6-8e02-9b4498fbf33a"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:53:28.000Z",
+                  "updatedAt": "2026-07-28T01:53:28.000Z",
+                  "uid": "35240-1c00072a-b2a1-4003-9367-3a71504abfaa"
+                }
+              ],
+              "id": "213faa16-17b1-4cc4-bae4-5e849b3acd4b",
+              "createdAt": "2026-07-28T01:53:28.000Z",
+              "updatedAt": "2026-07-28T01:53:28.000Z",
+              "uid": "35240-213faa16-17b1-4cc4-bae4-5e849b3acd4b"
+            }
+          ],
+          "id": "029d9840-17fc-47e0-bde1-36eb94e90015",
+          "createdAt": "2026-07-28T01:53:28.000Z",
+          "updatedAt": "2026-07-28T01:53:28.000Z",
+          "uid": "35240-029d9840-17fc-47e0-bde1-36eb94e90015"
+        }
+      ],
+      "id": "d27bebfc-ad52-47e8-a4fc-fab1fcf08f0d",
+      "createdAt": "2026-07-28T01:53:28.000Z",
+      "updatedAt": "2026-07-28T01:53:28.000Z",
+      "uid": "35240-d27bebfc-ad52-47e8-a4fc-fab1fcf08f0d"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

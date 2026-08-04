@@ -1,0 +1,347 @@
+{
+  "info": {
+    "_postman_id": "ded4f77b-30b0-44e1-94b8-d50e65e70e3b",
+    "name": "Grafana HTTP Access Counts API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:51:59.000Z",
+    "updatedAt": "2026-07-28T01:51:59.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-ded4f77b-30b0-44e1-94b8-d50e65e70e3b"
+  },
+  "item": [
+    {
+      "name": "folders",
+      "item": [
+        {
+          "name": "{folder_uid}",
+          "item": [
+            {
+              "name": "counts",
+              "item": [
+                {
+                  "name": "Grafana Get Folder Descendant Counts",
+                  "id": "766a59dd-c080-410c-a2e6-01b60619a598",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folder_uid/counts",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folder_uid",
+                        "counts"
+                      ],
+                      "variable": [
+                        {
+                          "id": "241776b1-bcd1-4161-b337-899586417bfb",
+                          "key": "folder_uid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Returns statistical information about the descendants of a specified folder in Grafana, identified by its unique folder UID. This endpoint retrieves count data for various types of resources that exist within the folder hierarchy, such as dashboards, alerts, and other nested folders, providing administrators and users with a quick overview of the folder's contents without needing to traverse the entire folder structure manually."
+                  },
+                  "response": [
+                    {
+                      "id": "7eaf3340-8b20-40b3-9f04-8411012e0207",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_uid/counts",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_uid",
+                            "counts"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"deserunt8\": \"<long>\",\n  \"inf\": \"<long>\"\n}",
+                      "createdAt": "2026-07-28T01:51:59.000Z",
+                      "updatedAt": "2026-07-28T01:51:59.000Z",
+                      "uid": "35240-7eaf3340-8b20-40b3-9f04-8411012e0207"
+                    },
+                    {
+                      "id": "2f5a4b4f-9f23-4e29-bfc5-bb7556d8733f",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_uid/counts",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_uid",
+                            "counts"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:51:59.000Z",
+                      "updatedAt": "2026-07-28T01:51:59.000Z",
+                      "uid": "35240-2f5a4b4f-9f23-4e29-bfc5-bb7556d8733f"
+                    },
+                    {
+                      "id": "507d3c9b-09e4-4a27-b445-a8bdc043e27f",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_uid/counts",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_uid",
+                            "counts"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:51:59.000Z",
+                      "updatedAt": "2026-07-28T01:51:59.000Z",
+                      "uid": "35240-507d3c9b-09e4-4a27-b445-a8bdc043e27f"
+                    },
+                    {
+                      "id": "7fcdee19-82a3-4817-bb34-e988ebd11f3b",
+                      "name": "NotFoundError is returned when the requested resource was not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_uid/counts",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_uid",
+                            "counts"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:51:59.000Z",
+                      "updatedAt": "2026-07-28T01:51:59.000Z",
+                      "uid": "35240-7fcdee19-82a3-4817-bb34-e988ebd11f3b"
+                    },
+                    {
+                      "id": "df395cf3-d0e6-4868-9444-69e246c5838c",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_uid/counts",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_uid",
+                            "counts"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:51:59.000Z",
+                      "updatedAt": "2026-07-28T01:51:59.000Z",
+                      "uid": "35240-df395cf3-d0e6-4868-9444-69e246c5838c"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:51:59.000Z",
+                  "updatedAt": "2026-07-28T01:51:59.000Z",
+                  "uid": "35240-766a59dd-c080-410c-a2e6-01b60619a598"
+                }
+              ],
+              "id": "9fc9ab04-f1e9-4360-b572-dba10b33eeab",
+              "createdAt": "2026-07-28T01:51:59.000Z",
+              "updatedAt": "2026-07-28T01:51:59.000Z",
+              "uid": "35240-9fc9ab04-f1e9-4360-b572-dba10b33eeab"
+            }
+          ],
+          "id": "37a0411f-2139-4324-a523-2c9abe525c67",
+          "createdAt": "2026-07-28T01:51:59.000Z",
+          "updatedAt": "2026-07-28T01:51:59.000Z",
+          "uid": "35240-37a0411f-2139-4324-a523-2c9abe525c67"
+        }
+      ],
+      "id": "24189e49-6ab2-4a19-9025-f4276cb6edae",
+      "createdAt": "2026-07-28T01:51:59.000Z",
+      "updatedAt": "2026-07-28T01:51:59.000Z",
+      "uid": "35240-24189e49-6ab2-4a19-9025-f4276cb6edae"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

@@ -1,0 +1,934 @@
+{
+  "info": {
+    "_postman_id": "02d5e5de-11e7-4fa8-a074-bdf4606dc241",
+    "name": "Grafana HTTP Access Write API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:56:44.000Z",
+    "updatedAt": "2026-07-28T01:56:45.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-02d5e5de-11e7-4fa8-a074-bdf4606dc241"
+  },
+  "item": [
+    {
+      "name": "recording-rules",
+      "item": [
+        {
+          "name": "writer",
+          "item": [
+            {
+              "name": "Grafana Get Recording Rule Write Target",
+              "id": "07662cd4-970c-4038-bc27-89ab5169a4b7",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/recording-rules/writer",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "recording-rules",
+                    "writer"
+                  ]
+                },
+                "description": "This API operation retrieves the configured write target for recording rules in Grafana. When called using a GET request to the /recording-rules/writer endpoint, it returns information about where recording rule data is being written, which typically includes details about the remote write configuration or storage backend that has been set up to receive and store the results of recording rule evaluations. This is useful for administrators who need to verify or audit the destination of their recording rule outputs."
+              },
+              "response": [
+                {
+                  "id": "5a80f35e-def5-41fe-b49e-52d9f43cd0b6",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/recording-rules/writer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "recording-rules",
+                        "writer"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data_source_uid\": \"<string>\",\n  \"id\": \"<string>\",\n  \"remote_write_path\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:45.000Z",
+                  "updatedAt": "2026-07-28T01:56:45.000Z",
+                  "uid": "35240-5a80f35e-def5-41fe-b49e-52d9f43cd0b6"
+                },
+                {
+                  "id": "b374f1f5-44d1-416a-ac22-2dafc380788e",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/recording-rules/writer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "recording-rules",
+                        "writer"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:45.000Z",
+                  "updatedAt": "2026-07-28T01:56:45.000Z",
+                  "uid": "35240-b374f1f5-44d1-416a-ac22-2dafc380788e"
+                },
+                {
+                  "id": "4d944eed-cc3c-467d-b489-b94d0e606147",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/recording-rules/writer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "recording-rules",
+                        "writer"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:45.000Z",
+                  "updatedAt": "2026-07-28T01:56:45.000Z",
+                  "uid": "35240-4d944eed-cc3c-467d-b489-b94d0e606147"
+                },
+                {
+                  "id": "b9195d7f-bb9e-4947-9737-7dfddbcd0fcf",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/recording-rules/writer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "recording-rules",
+                        "writer"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:45.000Z",
+                  "updatedAt": "2026-07-28T01:56:45.000Z",
+                  "uid": "35240-b9195d7f-bb9e-4947-9737-7dfddbcd0fcf"
+                },
+                {
+                  "id": "517d6e26-803c-4e3f-99bc-c4d18941184a",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/recording-rules/writer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "recording-rules",
+                        "writer"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:45.000Z",
+                  "updatedAt": "2026-07-28T01:56:45.000Z",
+                  "uid": "35240-517d6e26-803c-4e3f-99bc-c4d18941184a"
+                }
+              ],
+              "createdAt": "2026-07-28T01:56:45.000Z",
+              "updatedAt": "2026-07-28T01:56:45.000Z",
+              "uid": "35240-07662cd4-970c-4038-bc27-89ab5169a4b7"
+            },
+            {
+              "name": "Grafana Create Recording Rule Write Target",
+              "id": "a9bd2247-94c4-4227-bc09-f043d70ceb55",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data_source_uid\": \"<string>\",\n  \"id\": \"<string>\",\n  \"remote_write_path\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/recording-rules/writer",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "recording-rules",
+                    "writer"
+                  ]
+                },
+                "description": "The POST operation on the /recording-rules/writer endpoint in Grafana allows administrators to create a new recording rule write target, which defines a destination where pre-computed metric aggregations (recording rules) should be written. This endpoint accepts configuration details such as the remote write URL, authentication credentials, and other parameters necessary to establish a connection with the target storage system. Recording rule write targets enable Grafana to send the results of recording rule evaluations to external time-series databases or other compatible endpoints, facilitating data distribution, backup strategies, or multi-tenancy scenarios where recording rule results need to be persisted or forwarded to different storage backends."
+              },
+              "response": [
+                {
+                  "id": "37d259de-d30c-4635-a4ad-4e5d9b4488b6",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data_source_uid\": \"<string>\",\n  \"id\": \"<string>\",\n  \"remote_write_path\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/recording-rules/writer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "recording-rules",
+                        "writer"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data_source_uid\": \"<string>\",\n  \"id\": \"<string>\",\n  \"remote_write_path\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:45.000Z",
+                  "updatedAt": "2026-07-28T01:56:45.000Z",
+                  "uid": "35240-37d259de-d30c-4635-a4ad-4e5d9b4488b6"
+                },
+                {
+                  "id": "34f04a39-5427-4f38-af4a-fc002d4d896f",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data_source_uid\": \"<string>\",\n  \"id\": \"<string>\",\n  \"remote_write_path\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/recording-rules/writer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "recording-rules",
+                        "writer"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:45.000Z",
+                  "updatedAt": "2026-07-28T01:56:45.000Z",
+                  "uid": "35240-34f04a39-5427-4f38-af4a-fc002d4d896f"
+                },
+                {
+                  "id": "62350e9e-4d0c-4e4e-8f7c-b5cd5edcc3f7",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data_source_uid\": \"<string>\",\n  \"id\": \"<string>\",\n  \"remote_write_path\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/recording-rules/writer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "recording-rules",
+                        "writer"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:45.000Z",
+                  "updatedAt": "2026-07-28T01:56:45.000Z",
+                  "uid": "35240-62350e9e-4d0c-4e4e-8f7c-b5cd5edcc3f7"
+                },
+                {
+                  "id": "0197a07b-2146-4d37-a245-4683511d9029",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data_source_uid\": \"<string>\",\n  \"id\": \"<string>\",\n  \"remote_write_path\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/recording-rules/writer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "recording-rules",
+                        "writer"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:45.000Z",
+                  "updatedAt": "2026-07-28T01:56:45.000Z",
+                  "uid": "35240-0197a07b-2146-4d37-a245-4683511d9029"
+                },
+                {
+                  "id": "32d415b4-da7d-4f40-82e8-914a8bb6b2ca",
+                  "name": "UnprocessableEntityError",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data_source_uid\": \"<string>\",\n  \"id\": \"<string>\",\n  \"remote_write_path\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/recording-rules/writer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "recording-rules",
+                        "writer"
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:45.000Z",
+                  "updatedAt": "2026-07-28T01:56:45.000Z",
+                  "uid": "35240-32d415b4-da7d-4f40-82e8-914a8bb6b2ca"
+                },
+                {
+                  "id": "ab119a8e-f0b6-4b5a-ac66-b8024764df1d",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data_source_uid\": \"<string>\",\n  \"id\": \"<string>\",\n  \"remote_write_path\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/recording-rules/writer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "recording-rules",
+                        "writer"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:45.000Z",
+                  "updatedAt": "2026-07-28T01:56:45.000Z",
+                  "uid": "35240-ab119a8e-f0b6-4b5a-ac66-b8024764df1d"
+                }
+              ],
+              "createdAt": "2026-07-28T01:56:45.000Z",
+              "updatedAt": "2026-07-28T01:56:45.000Z",
+              "uid": "35240-a9bd2247-94c4-4227-bc09-f043d70ceb55"
+            },
+            {
+              "name": "Grafana Delete Recording Rule Write Target",
+              "id": "f7e97e8c-4753-4bc4-87a0-b12b25e521fd",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/recording-rules/writer",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "recording-rules",
+                    "writer"
+                  ]
+                },
+                "description": "This API operation removes a configured recording rule write target from Grafana. Recording rule write targets define external destinations where pre-aggregated metric data can be stored, and deleting a write target will disconnect Grafana from that specific storage endpoint. This DELETE operation is typically used when decommissioning a remote write destination, cleaning up unused configurations, or reconfiguring the recording rules infrastructure. Once deleted, recording rules will no longer write their computed results to the removed target location."
+              },
+              "response": [
+                {
+                  "id": "6ee85c31-61ae-4948-a404-e2ac0e4b8ff2",
+                  "name": "An OKResponse is returned if the request was successful.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/recording-rules/writer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "recording-rules",
+                        "writer"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:45.000Z",
+                  "updatedAt": "2026-07-28T01:56:45.000Z",
+                  "uid": "35240-6ee85c31-61ae-4948-a404-e2ac0e4b8ff2"
+                },
+                {
+                  "id": "c0613130-f894-4955-af26-698bc93052f3",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/recording-rules/writer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "recording-rules",
+                        "writer"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:45.000Z",
+                  "updatedAt": "2026-07-28T01:56:45.000Z",
+                  "uid": "35240-c0613130-f894-4955-af26-698bc93052f3"
+                },
+                {
+                  "id": "151e1b07-86f9-433d-998a-fa4d803e437c",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/recording-rules/writer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "recording-rules",
+                        "writer"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:45.000Z",
+                  "updatedAt": "2026-07-28T01:56:45.000Z",
+                  "uid": "35240-151e1b07-86f9-433d-998a-fa4d803e437c"
+                },
+                {
+                  "id": "34ab3042-c0cc-4656-8733-9a230f56dbee",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/recording-rules/writer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "recording-rules",
+                        "writer"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:45.000Z",
+                  "updatedAt": "2026-07-28T01:56:45.000Z",
+                  "uid": "35240-34ab3042-c0cc-4656-8733-9a230f56dbee"
+                },
+                {
+                  "id": "29d269b0-91a7-4f17-abfd-1c46012a3804",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/recording-rules/writer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "recording-rules",
+                        "writer"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:45.000Z",
+                  "updatedAt": "2026-07-28T01:56:45.000Z",
+                  "uid": "35240-29d269b0-91a7-4f17-abfd-1c46012a3804"
+                }
+              ],
+              "createdAt": "2026-07-28T01:56:45.000Z",
+              "updatedAt": "2026-07-28T01:56:45.000Z",
+              "uid": "35240-f7e97e8c-4753-4bc4-87a0-b12b25e521fd"
+            }
+          ],
+          "id": "e3ab20d3-39e0-4f71-9161-77120aeb69cb",
+          "createdAt": "2026-07-28T01:56:45.000Z",
+          "updatedAt": "2026-07-28T01:56:45.000Z",
+          "uid": "35240-e3ab20d3-39e0-4f71-9161-77120aeb69cb"
+        }
+      ],
+      "id": "422bba56-b35f-4da6-9d8f-373c30005bbb",
+      "createdAt": "2026-07-28T01:56:45.000Z",
+      "updatedAt": "2026-07-28T01:56:45.000Z",
+      "uid": "35240-422bba56-b35f-4da6-9d8f-373c30005bbb"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

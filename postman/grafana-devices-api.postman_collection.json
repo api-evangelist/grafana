@@ -1,0 +1,555 @@
+{
+  "info": {
+    "_postman_id": "64cdb4de-67d1-4012-9abe-b5c01783b28a",
+    "name": "Grafana HTTP Access Devices API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:52:13.000Z",
+    "updatedAt": "2026-07-28T01:52:14.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-64cdb4de-67d1-4012-9abe-b5c01783b28a"
+  },
+  "item": [
+    {
+      "name": "anonymous",
+      "item": [
+        {
+          "name": "devices",
+          "item": [
+            {
+              "name": "Grafana List Devices",
+              "id": "77f679fc-aadd-45e1-be04-f563dbf8b089",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/anonymous/devices",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "anonymous",
+                    "devices"
+                  ]
+                },
+                "description": "This API operation retrieves a list of devices from Grafana's anonymous device management system. It uses the HTTP GET method to query the /anonymous/devices endpoint, returning device information without requiring authenticated user credentials. The operation is useful for monitoring and managing devices that have been registered or accessed anonymously within the Grafana platform, providing administrators with visibility into device activity and enabling device inventory management."
+              },
+              "response": [
+                {
+                  "id": "5963b0a7-0ca9-4e4a-9e23-d850614207c8",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/anonymous/devices",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "anonymous",
+                        "devices"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  {\n    \"avatarUrl\": \"<string>\",\n    \"clientIp\": \"<string>\",\n    \"createdAt\": \"<string>\",\n    \"deviceId\": \"<string>\",\n    \"lastSeenAt\": \"<string>\",\n    \"updatedAt\": \"<string>\",\n    \"userAgent\": \"<string>\"\n  },\n  {\n    \"avatarUrl\": \"<string>\",\n    \"clientIp\": \"<string>\",\n    \"createdAt\": \"<string>\",\n    \"deviceId\": \"<string>\",\n    \"lastSeenAt\": \"<string>\",\n    \"updatedAt\": \"<string>\",\n    \"userAgent\": \"<string>\"\n  }\n]",
+                  "createdAt": "2026-07-28T01:52:14.000Z",
+                  "updatedAt": "2026-07-28T01:52:14.000Z",
+                  "uid": "35240-5963b0a7-0ca9-4e4a-9e23-d850614207c8"
+                },
+                {
+                  "id": "2b1f8e42-d9d2-4acd-8afe-9b6f9a09a97e",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/anonymous/devices",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "anonymous",
+                        "devices"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:52:14.000Z",
+                  "updatedAt": "2026-07-28T01:52:14.000Z",
+                  "uid": "35240-2b1f8e42-d9d2-4acd-8afe-9b6f9a09a97e"
+                },
+                {
+                  "id": "e1458718-595f-4d36-8d3d-371511e33234",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/anonymous/devices",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "anonymous",
+                        "devices"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:52:14.000Z",
+                  "updatedAt": "2026-07-28T01:52:14.000Z",
+                  "uid": "35240-e1458718-595f-4d36-8d3d-371511e33234"
+                },
+                {
+                  "id": "8c4fb8d7-6522-4f28-b668-ff9175beab39",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/anonymous/devices",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "anonymous",
+                        "devices"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:52:14.000Z",
+                  "updatedAt": "2026-07-28T01:52:14.000Z",
+                  "uid": "35240-8c4fb8d7-6522-4f28-b668-ff9175beab39"
+                },
+                {
+                  "id": "0f7870da-4713-4a54-a3af-2ce26c7329cb",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/anonymous/devices",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "anonymous",
+                        "devices"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:52:14.000Z",
+                  "updatedAt": "2026-07-28T01:52:14.000Z",
+                  "uid": "35240-0f7870da-4713-4a54-a3af-2ce26c7329cb"
+                }
+              ],
+              "createdAt": "2026-07-28T01:52:14.000Z",
+              "updatedAt": "2026-07-28T01:52:14.000Z",
+              "uid": "35240-77f679fc-aadd-45e1-be04-f563dbf8b089"
+            }
+          ],
+          "id": "39d5803b-374b-4921-9c74-4a949b6637b9",
+          "createdAt": "2026-07-28T01:52:14.000Z",
+          "updatedAt": "2026-07-28T01:52:14.000Z",
+          "uid": "35240-39d5803b-374b-4921-9c74-4a949b6637b9"
+        },
+        {
+          "name": "search",
+          "item": [
+            {
+              "name": "Grafana Search Devices",
+              "id": "ecafc980-8644-45e5-8fdc-3d3ef71b59fd",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/anonymous/search",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "anonymous",
+                    "search"
+                  ]
+                },
+                "description": "This API operation performs a GET request to the `/anonymous/search` endpoint in Grafana to search for devices without requiring authentication. It allows users to query and retrieve device information from the Grafana system by submitting search parameters, returning matching device records based on the specified criteria. The anonymous nature of this endpoint means it can be accessed without user credentials, making it suitable for public-facing integrations or dashboard displays where device discovery and lookup capabilities are needed without imposing authentication requirements."
+              },
+              "response": [
+                {
+                  "id": "e7286508-739a-4038-bc0c-c7423c292960",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/anonymous/search",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "anonymous",
+                        "search"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"devices\": [\n    {\n      \"clientIp\": \"<string>\",\n      \"createdAt\": \"<string>\",\n      \"deviceId\": \"<string>\",\n      \"lastSeenAt\": \"<string>\",\n      \"updatedAt\": \"<string>\",\n      \"userAgent\": \"<string>\"\n    },\n    {\n      \"clientIp\": \"<string>\",\n      \"createdAt\": \"<string>\",\n      \"deviceId\": \"<string>\",\n      \"lastSeenAt\": \"<string>\",\n      \"updatedAt\": \"<string>\",\n      \"userAgent\": \"<string>\"\n    }\n  ],\n  \"page\": \"<integer>\",\n  \"perPage\": \"<integer>\",\n  \"totalCount\": \"<integer>\"\n}",
+                  "createdAt": "2026-07-28T01:52:14.000Z",
+                  "updatedAt": "2026-07-28T01:52:14.000Z",
+                  "uid": "35240-e7286508-739a-4038-bc0c-c7423c292960"
+                },
+                {
+                  "id": "aaa88414-9155-4e8b-a8a2-23510ffe9262",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/anonymous/search",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "anonymous",
+                        "search"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:52:14.000Z",
+                  "updatedAt": "2026-07-28T01:52:14.000Z",
+                  "uid": "35240-aaa88414-9155-4e8b-a8a2-23510ffe9262"
+                },
+                {
+                  "id": "600661b4-2b85-49e1-ab0b-591dbe9b60e5",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/anonymous/search",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "anonymous",
+                        "search"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:52:14.000Z",
+                  "updatedAt": "2026-07-28T01:52:14.000Z",
+                  "uid": "35240-600661b4-2b85-49e1-ab0b-591dbe9b60e5"
+                },
+                {
+                  "id": "12b2219d-6106-463e-9c15-4612a707e0ed",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/anonymous/search",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "anonymous",
+                        "search"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:52:14.000Z",
+                  "updatedAt": "2026-07-28T01:52:14.000Z",
+                  "uid": "35240-12b2219d-6106-463e-9c15-4612a707e0ed"
+                },
+                {
+                  "id": "2e9e91b8-d3fb-46b3-bce3-36b7643966c2",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/anonymous/search",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "anonymous",
+                        "search"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:52:14.000Z",
+                  "updatedAt": "2026-07-28T01:52:14.000Z",
+                  "uid": "35240-2e9e91b8-d3fb-46b3-bce3-36b7643966c2"
+                }
+              ],
+              "createdAt": "2026-07-28T01:52:14.000Z",
+              "updatedAt": "2026-07-28T01:52:14.000Z",
+              "uid": "35240-ecafc980-8644-45e5-8fdc-3d3ef71b59fd"
+            }
+          ],
+          "id": "6696bb91-4fb2-432f-8e66-2ac6d2417c5c",
+          "createdAt": "2026-07-28T01:52:14.000Z",
+          "updatedAt": "2026-07-28T01:52:14.000Z",
+          "uid": "35240-6696bb91-4fb2-432f-8e66-2ac6d2417c5c"
+        }
+      ],
+      "id": "212bc6f7-8f28-461b-9b0e-ee74df7fa175",
+      "createdAt": "2026-07-28T01:52:14.000Z",
+      "updatedAt": "2026-07-28T01:52:14.000Z",
+      "uid": "35240-212bc6f7-8f28-461b-9b0e-ee74df7fa175"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

@@ -1,0 +1,994 @@
+{
+  "info": {
+    "_postman_id": "cf2daedf-3885-4ef5-8b77-f78e5cd05492",
+    "name": "Grafana HTTP Access Ldap API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:53:14.000Z",
+    "updatedAt": "2026-07-28T01:53:15.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-cf2daedf-3885-4ef5-8b77-f78e5cd05492"
+  },
+  "item": [
+    {
+      "name": "admin",
+      "item": [
+        {
+          "name": "ldap",
+          "item": [
+            {
+              "name": "reload",
+              "item": [
+                {
+                  "name": "Grafana Reload LDAP Cfg",
+                  "id": "3a987aca-9d85-4767-ade5-3f3ff8d4e406",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/admin/ldap/reload",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "ldap",
+                        "reload"
+                      ]
+                    },
+                    "description": "Reloads the LDAP configuration in Grafana without requiring a server restart. This administrative endpoint triggers a refresh of LDAP settings, allowing changes made to the LDAP configuration file to take effect immediately. It is particularly useful when updates to LDAP connection parameters, search bases, group mappings, or authentication settings need to be applied on-the-fly. Only users with administrator privileges can execute this operation, and it requires proper authentication and authorization. The endpoint responds with a success status once the LDAP configuration has been successfully reloaded, or returns an error if the configuration is invalid or the reload process fails."
+                  },
+                  "response": [
+                    {
+                      "id": "3764cdce-1c66-4815-bf03-bd81bb7a27ff",
+                      "name": "An OKResponse is returned if the request was successful.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/reload",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            "reload"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:15.000Z",
+                      "updatedAt": "2026-07-28T01:53:15.000Z",
+                      "uid": "35240-3764cdce-1c66-4815-bf03-bd81bb7a27ff"
+                    },
+                    {
+                      "id": "4633ce3c-25db-4605-9859-380e85582b4b",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/reload",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            "reload"
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:15.000Z",
+                      "updatedAt": "2026-07-28T01:53:15.000Z",
+                      "uid": "35240-4633ce3c-25db-4605-9859-380e85582b4b"
+                    },
+                    {
+                      "id": "0adadb48-538f-4a1d-bfbc-f30261897ae5",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/reload",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            "reload"
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:15.000Z",
+                      "updatedAt": "2026-07-28T01:53:15.000Z",
+                      "uid": "35240-0adadb48-538f-4a1d-bfbc-f30261897ae5"
+                    },
+                    {
+                      "id": "0d199a1f-3e31-48ef-8985-7a20c4f2a80e",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/reload",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            "reload"
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:15.000Z",
+                      "updatedAt": "2026-07-28T01:53:15.000Z",
+                      "uid": "35240-0d199a1f-3e31-48ef-8985-7a20c4f2a80e"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:53:15.000Z",
+                  "updatedAt": "2026-07-28T01:53:15.000Z",
+                  "uid": "35240-3a987aca-9d85-4767-ade5-3f3ff8d4e406"
+                }
+              ],
+              "id": "af7e4503-2991-44cc-ae0d-18791974869e",
+              "createdAt": "2026-07-28T01:53:15.000Z",
+              "updatedAt": "2026-07-28T01:53:15.000Z",
+              "uid": "35240-af7e4503-2991-44cc-ae0d-18791974869e"
+            },
+            {
+              "name": "status",
+              "item": [
+                {
+                  "name": "Grafana Get LDAP Status",
+                  "id": "7dc95dc1-0216-40f4-87eb-0febf8f43107",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/admin/ldap/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "ldap",
+                        "status"
+                      ]
+                    },
+                    "description": "This API operation retrieves the current status of LDAP integration in Grafana by sending a GET request to the /admin/ldap/status endpoint. It provides administrators with information about the LDAP connection status, configuration validation, and whether the LDAP authentication system is functioning properly. The endpoint returns details that help verify if Grafana can successfully communicate with the configured LDAP server, making it useful for troubleshooting authentication issues and monitoring the health of LDAP-based user authentication within the Grafana instance."
+                  },
+                  "response": [
+                    {
+                      "id": "4bc65498-5bab-48e4-a47e-c833527f32b7",
+                      "name": "An OKResponse is returned if the request was successful.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            "status"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:15.000Z",
+                      "updatedAt": "2026-07-28T01:53:15.000Z",
+                      "uid": "35240-4bc65498-5bab-48e4-a47e-c833527f32b7"
+                    },
+                    {
+                      "id": "9cbc08ff-b6c0-4475-bdb7-8d970492ddd4",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            "status"
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:15.000Z",
+                      "updatedAt": "2026-07-28T01:53:15.000Z",
+                      "uid": "35240-9cbc08ff-b6c0-4475-bdb7-8d970492ddd4"
+                    },
+                    {
+                      "id": "e9ba0599-016d-4cf4-8b78-5dd7308aaf4f",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            "status"
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:15.000Z",
+                      "updatedAt": "2026-07-28T01:53:15.000Z",
+                      "uid": "35240-e9ba0599-016d-4cf4-8b78-5dd7308aaf4f"
+                    },
+                    {
+                      "id": "732d0d8c-7216-42dc-963a-c82b6bb30883",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            "status"
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:15.000Z",
+                      "updatedAt": "2026-07-28T01:53:15.000Z",
+                      "uid": "35240-732d0d8c-7216-42dc-963a-c82b6bb30883"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:53:15.000Z",
+                  "updatedAt": "2026-07-28T01:53:15.000Z",
+                  "uid": "35240-7dc95dc1-0216-40f4-87eb-0febf8f43107"
+                }
+              ],
+              "id": "1f36a6c6-f35b-4d91-bdf2-0aaddddfbd76",
+              "createdAt": "2026-07-28T01:53:15.000Z",
+              "updatedAt": "2026-07-28T01:53:15.000Z",
+              "uid": "35240-1f36a6c6-f35b-4d91-bdf2-0aaddddfbd76"
+            },
+            {
+              "name": "sync",
+              "item": [
+                {
+                  "name": "{user_id}",
+                  "item": [
+                    {
+                      "name": "Grafana Post Sync User With LDAP",
+                      "id": "69de4bbc-99c1-41eb-bef3-20725a3b950e",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/sync/:user_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            "sync",
+                            ":user_id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "af567dbf-2808-4d82-8731-b4060995e91d",
+                              "key": "user_id",
+                              "value": "<integer>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation triggers a synchronization between a specific Grafana user and LDAP directory services by sending a POST request to the endpoint with the target user's ID. When invoked, it forces Grafana to retrieve the latest user information, groups, and permissions from the configured LDAP server for the specified user, updating their local Grafana profile accordingly. This is particularly useful when LDAP user attributes or group memberships have changed and you need to immediately reflect those changes in Grafana without waiting for the automatic synchronization cycle. The operation requires admin privileges to execute and helps maintain consistency between the LDAP source of truth and Grafana's user database."
+                      },
+                      "response": [
+                        {
+                          "id": "702fa5c9-813f-49be-b5e9-ee700a3131c3",
+                          "name": "An OKResponse is returned if the request was successful.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/ldap/sync/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "ldap",
+                                "sync",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:15.000Z",
+                          "updatedAt": "2026-07-28T01:53:15.000Z",
+                          "uid": "35240-702fa5c9-813f-49be-b5e9-ee700a3131c3"
+                        },
+                        {
+                          "id": "2bae893d-73c3-467a-a304-84420bf2cb4c",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/ldap/sync/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "ldap",
+                                "sync",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:15.000Z",
+                          "updatedAt": "2026-07-28T01:53:15.000Z",
+                          "uid": "35240-2bae893d-73c3-467a-a304-84420bf2cb4c"
+                        },
+                        {
+                          "id": "b3e769b7-fd0f-491d-8484-3d732fa823c8",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/ldap/sync/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "ldap",
+                                "sync",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:15.000Z",
+                          "updatedAt": "2026-07-28T01:53:15.000Z",
+                          "uid": "35240-b3e769b7-fd0f-491d-8484-3d732fa823c8"
+                        },
+                        {
+                          "id": "291234f0-2557-420d-a27c-37c37ca10d52",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/ldap/sync/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "ldap",
+                                "sync",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:53:15.000Z",
+                          "updatedAt": "2026-07-28T01:53:15.000Z",
+                          "uid": "35240-291234f0-2557-420d-a27c-37c37ca10d52"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:53:15.000Z",
+                      "updatedAt": "2026-07-28T01:53:15.000Z",
+                      "uid": "35240-69de4bbc-99c1-41eb-bef3-20725a3b950e"
+                    }
+                  ],
+                  "id": "7e4de3b9-c9b3-45de-a865-856acb474b8d",
+                  "createdAt": "2026-07-28T01:53:15.000Z",
+                  "updatedAt": "2026-07-28T01:53:15.000Z",
+                  "uid": "35240-7e4de3b9-c9b3-45de-a865-856acb474b8d"
+                }
+              ],
+              "id": "a6b0c3be-3502-4416-8d54-093708656c0f",
+              "createdAt": "2026-07-28T01:53:15.000Z",
+              "updatedAt": "2026-07-28T01:53:15.000Z",
+              "uid": "35240-a6b0c3be-3502-4416-8d54-093708656c0f"
+            },
+            {
+              "name": "{user_name}",
+              "item": [
+                {
+                  "name": "Grafana Get User From LDAP",
+                  "id": "121478be-ce0d-4d5e-833f-2f5962477bf1",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/admin/ldap/:user_name",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "ldap",
+                        ":user_name"
+                      ],
+                      "variable": [
+                        {
+                          "id": "b336aef5-1d53-4c3f-9a55-57f49f075abf",
+                          "key": "user_name",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This API operation retrieves LDAP user information for a specific username from Grafana's admin interface. By making a GET request to the endpoint with a username parameter, administrators can query the LDAP directory to fetch detailed user data associated with that particular account. This is useful for verifying LDAP user configurations, troubleshooting authentication issues, or confirming user attributes before syncing them into Grafana. The operation requires admin-level permissions and returns user details such as name, email, groups, and other LDAP attributes configured in the Grafana LDAP integration settings."
+                  },
+                  "response": [
+                    {
+                      "id": "ca805c0e-2e24-4f70-aaba-f5801716d21a",
+                      "name": "An OKResponse is returned if the request was successful.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/:user_name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            ":user_name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:15.000Z",
+                      "updatedAt": "2026-07-28T01:53:15.000Z",
+                      "uid": "35240-ca805c0e-2e24-4f70-aaba-f5801716d21a"
+                    },
+                    {
+                      "id": "47e26c43-6418-4c4b-9707-e11f60b9b18d",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/:user_name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            ":user_name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:15.000Z",
+                      "updatedAt": "2026-07-28T01:53:15.000Z",
+                      "uid": "35240-47e26c43-6418-4c4b-9707-e11f60b9b18d"
+                    },
+                    {
+                      "id": "fcd7b158-727a-49ea-af46-20ee9432ac02",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/:user_name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            ":user_name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:15.000Z",
+                      "updatedAt": "2026-07-28T01:53:15.000Z",
+                      "uid": "35240-fcd7b158-727a-49ea-af46-20ee9432ac02"
+                    },
+                    {
+                      "id": "9d190ffb-aaa3-4657-9104-f976decee552",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/ldap/:user_name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "ldap",
+                            ":user_name"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_name"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:53:15.000Z",
+                      "updatedAt": "2026-07-28T01:53:15.000Z",
+                      "uid": "35240-9d190ffb-aaa3-4657-9104-f976decee552"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:53:15.000Z",
+                  "updatedAt": "2026-07-28T01:53:15.000Z",
+                  "uid": "35240-121478be-ce0d-4d5e-833f-2f5962477bf1"
+                }
+              ],
+              "id": "f21f563c-4700-423e-9f57-095123c090c8",
+              "createdAt": "2026-07-28T01:53:15.000Z",
+              "updatedAt": "2026-07-28T01:53:15.000Z",
+              "uid": "35240-f21f563c-4700-423e-9f57-095123c090c8"
+            }
+          ],
+          "id": "59c93d2d-e9f7-41bb-94e5-4a6fd9ea0df9",
+          "createdAt": "2026-07-28T01:53:15.000Z",
+          "updatedAt": "2026-07-28T01:53:15.000Z",
+          "uid": "35240-59c93d2d-e9f7-41bb-94e5-4a6fd9ea0df9"
+        }
+      ],
+      "id": "f911cb99-0f3e-4b3a-a166-3429a5bd8bd6",
+      "createdAt": "2026-07-28T01:53:15.000Z",
+      "updatedAt": "2026-07-28T01:53:15.000Z",
+      "uid": "35240-f911cb99-0f3e-4b3a-a166-3429a5bd8bd6"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

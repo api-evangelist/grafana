@@ -1,0 +1,1601 @@
+{
+  "info": {
+    "_postman_id": "e7f455e9-7d8d-4337-bf4f-94803a726945",
+    "name": "Grafana HTTP Access Correlation API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:51:57.000Z",
+    "updatedAt": "2026-07-28T01:51:57.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-e7f455e9-7d8d-4337-bf4f-94803a726945"
+  },
+  "item": [
+    {
+      "name": "datasources",
+      "item": [
+        {
+          "name": "uid",
+          "item": [
+            {
+              "name": "{sourceUID}",
+              "item": [
+                {
+                  "name": "correlations",
+                  "item": [
+                    {
+                      "name": "{correlationUID}",
+                      "item": [
+                        {
+                          "name": "Grafana Get Correlation",
+                          "id": "e1e3e3b2-aeef-4184-822c-f50caee42105",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations/:correlationUID",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "uid",
+                                ":sourceUID",
+                                "correlations",
+                                ":correlationUID"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "ccc3b9da-5f13-4910-b99d-75a3e2b85528",
+                                  "key": "sourceUID",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                },
+                                {
+                                  "id": "ccd92f2c-1a6d-46ef-8f64-1705b9bc3b16",
+                                  "key": "correlationUID",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "The Get Correlation API operation in Grafana retrieves a specific correlation configuration between data sources using their unique identifiers. By making a GET request to the endpoint `/datasources/uid/{sourceUID}/correlations/{correlationUID}`, users can fetch detailed information about an existing correlation, including its configuration settings, transformations, and the relationship between a source data source and a target data source. This operation requires both the unique identifier of the source data source (sourceUID) and the unique identifier of the specific correlation (correlationUID) to return the correlation object with all its associated metadata and configuration parameters."
+                          },
+                          "response": [
+                            {
+                              "id": "c534e83f-8e1f-4858-9a29-cd4dee0bbf09",
+                              "name": "(empty)",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations/:correlationUID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "uid",
+                                    ":sourceUID",
+                                    "correlations",
+                                    ":correlationUID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "sourceUID"
+                                    },
+                                    {
+                                      "key": "correlationUID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"config\": {\n    \"field\": \"<string>\",\n    \"target\": {\n      \"elit_db\": {}\n    },\n    \"transformations\": [\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      },\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      }\n    ],\n    \"type\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"label\": \"<string>\",\n  \"orgId\": \"<integer>\",\n  \"provisioned\": \"<boolean>\",\n  \"sourceUID\": \"<string>\",\n  \"targetUID\": \"<string>\",\n  \"type\": \"<string>\",\n  \"uid\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:58.000Z",
+                              "updatedAt": "2026-07-28T01:51:58.000Z",
+                              "uid": "35240-c534e83f-8e1f-4858-9a29-cd4dee0bbf09"
+                            },
+                            {
+                              "id": "078e9439-c197-4229-b8d6-c367f1962448",
+                              "name": "UnauthorizedError is returned when the request is not authenticated.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations/:correlationUID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "uid",
+                                    ":sourceUID",
+                                    "correlations",
+                                    ":correlationUID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "sourceUID"
+                                    },
+                                    {
+                                      "key": "correlationUID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:58.000Z",
+                              "updatedAt": "2026-07-28T01:51:58.000Z",
+                              "uid": "35240-078e9439-c197-4229-b8d6-c367f1962448"
+                            },
+                            {
+                              "id": "d9be8b34-a6dd-4b1e-a5e6-435dd43e8f28",
+                              "name": "NotFoundError is returned when the requested resource was not found.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations/:correlationUID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "uid",
+                                    ":sourceUID",
+                                    "correlations",
+                                    ":correlationUID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "sourceUID"
+                                    },
+                                    {
+                                      "key": "correlationUID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:58.000Z",
+                              "updatedAt": "2026-07-28T01:51:58.000Z",
+                              "uid": "35240-d9be8b34-a6dd-4b1e-a5e6-435dd43e8f28"
+                            },
+                            {
+                              "id": "c8d9fbd2-352f-4dda-94a1-6493102c8242",
+                              "name": "InternalServerError is a general error indicating something went wrong internally.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations/:correlationUID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "uid",
+                                    ":sourceUID",
+                                    "correlations",
+                                    ":correlationUID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "sourceUID"
+                                    },
+                                    {
+                                      "key": "correlationUID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:58.000Z",
+                              "updatedAt": "2026-07-28T01:51:58.000Z",
+                              "uid": "35240-c8d9fbd2-352f-4dda-94a1-6493102c8242"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T01:51:58.000Z",
+                          "updatedAt": "2026-07-28T01:51:58.000Z",
+                          "uid": "35240-e1e3e3b2-aeef-4184-822c-f50caee42105"
+                        },
+                        {
+                          "name": "Grafana Update Correlation",
+                          "id": "344f9162-5427-4b04-bee8-d3fb3e22b082",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "PATCH",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"config\": {\n    \"field\": \"<string>\",\n    \"target\": {\n      \"id_50\": {}\n    },\n    \"transformations\": [\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      },\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      }\n    ]\n  },\n  \"description\": \"<string>\",\n  \"label\": \"<string>\",\n  \"type\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations/:correlationUID",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "uid",
+                                ":sourceUID",
+                                "correlations",
+                                ":correlationUID"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "2ecde475-aa4c-46ed-895a-2eea107eca22",
+                                  "key": "sourceUID",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                },
+                                {
+                                  "id": "3b37d435-1966-4c55-9fc2-916109faa9c6",
+                                  "key": "correlationUID",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "Updates an existing correlation identified by its UID within a specific data source, also identified by UID. This PATCH operation allows you to modify the properties of a correlation, which defines relationships between queries or data across different data sources in Grafana. The correlation UID and source data source UID must be provided in the path parameters to target the specific correlation to update. The request typically includes fields such as the target data source, transformation expressions, or correlation description that need to be modified. This endpoint is useful for maintaining and refining data relationships as your monitoring infrastructure evolves, enabling more sophisticated cross-data-source queries and visualizations without recreating correlations from scratch."
+                          },
+                          "response": [
+                            {
+                              "id": "a8998e4e-b966-4838-91aa-fb257b47974c",
+                              "name": "(empty)",
+                              "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"config\": {\n    \"field\": \"<string>\",\n    \"target\": {\n      \"id_50\": {}\n    },\n    \"transformations\": [\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      },\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      }\n    ]\n  },\n  \"description\": \"<string>\",\n  \"label\": \"<string>\",\n  \"type\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations/:correlationUID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "uid",
+                                    ":sourceUID",
+                                    "correlations",
+                                    ":correlationUID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "sourceUID"
+                                    },
+                                    {
+                                      "key": "correlationUID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"result\": {\n    \"config\": {\n      \"field\": \"<string>\",\n      \"target\": {},\n      \"transformations\": [\n        {\n          \"expression\": \"<string>\",\n          \"field\": \"<string>\",\n          \"mapValue\": \"<string>\",\n          \"type\": \"logfmt\"\n        },\n        {\n          \"expression\": \"<string>\",\n          \"field\": \"<string>\",\n          \"mapValue\": \"<string>\",\n          \"type\": \"regex\"\n        }\n      ],\n      \"type\": \"<string>\"\n    },\n    \"description\": \"<string>\",\n    \"label\": \"<string>\",\n    \"orgId\": \"<integer>\",\n    \"provisioned\": \"<boolean>\",\n    \"sourceUID\": \"<string>\",\n    \"targetUID\": \"<string>\",\n    \"type\": \"<string>\",\n    \"uid\": \"<string>\"\n  }\n}",
+                              "createdAt": "2026-07-28T01:51:58.000Z",
+                              "updatedAt": "2026-07-28T01:51:58.000Z",
+                              "uid": "35240-a8998e4e-b966-4838-91aa-fb257b47974c"
+                            },
+                            {
+                              "id": "8166a34a-641c-4417-a2b0-7bfb0be160bf",
+                              "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                              "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"config\": {\n    \"field\": \"<string>\",\n    \"target\": {\n      \"id_50\": {}\n    },\n    \"transformations\": [\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      },\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      }\n    ]\n  },\n  \"description\": \"<string>\",\n  \"label\": \"<string>\",\n  \"type\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations/:correlationUID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "uid",
+                                    ":sourceUID",
+                                    "correlations",
+                                    ":correlationUID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "sourceUID"
+                                    },
+                                    {
+                                      "key": "correlationUID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:58.000Z",
+                              "updatedAt": "2026-07-28T01:51:58.000Z",
+                              "uid": "35240-8166a34a-641c-4417-a2b0-7bfb0be160bf"
+                            },
+                            {
+                              "id": "bb6a4924-bb84-4b26-9bd8-49edbf2a7647",
+                              "name": "UnauthorizedError is returned when the request is not authenticated.",
+                              "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"config\": {\n    \"field\": \"<string>\",\n    \"target\": {\n      \"id_50\": {}\n    },\n    \"transformations\": [\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      },\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      }\n    ]\n  },\n  \"description\": \"<string>\",\n  \"label\": \"<string>\",\n  \"type\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations/:correlationUID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "uid",
+                                    ":sourceUID",
+                                    "correlations",
+                                    ":correlationUID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "sourceUID"
+                                    },
+                                    {
+                                      "key": "correlationUID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:58.000Z",
+                              "updatedAt": "2026-07-28T01:51:58.000Z",
+                              "uid": "35240-bb6a4924-bb84-4b26-9bd8-49edbf2a7647"
+                            },
+                            {
+                              "id": "2b4c57c6-3beb-4fe2-b129-f6e08890cd9f",
+                              "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                              "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"config\": {\n    \"field\": \"<string>\",\n    \"target\": {\n      \"id_50\": {}\n    },\n    \"transformations\": [\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      },\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      }\n    ]\n  },\n  \"description\": \"<string>\",\n  \"label\": \"<string>\",\n  \"type\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations/:correlationUID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "uid",
+                                    ":sourceUID",
+                                    "correlations",
+                                    ":correlationUID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "sourceUID"
+                                    },
+                                    {
+                                      "key": "correlationUID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:58.000Z",
+                              "updatedAt": "2026-07-28T01:51:58.000Z",
+                              "uid": "35240-2b4c57c6-3beb-4fe2-b129-f6e08890cd9f"
+                            },
+                            {
+                              "id": "93a7b1b6-63e7-448d-a408-d7ecac0a7442",
+                              "name": "NotFoundError is returned when the requested resource was not found.",
+                              "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"config\": {\n    \"field\": \"<string>\",\n    \"target\": {\n      \"id_50\": {}\n    },\n    \"transformations\": [\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      },\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      }\n    ]\n  },\n  \"description\": \"<string>\",\n  \"label\": \"<string>\",\n  \"type\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations/:correlationUID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "uid",
+                                    ":sourceUID",
+                                    "correlations",
+                                    ":correlationUID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "sourceUID"
+                                    },
+                                    {
+                                      "key": "correlationUID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:58.000Z",
+                              "updatedAt": "2026-07-28T01:51:58.000Z",
+                              "uid": "35240-93a7b1b6-63e7-448d-a408-d7ecac0a7442"
+                            },
+                            {
+                              "id": "0ca74295-70f0-44b4-977a-dc32c587a4a3",
+                              "name": "InternalServerError is a general error indicating something went wrong internally.",
+                              "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"config\": {\n    \"field\": \"<string>\",\n    \"target\": {\n      \"id_50\": {}\n    },\n    \"transformations\": [\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      },\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      }\n    ]\n  },\n  \"description\": \"<string>\",\n  \"label\": \"<string>\",\n  \"type\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations/:correlationUID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "uid",
+                                    ":sourceUID",
+                                    "correlations",
+                                    ":correlationUID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "sourceUID"
+                                    },
+                                    {
+                                      "key": "correlationUID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:58.000Z",
+                              "updatedAt": "2026-07-28T01:51:58.000Z",
+                              "uid": "35240-0ca74295-70f0-44b4-977a-dc32c587a4a3"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T01:51:58.000Z",
+                          "updatedAt": "2026-07-28T01:51:58.000Z",
+                          "uid": "35240-344f9162-5427-4b04-bee8-d3fb3e22b082"
+                        }
+                      ],
+                      "id": "06c8d327-2a24-42a8-a2bb-b0a3da404786",
+                      "createdAt": "2026-07-28T01:51:58.000Z",
+                      "updatedAt": "2026-07-28T01:51:58.000Z",
+                      "uid": "35240-06c8d327-2a24-42a8-a2bb-b0a3da404786"
+                    },
+                    {
+                      "name": "Grafana Create Correlation",
+                      "id": "cafa29f5-2e85-4d55-b023-43463745e591",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"config\": {\n    \"field\": \"<string>\",\n    \"target\": {\n      \"dolore_a7\": {},\n      \"nisi0\": {}\n    },\n    \"transformations\": [\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      },\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      }\n    ],\n    \"type\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"label\": \"<string>\",\n  \"provisioned\": \"<boolean>\",\n  \"targetUID\": \"<string>\",\n  \"type\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            "uid",
+                            ":sourceUID",
+                            "correlations"
+                          ],
+                          "variable": [
+                            {
+                              "id": "4c244aea-0bd0-45e1-bd18-42487412a59e",
+                              "key": "sourceUID",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Creates a new correlation in Grafana between two data sources, allowing users to establish relationships and navigate between different data sources using the specified source data source UID. This operation enables the creation of links that help connect related data across different monitoring or logging systems, facilitating easier investigation and analysis workflows by defining how data in one source relates to data in another source through correlation configurations."
+                      },
+                      "response": [
+                        {
+                          "id": "9c94e369-334f-4235-b900-a75a70d47a8a",
+                          "name": "(empty)",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"config\": {\n    \"field\": \"<string>\",\n    \"target\": {\n      \"dolore_a7\": {},\n      \"nisi0\": {}\n    },\n    \"transformations\": [\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      },\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      }\n    ],\n    \"type\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"label\": \"<string>\",\n  \"provisioned\": \"<boolean>\",\n  \"targetUID\": \"<string>\",\n  \"type\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "uid",
+                                ":sourceUID",
+                                "correlations"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "sourceUID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"result\": {\n    \"config\": {\n      \"field\": \"<string>\",\n      \"target\": {},\n      \"transformations\": [\n        {\n          \"expression\": \"<string>\",\n          \"field\": \"<string>\",\n          \"mapValue\": \"<string>\",\n          \"type\": \"regex\"\n        },\n        {\n          \"expression\": \"<string>\",\n          \"field\": \"<string>\",\n          \"mapValue\": \"<string>\",\n          \"type\": \"logfmt\"\n        }\n      ],\n      \"type\": \"<string>\"\n    },\n    \"description\": \"<string>\",\n    \"label\": \"<string>\",\n    \"orgId\": \"<integer>\",\n    \"provisioned\": \"<boolean>\",\n    \"sourceUID\": \"<string>\",\n    \"targetUID\": \"<string>\",\n    \"type\": \"<string>\",\n    \"uid\": \"<string>\"\n  }\n}",
+                          "createdAt": "2026-07-28T01:51:58.000Z",
+                          "updatedAt": "2026-07-28T01:51:58.000Z",
+                          "uid": "35240-9c94e369-334f-4235-b900-a75a70d47a8a"
+                        },
+                        {
+                          "id": "6eadab67-9441-4733-8bc6-70c0a1e009f8",
+                          "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"config\": {\n    \"field\": \"<string>\",\n    \"target\": {\n      \"dolore_a7\": {},\n      \"nisi0\": {}\n    },\n    \"transformations\": [\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      },\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      }\n    ],\n    \"type\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"label\": \"<string>\",\n  \"provisioned\": \"<boolean>\",\n  \"targetUID\": \"<string>\",\n  \"type\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "uid",
+                                ":sourceUID",
+                                "correlations"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "sourceUID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:58.000Z",
+                          "updatedAt": "2026-07-28T01:51:58.000Z",
+                          "uid": "35240-6eadab67-9441-4733-8bc6-70c0a1e009f8"
+                        },
+                        {
+                          "id": "b00e466b-9195-4194-92b8-c19b13478524",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"config\": {\n    \"field\": \"<string>\",\n    \"target\": {\n      \"dolore_a7\": {},\n      \"nisi0\": {}\n    },\n    \"transformations\": [\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      },\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      }\n    ],\n    \"type\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"label\": \"<string>\",\n  \"provisioned\": \"<boolean>\",\n  \"targetUID\": \"<string>\",\n  \"type\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "uid",
+                                ":sourceUID",
+                                "correlations"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "sourceUID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:58.000Z",
+                          "updatedAt": "2026-07-28T01:51:58.000Z",
+                          "uid": "35240-b00e466b-9195-4194-92b8-c19b13478524"
+                        },
+                        {
+                          "id": "3ab9557f-9844-489f-be98-1ce9b8395d1d",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"config\": {\n    \"field\": \"<string>\",\n    \"target\": {\n      \"dolore_a7\": {},\n      \"nisi0\": {}\n    },\n    \"transformations\": [\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      },\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      }\n    ],\n    \"type\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"label\": \"<string>\",\n  \"provisioned\": \"<boolean>\",\n  \"targetUID\": \"<string>\",\n  \"type\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "uid",
+                                ":sourceUID",
+                                "correlations"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "sourceUID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:58.000Z",
+                          "updatedAt": "2026-07-28T01:51:58.000Z",
+                          "uid": "35240-3ab9557f-9844-489f-be98-1ce9b8395d1d"
+                        },
+                        {
+                          "id": "ac97481f-f849-4496-8f3a-a5756213e98a",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"config\": {\n    \"field\": \"<string>\",\n    \"target\": {\n      \"dolore_a7\": {},\n      \"nisi0\": {}\n    },\n    \"transformations\": [\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      },\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      }\n    ],\n    \"type\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"label\": \"<string>\",\n  \"provisioned\": \"<boolean>\",\n  \"targetUID\": \"<string>\",\n  \"type\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "uid",
+                                ":sourceUID",
+                                "correlations"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "sourceUID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:58.000Z",
+                          "updatedAt": "2026-07-28T01:51:58.000Z",
+                          "uid": "35240-ac97481f-f849-4496-8f3a-a5756213e98a"
+                        },
+                        {
+                          "id": "6557a4e8-6258-4976-8810-d3fa8a68c80d",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"config\": {\n    \"field\": \"<string>\",\n    \"target\": {\n      \"dolore_a7\": {},\n      \"nisi0\": {}\n    },\n    \"transformations\": [\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      },\n      {\n        \"expression\": \"<string>\",\n        \"field\": \"<string>\",\n        \"mapValue\": \"<string>\",\n        \"type\": \"logfmt\"\n      }\n    ],\n    \"type\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"label\": \"<string>\",\n  \"provisioned\": \"<boolean>\",\n  \"targetUID\": \"<string>\",\n  \"type\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/uid/:sourceUID/correlations",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "uid",
+                                ":sourceUID",
+                                "correlations"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "sourceUID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:58.000Z",
+                          "updatedAt": "2026-07-28T01:51:58.000Z",
+                          "uid": "35240-6557a4e8-6258-4976-8810-d3fa8a68c80d"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:51:58.000Z",
+                      "updatedAt": "2026-07-28T01:51:58.000Z",
+                      "uid": "35240-cafa29f5-2e85-4d55-b023-43463745e591"
+                    }
+                  ],
+                  "id": "ad1731fa-7816-43d0-96b0-335b26f83974",
+                  "createdAt": "2026-07-28T01:51:58.000Z",
+                  "updatedAt": "2026-07-28T01:51:58.000Z",
+                  "uid": "35240-ad1731fa-7816-43d0-96b0-335b26f83974"
+                }
+              ],
+              "id": "4188a19c-d941-43d1-99f3-354932b33417",
+              "createdAt": "2026-07-28T01:51:58.000Z",
+              "updatedAt": "2026-07-28T01:51:58.000Z",
+              "uid": "35240-4188a19c-d941-43d1-99f3-354932b33417"
+            },
+            {
+              "name": "{uid}",
+              "item": [
+                {
+                  "name": "correlations",
+                  "item": [
+                    {
+                      "name": "{correlationUID}",
+                      "item": [
+                        {
+                          "name": "Grafana Delete Correlation",
+                          "id": "cd9d611a-3363-4a8a-b1a1-9c184385b6b0",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/uid/:uid/correlations/:correlationUID",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                "uid",
+                                ":uid",
+                                "correlations",
+                                ":correlationUID"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "a0b4a9fa-4386-4849-83a1-43c655881ab3",
+                                  "key": "uid",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                },
+                                {
+                                  "id": "06de6912-974e-48a8-b278-415b3d25a584",
+                                  "key": "correlationUID",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "This API operation deletes a specific correlation in Grafana by targeting both the data source and correlation identifiers. The endpoint requires two parameters: the UID of the data source that owns the correlation and the correlationUID which uniquely identifies the correlation to be removed. When executed with a DELETE HTTP method, it permanently removes the specified correlation configuration that links queries or data between different data sources, helping administrators clean up unused or outdated correlation rules within their Grafana instance."
+                          },
+                          "response": [
+                            {
+                              "id": "30c8af01-ec5c-43d1-9a60-e7c64f33f075",
+                              "name": "(empty)",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/uid/:uid/correlations/:correlationUID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "uid",
+                                    ":uid",
+                                    "correlations",
+                                    ":correlationUID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "correlationUID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:58.000Z",
+                              "updatedAt": "2026-07-28T01:51:58.000Z",
+                              "uid": "35240-30c8af01-ec5c-43d1-9a60-e7c64f33f075"
+                            },
+                            {
+                              "id": "4877ce34-621b-4f03-af73-af90fa49a3f6",
+                              "name": "UnauthorizedError is returned when the request is not authenticated.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/uid/:uid/correlations/:correlationUID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "uid",
+                                    ":uid",
+                                    "correlations",
+                                    ":correlationUID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "correlationUID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:58.000Z",
+                              "updatedAt": "2026-07-28T01:51:58.000Z",
+                              "uid": "35240-4877ce34-621b-4f03-af73-af90fa49a3f6"
+                            },
+                            {
+                              "id": "4a4b0cb5-667c-4ddf-9854-582a7b26ec25",
+                              "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/uid/:uid/correlations/:correlationUID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "uid",
+                                    ":uid",
+                                    "correlations",
+                                    ":correlationUID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "correlationUID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:58.000Z",
+                              "updatedAt": "2026-07-28T01:51:58.000Z",
+                              "uid": "35240-4a4b0cb5-667c-4ddf-9854-582a7b26ec25"
+                            },
+                            {
+                              "id": "42c56704-1887-4501-a1a3-8840070d3129",
+                              "name": "NotFoundError is returned when the requested resource was not found.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/uid/:uid/correlations/:correlationUID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "uid",
+                                    ":uid",
+                                    "correlations",
+                                    ":correlationUID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "correlationUID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:58.000Z",
+                              "updatedAt": "2026-07-28T01:51:58.000Z",
+                              "uid": "35240-42c56704-1887-4501-a1a3-8840070d3129"
+                            },
+                            {
+                              "id": "4f441b03-c5bb-4445-854d-3efb4065d751",
+                              "name": "InternalServerError is a general error indicating something went wrong internally.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/datasources/uid/:uid/correlations/:correlationUID",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "datasources",
+                                    "uid",
+                                    ":uid",
+                                    "correlations",
+                                    ":correlationUID"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "uid"
+                                    },
+                                    {
+                                      "key": "correlationUID"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T01:51:58.000Z",
+                              "updatedAt": "2026-07-28T01:51:58.000Z",
+                              "uid": "35240-4f441b03-c5bb-4445-854d-3efb4065d751"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T01:51:58.000Z",
+                          "updatedAt": "2026-07-28T01:51:58.000Z",
+                          "uid": "35240-cd9d611a-3363-4a8a-b1a1-9c184385b6b0"
+                        }
+                      ],
+                      "id": "38f4ddfa-3c63-4200-abf5-5dad80b0fa69",
+                      "createdAt": "2026-07-28T01:51:58.000Z",
+                      "updatedAt": "2026-07-28T01:51:58.000Z",
+                      "uid": "35240-38f4ddfa-3c63-4200-abf5-5dad80b0fa69"
+                    }
+                  ],
+                  "id": "f14be6f2-e505-46c0-8d98-9e1954ae41f5",
+                  "createdAt": "2026-07-28T01:51:58.000Z",
+                  "updatedAt": "2026-07-28T01:51:58.000Z",
+                  "uid": "35240-f14be6f2-e505-46c0-8d98-9e1954ae41f5"
+                }
+              ],
+              "id": "5b47ffcd-94f9-47e0-a62d-993817692163",
+              "createdAt": "2026-07-28T01:51:58.000Z",
+              "updatedAt": "2026-07-28T01:51:58.000Z",
+              "uid": "35240-5b47ffcd-94f9-47e0-a62d-993817692163"
+            }
+          ],
+          "id": "8cd7b42b-63ed-412c-a083-054584569fc5",
+          "createdAt": "2026-07-28T01:51:58.000Z",
+          "updatedAt": "2026-07-28T01:51:58.000Z",
+          "uid": "35240-8cd7b42b-63ed-412c-a083-054584569fc5"
+        }
+      ],
+      "id": "7fdcac18-0642-4bd1-90d5-5d444c198e22",
+      "createdAt": "2026-07-28T01:51:58.000Z",
+      "updatedAt": "2026-07-28T01:51:58.000Z",
+      "uid": "35240-7fdcac18-0642-4bd1-90d5-5d444c198e22"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

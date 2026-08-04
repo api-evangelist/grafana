@@ -1,0 +1,789 @@
+{
+  "info": {
+    "_postman_id": "5b4c5965-3631-4415-b3cd-a7d960c1d113",
+    "name": "Grafana HTTP Access Cloud API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:51:36.000Z",
+    "updatedAt": "2026-07-28T01:51:36.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-5b4c5965-3631-4415-b3cd-a7d960c1d113"
+  },
+  "item": [
+    {
+      "name": "cloudmigration",
+      "item": [
+        {
+          "name": "token",
+          "item": [
+            {
+              "name": "{uid}",
+              "item": [
+                {
+                  "name": "Grafana Delete Cloud Migration Token",
+                  "id": "f6ac4614-77bb-4e7d-8597-eadb4a20c57e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/cloudmigration/token/:uid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "cloudmigration",
+                        "token",
+                        ":uid"
+                      ],
+                      "variable": [
+                        {
+                          "id": "a363264d-70ff-4179-af34-cf3ce2427cf1",
+                          "key": "uid",
+                          "value": "<string>",
+                          "description": "(Required) UID of a cloud migration token"
+                        }
+                      ]
+                    },
+                    "description": "Deletes a specific cloud migration token identified by its unique identifier (UID) from Grafana. This operation permanently removes the authentication token that was previously created to facilitate data migration to Grafana Cloud. Once deleted, the token can no longer be used for migration purposes, and any ongoing migration processes using this token will be invalidated. This is typically used when a migration is complete, a token has been compromised, or when cleaning up unused credentials for security purposes."
+                  },
+                  "response": [
+                    {
+                      "id": "73d31387-937c-4795-a255-ddb9eca7866e",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/cloudmigration/token/:uid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "cloudmigration",
+                            "token",
+                            ":uid"
+                          ],
+                          "variable": [
+                            {
+                              "key": "uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:51:37.000Z",
+                      "updatedAt": "2026-07-28T01:51:37.000Z",
+                      "uid": "35240-73d31387-937c-4795-a255-ddb9eca7866e"
+                    },
+                    {
+                      "id": "afc6fd7b-46d3-4d3e-be21-72bb3849987b",
+                      "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/cloudmigration/token/:uid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "cloudmigration",
+                            "token",
+                            ":uid"
+                          ],
+                          "variable": [
+                            {
+                              "key": "uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:51:37.000Z",
+                      "updatedAt": "2026-07-28T01:51:37.000Z",
+                      "uid": "35240-afc6fd7b-46d3-4d3e-be21-72bb3849987b"
+                    },
+                    {
+                      "id": "1a2ae858-071b-4450-9e36-a54f8c376590",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/cloudmigration/token/:uid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "cloudmigration",
+                            "token",
+                            ":uid"
+                          ],
+                          "variable": [
+                            {
+                              "key": "uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:51:37.000Z",
+                      "updatedAt": "2026-07-28T01:51:37.000Z",
+                      "uid": "35240-1a2ae858-071b-4450-9e36-a54f8c376590"
+                    },
+                    {
+                      "id": "a4f1a812-02dc-40bb-a627-d8710de4bb51",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/cloudmigration/token/:uid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "cloudmigration",
+                            "token",
+                            ":uid"
+                          ],
+                          "variable": [
+                            {
+                              "key": "uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:51:37.000Z",
+                      "updatedAt": "2026-07-28T01:51:37.000Z",
+                      "uid": "35240-a4f1a812-02dc-40bb-a627-d8710de4bb51"
+                    },
+                    {
+                      "id": "973e6c78-eff4-48a4-a1ed-6d2bf012944d",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/cloudmigration/token/:uid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "cloudmigration",
+                            "token",
+                            ":uid"
+                          ],
+                          "variable": [
+                            {
+                              "key": "uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:51:37.000Z",
+                      "updatedAt": "2026-07-28T01:51:37.000Z",
+                      "uid": "35240-973e6c78-eff4-48a4-a1ed-6d2bf012944d"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:51:37.000Z",
+                  "updatedAt": "2026-07-28T01:51:37.000Z",
+                  "uid": "35240-f6ac4614-77bb-4e7d-8597-eadb4a20c57e"
+                }
+              ],
+              "id": "4799b51c-64cd-4f9c-8407-54c61ac23d5c",
+              "createdAt": "2026-07-28T01:51:37.000Z",
+              "updatedAt": "2026-07-28T01:51:37.000Z",
+              "uid": "35240-4799b51c-64cd-4f9c-8407-54c61ac23d5c"
+            },
+            {
+              "name": "Grafana Get Cloud Migration Token",
+              "id": "3f35dbac-1b63-4e23-b903-d02f50516ac4",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/cloudmigration/token",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "cloudmigration",
+                    "token"
+                  ]
+                },
+                "description": "Retrieves the cloud migration token for a Grafana instance, which is used to authenticate and authorize the migration of dashboards, data sources, and other resources from a self-hosted or on-premise Grafana installation to Grafana Cloud. This token serves as a secure credential that enables the migration service to access and transfer configuration data between environments, typically generated when initiating a cloud migration process and required for establishing a trusted connection between the source Grafana instance and the destination cloud environment."
+              },
+              "response": [
+                {
+                  "id": "6fada687-0109-484e-b57d-794f3bf719df",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/cloudmigration/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "cloudmigration",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"createdAt\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"expiresAt\": \"<string>\",\n  \"firstUsedAt\": \"<string>\",\n  \"id\": \"<string>\",\n  \"lastUsedAt\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:37.000Z",
+                  "updatedAt": "2026-07-28T01:51:37.000Z",
+                  "uid": "35240-6fada687-0109-484e-b57d-794f3bf719df"
+                },
+                {
+                  "id": "7bc6a9ed-b681-400f-98ff-20c2419e4be9",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/cloudmigration/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "cloudmigration",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:37.000Z",
+                  "updatedAt": "2026-07-28T01:51:37.000Z",
+                  "uid": "35240-7bc6a9ed-b681-400f-98ff-20c2419e4be9"
+                },
+                {
+                  "id": "c4b9b8d8-0964-4e40-81bc-3553eebb9c25",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/cloudmigration/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "cloudmigration",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:37.000Z",
+                  "updatedAt": "2026-07-28T01:51:37.000Z",
+                  "uid": "35240-c4b9b8d8-0964-4e40-81bc-3553eebb9c25"
+                },
+                {
+                  "id": "22b8f7f2-470c-40bf-8bea-0c1b8c2ab36f",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/cloudmigration/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "cloudmigration",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:37.000Z",
+                  "updatedAt": "2026-07-28T01:51:37.000Z",
+                  "uid": "35240-22b8f7f2-470c-40bf-8bea-0c1b8c2ab36f"
+                },
+                {
+                  "id": "fbd384cb-3590-492e-9a7e-e4867c7189de",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/cloudmigration/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "cloudmigration",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:37.000Z",
+                  "updatedAt": "2026-07-28T01:51:37.000Z",
+                  "uid": "35240-fbd384cb-3590-492e-9a7e-e4867c7189de"
+                }
+              ],
+              "createdAt": "2026-07-28T01:51:37.000Z",
+              "updatedAt": "2026-07-28T01:51:37.000Z",
+              "uid": "35240-3f35dbac-1b63-4e23-b903-d02f50516ac4"
+            },
+            {
+              "name": "Grafana Create Cloud Migration Token",
+              "id": "5dbef167-80c3-4b22-b2aa-835ed945a1ee",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/cloudmigration/token",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "cloudmigration",
+                    "token"
+                  ]
+                },
+                "description": "Creates a new cloud migration token in Grafana that enables secure data transfer and authentication between a self-hosted Grafana instance and Grafana Cloud during migration operations. This endpoint generates a temporary authentication token that authorizes the migration service to access and migrate dashboards, data sources, alerts, and other Grafana resources from the source instance to the cloud destination. The token serves as a security credential to establish a trusted connection and should be handled securely throughout the migration process."
+              },
+              "response": [
+                {
+                  "id": "9c3ad97a-2b01-4dff-8e83-bce63face7df",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/cloudmigration/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "cloudmigration",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"token\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:37.000Z",
+                  "updatedAt": "2026-07-28T01:51:37.000Z",
+                  "uid": "35240-9c3ad97a-2b01-4dff-8e83-bce63face7df"
+                },
+                {
+                  "id": "56d9de2c-eb6d-4604-8595-0510d60fe908",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/cloudmigration/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "cloudmigration",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:37.000Z",
+                  "updatedAt": "2026-07-28T01:51:37.000Z",
+                  "uid": "35240-56d9de2c-eb6d-4604-8595-0510d60fe908"
+                },
+                {
+                  "id": "f3e586f3-1dc7-4e65-a999-ab851d3586f2",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/cloudmigration/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "cloudmigration",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:37.000Z",
+                  "updatedAt": "2026-07-28T01:51:37.000Z",
+                  "uid": "35240-f3e586f3-1dc7-4e65-a999-ab851d3586f2"
+                },
+                {
+                  "id": "93438f1e-12bf-42ac-88bb-6cd3aac91ded",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/cloudmigration/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "cloudmigration",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:51:37.000Z",
+                  "updatedAt": "2026-07-28T01:51:37.000Z",
+                  "uid": "35240-93438f1e-12bf-42ac-88bb-6cd3aac91ded"
+                }
+              ],
+              "createdAt": "2026-07-28T01:51:37.000Z",
+              "updatedAt": "2026-07-28T01:51:37.000Z",
+              "uid": "35240-5dbef167-80c3-4b22-b2aa-835ed945a1ee"
+            }
+          ],
+          "id": "41619143-d970-441d-9e58-2ab13b6bab25",
+          "createdAt": "2026-07-28T01:51:37.000Z",
+          "updatedAt": "2026-07-28T01:51:37.000Z",
+          "uid": "35240-41619143-d970-441d-9e58-2ab13b6bab25"
+        }
+      ],
+      "id": "32f73657-091e-4bbe-a44d-b990cd811707",
+      "createdAt": "2026-07-28T01:51:37.000Z",
+      "updatedAt": "2026-07-28T01:51:37.000Z",
+      "uid": "35240-32f73657-091e-4bbe-a44d-b990cd811707"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

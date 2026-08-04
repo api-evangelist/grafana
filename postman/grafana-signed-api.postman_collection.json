@@ -1,0 +1,1035 @@
+{
+  "info": {
+    "_postman_id": "11d0df5c-d5c5-4021-8f97-8969e0397c75",
+    "name": "Grafana HTTP Access Signed API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:56:04.000Z",
+    "updatedAt": "2026-07-28T01:56:05.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-11d0df5c-d5c5-4021-8f97-8969e0397c75"
+  },
+  "item": [
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "orgs",
+          "item": [
+            {
+              "name": "Grafana Get Signed In User Org List",
+              "id": "6561ab4a-2bcb-418a-807c-f203660871c6",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/user/orgs",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "orgs"
+                  ]
+                },
+                "description": "This API endpoint retrieves a list of all organizations associated with the currently authenticated user in Grafana. When called with a GET request to /user/orgs, it returns information about each organization the signed-in user belongs to, typically including details such as organization ID, name, and the user's role within each organization. This is useful for applications that need to display or process the organizational memberships of the current user, allowing them to understand which organizations they have access to and what permissions they may have in each one."
+              },
+              "response": [
+                {
+                  "id": "75e445e1-6ebd-4b64-b179-5a90bb9b25ca",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/user/orgs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "orgs"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  {\n    \"name\": \"<string>\",\n    \"orgId\": \"<integer>\",\n    \"role\": \"Editor\"\n  },\n  {\n    \"name\": \"<string>\",\n    \"orgId\": \"<integer>\",\n    \"role\": \"Viewer\"\n  }\n]",
+                  "createdAt": "2026-07-28T01:56:05.000Z",
+                  "updatedAt": "2026-07-28T01:56:05.000Z",
+                  "uid": "35240-75e445e1-6ebd-4b64-b179-5a90bb9b25ca"
+                },
+                {
+                  "id": "8e1bbe8a-199a-4884-9945-ce9b86c3ea7f",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/user/orgs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "orgs"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:05.000Z",
+                  "updatedAt": "2026-07-28T01:56:05.000Z",
+                  "uid": "35240-8e1bbe8a-199a-4884-9945-ce9b86c3ea7f"
+                },
+                {
+                  "id": "4a940f58-6f4d-47bb-a488-cea3cb99dbc7",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/user/orgs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "orgs"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:05.000Z",
+                  "updatedAt": "2026-07-28T01:56:05.000Z",
+                  "uid": "35240-4a940f58-6f4d-47bb-a488-cea3cb99dbc7"
+                },
+                {
+                  "id": "3df69f38-d023-45e2-8574-95a3017698f9",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/user/orgs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "orgs"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:05.000Z",
+                  "updatedAt": "2026-07-28T01:56:05.000Z",
+                  "uid": "35240-3df69f38-d023-45e2-8574-95a3017698f9"
+                }
+              ],
+              "createdAt": "2026-07-28T01:56:05.000Z",
+              "updatedAt": "2026-07-28T01:56:05.000Z",
+              "uid": "35240-6561ab4a-2bcb-418a-807c-f203660871c6"
+            }
+          ],
+          "id": "28bba5d8-17b8-4c95-872d-54ac2e42d2d2",
+          "createdAt": "2026-07-28T01:56:05.000Z",
+          "updatedAt": "2026-07-28T01:56:05.000Z",
+          "uid": "35240-28bba5d8-17b8-4c95-872d-54ac2e42d2d2"
+        },
+        {
+          "name": "teams",
+          "item": [
+            {
+              "name": "Grafana Get Signed In User Team List",
+              "id": "f5f42864-7f9c-4eb8-9340-f6e8c0e5e19d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/user/teams",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "teams"
+                  ]
+                },
+                "description": "This API operation retrieves a list of all teams that the currently authenticated user is a member of in Grafana. When called, it returns team information associated with the signed-in user's account, allowing applications to determine which teams the user belongs to and potentially their roles or permissions within those teams. This is useful for displaying team memberships in user interfaces, implementing team-based access controls, or filtering content based on team associations."
+              },
+              "response": [
+                {
+                  "id": "e2f8608a-8fa6-4385-a077-24278da8211f",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/user/teams",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "teams"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  {\n    \"id\": \"<integer>\",\n    \"isProvisioned\": \"<boolean>\",\n    \"memberCount\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"orgId\": \"<integer>\",\n    \"uid\": \"<string>\",\n    \"accessControl\": {\n      \"Lorem_e\": \"<boolean>\",\n      \"amet6ff\": \"<boolean>\"\n    },\n    \"avatarUrl\": \"<string>\",\n    \"email\": \"<string>\",\n    \"externalUID\": \"<string>\",\n    \"permission\": \"<integer>\"\n  },\n  {\n    \"id\": \"<integer>\",\n    \"isProvisioned\": \"<boolean>\",\n    \"memberCount\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"orgId\": \"<integer>\",\n    \"uid\": \"<string>\",\n    \"accessControl\": {\n      \"ea25\": \"<boolean>\"\n    },\n    \"avatarUrl\": \"<string>\",\n    \"email\": \"<string>\",\n    \"externalUID\": \"<string>\",\n    \"permission\": \"<integer>\"\n  }\n]",
+                  "createdAt": "2026-07-28T01:56:05.000Z",
+                  "updatedAt": "2026-07-28T01:56:05.000Z",
+                  "uid": "35240-e2f8608a-8fa6-4385-a077-24278da8211f"
+                },
+                {
+                  "id": "9b3c03f1-c994-4ffe-a7f8-6d3c0bc6b8b8",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/user/teams",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "teams"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:05.000Z",
+                  "updatedAt": "2026-07-28T01:56:05.000Z",
+                  "uid": "35240-9b3c03f1-c994-4ffe-a7f8-6d3c0bc6b8b8"
+                },
+                {
+                  "id": "f91fa9f3-c157-4db2-892f-6b984ac3027d",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/user/teams",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "teams"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:05.000Z",
+                  "updatedAt": "2026-07-28T01:56:05.000Z",
+                  "uid": "35240-f91fa9f3-c157-4db2-892f-6b984ac3027d"
+                },
+                {
+                  "id": "c24a63a2-eb71-4fcd-83cf-04d10a7b4c09",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/user/teams",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "teams"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:56:05.000Z",
+                  "updatedAt": "2026-07-28T01:56:05.000Z",
+                  "uid": "35240-c24a63a2-eb71-4fcd-83cf-04d10a7b4c09"
+                }
+              ],
+              "createdAt": "2026-07-28T01:56:05.000Z",
+              "updatedAt": "2026-07-28T01:56:05.000Z",
+              "uid": "35240-f5f42864-7f9c-4eb8-9340-f6e8c0e5e19d"
+            }
+          ],
+          "id": "58b3b73c-d254-4e2b-973e-d017b2f6bfb6",
+          "createdAt": "2026-07-28T01:56:05.000Z",
+          "updatedAt": "2026-07-28T01:56:05.000Z",
+          "uid": "35240-58b3b73c-d254-4e2b-973e-d017b2f6bfb6"
+        },
+        {
+          "name": "Grafana Get Signed In User",
+          "id": "dd1e29da-ee02-48b7-8fcd-4775fa97042c",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user"
+              ]
+            },
+            "description": "Retrieves the currently authenticated user's details in Grafana. This endpoint returns information about the user who is currently signed in based on the authentication credentials provided in the request, including user properties such as ID, login name, email, name, and organizational details. It's commonly used to verify authentication status and display user-specific information in the Grafana interface or when integrating with external applications."
+          },
+          "response": [
+            {
+              "id": "d5a06441-2397-4259-9e32-21a37f0fe412",
+              "name": "(empty)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/user",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"accessControl\": {\n    \"Loremf4\": \"<boolean>\"\n  },\n  \"authLabels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"avatarUrl\": \"<string>\",\n  \"createdAt\": \"<string>\",\n  \"email\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"isDisabled\": \"<boolean>\",\n  \"isExternal\": \"<boolean>\",\n  \"isExternallySynced\": \"<boolean>\",\n  \"isGrafanaAdmin\": \"<boolean>\",\n  \"isGrafanaAdminExternallySynced\": \"<boolean>\",\n  \"isProvisioned\": \"<boolean>\",\n  \"login\": \"<string>\",\n  \"name\": \"<string>\",\n  \"orgId\": \"<integer>\",\n  \"theme\": \"<string>\",\n  \"uid\": \"<string>\",\n  \"updatedAt\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:56:05.000Z",
+              "updatedAt": "2026-07-28T01:56:05.000Z",
+              "uid": "35240-d5a06441-2397-4259-9e32-21a37f0fe412"
+            },
+            {
+              "id": "f9488f30-3508-4e5b-b245-f8cac2bb21ba",
+              "name": "UnauthorizedError is returned when the request is not authenticated.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/user",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:56:05.000Z",
+              "updatedAt": "2026-07-28T01:56:05.000Z",
+              "uid": "35240-f9488f30-3508-4e5b-b245-f8cac2bb21ba"
+            },
+            {
+              "id": "360b0f56-360f-497e-8c47-cf6f8f11c747",
+              "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/user",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:56:05.000Z",
+              "updatedAt": "2026-07-28T01:56:05.000Z",
+              "uid": "35240-360b0f56-360f-497e-8c47-cf6f8f11c747"
+            },
+            {
+              "id": "e2b2ae82-132a-4f96-b8e6-6f01abccc438",
+              "name": "NotFoundError is returned when the requested resource was not found.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/user",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:56:05.000Z",
+              "updatedAt": "2026-07-28T01:56:05.000Z",
+              "uid": "35240-e2b2ae82-132a-4f96-b8e6-6f01abccc438"
+            },
+            {
+              "id": "431fb5e8-b9f6-4bcb-8141-043eb5458ae2",
+              "name": "InternalServerError is a general error indicating something went wrong internally.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/user",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:56:05.000Z",
+              "updatedAt": "2026-07-28T01:56:05.000Z",
+              "uid": "35240-431fb5e8-b9f6-4bcb-8141-043eb5458ae2"
+            }
+          ],
+          "createdAt": "2026-07-28T01:56:05.000Z",
+          "updatedAt": "2026-07-28T01:56:05.000Z",
+          "uid": "35240-dd1e29da-ee02-48b7-8fcd-4775fa97042c"
+        },
+        {
+          "name": "Grafana Update Signed In User",
+          "id": "b07d1649-eddb-4faf-97fc-e2352554e88f",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<string>\",\n  \"login\": \"<string>\",\n  \"name\": \"<string>\",\n  \"theme\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user"
+              ]
+            },
+            "description": "Updates the profile information for the currently authenticated user in Grafana, allowing modification of fields such as email address, name, login username, and theme preferences. This endpoint requires the user to be signed in and operates on the user's own account, making it a self-service operation for managing personal account details. The request accepts a JSON payload containing the user attributes to be updated, and upon successful execution, returns the updated user information along with a confirmation message."
+          },
+          "response": [
+            {
+              "id": "5e14d3bb-cf35-4a16-89bc-4d1594600531",
+              "name": "An OKResponse is returned if the request was successful.",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<string>\",\n  \"login\": \"<string>\",\n  \"name\": \"<string>\",\n  \"theme\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:56:05.000Z",
+              "updatedAt": "2026-07-28T01:56:05.000Z",
+              "uid": "35240-5e14d3bb-cf35-4a16-89bc-4d1594600531"
+            },
+            {
+              "id": "eabe1421-cd29-43ce-86f9-569f525416f7",
+              "name": "UnauthorizedError is returned when the request is not authenticated.",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<string>\",\n  \"login\": \"<string>\",\n  \"name\": \"<string>\",\n  \"theme\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:56:05.000Z",
+              "updatedAt": "2026-07-28T01:56:05.000Z",
+              "uid": "35240-eabe1421-cd29-43ce-86f9-569f525416f7"
+            },
+            {
+              "id": "471de475-e5a6-47e8-8d21-8d74c23beb0c",
+              "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<string>\",\n  \"login\": \"<string>\",\n  \"name\": \"<string>\",\n  \"theme\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:56:05.000Z",
+              "updatedAt": "2026-07-28T01:56:05.000Z",
+              "uid": "35240-471de475-e5a6-47e8-8d21-8d74c23beb0c"
+            },
+            {
+              "id": "8593ba29-9275-4113-9e01-f60b9d894c4a",
+              "name": "ConflictError",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<string>\",\n  \"login\": \"<string>\",\n  \"name\": \"<string>\",\n  \"theme\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:56:05.000Z",
+              "updatedAt": "2026-07-28T01:56:05.000Z",
+              "uid": "35240-8593ba29-9275-4113-9e01-f60b9d894c4a"
+            },
+            {
+              "id": "c73a9152-c4c1-4794-9079-9e1d156628f9",
+              "name": "InternalServerError is a general error indicating something went wrong internally.",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<string>\",\n  \"login\": \"<string>\",\n  \"name\": \"<string>\",\n  \"theme\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:56:05.000Z",
+              "updatedAt": "2026-07-28T01:56:05.000Z",
+              "uid": "35240-c73a9152-c4c1-4794-9079-9e1d156628f9"
+            }
+          ],
+          "createdAt": "2026-07-28T01:56:05.000Z",
+          "updatedAt": "2026-07-28T01:56:05.000Z",
+          "uid": "35240-b07d1649-eddb-4faf-97fc-e2352554e88f"
+        }
+      ],
+      "id": "98079d6f-2132-43e3-ae4b-ebc409421e3f",
+      "createdAt": "2026-07-28T01:56:05.000Z",
+      "updatedAt": "2026-07-28T01:56:05.000Z",
+      "uid": "35240-98079d6f-2132-43e3-ae4b-ebc409421e3f"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

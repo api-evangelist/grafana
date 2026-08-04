@@ -1,0 +1,897 @@
+{
+  "info": {
+    "_postman_id": "d65a14fe-5280-494b-89da-19a951089679",
+    "name": "Grafana HTTP Access Cache API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:51:28.000Z",
+    "updatedAt": "2026-07-28T01:51:28.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-d65a14fe-5280-494b-89da-19a951089679"
+  },
+  "item": [
+    {
+      "name": "datasources",
+      "item": [
+        {
+          "name": "{dataSourceUID}",
+          "item": [
+            {
+              "name": "cache",
+              "item": [
+                {
+                  "name": "clean",
+                  "item": [
+                    {
+                      "name": "Grafana Clean Data Source Cache",
+                      "id": "89adf4ff-4d36-446b-ba4e-e4fd85c77f2a",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache/clean",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            ":dataSourceUID",
+                            "cache",
+                            "clean"
+                          ],
+                          "variable": [
+                            {
+                              "id": "ad3e3656-438c-4f03-89ae-d0977510d4da",
+                              "key": "dataSourceUID",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation allows you to clear the cache for a specific data source in Grafana by sending a POST request to the endpoint with the data source's unique identifier (UID). When invoked, it removes all cached query results and stored data associated with that particular data source, forcing subsequent queries to fetch fresh data directly from the source. This is useful when you need to ensure users see the most up-to-date information, troubleshoot data inconsistencies, or after making configuration changes to the data source that might affect cached results."
+                      },
+                      "response": [
+                        {
+                          "id": "d38e5e78-152f-46e0-aa92-6d6e691c5e2e",
+                          "name": "CacheConfigResponse",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache/clean",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                ":dataSourceUID",
+                                "cache",
+                                "clean"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "dataSourceUID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"created\": \"<string>\",\n  \"dataSourceID\": \"<integer>\",\n  \"dataSourceUID\": \"<string>\",\n  \"defaultTTLMs\": \"<integer>\",\n  \"enabled\": \"<boolean>\",\n  \"message\": \"<string>\",\n  \"ttlQueriesMs\": \"<integer>\",\n  \"ttlResourcesMs\": \"<integer>\",\n  \"updated\": \"<string>\",\n  \"useDefaultTTL\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T01:51:29.000Z",
+                          "updatedAt": "2026-07-28T01:51:29.000Z",
+                          "uid": "35240-d38e5e78-152f-46e0-aa92-6d6e691c5e2e"
+                        },
+                        {
+                          "id": "be5e27d2-de06-413d-8d41-4ca3c23c1d02",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache/clean",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                ":dataSourceUID",
+                                "cache",
+                                "clean"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "dataSourceUID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:29.000Z",
+                          "updatedAt": "2026-07-28T01:51:29.000Z",
+                          "uid": "35240-be5e27d2-de06-413d-8d41-4ca3c23c1d02"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:51:29.000Z",
+                      "updatedAt": "2026-07-28T01:51:29.000Z",
+                      "uid": "35240-89adf4ff-4d36-446b-ba4e-e4fd85c77f2a"
+                    }
+                  ],
+                  "id": "c3031cef-537a-4f35-90f7-1fbf8e97dc2e",
+                  "createdAt": "2026-07-28T01:51:29.000Z",
+                  "updatedAt": "2026-07-28T01:51:29.000Z",
+                  "uid": "35240-c3031cef-537a-4f35-90f7-1fbf8e97dc2e"
+                },
+                {
+                  "name": "disable",
+                  "item": [
+                    {
+                      "name": "Grafana Disable Data Source Cache",
+                      "id": "89e28ee0-b8c2-4b32-b68d-02b17c9b7521",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache/disable",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            ":dataSourceUID",
+                            "cache",
+                            "disable"
+                          ],
+                          "variable": [
+                            {
+                              "id": "5784eb34-59e9-4734-ac3e-2a989efee802",
+                              "key": "dataSourceUID",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Disables the caching functionality for a specific Grafana data source identified by its unique identifier (dataSourceUID). When executed via a POST request to the endpoint /datasources/{dataSourceUID}/cache/disable, this operation turns off query result caching for the specified data source, causing subsequent queries to fetch fresh data directly from the source rather than serving cached results. This is useful when real-time data accuracy is critical or when troubleshooting data freshness issues, though it may result in increased load on the underlying data source and potentially slower query response times."
+                      },
+                      "response": [
+                        {
+                          "id": "7d5c4aea-f91f-43ad-9639-1831fa4f901b",
+                          "name": "CacheConfigResponse",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache/disable",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                ":dataSourceUID",
+                                "cache",
+                                "disable"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "dataSourceUID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"created\": \"<string>\",\n  \"dataSourceID\": \"<integer>\",\n  \"dataSourceUID\": \"<string>\",\n  \"defaultTTLMs\": \"<integer>\",\n  \"enabled\": \"<boolean>\",\n  \"message\": \"<string>\",\n  \"ttlQueriesMs\": \"<integer>\",\n  \"ttlResourcesMs\": \"<integer>\",\n  \"updated\": \"<string>\",\n  \"useDefaultTTL\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T01:51:29.000Z",
+                          "updatedAt": "2026-07-28T01:51:29.000Z",
+                          "uid": "35240-7d5c4aea-f91f-43ad-9639-1831fa4f901b"
+                        },
+                        {
+                          "id": "ed818f90-6678-4124-aab3-8bc647fd1990",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache/disable",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                ":dataSourceUID",
+                                "cache",
+                                "disable"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "dataSourceUID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:29.000Z",
+                          "updatedAt": "2026-07-28T01:51:29.000Z",
+                          "uid": "35240-ed818f90-6678-4124-aab3-8bc647fd1990"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:51:29.000Z",
+                      "updatedAt": "2026-07-28T01:51:29.000Z",
+                      "uid": "35240-89e28ee0-b8c2-4b32-b68d-02b17c9b7521"
+                    }
+                  ],
+                  "id": "a84ddef5-f055-4f33-b49a-7676f99d98f2",
+                  "createdAt": "2026-07-28T01:51:29.000Z",
+                  "updatedAt": "2026-07-28T01:51:29.000Z",
+                  "uid": "35240-a84ddef5-f055-4f33-b49a-7676f99d98f2"
+                },
+                {
+                  "name": "enable",
+                  "item": [
+                    {
+                      "name": "Grafana Enable Data Source Cache",
+                      "id": "c106b323-4557-4cb5-8c27-c6963edae582",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache/enable",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            ":dataSourceUID",
+                            "cache",
+                            "enable"
+                          ],
+                          "variable": [
+                            {
+                              "id": "052dadb5-8d82-4c80-ae70-b751697b42fd",
+                              "key": "dataSourceUID",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation enables caching functionality for a specific data source in Grafana by sending a POST request to the endpoint with the data source's unique identifier (UID). When invoked, it activates the caching mechanism for the specified data source, which can improve query performance by storing and reusing query results instead of repeatedly fetching data from the original source. This is particularly useful for data sources that have slow response times or rate limits, as cached data can be served more quickly to dashboard users. The operation requires the data source UID to be specified in the URL path to identify which data source should have caching enabled."
+                      },
+                      "response": [
+                        {
+                          "id": "279be958-1fb8-4fc1-aa3b-e3b62e706421",
+                          "name": "CacheConfigResponse",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache/enable",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                ":dataSourceUID",
+                                "cache",
+                                "enable"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "dataSourceUID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"created\": \"<string>\",\n  \"dataSourceID\": \"<integer>\",\n  \"dataSourceUID\": \"<string>\",\n  \"defaultTTLMs\": \"<integer>\",\n  \"enabled\": \"<boolean>\",\n  \"message\": \"<string>\",\n  \"ttlQueriesMs\": \"<integer>\",\n  \"ttlResourcesMs\": \"<integer>\",\n  \"updated\": \"<string>\",\n  \"useDefaultTTL\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T01:51:29.000Z",
+                          "updatedAt": "2026-07-28T01:51:29.000Z",
+                          "uid": "35240-279be958-1fb8-4fc1-aa3b-e3b62e706421"
+                        },
+                        {
+                          "id": "9fa91ec3-222c-46c0-b685-7a66fcfa63fa",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache/enable",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                ":dataSourceUID",
+                                "cache",
+                                "enable"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "dataSourceUID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:51:29.000Z",
+                          "updatedAt": "2026-07-28T01:51:29.000Z",
+                          "uid": "35240-9fa91ec3-222c-46c0-b685-7a66fcfa63fa"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:51:29.000Z",
+                      "updatedAt": "2026-07-28T01:51:29.000Z",
+                      "uid": "35240-c106b323-4557-4cb5-8c27-c6963edae582"
+                    }
+                  ],
+                  "id": "9fcc11c2-4959-4ddd-98c7-f2529cf8b182",
+                  "createdAt": "2026-07-28T01:51:29.000Z",
+                  "updatedAt": "2026-07-28T01:51:29.000Z",
+                  "uid": "35240-9fcc11c2-4959-4ddd-98c7-f2529cf8b182"
+                },
+                {
+                  "name": "Grafana Get Data Source Cache Config",
+                  "id": "e0657164-fb27-492b-8fd9-84c8fb3e43b4",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "datasources",
+                        ":dataSourceUID",
+                        "cache"
+                      ],
+                      "variable": [
+                        {
+                          "id": "e50b1baa-d330-485b-9457-2326166164db",
+                          "key": "dataSourceUID",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Retrieves the caching configuration settings for a specific data source in Grafana identified by its unique identifier (dataSourceUID). This GET operation allows administrators and users with appropriate permissions to view the current cache configuration parameters associated with a particular data source, which may include settings such as cache TTL (time-to-live), cache size limits, and enabled/disabled status. The response provides insight into how query results from this data source are being cached to optimize performance and reduce load on the underlying data source system."
+                  },
+                  "response": [
+                    {
+                      "id": "21cd29d6-9c75-46b2-9532-f8830a95d82c",
+                      "name": "CacheConfigResponse",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            ":dataSourceUID",
+                            "cache"
+                          ],
+                          "variable": [
+                            {
+                              "key": "dataSourceUID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"created\": \"<string>\",\n  \"dataSourceID\": \"<integer>\",\n  \"dataSourceUID\": \"<string>\",\n  \"defaultTTLMs\": \"<integer>\",\n  \"enabled\": \"<boolean>\",\n  \"message\": \"<string>\",\n  \"ttlQueriesMs\": \"<integer>\",\n  \"ttlResourcesMs\": \"<integer>\",\n  \"updated\": \"<string>\",\n  \"useDefaultTTL\": \"<boolean>\"\n}",
+                      "createdAt": "2026-07-28T01:51:29.000Z",
+                      "updatedAt": "2026-07-28T01:51:29.000Z",
+                      "uid": "35240-21cd29d6-9c75-46b2-9532-f8830a95d82c"
+                    },
+                    {
+                      "id": "3974ac16-6916-47d9-8c42-099965ba6593",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            ":dataSourceUID",
+                            "cache"
+                          ],
+                          "variable": [
+                            {
+                              "key": "dataSourceUID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:51:29.000Z",
+                      "updatedAt": "2026-07-28T01:51:29.000Z",
+                      "uid": "35240-3974ac16-6916-47d9-8c42-099965ba6593"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:51:29.000Z",
+                  "updatedAt": "2026-07-28T01:51:29.000Z",
+                  "uid": "35240-e0657164-fb27-492b-8fd9-84c8fb3e43b4"
+                },
+                {
+                  "name": "Grafana Set Data Source Cache Config",
+                  "id": "4eacf68a-4e8e-4186-8298-4e79d67cf6fa",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"dataSourceID\": \"<integer>\",\n  \"dataSourceUID\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"ttlQueriesMs\": \"<integer>\",\n  \"ttlResourcesMs\": \"<integer>\",\n  \"useDefaultTTL\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "datasources",
+                        ":dataSourceUID",
+                        "cache"
+                      ],
+                      "variable": [
+                        {
+                          "id": "1768378d-f03f-4f30-b40c-4f71f1994295",
+                          "key": "dataSourceUID",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Sets the cache configuration for a specific data source in Grafana identified by its unique identifier (dataSourceUID). This POST operation allows administrators to configure caching parameters such as TTL (time-to-live), cache size limits, and other cache-related settings that control how query results from the data source are stored and retrieved. By enabling and configuring caching at the data source level, users can improve dashboard performance and reduce the load on backend data sources by serving frequently requested data from cache rather than executing redundant queries."
+                  },
+                  "response": [
+                    {
+                      "id": "e6b57c5a-c73b-4aba-9002-c35c837840a8",
+                      "name": "CacheConfigResponse",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"dataSourceID\": \"<integer>\",\n  \"dataSourceUID\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"ttlQueriesMs\": \"<integer>\",\n  \"ttlResourcesMs\": \"<integer>\",\n  \"useDefaultTTL\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            ":dataSourceUID",
+                            "cache"
+                          ],
+                          "variable": [
+                            {
+                              "key": "dataSourceUID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"created\": \"<string>\",\n  \"dataSourceID\": \"<integer>\",\n  \"dataSourceUID\": \"<string>\",\n  \"defaultTTLMs\": \"<integer>\",\n  \"enabled\": \"<boolean>\",\n  \"message\": \"<string>\",\n  \"ttlQueriesMs\": \"<integer>\",\n  \"ttlResourcesMs\": \"<integer>\",\n  \"updated\": \"<string>\",\n  \"useDefaultTTL\": \"<boolean>\"\n}",
+                      "createdAt": "2026-07-28T01:51:29.000Z",
+                      "updatedAt": "2026-07-28T01:51:29.000Z",
+                      "uid": "35240-e6b57c5a-c73b-4aba-9002-c35c837840a8"
+                    },
+                    {
+                      "id": "54cab12e-f437-4b20-a3b8-b2b9ee13bdbe",
+                      "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"dataSourceID\": \"<integer>\",\n  \"dataSourceUID\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"ttlQueriesMs\": \"<integer>\",\n  \"ttlResourcesMs\": \"<integer>\",\n  \"useDefaultTTL\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            ":dataSourceUID",
+                            "cache"
+                          ],
+                          "variable": [
+                            {
+                              "key": "dataSourceUID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:51:29.000Z",
+                      "updatedAt": "2026-07-28T01:51:29.000Z",
+                      "uid": "35240-54cab12e-f437-4b20-a3b8-b2b9ee13bdbe"
+                    },
+                    {
+                      "id": "cad28d80-81c0-4415-88bd-78e85b2ffaa6",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"dataSourceID\": \"<integer>\",\n  \"dataSourceUID\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"ttlQueriesMs\": \"<integer>\",\n  \"ttlResourcesMs\": \"<integer>\",\n  \"useDefaultTTL\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            ":dataSourceUID",
+                            "cache"
+                          ],
+                          "variable": [
+                            {
+                              "key": "dataSourceUID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:51:29.000Z",
+                      "updatedAt": "2026-07-28T01:51:29.000Z",
+                      "uid": "35240-cad28d80-81c0-4415-88bd-78e85b2ffaa6"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:51:29.000Z",
+                  "updatedAt": "2026-07-28T01:51:29.000Z",
+                  "uid": "35240-4eacf68a-4e8e-4186-8298-4e79d67cf6fa"
+                }
+              ],
+              "id": "b2a49b0f-dcb6-440f-bdd2-60be49982e49",
+              "createdAt": "2026-07-28T01:51:29.000Z",
+              "updatedAt": "2026-07-28T01:51:29.000Z",
+              "uid": "35240-b2a49b0f-dcb6-440f-bdd2-60be49982e49"
+            }
+          ],
+          "id": "a3c8a2b4-1a6b-4c27-b034-f0837af39730",
+          "createdAt": "2026-07-28T01:51:29.000Z",
+          "updatedAt": "2026-07-28T01:51:29.000Z",
+          "uid": "35240-a3c8a2b4-1a6b-4c27-b034-f0837af39730"
+        }
+      ],
+      "id": "04566df1-92c0-4672-a2c2-f7ef818bea64",
+      "createdAt": "2026-07-28T01:51:29.000Z",
+      "updatedAt": "2026-07-28T01:51:29.000Z",
+      "uid": "35240-04566df1-92c0-4672-a2c2-f7ef818bea64"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

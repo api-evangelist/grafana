@@ -1,0 +1,998 @@
+{
+  "info": {
+    "_postman_id": "69e49309-fcf1-4d93-ae4d-1d59541a713b",
+    "name": "Grafana HTTP Access Timing API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:56:31.000Z",
+    "updatedAt": "2026-07-28T01:56:32.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-69e49309-fcf1-4d93-ae4d-1d59541a713b"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "provisioning",
+          "item": [
+            {
+              "name": "mute-timings",
+              "item": [
+                {
+                  "name": "{name}",
+                  "item": [
+                    {
+                      "name": "export",
+                      "item": [
+                        {
+                          "name": "Grafana Route Export Mute Timing",
+                          "id": "fc50915c-5a58-402b-ada8-8c498f0c3d27",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/provisioning/mute-timings/:name/export?download=false&format=json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "provisioning",
+                                "mute-timings",
+                                ":name",
+                                "export"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Whether to initiate a download of the file or not.",
+                                  "key": "download",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.",
+                                  "key": "format",
+                                  "value": "json"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "id": "596a25a9-e0a8-49c6-a863-5bf1cda3a9fa",
+                                  "key": "name",
+                                  "value": "<string>",
+                                  "description": "(Required) Mute timing name"
+                                }
+                              ]
+                            },
+                            "description": "The Export Mute Timing API operation in Grafana allows users to retrieve and export the configuration details of a specific mute timing by providing its name as a path parameter. This GET endpoint is part of the provisioning API and enables administrators to programmatically access mute timing definitions, which are used to suppress alert notifications during specified time periods. The exported configuration can be used for backup purposes, migrating configurations between Grafana instances, or version controlling alerting infrastructure as code. By calling this endpoint with the mute timing's name, users receive the complete configuration in a format that can be stored, shared, or re-imported into Grafana systems."
+                          },
+                          "response": [
+                            {
+                              "id": "d3d332fa-4600-4bca-9dbe-adca80960951",
+                              "name": "AlertingFileExport",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/provisioning/mute-timings/:name/export?download=false&format=json",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "provisioning",
+                                    "mute-timings",
+                                    ":name",
+                                    "export"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "Whether to initiate a download of the file or not.",
+                                      "key": "download",
+                                      "value": "false"
+                                    },
+                                    {
+                                      "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.",
+                                      "key": "format",
+                                      "value": "json"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "name"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"apiVersion\": \"<integer>\",\n  \"contactPoints\": [\n    {\n      \"name\": \"<string>\",\n      \"orgId\": \"<integer>\",\n      \"receivers\": [\n        {\n          \"disableResolveMessage\": \"<boolean>\",\n          \"settings\": {},\n          \"type\": \"<string>\",\n          \"uid\": \"<string>\"\n        },\n        {\n          \"disableResolveMessage\": \"<boolean>\",\n          \"settings\": {},\n          \"type\": \"<string>\",\n          \"uid\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"orgId\": \"<integer>\",\n      \"receivers\": [\n        {\n          \"disableResolveMessage\": \"<boolean>\",\n          \"settings\": {},\n          \"type\": \"<string>\",\n          \"uid\": \"<string>\"\n        },\n        {\n          \"disableResolveMessage\": \"<boolean>\",\n          \"settings\": {},\n          \"type\": \"<string>\",\n          \"uid\": \"<string>\"\n        }\n      ]\n    }\n  ],\n  \"groups\": [\n    {\n      \"folder\": \"<string>\",\n      \"interval\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"orgId\": \"<integer>\",\n      \"rules\": [\n        {\n          \"annotations\": {\n            \"officia_e6a\": \"<string>\",\n            \"Ut_ff\": \"<string>\",\n            \"proidente5\": \"<string>\"\n          },\n          \"condition\": \"<string>\",\n          \"dashboardUid\": \"<string>\",\n          \"data\": [\n            {\n              \"datasourceUid\": \"<string>\",\n              \"model\": {\n                \"labore_3\": {},\n                \"utab\": {}\n              },\n              \"queryType\": \"<string>\",\n              \"refId\": \"<string>\",\n              \"relativeTimeRange\": {\n                \"from\": \"<integer>\",\n                \"to\": \"<integer>\"\n              }\n            },\n            {\n              \"datasourceUid\": \"<string>\",\n              \"model\": {\n                \"pariatur_a_\": {},\n                \"nulla_320\": {}\n              },\n              \"queryType\": \"<string>\",\n              \"refId\": \"<string>\",\n              \"relativeTimeRange\": {\n                \"from\": \"<integer>\",\n                \"to\": \"<integer>\"\n              }\n            }\n          ],\n          \"execErrState\": \"Alerting\",\n          \"for\": \"<integer>\",\n          \"isPaused\": \"<boolean>\",\n          \"keepFiringFor\": \"<integer>\",\n          \"labels\": {\n            \"ut8\": \"<string>\",\n            \"qui_595\": \"<string>\"\n          },\n          \"missing_series_evals_to_resolve\": \"<integer>\",\n          \"noDataState\": \"Alerting\",\n          \"notification_settings\": {\n            \"active_time_intervals\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"group_by\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"group_interval\": \"<string>\",\n            \"group_wait\": \"<string>\",\n            \"mute_time_intervals\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"receiver\": \"<string>\",\n            \"repeat_interval\": \"<string>\"\n          },\n          \"panelId\": \"<integer>\",\n          \"record\": {\n            \"from\": \"<string>\",\n            \"metric\": \"<string>\",\n            \"targetDatasourceUid\": \"<string>\"\n          },\n          \"title\": \"<string>\",\n          \"uid\": \"<string>\"\n        },\n        {\n          \"annotations\": {\n            \"esse3\": \"<string>\",\n            \"sed51\": \"<string>\"\n          },\n          \"condition\": \"<string>\",\n          \"dashboardUid\": \"<string>\",\n          \"data\": [\n            {\n              \"datasourceUid\": \"<string>\",\n              \"model\": {\n                \"sed83\": {},\n                \"ut_b\": {}\n              },\n              \"queryType\": \"<string>\",\n              \"refId\": \"<string>\",\n              \"relativeTimeRange\": {\n                \"from\": \"<integer>\",\n                \"to\": \"<integer>\"\n              }\n            },\n            {\n              \"datasourceUid\": \"<string>\",\n              \"model\": {\n                \"pariatur_a9\": {}\n              },\n              \"queryType\": \"<string>\",\n              \"refId\": \"<string>\",\n              \"relativeTimeRange\": {\n                \"from\": \"<integer>\",\n                \"to\": \"<integer>\"\n              }\n            }\n          ],\n          \"execErrState\": \"Error\",\n          \"for\": \"<integer>\",\n          \"isPaused\": \"<boolean>\",\n          \"keepFiringFor\": \"<integer>\",\n          \"labels\": {\n            \"reprehenderit584\": \"<string>\",\n            \"magna_d\": \"<string>\",\n            \"voluptate_4\": \"<string>\",\n            \"dolor_d\": \"<string>\"\n          },\n          \"missing_series_evals_to_resolve\": \"<integer>\",\n          \"noDataState\": \"OK\",\n          \"notification_settings\": {\n            \"active_time_intervals\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"group_by\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"group_interval\": \"<string>\",\n            \"group_wait\": \"<string>\",\n            \"mute_time_intervals\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"receiver\": \"<string>\",\n            \"repeat_interval\": \"<string>\"\n          },\n          \"panelId\": \"<integer>\",\n          \"record\": {\n            \"from\": \"<string>\",\n            \"metric\": \"<string>\",\n            \"targetDatasourceUid\": \"<string>\"\n          },\n          \"title\": \"<string>\",\n          \"uid\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"folder\": \"<string>\",\n      \"interval\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"orgId\": \"<integer>\",\n      \"rules\": [\n        {\n          \"annotations\": {\n            \"qui_da\": \"<string>\"\n          },\n          \"condition\": \"<string>\",\n          \"dashboardUid\": \"<string>\",\n          \"data\": [\n            {\n              \"datasourceUid\": \"<string>\",\n              \"model\": {\n                \"commodo95\": {},\n                \"Excepteur_0e\": {},\n                \"sunt_e\": {}\n              },\n              \"queryType\": \"<string>\",\n              \"refId\": \"<string>\",\n              \"relativeTimeRange\": {\n                \"from\": \"<integer>\",\n                \"to\": \"<integer>\"\n              }\n            },\n            {\n              \"datasourceUid\": \"<string>\",\n              \"model\": {\n                \"suntc17\": {},\n                \"elit_8a0\": {}\n              },\n              \"queryType\": \"<string>\",\n              \"refId\": \"<string>\",\n              \"relativeTimeRange\": {\n                \"from\": \"<integer>\",\n                \"to\": \"<integer>\"\n              }\n            }\n          ],\n          \"execErrState\": \"Error\",\n          \"for\": \"<integer>\",\n          \"isPaused\": \"<boolean>\",\n          \"keepFiringFor\": \"<integer>\",\n          \"labels\": {\n            \"sint_527\": \"<string>\"\n          },\n          \"missing_series_evals_to_resolve\": \"<integer>\",\n          \"noDataState\": \"Alerting\",\n          \"notification_settings\": {\n            \"active_time_intervals\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"group_by\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"group_interval\": \"<string>\",\n            \"group_wait\": \"<string>\",\n            \"mute_time_intervals\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"receiver\": \"<string>\",\n            \"repeat_interval\": \"<string>\"\n          },\n          \"panelId\": \"<integer>\",\n          \"record\": {\n            \"from\": \"<string>\",\n            \"metric\": \"<string>\",\n            \"targetDatasourceUid\": \"<string>\"\n          },\n          \"title\": \"<string>\",\n          \"uid\": \"<string>\"\n        },\n        {\n          \"annotations\": {\n            \"aliquip4a\": \"<string>\"\n          },\n          \"condition\": \"<string>\",\n          \"dashboardUid\": \"<string>\",\n          \"data\": [\n            {\n              \"datasourceUid\": \"<string>\",\n              \"model\": {\n                \"ex7\": {},\n                \"Lorem_9a5\": {}\n              },\n              \"queryType\": \"<string>\",\n              \"refId\": \"<string>\",\n              \"relativeTimeRange\": {\n                \"from\": \"<integer>\",\n                \"to\": \"<integer>\"\n              }\n            },\n            {\n              \"datasourceUid\": \"<string>\",\n              \"model\": {\n                \"non_298\": {},\n                \"consequate\": {}\n              },\n              \"queryType\": \"<string>\",\n              \"refId\": \"<string>\",\n              \"relativeTimeRange\": {\n                \"from\": \"<integer>\",\n                \"to\": \"<integer>\"\n              }\n            }\n          ],\n          \"execErrState\": \"OK\",\n          \"for\": \"<integer>\",\n          \"isPaused\": \"<boolean>\",\n          \"keepFiringFor\": \"<integer>\",\n          \"labels\": {\n            \"voluptatee\": \"<string>\",\n            \"pariatur6\": \"<string>\",\n            \"consectetur_58b\": \"<string>\",\n            \"id_ea\": \"<string>\"\n          },\n          \"missing_series_evals_to_resolve\": \"<integer>\",\n          \"noDataState\": \"OK\",\n          \"notification_settings\": {\n            \"active_time_intervals\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"group_by\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"group_interval\": \"<string>\",\n            \"group_wait\": \"<string>\",\n            \"mute_time_intervals\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"receiver\": \"<string>\",\n            \"repeat_interval\": \"<string>\"\n          },\n          \"panelId\": \"<integer>\",\n          \"record\": {\n            \"from\": \"<string>\",\n            \"metric\": \"<string>\",\n            \"targetDatasourceUid\": \"<string>\"\n          },\n          \"title\": \"<string>\",\n          \"uid\": \"<string>\"\n        }\n      ]\n    }\n  ],\n  \"muteTimes\": [\n    {\n      \"name\": \"<string>\",\n      \"orgId\": \"<integer>\",\n      \"time_intervals\": [\n        {\n          \"name\": \"<string>\",\n          \"time_intervals\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            }\n          ]\n        },\n        {\n          \"name\": \"<string>\",\n          \"time_intervals\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"orgId\": \"<integer>\",\n      \"time_intervals\": [\n        {\n          \"name\": \"<string>\",\n          \"time_intervals\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            }\n          ]\n        },\n        {\n          \"name\": \"<string>\",\n          \"time_intervals\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"policies\": [\n    {\n      \"active_time_intervals\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"continue\": \"<boolean>\",\n      \"group_by\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"group_interval\": \"<string>\",\n      \"group_wait\": \"<string>\",\n      \"match\": {\n        \"enim_b5\": \"<string>\"\n      },\n      \"match_re\": {\n        \"tempor_d1b\": \"<string>\",\n        \"ipsum3b\": \"<string>\"\n      },\n      \"matchers\": [\n        {\n          \"Name\": \"<string>\",\n          \"Type\": \"<integer>\",\n          \"Value\": \"<string>\"\n        },\n        {\n          \"Name\": \"<string>\",\n          \"Type\": \"<integer>\",\n          \"Value\": \"<string>\"\n        }\n      ],\n      \"mute_time_intervals\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"object_matchers\": [\n        [\n          \"<string>\",\n          \"<string>\"\n        ],\n        [\n          \"<string>\",\n          \"<string>\"\n        ]\n      ],\n      \"orgId\": \"<integer>\",\n      \"receiver\": \"<string>\",\n      \"repeat_interval\": \"<string>\",\n      \"routes\": [\n        {\n          \"active_time_intervals\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"continue\": \"<boolean>\",\n          \"group_by\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"group_interval\": \"<string>\",\n          \"group_wait\": \"<string>\",\n          \"match\": {\n            \"Duis5\": \"<string>\",\n            \"eiusmod_ef\": \"<string>\"\n          },\n          \"match_re\": {\n            \"ad22\": \"<string>\",\n            \"sit_5c\": \"<string>\",\n            \"sint_48a\": \"<string>\"\n          },\n          \"matchers\": [\n            {\n              \"Name\": \"<string>\",\n              \"Type\": \"<integer>\",\n              \"Value\": \"<string>\"\n            },\n            {\n              \"Name\": \"<string>\",\n              \"Type\": \"<integer>\",\n              \"Value\": \"<string>\"\n            }\n          ],\n          \"mute_time_intervals\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"object_matchers\": [\n            [\n              \"<string>\",\n              \"<string>\"\n            ],\n            [\n              \"<string>\",\n              \"<string>\"\n            ]\n          ],\n          \"receiver\": \"<string>\",\n          \"repeat_interval\": \"<string>\",\n          \"routes\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            }\n          ]\n        },\n        {\n          \"active_time_intervals\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"continue\": \"<boolean>\",\n          \"group_by\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"group_interval\": \"<string>\",\n          \"group_wait\": \"<string>\",\n          \"match\": {\n            \"dolore11\": \"<string>\",\n            \"magna18\": \"<string>\"\n          },\n          \"match_re\": {\n            \"eu00a\": \"<string>\"\n          },\n          \"matchers\": [\n            {\n              \"Name\": \"<string>\",\n              \"Type\": \"<integer>\",\n              \"Value\": \"<string>\"\n            },\n            {\n              \"Name\": \"<string>\",\n              \"Type\": \"<integer>\",\n              \"Value\": \"<string>\"\n            }\n          ],\n          \"mute_time_intervals\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"object_matchers\": [\n            [\n              \"<string>\",\n              \"<string>\"\n            ],\n            [\n              \"<string>\",\n              \"<string>\"\n            ]\n          ],\n          \"receiver\": \"<string>\",\n          \"repeat_interval\": \"<string>\",\n          \"routes\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"active_time_intervals\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"continue\": \"<boolean>\",\n      \"group_by\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"group_interval\": \"<string>\",\n      \"group_wait\": \"<string>\",\n      \"match\": {\n        \"culpa_19\": \"<string>\",\n        \"Duis_7_\": \"<string>\"\n      },\n      \"match_re\": {\n        \"eiusmod_52\": \"<string>\",\n        \"laboris37\": \"<string>\",\n        \"tempor26\": \"<string>\",\n        \"Duis75a\": \"<string>\",\n        \"utd3\": \"<string>\"\n      },\n      \"matchers\": [\n        {\n          \"Name\": \"<string>\",\n          \"Type\": \"<integer>\",\n          \"Value\": \"<string>\"\n        },\n        {\n          \"Name\": \"<string>\",\n          \"Type\": \"<integer>\",\n          \"Value\": \"<string>\"\n        }\n      ],\n      \"mute_time_intervals\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"object_matchers\": [\n        [\n          \"<string>\",\n          \"<string>\"\n        ],\n        [\n          \"<string>\",\n          \"<string>\"\n        ]\n      ],\n      \"orgId\": \"<integer>\",\n      \"receiver\": \"<string>\",\n      \"repeat_interval\": \"<string>\",\n      \"routes\": [\n        {\n          \"active_time_intervals\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"continue\": \"<boolean>\",\n          \"group_by\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"group_interval\": \"<string>\",\n          \"group_wait\": \"<string>\",\n          \"match\": {\n            \"amet_8b0\": \"<string>\",\n            \"occaecat6\": \"<string>\"\n          },\n          \"match_re\": {\n            \"dolor_44\": \"<string>\",\n            \"ut3c\": \"<string>\"\n          },\n          \"matchers\": [\n            {\n              \"Name\": \"<string>\",\n              \"Type\": \"<integer>\",\n              \"Value\": \"<string>\"\n            },\n            {\n              \"Name\": \"<string>\",\n              \"Type\": \"<integer>\",\n              \"Value\": \"<string>\"\n            }\n          ],\n          \"mute_time_intervals\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"object_matchers\": [\n            [\n              \"<string>\",\n              \"<string>\"\n            ],\n            [\n              \"<string>\",\n              \"<string>\"\n            ]\n          ],\n          \"receiver\": \"<string>\",\n          \"repeat_interval\": \"<string>\",\n          \"routes\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            }\n          ]\n        },\n        {\n          \"active_time_intervals\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"continue\": \"<boolean>\",\n          \"group_by\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"group_interval\": \"<string>\",\n          \"group_wait\": \"<string>\",\n          \"match\": {\n            \"nisicb\": \"<string>\"\n          },\n          \"match_re\": {\n            \"ex_c31\": \"<string>\",\n            \"do9ef\": \"<string>\",\n            \"adipisicing66\": \"<string>\"\n          },\n          \"matchers\": [\n            {\n              \"Name\": \"<string>\",\n              \"Type\": \"<integer>\",\n              \"Value\": \"<string>\"\n            },\n            {\n              \"Name\": \"<string>\",\n              \"Type\": \"<integer>\",\n              \"Value\": \"<string>\"\n            }\n          ],\n          \"mute_time_intervals\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"object_matchers\": [\n            [\n              \"<string>\",\n              \"<string>\"\n            ],\n            [\n              \"<string>\",\n              \"<string>\"\n            ]\n          ],\n          \"receiver\": \"<string>\",\n          \"repeat_interval\": \"<string>\",\n          \"routes\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+                              "createdAt": "2026-07-28T01:56:32.000Z",
+                              "updatedAt": "2026-07-28T01:56:32.000Z",
+                              "uid": "35240-d3d332fa-4600-4bca-9dbe-adca80960951"
+                            },
+                            {
+                              "id": "cfb9653f-7788-4b04-8424-5de7ea7e632d",
+                              "name": "PermissionDenied",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/provisioning/mute-timings/:name/export?download=false&format=json",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "provisioning",
+                                    "mute-timings",
+                                    ":name",
+                                    "export"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "Whether to initiate a download of the file or not.",
+                                      "key": "download",
+                                      "value": "false"
+                                    },
+                                    {
+                                      "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence.",
+                                      "key": "format",
+                                      "value": "json"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "name"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{}",
+                              "createdAt": "2026-07-28T01:56:32.000Z",
+                              "updatedAt": "2026-07-28T01:56:32.000Z",
+                              "uid": "35240-cfb9653f-7788-4b04-8424-5de7ea7e632d"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T01:56:32.000Z",
+                          "updatedAt": "2026-07-28T01:56:32.000Z",
+                          "uid": "35240-fc50915c-5a58-402b-ada8-8c498f0c3d27"
+                        }
+                      ],
+                      "id": "ee7b4672-2a88-4fc1-9d37-6d7b3568b480",
+                      "createdAt": "2026-07-28T01:56:32.000Z",
+                      "updatedAt": "2026-07-28T01:56:32.000Z",
+                      "uid": "35240-ee7b4672-2a88-4fc1-9d37-6d7b3568b480"
+                    },
+                    {
+                      "name": "Grafana Route Get Mute Timing",
+                      "id": "a2e648be-d1cb-4ffe-ab18-e450374152fd",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/provisioning/mute-timings/:name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "provisioning",
+                            "mute-timings",
+                            ":name"
+                          ],
+                          "variable": [
+                            {
+                              "id": "e3107a2d-5063-4166-8cbc-2c8a947954b9",
+                              "key": "name",
+                              "value": "<string>",
+                              "description": "(Required) Mute timing name"
+                            }
+                          ]
+                        },
+                        "description": "The Get Mute Timing operation retrieves a specific mute timing configuration by its unique name from Grafana's alerting system. Mute timings are used to define time intervals during which alert notifications should be suppressed, allowing users to prevent alerts during scheduled maintenance windows or known periods of reduced monitoring. By providing the mute timing name as a path parameter, this GET endpoint returns the complete configuration details of that particular mute timing, including its time intervals, recurrence rules, and any associated metadata, enabling users to review or audit existing notification suppression schedules programmatically."
+                      },
+                      "response": [
+                        {
+                          "id": "728d9ab6-e167-4a31-bf82-8e48fd5b8682",
+                          "name": "MuteTimeInterval",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/provisioning/mute-timings/:name",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "provisioning",
+                                "mute-timings",
+                                ":name"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "name"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T01:56:32.000Z",
+                          "updatedAt": "2026-07-28T01:56:32.000Z",
+                          "uid": "35240-728d9ab6-e167-4a31-bf82-8e48fd5b8682"
+                        },
+                        {
+                          "id": "1a6a3606-c691-4261-a804-92c0c859e226",
+                          "name": "Not found.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/provisioning/mute-timings/:name",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "provisioning",
+                                "mute-timings",
+                                ":name"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "name"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:56:32.000Z",
+                          "updatedAt": "2026-07-28T01:56:32.000Z",
+                          "uid": "35240-1a6a3606-c691-4261-a804-92c0c859e226"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:56:32.000Z",
+                      "updatedAt": "2026-07-28T01:56:32.000Z",
+                      "uid": "35240-a2e648be-d1cb-4ffe-ab18-e450374152fd"
+                    },
+                    {
+                      "name": "Grafana Route Put Mute Timing",
+                      "id": "cb5c98c3-2209-41dc-8d8f-45b3b271021a",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "X-Disable-Provenance",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/provisioning/mute-timings/:name",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "provisioning",
+                            "mute-timings",
+                            ":name"
+                          ],
+                          "variable": [
+                            {
+                              "id": "6a8ce876-0e49-4f7c-99e4-98fac6846bb7",
+                              "key": "name",
+                              "value": "<string>",
+                              "description": "(Required) Mute timing name"
+                            }
+                          ]
+                        },
+                        "description": "The PUT operation on the `/v1/provisioning/mute-timings/{name}` endpoint in Grafana is used to update or replace an existing mute timing configuration identified by its name parameter. Mute timings define time-based rules that silence alert notifications during specific periods, such as maintenance windows or non-business hours. This endpoint allows administrators to modify the schedule, time intervals, or other properties of a previously created mute timing by providing the complete updated configuration in the request body. The operation requires appropriate authentication and permissions to manage alert notification policies, and it will overwrite the existing mute timing with the new definition provided in the PUT request."
+                      },
+                      "response": [
+                        {
+                          "id": "21cef234-c632-4c83-b6d9-029d1ff95d6d",
+                          "name": "MuteTimeInterval",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "X-Disable-Provenance",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/provisioning/mute-timings/:name",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "provisioning",
+                                "mute-timings",
+                                ":name"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "name"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Accepted",
+                          "code": 202,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T01:56:32.000Z",
+                          "updatedAt": "2026-07-28T01:56:32.000Z",
+                          "uid": "35240-21cef234-c632-4c83-b6d9-029d1ff95d6d"
+                        },
+                        {
+                          "id": "955884b4-ab4c-4a66-80ed-ae558583330a",
+                          "name": "ValidationError",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "X-Disable-Provenance",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/provisioning/mute-timings/:name",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "provisioning",
+                                "mute-timings",
+                                ":name"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "name"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:56:32.000Z",
+                          "updatedAt": "2026-07-28T01:56:32.000Z",
+                          "uid": "35240-955884b4-ab4c-4a66-80ed-ae558583330a"
+                        },
+                        {
+                          "id": "a971093b-b8bc-48f6-8994-f033b6964d97",
+                          "name": "PublicError",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "X-Disable-Provenance",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/provisioning/mute-timings/:name",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "provisioning",
+                                "mute-timings",
+                                ":name"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "name"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Conflict",
+                          "code": 409,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"extra\": {\n    \"Ut_e36\": {},\n    \"consecteturc_\": {}\n  },\n  \"message\": \"<string>\",\n  \"messageId\": \"<string>\",\n  \"statusCode\": \"<integer>\"\n}",
+                          "createdAt": "2026-07-28T01:56:32.000Z",
+                          "updatedAt": "2026-07-28T01:56:32.000Z",
+                          "uid": "35240-a971093b-b8bc-48f6-8994-f033b6964d97"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:56:32.000Z",
+                      "updatedAt": "2026-07-28T01:56:32.000Z",
+                      "uid": "35240-cb5c98c3-2209-41dc-8d8f-45b3b271021a"
+                    },
+                    {
+                      "name": "Grafana Route Delete Mute Timing",
+                      "id": "c0232b1d-c847-48a9-8590-08c374457894",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "X-Disable-Provenance",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/provisioning/mute-timings/:name?version=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "provisioning",
+                            "mute-timings",
+                            ":name"
+                          ],
+                          "query": [
+                            {
+                              "description": "Version of mute timing to use for optimistic concurrency. Leave empty to disable validation",
+                              "key": "version",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "1817ff90-d89d-4a26-97b1-91a4031c9198",
+                              "key": "name",
+                              "value": "<string>",
+                              "description": "(Required) Mute timing name"
+                            }
+                          ]
+                        },
+                        "description": "This API operation deletes a specific mute timing configuration in Grafana's alerting system by its unique name. Mute timings are schedules that define time intervals during which alert notifications should be suppressed, and this DELETE endpoint removes the identified mute timing from the provisioning configuration. The operation requires the mute timing's name as a path parameter and is typically used when a previously configured silence schedule is no longer needed or needs to be replaced with a different configuration."
+                      },
+                      "response": [
+                        {
+                          "id": "1cf04fe9-f703-4d17-9dbd-b8cc4c3980b7",
+                          "name": "The mute timing was deleted successfully.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "X-Disable-Provenance",
+                                "value": "<string>"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/provisioning/mute-timings/:name?version=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "provisioning",
+                                "mute-timings",
+                                ":name"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Version of mute timing to use for optimistic concurrency. Leave empty to disable validation",
+                                  "key": "version",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "name"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:56:32.000Z",
+                          "updatedAt": "2026-07-28T01:56:32.000Z",
+                          "uid": "35240-1cf04fe9-f703-4d17-9dbd-b8cc4c3980b7"
+                        },
+                        {
+                          "id": "3bb82ec3-445a-47af-b6c1-5d69f98c3685",
+                          "name": "PublicError",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "X-Disable-Provenance",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/provisioning/mute-timings/:name?version=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "provisioning",
+                                "mute-timings",
+                                ":name"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Version of mute timing to use for optimistic concurrency. Leave empty to disable validation",
+                                  "key": "version",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "name"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Conflict",
+                          "code": 409,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"extra\": {\n    \"Ut_e36\": {},\n    \"consecteturc_\": {}\n  },\n  \"message\": \"<string>\",\n  \"messageId\": \"<string>\",\n  \"statusCode\": \"<integer>\"\n}",
+                          "createdAt": "2026-07-28T01:56:32.000Z",
+                          "updatedAt": "2026-07-28T01:56:32.000Z",
+                          "uid": "35240-3bb82ec3-445a-47af-b6c1-5d69f98c3685"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:56:32.000Z",
+                      "updatedAt": "2026-07-28T01:56:32.000Z",
+                      "uid": "35240-c0232b1d-c847-48a9-8590-08c374457894"
+                    }
+                  ],
+                  "id": "7fc52433-3f38-4732-ab91-686cd990bc86",
+                  "createdAt": "2026-07-28T01:56:32.000Z",
+                  "updatedAt": "2026-07-28T01:56:32.000Z",
+                  "uid": "35240-7fc52433-3f38-4732-ab91-686cd990bc86"
+                },
+                {
+                  "name": "Grafana Route Post Mute Timing",
+                  "id": "ee732fce-4af0-43a5-b195-3604c05e734c",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Disable-Provenance",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/provisioning/mute-timings",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "provisioning",
+                        "mute-timings"
+                      ]
+                    },
+                    "description": "The POST /v1/provisioning/mute-timings endpoint in Grafana allows administrators to create a new mute timing configuration through the provisioning API. Mute timings define specific time intervals during which alert notifications should be silenced, such as maintenance windows, weekends, or business hours exclusions. By posting to this endpoint with the appropriate JSON payload containing the timing specifications (including recurrence rules, time ranges, and date intervals), users can programmatically establish when their alerting system should suppress notifications without requiring manual configuration through the Grafana UI. This is particularly useful for implementing infrastructure-as-code practices and automating alert management across multiple Grafana instances."
+                  },
+                  "response": [
+                    {
+                      "id": "62e2b045-5947-4382-a458-7daee2530072",
+                      "name": "MuteTimeInterval",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-Disable-Provenance",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/provisioning/mute-timings",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "provisioning",
+                            "mute-timings"
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:56:32.000Z",
+                      "updatedAt": "2026-07-28T01:56:32.000Z",
+                      "uid": "35240-62e2b045-5947-4382-a458-7daee2530072"
+                    },
+                    {
+                      "id": "43e14ca8-5a3c-4d3e-858d-a36e86a03768",
+                      "name": "ValidationError",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-Disable-Provenance",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/provisioning/mute-timings",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "provisioning",
+                            "mute-timings"
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:56:32.000Z",
+                      "updatedAt": "2026-07-28T01:56:32.000Z",
+                      "uid": "35240-43e14ca8-5a3c-4d3e-858d-a36e86a03768"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:56:32.000Z",
+                  "updatedAt": "2026-07-28T01:56:32.000Z",
+                  "uid": "35240-ee732fce-4af0-43a5-b195-3604c05e734c"
+                }
+              ],
+              "id": "c632212b-2eff-4ab3-a093-96c14670acdb",
+              "createdAt": "2026-07-28T01:56:32.000Z",
+              "updatedAt": "2026-07-28T01:56:32.000Z",
+              "uid": "35240-c632212b-2eff-4ab3-a093-96c14670acdb"
+            }
+          ],
+          "id": "4cad3335-634c-4a89-b6ab-b934e8d3dbf5",
+          "createdAt": "2026-07-28T01:56:32.000Z",
+          "updatedAt": "2026-07-28T01:56:32.000Z",
+          "uid": "35240-4cad3335-634c-4a89-b6ab-b934e8d3dbf5"
+        }
+      ],
+      "id": "48ee0de9-f975-49bd-8d7c-a6698e1f7723",
+      "createdAt": "2026-07-28T01:56:32.000Z",
+      "updatedAt": "2026-07-28T01:56:32.000Z",
+      "uid": "35240-48ee0de9-f975-49bd-8d7c-a6698e1f7723"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

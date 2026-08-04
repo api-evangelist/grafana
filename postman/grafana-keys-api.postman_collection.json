@@ -1,0 +1,332 @@
+{
+  "info": {
+    "_postman_id": "e6f632da-b5e9-433d-b228-3f2151c27c99",
+    "name": "Grafana HTTP Access Keys API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:53:13.000Z",
+    "updatedAt": "2026-07-28T01:53:14.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-e6f632da-b5e9-433d-b228-3f2151c27c99"
+  },
+  "item": [
+    {
+      "name": "snapshots-delete",
+      "item": [
+        {
+          "name": "{deleteKey}",
+          "item": [
+            {
+              "name": "Grafana Delete Dashboard Snapshot By Delete Key",
+              "id": "d31acf52-d64f-4627-82fe-1dd1c218bc48",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/snapshots-delete/:deleteKey",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "snapshots-delete",
+                    ":deleteKey"
+                  ],
+                  "variable": [
+                    {
+                      "id": "bfff86ba-7a5f-43a3-87b8-f066244da0a2",
+                      "key": "deleteKey",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "This API operation allows you to remove a dashboard snapshot from Grafana using its unique delete key. When a snapshot is created, it generates a special delete key that provides authorized deletion access without requiring authentication. By making a GET request to this endpoint with the appropriate deleteKey parameter, the associated snapshot will be permanently removed from the system. This provides a secure way to clean up temporary or unwanted dashboard snapshots, particularly useful when snapshots were created with delete keys for self-service removal by users who may not have direct administrative access to the Grafana instance."
+              },
+              "response": [
+                {
+                  "id": "9606211b-9013-4b57-b1cb-aa857c49307d",
+                  "name": "An OKResponse is returned if the request was successful.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/snapshots-delete/:deleteKey",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "snapshots-delete",
+                        ":deleteKey"
+                      ],
+                      "variable": [
+                        {
+                          "key": "deleteKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:14.000Z",
+                  "updatedAt": "2026-07-28T01:53:14.000Z",
+                  "uid": "35240-9606211b-9013-4b57-b1cb-aa857c49307d"
+                },
+                {
+                  "id": "cf804cb4-6cab-4b9b-a67d-0cf717f764c6",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/snapshots-delete/:deleteKey",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "snapshots-delete",
+                        ":deleteKey"
+                      ],
+                      "variable": [
+                        {
+                          "key": "deleteKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:14.000Z",
+                  "updatedAt": "2026-07-28T01:53:14.000Z",
+                  "uid": "35240-cf804cb4-6cab-4b9b-a67d-0cf717f764c6"
+                },
+                {
+                  "id": "166c5ea6-cbce-4381-9a43-fb33d7f135e1",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/snapshots-delete/:deleteKey",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "snapshots-delete",
+                        ":deleteKey"
+                      ],
+                      "variable": [
+                        {
+                          "key": "deleteKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:14.000Z",
+                  "updatedAt": "2026-07-28T01:53:14.000Z",
+                  "uid": "35240-166c5ea6-cbce-4381-9a43-fb33d7f135e1"
+                },
+                {
+                  "id": "cbf6ce49-1d85-46ab-898f-dff52633d240",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/snapshots-delete/:deleteKey",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "snapshots-delete",
+                        ":deleteKey"
+                      ],
+                      "variable": [
+                        {
+                          "key": "deleteKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:14.000Z",
+                  "updatedAt": "2026-07-28T01:53:14.000Z",
+                  "uid": "35240-cbf6ce49-1d85-46ab-898f-dff52633d240"
+                },
+                {
+                  "id": "f67063b5-1882-4524-91d8-21d987e5b9f1",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/snapshots-delete/:deleteKey",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "snapshots-delete",
+                        ":deleteKey"
+                      ],
+                      "variable": [
+                        {
+                          "key": "deleteKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:53:14.000Z",
+                  "updatedAt": "2026-07-28T01:53:14.000Z",
+                  "uid": "35240-f67063b5-1882-4524-91d8-21d987e5b9f1"
+                }
+              ],
+              "createdAt": "2026-07-28T01:53:14.000Z",
+              "updatedAt": "2026-07-28T01:53:14.000Z",
+              "uid": "35240-d31acf52-d64f-4627-82fe-1dd1c218bc48"
+            }
+          ],
+          "id": "20285a83-3d2d-46d0-b79f-36fe19299caf",
+          "createdAt": "2026-07-28T01:53:14.000Z",
+          "updatedAt": "2026-07-28T01:53:14.000Z",
+          "uid": "35240-20285a83-3d2d-46d0-b79f-36fe19299caf"
+        }
+      ],
+      "id": "4eddf22d-3bff-45a3-8ee2-61ff044e3b54",
+      "createdAt": "2026-07-28T01:53:14.000Z",
+      "updatedAt": "2026-07-28T01:53:14.000Z",
+      "uid": "35240-4eddf22d-3bff-45a3-8ee2-61ff044e3b54"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

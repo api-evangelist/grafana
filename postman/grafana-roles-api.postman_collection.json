@@ -1,0 +1,2525 @@
+{
+  "info": {
+    "_postman_id": "bd3f2ac2-b360-4d63-bc15-072f41311420",
+    "name": "Grafana HTTP Access Roles API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:55:35.000Z",
+    "updatedAt": "2026-07-28T01:55:36.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-bd3f2ac2-b360-4d63-bc15-072f41311420"
+  },
+  "item": [
+    {
+      "name": "access-control",
+      "item": [
+        {
+          "name": "roles",
+          "item": [
+            {
+              "name": "Grafana List Roles",
+              "id": "75c927b6-1aaa-48db-ac22-7c8368ebb569",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/access-control/roles?delegatable=<boolean>&includeHidden=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "access-control",
+                    "roles"
+                  ],
+                  "query": [
+                    {
+                      "key": "delegatable",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeHidden",
+                      "value": "<boolean>"
+                    }
+                  ]
+                },
+                "description": "<endpoint>\nThis API operation retrieves a list of all available roles within Grafana's access control system. When invoked with a GET request to the /access-control/roles endpoint, it returns a comprehensive collection of role definitions that exist in the Grafana instance, including both built-in system roles and any custom roles that have been created. The response typically includes role metadata such as role names, descriptions, UIDs, permissions associated with each role, and other relevant attributes that define the access control capabilities granted to users or teams assigned to these roles. This endpoint is commonly used by administrators to audit existing roles, understand the permission structure, or retrieve role information programmatically for integration with external systems or for displaying role management interfaces.\n</endpoint>"
+              },
+              "response": [
+                {
+                  "id": "581669eb-a2a9-4af4-bf9f-c369c1b88496",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/access-control/roles?delegatable=<boolean>&includeHidden=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "access-control",
+                        "roles"
+                      ],
+                      "query": [
+                        {
+                          "key": "delegatable",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "includeHidden",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  {\n    \"created\": \"<string>\",\n    \"description\": \"<string>\",\n    \"displayName\": \"<string>\",\n    \"group\": \"<string>\",\n    \"name\": \"<string>\",\n    \"uid\": \"<string>\",\n    \"updated\": \"<string>\",\n    \"version\": \"<integer>\",\n    \"delegatable\": \"<boolean>\",\n    \"global\": \"<boolean>\",\n    \"hidden\": \"<boolean>\",\n    \"mapped\": \"<boolean>\",\n    \"permissions\": [\n      {\n        \"action\": \"<string>\",\n        \"created\": \"<string>\",\n        \"scope\": \"<string>\",\n        \"updated\": \"<string>\"\n      },\n      {\n        \"action\": \"<string>\",\n        \"created\": \"<string>\",\n        \"scope\": \"<string>\",\n        \"updated\": \"<string>\"\n      }\n    ]\n  },\n  {\n    \"created\": \"<string>\",\n    \"description\": \"<string>\",\n    \"displayName\": \"<string>\",\n    \"group\": \"<string>\",\n    \"name\": \"<string>\",\n    \"uid\": \"<string>\",\n    \"updated\": \"<string>\",\n    \"version\": \"<integer>\",\n    \"delegatable\": \"<boolean>\",\n    \"global\": \"<boolean>\",\n    \"hidden\": \"<boolean>\",\n    \"mapped\": \"<boolean>\",\n    \"permissions\": [\n      {\n        \"action\": \"<string>\",\n        \"created\": \"<string>\",\n        \"scope\": \"<string>\",\n        \"updated\": \"<string>\"\n      },\n      {\n        \"action\": \"<string>\",\n        \"created\": \"<string>\",\n        \"scope\": \"<string>\",\n        \"updated\": \"<string>\"\n      }\n    ]\n  }\n]",
+                  "createdAt": "2026-07-28T01:55:36.000Z",
+                  "updatedAt": "2026-07-28T01:55:36.000Z",
+                  "uid": "35240-581669eb-a2a9-4af4-bf9f-c369c1b88496"
+                },
+                {
+                  "id": "43c7eddc-d81e-440b-8ac0-31c2c2abeeb5",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/access-control/roles?delegatable=<boolean>&includeHidden=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "access-control",
+                        "roles"
+                      ],
+                      "query": [
+                        {
+                          "key": "delegatable",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "includeHidden",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:36.000Z",
+                  "updatedAt": "2026-07-28T01:55:36.000Z",
+                  "uid": "35240-43c7eddc-d81e-440b-8ac0-31c2c2abeeb5"
+                },
+                {
+                  "id": "9b08ab28-c067-4d7d-a42f-0a79ee059751",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/access-control/roles?delegatable=<boolean>&includeHidden=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "access-control",
+                        "roles"
+                      ],
+                      "query": [
+                        {
+                          "key": "delegatable",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "includeHidden",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:55:36.000Z",
+                  "updatedAt": "2026-07-28T01:55:36.000Z",
+                  "uid": "35240-9b08ab28-c067-4d7d-a42f-0a79ee059751"
+                }
+              ],
+              "createdAt": "2026-07-28T01:55:36.000Z",
+              "updatedAt": "2026-07-28T01:55:36.000Z",
+              "uid": "35240-75c927b6-1aaa-48db-ac22-7c8368ebb569"
+            }
+          ],
+          "id": "9097183e-8cbd-4538-a6f6-0785c88b8819",
+          "createdAt": "2026-07-28T01:55:36.000Z",
+          "updatedAt": "2026-07-28T01:55:36.000Z",
+          "uid": "35240-9097183e-8cbd-4538-a6f6-0785c88b8819"
+        },
+        {
+          "name": "teams",
+          "item": [
+            {
+              "name": "roles",
+              "item": [
+                {
+                  "name": "search",
+                  "item": [
+                    {
+                      "name": "Grafana List Teams Roles",
+                      "id": "1fc3e030-2c4b-400b-a73a-b965b1d77ab2",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"includeHidden\": \"<boolean>\",\n  \"orgId\": \"<integer>\",\n  \"teamIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"userIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/access-control/teams/roles/search",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "access-control",
+                            "teams",
+                            "roles",
+                            "search"
+                          ]
+                        },
+                        "description": "This API operation performs a search for team roles within Grafana's access control system. It uses a POST request to the /access-control/teams/roles/search endpoint to retrieve a list of roles that are associated with teams in the Grafana instance. The operation allows administrators to query and discover which roles have been assigned to various teams, helping them manage permissions and access control policies. This is useful for auditing team permissions, understanding role assignments, and maintaining proper access governance across the organization's Grafana deployment."
+                      },
+                      "response": [
+                        {
+                          "id": "e9bd114a-4615-4328-ba01-b64fe66bd392",
+                          "name": "(empty)",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"includeHidden\": \"<boolean>\",\n  \"orgId\": \"<integer>\",\n  \"teamIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"userIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/teams/roles/search",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "teams",
+                                "roles",
+                                "search"
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"ut_3a\": {},\n  \"in4\": {}\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-e9bd114a-4615-4328-ba01-b64fe66bd392"
+                        },
+                        {
+                          "id": "407e56a8-8818-4356-886b-cfcf0c1bcf67",
+                          "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"includeHidden\": \"<boolean>\",\n  \"orgId\": \"<integer>\",\n  \"teamIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"userIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/teams/roles/search",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "teams",
+                                "roles",
+                                "search"
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-407e56a8-8818-4356-886b-cfcf0c1bcf67"
+                        },
+                        {
+                          "id": "a79199d0-2c3c-46e2-8512-769b47962c07",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"includeHidden\": \"<boolean>\",\n  \"orgId\": \"<integer>\",\n  \"teamIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"userIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/teams/roles/search",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "teams",
+                                "roles",
+                                "search"
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-a79199d0-2c3c-46e2-8512-769b47962c07"
+                        },
+                        {
+                          "id": "6ea49835-dd74-4601-bb42-9873f229f48a",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"includeHidden\": \"<boolean>\",\n  \"orgId\": \"<integer>\",\n  \"teamIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"userIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/teams/roles/search",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "teams",
+                                "roles",
+                                "search"
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-6ea49835-dd74-4601-bb42-9873f229f48a"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:55:36.000Z",
+                      "updatedAt": "2026-07-28T01:55:36.000Z",
+                      "uid": "35240-1fc3e030-2c4b-400b-a73a-b965b1d77ab2"
+                    }
+                  ],
+                  "id": "fd620ab8-bc0c-4d43-bd49-71d1778f719b",
+                  "createdAt": "2026-07-28T01:55:36.000Z",
+                  "updatedAt": "2026-07-28T01:55:36.000Z",
+                  "uid": "35240-fd620ab8-bc0c-4d43-bd49-71d1778f719b"
+                }
+              ],
+              "id": "09354d99-23c7-48ec-a522-86a9197ea318",
+              "createdAt": "2026-07-28T01:55:36.000Z",
+              "updatedAt": "2026-07-28T01:55:36.000Z",
+              "uid": "35240-09354d99-23c7-48ec-a522-86a9197ea318"
+            },
+            {
+              "name": "{teamId}",
+              "item": [
+                {
+                  "name": "roles",
+                  "item": [
+                    {
+                      "name": "Grafana List Team Roles",
+                      "id": "0ca343b9-4fa3-4d82-8793-db2bf894cd43",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/access-control/teams/:teamId/roles",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "access-control",
+                            "teams",
+                            ":teamId",
+                            "roles"
+                          ],
+                          "variable": [
+                            {
+                              "id": "8bd54293-5032-417e-950a-c566343a1453",
+                              "key": "teamId",
+                              "value": "<integer>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation retrieves all roles assigned to a specific team in Grafana's access control system. By making a GET request to the endpoint with a team identifier, users can view the complete list of roles and their associated permissions that have been granted to that particular team. This is useful for auditing team permissions, understanding what access levels a team has across different resources, and managing role-based access control (RBAC) configurations within Grafana."
+                      },
+                      "response": [
+                        {
+                          "id": "23c0fba0-7090-414a-84cb-495380c987cd",
+                          "name": "An OKResponse is returned if the request was successful.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/teams/:teamId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "teams",
+                                ":teamId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-23c0fba0-7090-414a-84cb-495380c987cd"
+                        },
+                        {
+                          "id": "518053e6-4373-47da-8490-8fb58cda7fd1",
+                          "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/teams/:teamId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "teams",
+                                ":teamId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-518053e6-4373-47da-8490-8fb58cda7fd1"
+                        },
+                        {
+                          "id": "ff0e8e09-09b0-44a6-8125-351b3d5a9950",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/teams/:teamId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "teams",
+                                ":teamId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-ff0e8e09-09b0-44a6-8125-351b3d5a9950"
+                        },
+                        {
+                          "id": "3a57e2ee-3964-496e-a654-fd65bfbb65a9",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/teams/:teamId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "teams",
+                                ":teamId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-3a57e2ee-3964-496e-a654-fd65bfbb65a9"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:55:36.000Z",
+                      "updatedAt": "2026-07-28T01:55:36.000Z",
+                      "uid": "35240-0ca343b9-4fa3-4d82-8793-db2bf894cd43"
+                    },
+                    {
+                      "name": "Grafana Set Team Roles",
+                      "id": "e53696a1-6185-4622-ba91-8611c3f71f17",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"includeHidden\": \"<boolean>\",\n  \"roleUids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/access-control/teams/:teamId/roles",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "access-control",
+                            "teams",
+                            ":teamId",
+                            "roles"
+                          ],
+                          "variable": [
+                            {
+                              "id": "323a0fcb-cef9-4a03-89d6-f5db8ee137ae",
+                              "key": "teamId",
+                              "value": "<integer>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation updates the complete set of RBAC (Role-Based Access Control) roles assigned to a specific team in Grafana by replacing any existing role assignments with the new ones provided in the request. It uses the PUT method on the endpoint /access-control/teams/{teamId}/roles, where {teamId} is the unique identifier of the team whose roles are being modified. This is a destructive operation that overwrites the current role configuration rather than adding to it, making it useful for scenarios where you need to redefine a team's permissions from scratch or ensure a specific set of roles is applied without concern for previous assignments. The operation requires appropriate administrative permissions and is typically used in access management workflows to maintain proper authorization controls across teams within the Grafana instance."
+                      },
+                      "response": [
+                        {
+                          "id": "5347d7f8-1937-4a32-ac8f-2f057794556d",
+                          "name": "An OKResponse is returned if the request was successful.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"includeHidden\": \"<boolean>\",\n  \"roleUids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/teams/:teamId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "teams",
+                                ":teamId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-5347d7f8-1937-4a32-ac8f-2f057794556d"
+                        },
+                        {
+                          "id": "a9f9a2a1-07c8-4dd9-9d54-e6938f3d21e4",
+                          "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"includeHidden\": \"<boolean>\",\n  \"roleUids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/teams/:teamId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "teams",
+                                ":teamId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-a9f9a2a1-07c8-4dd9-9d54-e6938f3d21e4"
+                        },
+                        {
+                          "id": "5b246ae7-c6a7-4336-ad5f-f0416e1b5759",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"includeHidden\": \"<boolean>\",\n  \"roleUids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/teams/:teamId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "teams",
+                                ":teamId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-5b246ae7-c6a7-4336-ad5f-f0416e1b5759"
+                        },
+                        {
+                          "id": "8b506c8f-304d-4231-b532-b49bda067d86",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"includeHidden\": \"<boolean>\",\n  \"roleUids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/teams/:teamId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "teams",
+                                ":teamId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-8b506c8f-304d-4231-b532-b49bda067d86"
+                        },
+                        {
+                          "id": "5a1715ac-04f5-4079-94d3-6023bed999b0",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"includeHidden\": \"<boolean>\",\n  \"roleUids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/teams/:teamId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "teams",
+                                ":teamId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-5a1715ac-04f5-4079-94d3-6023bed999b0"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:55:36.000Z",
+                      "updatedAt": "2026-07-28T01:55:36.000Z",
+                      "uid": "35240-e53696a1-6185-4622-ba91-8611c3f71f17"
+                    }
+                  ],
+                  "id": "456e14b9-981a-486b-8d47-c774f608ede8",
+                  "createdAt": "2026-07-28T01:55:36.000Z",
+                  "updatedAt": "2026-07-28T01:55:36.000Z",
+                  "uid": "35240-456e14b9-981a-486b-8d47-c774f608ede8"
+                }
+              ],
+              "id": "c841c3e3-0348-4c9a-b030-81ef99634c08",
+              "createdAt": "2026-07-28T01:55:36.000Z",
+              "updatedAt": "2026-07-28T01:55:36.000Z",
+              "uid": "35240-c841c3e3-0348-4c9a-b030-81ef99634c08"
+            }
+          ],
+          "id": "bd39420b-eef6-48a6-ab47-7557da53c552",
+          "createdAt": "2026-07-28T01:55:36.000Z",
+          "updatedAt": "2026-07-28T01:55:36.000Z",
+          "uid": "35240-bd39420b-eef6-48a6-ab47-7557da53c552"
+        },
+        {
+          "name": "users",
+          "item": [
+            {
+              "name": "roles",
+              "item": [
+                {
+                  "name": "search",
+                  "item": [
+                    {
+                      "name": "Grafana List Users Roles",
+                      "id": "96ad3759-30cc-4217-83bb-6b223df56529",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"includeHidden\": \"<boolean>\",\n  \"orgId\": \"<integer>\",\n  \"teamIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"userIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/access-control/users/roles/search",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "access-control",
+                            "users",
+                            "roles",
+                            "search"
+                          ]
+                        },
+                        "description": "This API operation allows you to search and retrieve a list of roles assigned to users within Grafana's access control system. By sending a POST request to the /access-control/users/roles/search endpoint, you can query and filter user role assignments based on various criteria. The operation is useful for administrators who need to audit user permissions, manage access control policies, or retrieve information about which roles are assigned to specific users across the Grafana instance. The POST method enables you to include search parameters in the request body to narrow down results based on your specific requirements."
+                      },
+                      "response": [
+                        {
+                          "id": "07b726f8-eade-4117-88b1-0160563b7142",
+                          "name": "(empty)",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"includeHidden\": \"<boolean>\",\n  \"orgId\": \"<integer>\",\n  \"teamIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"userIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/users/roles/search",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "users",
+                                "roles",
+                                "search"
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"ut_3a\": {},\n  \"in4\": {}\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-07b726f8-eade-4117-88b1-0160563b7142"
+                        },
+                        {
+                          "id": "69e153d9-367c-428f-b8c8-371a00db0c41",
+                          "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"includeHidden\": \"<boolean>\",\n  \"orgId\": \"<integer>\",\n  \"teamIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"userIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/users/roles/search",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "users",
+                                "roles",
+                                "search"
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-69e153d9-367c-428f-b8c8-371a00db0c41"
+                        },
+                        {
+                          "id": "c577ff8c-d7fd-4f38-9a09-c52fa24d39a9",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"includeHidden\": \"<boolean>\",\n  \"orgId\": \"<integer>\",\n  \"teamIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"userIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/users/roles/search",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "users",
+                                "roles",
+                                "search"
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-c577ff8c-d7fd-4f38-9a09-c52fa24d39a9"
+                        },
+                        {
+                          "id": "e3d03fa2-5393-4b17-8f4c-a15531e41d32",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"includeHidden\": \"<boolean>\",\n  \"orgId\": \"<integer>\",\n  \"teamIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"userIds\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/users/roles/search",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "users",
+                                "roles",
+                                "search"
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-e3d03fa2-5393-4b17-8f4c-a15531e41d32"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:55:36.000Z",
+                      "updatedAt": "2026-07-28T01:55:36.000Z",
+                      "uid": "35240-96ad3759-30cc-4217-83bb-6b223df56529"
+                    }
+                  ],
+                  "id": "7f6f7198-b7ff-4322-a049-7fd9c4a44513",
+                  "createdAt": "2026-07-28T01:55:36.000Z",
+                  "updatedAt": "2026-07-28T01:55:36.000Z",
+                  "uid": "35240-7f6f7198-b7ff-4322-a049-7fd9c4a44513"
+                }
+              ],
+              "id": "19fc6584-21ce-4ba6-afcc-a7dc980b204a",
+              "createdAt": "2026-07-28T01:55:36.000Z",
+              "updatedAt": "2026-07-28T01:55:36.000Z",
+              "uid": "35240-19fc6584-21ce-4ba6-afcc-a7dc980b204a"
+            },
+            {
+              "name": "{userId}",
+              "item": [
+                {
+                  "name": "roles",
+                  "item": [
+                    {
+                      "name": "Grafana List User Roles",
+                      "id": "83e0f276-e2b8-4e5a-bad5-fe2b28418242",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/access-control/users/:userId/roles",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "access-control",
+                            "users",
+                            ":userId",
+                            "roles"
+                          ],
+                          "variable": [
+                            {
+                              "id": "eeb305da-314b-40b6-bfff-cef94743f3d5",
+                              "key": "userId",
+                              "value": "<integer>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation retrieves all roles assigned to a specific user in Grafana's access control system. By making a GET request to the endpoint with a user's unique identifier (userId) in the path, you can obtain a comprehensive list of roles that define the user's permissions and access levels within the Grafana instance. This is useful for auditing user permissions, verifying access levels, or managing role-based access control (RBAC) configurations."
+                      },
+                      "response": [
+                        {
+                          "id": "67e2ff02-29b9-4ea4-b464-c8074c1ad728",
+                          "name": "(empty)",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/users/:userId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "users",
+                                ":userId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "userId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "[\n  {\n    \"created\": \"<string>\",\n    \"description\": \"<string>\",\n    \"displayName\": \"<string>\",\n    \"group\": \"<string>\",\n    \"name\": \"<string>\",\n    \"uid\": \"<string>\",\n    \"updated\": \"<string>\",\n    \"version\": \"<integer>\",\n    \"delegatable\": \"<boolean>\",\n    \"global\": \"<boolean>\",\n    \"hidden\": \"<boolean>\",\n    \"mapped\": \"<boolean>\",\n    \"permissions\": [\n      {\n        \"action\": \"<string>\",\n        \"created\": \"<string>\",\n        \"scope\": \"<string>\",\n        \"updated\": \"<string>\"\n      },\n      {\n        \"action\": \"<string>\",\n        \"created\": \"<string>\",\n        \"scope\": \"<string>\",\n        \"updated\": \"<string>\"\n      }\n    ]\n  },\n  {\n    \"created\": \"<string>\",\n    \"description\": \"<string>\",\n    \"displayName\": \"<string>\",\n    \"group\": \"<string>\",\n    \"name\": \"<string>\",\n    \"uid\": \"<string>\",\n    \"updated\": \"<string>\",\n    \"version\": \"<integer>\",\n    \"delegatable\": \"<boolean>\",\n    \"global\": \"<boolean>\",\n    \"hidden\": \"<boolean>\",\n    \"mapped\": \"<boolean>\",\n    \"permissions\": [\n      {\n        \"action\": \"<string>\",\n        \"created\": \"<string>\",\n        \"scope\": \"<string>\",\n        \"updated\": \"<string>\"\n      },\n      {\n        \"action\": \"<string>\",\n        \"created\": \"<string>\",\n        \"scope\": \"<string>\",\n        \"updated\": \"<string>\"\n      }\n    ]\n  }\n]",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-67e2ff02-29b9-4ea4-b464-c8074c1ad728"
+                        },
+                        {
+                          "id": "57ecd1bb-e683-43d1-86e0-a8f8eb7bb4b1",
+                          "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/users/:userId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "users",
+                                ":userId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "userId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-57ecd1bb-e683-43d1-86e0-a8f8eb7bb4b1"
+                        },
+                        {
+                          "id": "3bc78278-860d-4f78-a7fa-cf8fb4106025",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/users/:userId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "users",
+                                ":userId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "userId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-3bc78278-860d-4f78-a7fa-cf8fb4106025"
+                        },
+                        {
+                          "id": "7a0b2a74-fe66-476f-a494-3048fb6f2c7e",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/users/:userId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "users",
+                                ":userId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "userId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-7a0b2a74-fe66-476f-a494-3048fb6f2c7e"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:55:36.000Z",
+                      "updatedAt": "2026-07-28T01:55:36.000Z",
+                      "uid": "35240-83e0f276-e2b8-4e5a-bad5-fe2b28418242"
+                    },
+                    {
+                      "name": "Grafana Set User Roles",
+                      "id": "8d608792-8ec1-4f84-9a55-ae6eb8daaad2",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"global\": \"<boolean>\",\n  \"includeHidden\": \"<boolean>\",\n  \"roleUids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/access-control/users/:userId/roles",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "access-control",
+                            "users",
+                            ":userId",
+                            "roles"
+                          ],
+                          "variable": [
+                            {
+                              "id": "2c8486af-660b-4a5f-8901-4abbb1cd31f5",
+                              "key": "userId",
+                              "value": "<integer>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation allows administrators to assign or modify the complete set of roles for a specific user in Grafana's access control system. By making a PUT request to the endpoint with a user's ID, you can replace all existing role assignments for that user with a new set of roles defined in the request body. This is useful for managing user permissions at scale, ensuring users have the appropriate access levels to dashboards, data sources, and other Grafana resources. The operation requires administrative privileges and follows Grafana's role-based access control (RBAC) model to maintain security and proper authorization across the platform."
+                      },
+                      "response": [
+                        {
+                          "id": "43d8f7f0-8957-4b23-90da-cf7f1bfd1729",
+                          "name": "An OKResponse is returned if the request was successful.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"global\": \"<boolean>\",\n  \"includeHidden\": \"<boolean>\",\n  \"roleUids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/users/:userId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "users",
+                                ":userId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "userId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-43d8f7f0-8957-4b23-90da-cf7f1bfd1729"
+                        },
+                        {
+                          "id": "c70d01d5-7e63-49dc-9f51-4e8b045cffde",
+                          "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"global\": \"<boolean>\",\n  \"includeHidden\": \"<boolean>\",\n  \"roleUids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/users/:userId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "users",
+                                ":userId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "userId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-c70d01d5-7e63-49dc-9f51-4e8b045cffde"
+                        },
+                        {
+                          "id": "6e9d74db-ad82-450e-a91e-663e41cfc45a",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"global\": \"<boolean>\",\n  \"includeHidden\": \"<boolean>\",\n  \"roleUids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/users/:userId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "users",
+                                ":userId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "userId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-6e9d74db-ad82-450e-a91e-663e41cfc45a"
+                        },
+                        {
+                          "id": "95a9e129-fa9d-4a21-bd00-3530d303c4cb",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"global\": \"<boolean>\",\n  \"includeHidden\": \"<boolean>\",\n  \"roleUids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/users/:userId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "users",
+                                ":userId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "userId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-95a9e129-fa9d-4a21-bd00-3530d303c4cb"
+                        },
+                        {
+                          "id": "d8b2c4fd-701a-4af7-8456-7b45ae19625c",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"global\": \"<boolean>\",\n  \"includeHidden\": \"<boolean>\",\n  \"roleUids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/access-control/users/:userId/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "access-control",
+                                "users",
+                                ":userId",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "userId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-d8b2c4fd-701a-4af7-8456-7b45ae19625c"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:55:36.000Z",
+                      "updatedAt": "2026-07-28T01:55:36.000Z",
+                      "uid": "35240-8d608792-8ec1-4f84-9a55-ae6eb8daaad2"
+                    }
+                  ],
+                  "id": "7e7b1163-88c5-44d8-8311-e090d4b62ad8",
+                  "createdAt": "2026-07-28T01:55:36.000Z",
+                  "updatedAt": "2026-07-28T01:55:36.000Z",
+                  "uid": "35240-7e7b1163-88c5-44d8-8311-e090d4b62ad8"
+                }
+              ],
+              "id": "26b7e97b-abee-4b00-a17b-fd9e399cb858",
+              "createdAt": "2026-07-28T01:55:36.000Z",
+              "updatedAt": "2026-07-28T01:55:36.000Z",
+              "uid": "35240-26b7e97b-abee-4b00-a17b-fd9e399cb858"
+            }
+          ],
+          "id": "b8a0cc21-5f61-4922-8704-bab78766979b",
+          "createdAt": "2026-07-28T01:55:36.000Z",
+          "updatedAt": "2026-07-28T01:55:36.000Z",
+          "uid": "35240-b8a0cc21-5f61-4922-8704-bab78766979b"
+        }
+      ],
+      "id": "01b60a5e-215a-48f9-90b7-434acccd3fd7",
+      "createdAt": "2026-07-28T01:55:36.000Z",
+      "updatedAt": "2026-07-28T01:55:36.000Z",
+      "uid": "35240-01b60a5e-215a-48f9-90b7-434acccd3fd7"
+    },
+    {
+      "name": "groupsync",
+      "item": [
+        {
+          "name": "groups",
+          "item": [
+            {
+              "name": "{group_id}",
+              "item": [
+                {
+                  "name": "roles",
+                  "item": [
+                    {
+                      "name": "Grafana Get Group Roles",
+                      "id": "70274bcc-6cd2-4e9c-b580-35f0daf6ad3a",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/groupsync/groups/:group_id/roles",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "groupsync",
+                            "groups",
+                            ":group_id",
+                            "roles"
+                          ],
+                          "variable": [
+                            {
+                              "id": "506bede5-ad68-409e-95e8-a70522bc05c5",
+                              "key": "group_id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation retrieves the roles associated with a specific group in Grafana's group synchronization system. By providing a group_id in the URL path, the GET request returns information about what roles have been assigned to that particular group, which is useful for managing permissions and access control in Grafana when using external group synchronization features like LDAP or OAuth."
+                      },
+                      "response": [
+                        {
+                          "id": "993654dd-ec12-4915-8879-875300722373",
+                          "name": "(empty)",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/groupsync/groups/:group_id/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "groupsync",
+                                "groups",
+                                ":group_id",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "group_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "[\n  {\n    \"created\": \"<string>\",\n    \"description\": \"<string>\",\n    \"displayName\": \"<string>\",\n    \"group\": \"<string>\",\n    \"name\": \"<string>\",\n    \"uid\": \"<string>\",\n    \"updated\": \"<string>\",\n    \"version\": \"<integer>\",\n    \"delegatable\": \"<boolean>\",\n    \"global\": \"<boolean>\",\n    \"hidden\": \"<boolean>\",\n    \"mapped\": \"<boolean>\",\n    \"permissions\": [\n      {\n        \"action\": \"<string>\",\n        \"created\": \"<string>\",\n        \"scope\": \"<string>\",\n        \"updated\": \"<string>\"\n      },\n      {\n        \"action\": \"<string>\",\n        \"created\": \"<string>\",\n        \"scope\": \"<string>\",\n        \"updated\": \"<string>\"\n      }\n    ]\n  },\n  {\n    \"created\": \"<string>\",\n    \"description\": \"<string>\",\n    \"displayName\": \"<string>\",\n    \"group\": \"<string>\",\n    \"name\": \"<string>\",\n    \"uid\": \"<string>\",\n    \"updated\": \"<string>\",\n    \"version\": \"<integer>\",\n    \"delegatable\": \"<boolean>\",\n    \"global\": \"<boolean>\",\n    \"hidden\": \"<boolean>\",\n    \"mapped\": \"<boolean>\",\n    \"permissions\": [\n      {\n        \"action\": \"<string>\",\n        \"created\": \"<string>\",\n        \"scope\": \"<string>\",\n        \"updated\": \"<string>\"\n      },\n      {\n        \"action\": \"<string>\",\n        \"created\": \"<string>\",\n        \"scope\": \"<string>\",\n        \"updated\": \"<string>\"\n      }\n    ]\n  }\n]",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-993654dd-ec12-4915-8879-875300722373"
+                        },
+                        {
+                          "id": "197159fc-1819-4886-84f4-d8fa9adfeba4",
+                          "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/groupsync/groups/:group_id/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "groupsync",
+                                "groups",
+                                ":group_id",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "group_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-197159fc-1819-4886-84f4-d8fa9adfeba4"
+                        },
+                        {
+                          "id": "d7239a0b-fdd4-454e-9fe1-e003e4eb3211",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/groupsync/groups/:group_id/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "groupsync",
+                                "groups",
+                                ":group_id",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "group_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-d7239a0b-fdd4-454e-9fe1-e003e4eb3211"
+                        },
+                        {
+                          "id": "7493ba4a-5af9-41bc-b56d-08a093237f69",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/groupsync/groups/:group_id/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "groupsync",
+                                "groups",
+                                ":group_id",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "group_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-7493ba4a-5af9-41bc-b56d-08a093237f69"
+                        },
+                        {
+                          "id": "f06b8dd2-7bb1-4308-9760-08045069dcf2",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/groupsync/groups/:group_id/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "groupsync",
+                                "groups",
+                                ":group_id",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "group_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-f06b8dd2-7bb1-4308-9760-08045069dcf2"
+                        },
+                        {
+                          "id": "c7c0acf0-d5e1-4e8d-8b02-9d0694b06463",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/groupsync/groups/:group_id/roles",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "groupsync",
+                                "groups",
+                                ":group_id",
+                                "roles"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "group_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:55:36.000Z",
+                          "updatedAt": "2026-07-28T01:55:36.000Z",
+                          "uid": "35240-c7c0acf0-d5e1-4e8d-8b02-9d0694b06463"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:55:36.000Z",
+                      "updatedAt": "2026-07-28T01:55:36.000Z",
+                      "uid": "35240-70274bcc-6cd2-4e9c-b580-35f0daf6ad3a"
+                    }
+                  ],
+                  "id": "7312deaf-9f75-44fe-9625-87c94d92c4e1",
+                  "createdAt": "2026-07-28T01:55:36.000Z",
+                  "updatedAt": "2026-07-28T01:55:36.000Z",
+                  "uid": "35240-7312deaf-9f75-44fe-9625-87c94d92c4e1"
+                }
+              ],
+              "id": "0d01de27-ae92-4e34-a60c-b90bdcb5c55f",
+              "createdAt": "2026-07-28T01:55:36.000Z",
+              "updatedAt": "2026-07-28T01:55:36.000Z",
+              "uid": "35240-0d01de27-ae92-4e34-a60c-b90bdcb5c55f"
+            }
+          ],
+          "id": "df770efa-d45e-49b5-ad1d-bb1f19506053",
+          "createdAt": "2026-07-28T01:55:36.000Z",
+          "updatedAt": "2026-07-28T01:55:36.000Z",
+          "uid": "35240-df770efa-d45e-49b5-ad1d-bb1f19506053"
+        }
+      ],
+      "id": "fbe55ee5-f701-402e-af04-461ae278d3e7",
+      "createdAt": "2026-07-28T01:55:36.000Z",
+      "updatedAt": "2026-07-28T01:55:36.000Z",
+      "uid": "35240-fbe55ee5-f701-402e-af04-461ae278d3e7"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

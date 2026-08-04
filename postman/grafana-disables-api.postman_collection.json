@@ -1,0 +1,540 @@
+{
+  "info": {
+    "_postman_id": "2cfbcefd-bcb8-4928-85c8-3a31b75e4ec2",
+    "name": "Grafana HTTP Access Disables API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:52:14.000Z",
+    "updatedAt": "2026-07-28T01:52:14.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-2cfbcefd-bcb8-4928-85c8-3a31b75e4ec2"
+  },
+  "item": [
+    {
+      "name": "datasources",
+      "item": [
+        {
+          "name": "{dataSourceUID}",
+          "item": [
+            {
+              "name": "cache",
+              "item": [
+                {
+                  "name": "disable",
+                  "item": [
+                    {
+                      "name": "Grafana Disable Data Source Cache",
+                      "id": "1cc7b7eb-da1c-4680-b3fb-b4e697404e49",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache/disable",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "datasources",
+                            ":dataSourceUID",
+                            "cache",
+                            "disable"
+                          ],
+                          "variable": [
+                            {
+                              "id": "4e74cd6b-3a05-4771-97a5-a166358f9225",
+                              "key": "dataSourceUID",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Disables the caching functionality for a specific Grafana data source identified by its unique identifier (dataSourceUID). When executed via a POST request to the endpoint /datasources/{dataSourceUID}/cache/disable, this operation turns off query result caching for the specified data source, causing subsequent queries to fetch fresh data directly from the source rather than serving cached results. This is useful when real-time data accuracy is critical or when troubleshooting data freshness issues, though it may result in increased load on the underlying data source and potentially slower query response times."
+                      },
+                      "response": [
+                        {
+                          "id": "1074de4c-c8ec-4ec1-ad48-53b4d8e4e61d",
+                          "name": "CacheConfigResponse",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache/disable",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                ":dataSourceUID",
+                                "cache",
+                                "disable"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "dataSourceUID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"created\": \"<string>\",\n  \"dataSourceID\": \"<integer>\",\n  \"dataSourceUID\": \"<string>\",\n  \"defaultTTLMs\": \"<integer>\",\n  \"enabled\": \"<boolean>\",\n  \"message\": \"<string>\",\n  \"ttlQueriesMs\": \"<integer>\",\n  \"ttlResourcesMs\": \"<integer>\",\n  \"updated\": \"<string>\",\n  \"useDefaultTTL\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T01:52:15.000Z",
+                          "updatedAt": "2026-07-28T01:52:15.000Z",
+                          "uid": "35240-1074de4c-c8ec-4ec1-ad48-53b4d8e4e61d"
+                        },
+                        {
+                          "id": "aed6c898-356a-457e-b7bd-3fe7e3b6531a",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/datasources/:dataSourceUID/cache/disable",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "datasources",
+                                ":dataSourceUID",
+                                "cache",
+                                "disable"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "dataSourceUID"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:52:15.000Z",
+                          "updatedAt": "2026-07-28T01:52:15.000Z",
+                          "uid": "35240-aed6c898-356a-457e-b7bd-3fe7e3b6531a"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:52:15.000Z",
+                      "updatedAt": "2026-07-28T01:52:15.000Z",
+                      "uid": "35240-1cc7b7eb-da1c-4680-b3fb-b4e697404e49"
+                    }
+                  ],
+                  "id": "73cca098-7e1c-40bb-8e39-038d57845d31",
+                  "createdAt": "2026-07-28T01:52:15.000Z",
+                  "updatedAt": "2026-07-28T01:52:15.000Z",
+                  "uid": "35240-73cca098-7e1c-40bb-8e39-038d57845d31"
+                }
+              ],
+              "id": "a2d25193-3a40-4141-923c-10167cf156ee",
+              "createdAt": "2026-07-28T01:52:15.000Z",
+              "updatedAt": "2026-07-28T01:52:15.000Z",
+              "uid": "35240-a2d25193-3a40-4141-923c-10167cf156ee"
+            }
+          ],
+          "id": "72f87121-653f-475f-a5f4-37505b420b37",
+          "createdAt": "2026-07-28T01:52:15.000Z",
+          "updatedAt": "2026-07-28T01:52:15.000Z",
+          "uid": "35240-72f87121-653f-475f-a5f4-37505b420b37"
+        }
+      ],
+      "id": "6ee74bc5-345e-4312-a588-daee1ef17fa1",
+      "createdAt": "2026-07-28T01:52:15.000Z",
+      "updatedAt": "2026-07-28T01:52:15.000Z",
+      "uid": "35240-6ee74bc5-345e-4312-a588-daee1ef17fa1"
+    },
+    {
+      "name": "admin",
+      "item": [
+        {
+          "name": "users",
+          "item": [
+            {
+              "name": "{user_id}",
+              "item": [
+                {
+                  "name": "disable",
+                  "item": [
+                    {
+                      "name": "Grafana Admin Disable User",
+                      "id": "438c7a7d-de78-41ee-b83c-7bea44d9ca8d",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/users/:user_id/disable",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "users",
+                            ":user_id",
+                            "disable"
+                          ],
+                          "variable": [
+                            {
+                              "id": "3346d26e-22c9-4c89-96ed-8a3390d57c47",
+                              "key": "user_id",
+                              "value": "<integer>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This API operation allows Grafana administrators to disable a specific user account by sending a POST request to the /admin/users/{user_id}/disable endpoint. The operation requires administrative privileges and targets a user identified by their unique user_id parameter in the URL path. When executed, this endpoint deactivates the specified user account, preventing them from logging in or accessing Grafana resources while preserving their user data and configurations for potential future reactivation. This is a non-destructive administrative action typically used for temporarily suspending user access due to security concerns, policy violations, or when users no longer require access to the system."
+                      },
+                      "response": [
+                        {
+                          "id": "53a0da3b-45c3-4754-a3e8-8effb555c9aa",
+                          "name": "An OKResponse is returned if the request was successful.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/disable",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "disable"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:52:15.000Z",
+                          "updatedAt": "2026-07-28T01:52:15.000Z",
+                          "uid": "35240-53a0da3b-45c3-4754-a3e8-8effb555c9aa"
+                        },
+                        {
+                          "id": "aba40014-8cf1-4c81-b2f7-7e33d9accbe3",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/disable",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "disable"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:52:15.000Z",
+                          "updatedAt": "2026-07-28T01:52:15.000Z",
+                          "uid": "35240-aba40014-8cf1-4c81-b2f7-7e33d9accbe3"
+                        },
+                        {
+                          "id": "b7392dc4-deff-4a42-bb91-99f89c5636c3",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/disable",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "disable"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:52:15.000Z",
+                          "updatedAt": "2026-07-28T01:52:15.000Z",
+                          "uid": "35240-b7392dc4-deff-4a42-bb91-99f89c5636c3"
+                        },
+                        {
+                          "id": "fc429cec-7141-4294-8449-8bd14152035b",
+                          "name": "NotFoundError is returned when the requested resource was not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/disable",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "disable"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:52:15.000Z",
+                          "updatedAt": "2026-07-28T01:52:15.000Z",
+                          "uid": "35240-fc429cec-7141-4294-8449-8bd14152035b"
+                        },
+                        {
+                          "id": "a390ff21-3220-4c24-8c27-030e99539bf2",
+                          "name": "InternalServerError is a general error indicating something went wrong internally.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/users/:user_id/disable",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "users",
+                                ":user_id",
+                                "disable"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:52:15.000Z",
+                          "updatedAt": "2026-07-28T01:52:15.000Z",
+                          "uid": "35240-a390ff21-3220-4c24-8c27-030e99539bf2"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:52:15.000Z",
+                      "updatedAt": "2026-07-28T01:52:15.000Z",
+                      "uid": "35240-438c7a7d-de78-41ee-b83c-7bea44d9ca8d"
+                    }
+                  ],
+                  "id": "1085c721-ee88-4e0b-8f55-2663f8d1945a",
+                  "createdAt": "2026-07-28T01:52:15.000Z",
+                  "updatedAt": "2026-07-28T01:52:15.000Z",
+                  "uid": "35240-1085c721-ee88-4e0b-8f55-2663f8d1945a"
+                }
+              ],
+              "id": "8b7699dd-8794-4ae9-a393-cddfe120793e",
+              "createdAt": "2026-07-28T01:52:15.000Z",
+              "updatedAt": "2026-07-28T01:52:15.000Z",
+              "uid": "35240-8b7699dd-8794-4ae9-a393-cddfe120793e"
+            }
+          ],
+          "id": "7d9141eb-240e-4b80-9349-12277db04ded",
+          "createdAt": "2026-07-28T01:52:15.000Z",
+          "updatedAt": "2026-07-28T01:52:15.000Z",
+          "uid": "35240-7d9141eb-240e-4b80-9349-12277db04ded"
+        }
+      ],
+      "id": "5d43c09e-1b13-4593-b43c-009009c95cc5",
+      "createdAt": "2026-07-28T01:52:15.000Z",
+      "updatedAt": "2026-07-28T01:52:15.000Z",
+      "uid": "35240-5d43c09e-1b13-4593-b43c-009009c95cc5"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

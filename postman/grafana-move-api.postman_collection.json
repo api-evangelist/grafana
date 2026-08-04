@@ -1,0 +1,431 @@
+{
+  "info": {
+    "_postman_id": "0a88c3fd-eeb5-4a59-9d55-2a3190e9c7d7",
+    "name": "Grafana HTTP Access Move API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:54:16.000Z",
+    "updatedAt": "2026-07-28T01:54:17.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-0a88c3fd-eeb5-4a59-9d55-2a3190e9c7d7"
+  },
+  "item": [
+    {
+      "name": "folders",
+      "item": [
+        {
+          "name": "{folder_uid}",
+          "item": [
+            {
+              "name": "move",
+              "item": [
+                {
+                  "name": "Grafana Move Folder",
+                  "id": "c1867cf9-cc8e-4a6d-8eab-347b44f0ede7",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"parentUid\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folder_uid/move",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folder_uid",
+                        "move"
+                      ],
+                      "variable": [
+                        {
+                          "id": "d9c34f3b-3c87-4035-8583-5dc38d968a41",
+                          "key": "folder_uid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This API operation moves a Grafana folder identified by its unique identifier (folder_uid) to a new location within the folder hierarchy. It uses a POST request to the /folders/{folder_uid}/move endpoint and allows administrators to reorganize their Grafana folder structure by changing a folder's parent or position. The operation requires the folder_uid path parameter to specify which folder to move, and typically accepts a request body containing the destination folder information or new parent folder identifier. This is useful for maintaining an organized dashboard structure as teams grow and reorganization becomes necessary."
+                  },
+                  "response": [
+                    {
+                      "id": "96f2603a-9f01-45ad-b63b-4855bb1890ee",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"parentUid\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_uid/move",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_uid",
+                            "move"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"accessControl\": {\n    \"in7\": \"<boolean>\",\n    \"consectetur_a4d\": \"<boolean>\"\n  },\n  \"canAdmin\": \"<boolean>\",\n  \"canDelete\": \"<boolean>\",\n  \"canEdit\": \"<boolean>\",\n  \"canSave\": \"<boolean>\",\n  \"created\": \"<string>\",\n  \"createdBy\": \"<string>\",\n  \"hasAcl\": \"<boolean>\",\n  \"id\": \"<integer>\",\n  \"managedBy\": \"<string>\",\n  \"orgId\": \"<integer>\",\n  \"parentUid\": \"<string>\",\n  \"parents\": [\n    {\n      \"value\": \"<Circular reference to #/components/schemas/Folder detected>\"\n    },\n    {\n      \"value\": \"<Circular reference to #/components/schemas/Folder detected>\"\n    }\n  ],\n  \"title\": \"<string>\",\n  \"uid\": \"<string>\",\n  \"updated\": \"<string>\",\n  \"updatedBy\": \"<string>\",\n  \"url\": \"<string>\",\n  \"version\": \"<integer>\"\n}",
+                      "createdAt": "2026-07-28T01:54:17.000Z",
+                      "updatedAt": "2026-07-28T01:54:17.000Z",
+                      "uid": "35240-96f2603a-9f01-45ad-b63b-4855bb1890ee"
+                    },
+                    {
+                      "id": "586c39fe-c428-4fa6-b476-13ad0bf90719",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"parentUid\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_uid/move",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_uid",
+                            "move"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:17.000Z",
+                      "updatedAt": "2026-07-28T01:54:17.000Z",
+                      "uid": "35240-586c39fe-c428-4fa6-b476-13ad0bf90719"
+                    },
+                    {
+                      "id": "ee81ef6a-a6b2-4617-9001-19293da1a051",
+                      "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"parentUid\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_uid/move",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_uid",
+                            "move"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:17.000Z",
+                      "updatedAt": "2026-07-28T01:54:17.000Z",
+                      "uid": "35240-ee81ef6a-a6b2-4617-9001-19293da1a051"
+                    },
+                    {
+                      "id": "d0f213b9-01fe-4c88-ac76-02d78da64654",
+                      "name": "NotFoundError is returned when the requested resource was not found.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"parentUid\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_uid/move",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_uid",
+                            "move"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:17.000Z",
+                      "updatedAt": "2026-07-28T01:54:17.000Z",
+                      "uid": "35240-d0f213b9-01fe-4c88-ac76-02d78da64654"
+                    },
+                    {
+                      "id": "3dcbce21-cd65-4dcc-99e7-b264df98adb1",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"parentUid\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_uid/move",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_uid",
+                            "move"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_uid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:17.000Z",
+                      "updatedAt": "2026-07-28T01:54:17.000Z",
+                      "uid": "35240-3dcbce21-cd65-4dcc-99e7-b264df98adb1"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:54:17.000Z",
+                  "updatedAt": "2026-07-28T01:54:17.000Z",
+                  "uid": "35240-c1867cf9-cc8e-4a6d-8eab-347b44f0ede7"
+                }
+              ],
+              "id": "bbcb61a3-fca3-4fec-b345-59098ad7b91c",
+              "createdAt": "2026-07-28T01:54:17.000Z",
+              "updatedAt": "2026-07-28T01:54:17.000Z",
+              "uid": "35240-bbcb61a3-fca3-4fec-b345-59098ad7b91c"
+            }
+          ],
+          "id": "3e0548f5-0ab8-4261-a9ef-dc4c06542cfc",
+          "createdAt": "2026-07-28T01:54:17.000Z",
+          "updatedAt": "2026-07-28T01:54:17.000Z",
+          "uid": "35240-3e0548f5-0ab8-4261-a9ef-dc4c06542cfc"
+        }
+      ],
+      "id": "efa9f487-5375-494b-80fb-436110aab8bd",
+      "createdAt": "2026-07-28T01:54:17.000Z",
+      "updatedAt": "2026-07-28T01:54:17.000Z",
+      "uid": "35240-efa9f487-5375-494b-80fb-436110aab8bd"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

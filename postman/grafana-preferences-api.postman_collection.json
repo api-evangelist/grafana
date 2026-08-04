@@ -1,0 +1,2167 @@
+{
+  "info": {
+    "_postman_id": "4d1e5b54-5ae1-4973-8a58-bdc26f68a585",
+    "name": "Grafana HTTP Access Preferences API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:54:33.000Z",
+    "updatedAt": "2026-07-28T01:54:34.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-4d1e5b54-5ae1-4973-8a58-bdc26f68a585"
+  },
+  "item": [
+    {
+      "name": "org",
+      "item": [
+        {
+          "name": "preferences",
+          "item": [
+            {
+              "name": "Grafana Get Org Preferences",
+              "id": "a6553faa-d322-46ea-8370-dbcf5b549959",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/org/preferences",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "org",
+                    "preferences"
+                  ]
+                },
+                "description": "This API operation retrieves the current preference settings for the active organization in Grafana. When called, it returns a JSON object containing various organizational preferences such as the default theme, home dashboard ID, timezone settings, and other UI-related configurations that apply to all users within the organization. This is a read-only GET request that requires appropriate permissions to access organizational settings and is commonly used by administrators to review or verify the current preference configuration before making changes or to integrate organizational settings into external tools and automation workflows."
+              },
+              "response": [
+                {
+                  "id": "926d6bbb-3f36-4b26-8e70-cfc0a32bcb92",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/org/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"cookiePreferences\": {\n    \"analytics\": {},\n    \"functional\": {},\n    \"performance\": {}\n  },\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"<string>\",\n  \"timezone\": \"<string>\",\n  \"weekStart\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-926d6bbb-3f36-4b26-8e70-cfc0a32bcb92"
+                },
+                {
+                  "id": "e7052dbd-d64b-4cbd-82fa-acd1721484aa",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/org/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-e7052dbd-d64b-4cbd-82fa-acd1721484aa"
+                },
+                {
+                  "id": "0e3929fb-b904-4581-ac97-a99c16f6bebb",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/org/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-0e3929fb-b904-4581-ac97-a99c16f6bebb"
+                },
+                {
+                  "id": "3a653854-fa00-4eb7-a9eb-d6c980dd7a0e",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/org/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-3a653854-fa00-4eb7-a9eb-d6c980dd7a0e"
+                }
+              ],
+              "createdAt": "2026-07-28T01:54:34.000Z",
+              "updatedAt": "2026-07-28T01:54:34.000Z",
+              "uid": "35240-a6553faa-d322-46ea-8370-dbcf5b549959"
+            },
+            {
+              "name": "Grafana Update Org Preferences",
+              "id": "a66ed891-b279-4da6-bc82-bc549c2a043d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"system\",\n  \"timezone\": \"utc\",\n  \"weekStart\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/org/preferences",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "org",
+                    "preferences"
+                  ]
+                },
+                "description": "This API operation allows you to modify the configuration settings and preferences for a specific organization in Grafana. By sending a PUT request to the /org/preferences endpoint, you can update various organizational-level settings such as the UI theme, home dashboard, timezone, and other display or operational preferences that apply to all users within that organization. The request typically requires appropriate administrative permissions and accepts a JSON payload containing the preference keys and their new values. Once successfully executed, the changes take effect immediately and are applied organization-wide, affecting how Grafana behaves and appears for all members of that organization."
+              },
+              "response": [
+                {
+                  "id": "0ab8d2be-f845-4c3d-b2e3-62414196b909",
+                  "name": "An OKResponse is returned if the request was successful.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"system\",\n  \"timezone\": \"utc\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/org/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-0ab8d2be-f845-4c3d-b2e3-62414196b909"
+                },
+                {
+                  "id": "8beedcda-5050-4b11-b50a-50b18283bc29",
+                  "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"system\",\n  \"timezone\": \"utc\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/org/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-8beedcda-5050-4b11-b50a-50b18283bc29"
+                },
+                {
+                  "id": "1260ffde-7126-4c29-a60d-d7b21c77dfb1",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"system\",\n  \"timezone\": \"utc\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/org/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-1260ffde-7126-4c29-a60d-d7b21c77dfb1"
+                },
+                {
+                  "id": "f2f0b86f-e2b2-4e4e-99f5-9930e6d4b11d",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"system\",\n  \"timezone\": \"utc\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/org/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-f2f0b86f-e2b2-4e4e-99f5-9930e6d4b11d"
+                },
+                {
+                  "id": "49de61d5-cf0e-439c-8887-87cfb191fc6f",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"system\",\n  \"timezone\": \"utc\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/org/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-49de61d5-cf0e-439c-8887-87cfb191fc6f"
+                }
+              ],
+              "createdAt": "2026-07-28T01:54:34.000Z",
+              "updatedAt": "2026-07-28T01:54:34.000Z",
+              "uid": "35240-a66ed891-b279-4da6-bc82-bc549c2a043d"
+            },
+            {
+              "name": "Grafana Patch Org Preferences",
+              "id": "a9e2d64e-78e7-475f-b8e6-b3f5fcb4c79a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"light\",\n  \"timezone\": \"browser\",\n  \"weekStart\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/org/preferences",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "org",
+                    "preferences"
+                  ]
+                },
+                "description": "Updates the preferences for the current organization, allowing administrators to modify settings such as the default theme (light/dark/system), home dashboard ID, timezone preferences, and week start day. This endpoint accepts a partial preferences object via PATCH request, meaning only the fields that need to be changed should be included in the request body while other settings remain unchanged. The operation requires organization admin permissions and returns the updated preferences object upon successful modification, making it useful for customizing the organizational experience without affecting individual user preferences."
+              },
+              "response": [
+                {
+                  "id": "4d8b275e-3aa0-4ef2-9f31-0a398b2a9383",
+                  "name": "An OKResponse is returned if the request was successful.",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"light\",\n  \"timezone\": \"browser\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/org/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-4d8b275e-3aa0-4ef2-9f31-0a398b2a9383"
+                },
+                {
+                  "id": "40fa3343-1ff3-4717-9898-42876a97ba8b",
+                  "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"light\",\n  \"timezone\": \"browser\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/org/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-40fa3343-1ff3-4717-9898-42876a97ba8b"
+                },
+                {
+                  "id": "f7e28bca-1262-4538-8429-071af78f15ee",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"light\",\n  \"timezone\": \"browser\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/org/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-f7e28bca-1262-4538-8429-071af78f15ee"
+                },
+                {
+                  "id": "a03fcfb0-2232-4812-8598-9badcdb3d317",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"light\",\n  \"timezone\": \"browser\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/org/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-a03fcfb0-2232-4812-8598-9badcdb3d317"
+                },
+                {
+                  "id": "02459dee-86ae-4663-84da-722b333369aa",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"light\",\n  \"timezone\": \"browser\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/org/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "org",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-02459dee-86ae-4663-84da-722b333369aa"
+                }
+              ],
+              "createdAt": "2026-07-28T01:54:34.000Z",
+              "updatedAt": "2026-07-28T01:54:34.000Z",
+              "uid": "35240-a9e2d64e-78e7-475f-b8e6-b3f5fcb4c79a"
+            }
+          ],
+          "id": "c054ae58-9bd7-4694-a3de-0e9e6775cb68",
+          "createdAt": "2026-07-28T01:54:34.000Z",
+          "updatedAt": "2026-07-28T01:54:34.000Z",
+          "uid": "35240-c054ae58-9bd7-4694-a3de-0e9e6775cb68"
+        }
+      ],
+      "id": "43d933dc-a397-4815-96a1-3fb34d0b82bd",
+      "createdAt": "2026-07-28T01:54:34.000Z",
+      "updatedAt": "2026-07-28T01:54:34.000Z",
+      "uid": "35240-43d933dc-a397-4815-96a1-3fb34d0b82bd"
+    },
+    {
+      "name": "teams",
+      "item": [
+        {
+          "name": "{team_id}",
+          "item": [
+            {
+              "name": "preferences",
+              "item": [
+                {
+                  "name": "Grafana Get Team Preferences",
+                  "id": "68a767b7-f45d-4fe7-9574-b87094c2ad06",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/teams/:team_id/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "teams",
+                        ":team_id",
+                        "preferences"
+                      ],
+                      "variable": [
+                        {
+                          "id": "3acd8ba4-844d-4b8b-a870-af71ba53fdeb",
+                          "key": "team_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Returns the preferences for a specific Grafana team identified by the team_id parameter, which includes settings such as the team's home dashboard, timezone, and theme preferences. This GET endpoint allows administrators and team members with appropriate permissions to retrieve the current preference configuration that applies to all members of the specified team, enabling them to view or audit the team-level settings that override individual user preferences when working within the team context."
+                  },
+                  "response": [
+                    {
+                      "id": "1de5a986-2c32-40a8-9809-d271ffee78a9",
+                      "name": "(empty)",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_id/preferences",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_id",
+                            "preferences"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"cookiePreferences\": {\n    \"analytics\": {},\n    \"functional\": {},\n    \"performance\": {}\n  },\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"<string>\",\n  \"timezone\": \"<string>\",\n  \"weekStart\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:34.000Z",
+                      "updatedAt": "2026-07-28T01:54:34.000Z",
+                      "uid": "35240-1de5a986-2c32-40a8-9809-d271ffee78a9"
+                    },
+                    {
+                      "id": "4a692254-b5d9-4b8c-bdbd-839cdd5c936e",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_id/preferences",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_id",
+                            "preferences"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:34.000Z",
+                      "updatedAt": "2026-07-28T01:54:34.000Z",
+                      "uid": "35240-4a692254-b5d9-4b8c-bdbd-839cdd5c936e"
+                    },
+                    {
+                      "id": "79926025-a3ce-41c2-a9d0-f887d3951ee3",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_id/preferences",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_id",
+                            "preferences"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:34.000Z",
+                      "updatedAt": "2026-07-28T01:54:34.000Z",
+                      "uid": "35240-79926025-a3ce-41c2-a9d0-f887d3951ee3"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-68a767b7-f45d-4fe7-9574-b87094c2ad06"
+                },
+                {
+                  "name": "Grafana Update Team Preferences",
+                  "id": "de305c77-2b77-4ab7-899a-0a9dd7c96ba1",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"system\",\n  \"timezone\": \"utc\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/teams/:team_id/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "teams",
+                        ":team_id",
+                        "preferences"
+                      ],
+                      "variable": [
+                        {
+                          "id": "09c716c0-fbdf-4bec-896c-c6d5fbcc9ce8",
+                          "key": "team_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Updates the preferences for a specific team in Grafana by making a PUT request to the /teams/{team_id}/preferences endpoint. This operation allows administrators or team members with appropriate permissions to modify team-level settings such as the default home dashboard, timezone, and theme preferences. The team_id parameter in the URL path identifies which team's preferences should be updated, and the request body contains the preference values to be applied. These preferences will affect the default Grafana interface experience for all members of the specified team, overriding individual user preferences when those team members are operating within the team context."
+                  },
+                  "response": [
+                    {
+                      "id": "67a7899d-a6c8-488a-92b2-b6ec2ef77541",
+                      "name": "An OKResponse is returned if the request was successful.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"system\",\n  \"timezone\": \"utc\",\n  \"weekStart\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_id/preferences",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_id",
+                            "preferences"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:34.000Z",
+                      "updatedAt": "2026-07-28T01:54:34.000Z",
+                      "uid": "35240-67a7899d-a6c8-488a-92b2-b6ec2ef77541"
+                    },
+                    {
+                      "id": "74a83a99-cfde-40b9-8527-d2d3799f555f",
+                      "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"system\",\n  \"timezone\": \"utc\",\n  \"weekStart\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_id/preferences",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_id",
+                            "preferences"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:34.000Z",
+                      "updatedAt": "2026-07-28T01:54:34.000Z",
+                      "uid": "35240-74a83a99-cfde-40b9-8527-d2d3799f555f"
+                    },
+                    {
+                      "id": "09c1126a-ae09-4edd-a54d-d197677b9af4",
+                      "name": "UnauthorizedError is returned when the request is not authenticated.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"system\",\n  \"timezone\": \"utc\",\n  \"weekStart\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_id/preferences",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_id",
+                            "preferences"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:34.000Z",
+                      "updatedAt": "2026-07-28T01:54:34.000Z",
+                      "uid": "35240-09c1126a-ae09-4edd-a54d-d197677b9af4"
+                    },
+                    {
+                      "id": "442a6aeb-d438-420e-8da0-7fe0a616b0f8",
+                      "name": "InternalServerError is a general error indicating something went wrong internally.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"system\",\n  \"timezone\": \"utc\",\n  \"weekStart\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_id/preferences",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_id",
+                            "preferences"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:54:34.000Z",
+                      "updatedAt": "2026-07-28T01:54:34.000Z",
+                      "uid": "35240-442a6aeb-d438-420e-8da0-7fe0a616b0f8"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-de305c77-2b77-4ab7-899a-0a9dd7c96ba1"
+                }
+              ],
+              "id": "e8b346ff-761d-4bc4-8dcb-d2710bfe11ad",
+              "createdAt": "2026-07-28T01:54:34.000Z",
+              "updatedAt": "2026-07-28T01:54:34.000Z",
+              "uid": "35240-e8b346ff-761d-4bc4-8dcb-d2710bfe11ad"
+            }
+          ],
+          "id": "80831e4e-f708-423d-b14d-9165ed2a9882",
+          "createdAt": "2026-07-28T01:54:34.000Z",
+          "updatedAt": "2026-07-28T01:54:34.000Z",
+          "uid": "35240-80831e4e-f708-423d-b14d-9165ed2a9882"
+        }
+      ],
+      "id": "601f8acd-2ee0-444a-91ac-14aaed6ba71c",
+      "createdAt": "2026-07-28T01:54:34.000Z",
+      "updatedAt": "2026-07-28T01:54:34.000Z",
+      "uid": "35240-601f8acd-2ee0-444a-91ac-14aaed6ba71c"
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "preferences",
+          "item": [
+            {
+              "name": "Grafana Get User Preferences",
+              "id": "05b3e017-9c61-4235-b0fa-e9cefd53199a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/user/preferences",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "preferences"
+                  ]
+                },
+                "description": "This API operation retrieves the current preferences for the authenticated user in Grafana. It returns configuration settings such as the user's preferred theme (light or dark mode), home dashboard ID, timezone settings, and UI language preferences. The endpoint requires authentication and returns a JSON object containing all the preference values associated with the logged-in user's account, allowing applications to understand and respect the user's personalized Grafana interface settings."
+              },
+              "response": [
+                {
+                  "id": "6c93840f-93ff-4c8d-a7c0-d87b7d2df8bd",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/user/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"cookiePreferences\": {\n    \"analytics\": {},\n    \"functional\": {},\n    \"performance\": {}\n  },\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"<string>\",\n  \"timezone\": \"<string>\",\n  \"weekStart\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-6c93840f-93ff-4c8d-a7c0-d87b7d2df8bd"
+                },
+                {
+                  "id": "0eb114af-e360-4927-a3de-623017465dc2",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/user/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-0eb114af-e360-4927-a3de-623017465dc2"
+                },
+                {
+                  "id": "de7c3f1c-c49d-4b75-8f8b-65a2a39f10d5",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/user/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-de7c3f1c-c49d-4b75-8f8b-65a2a39f10d5"
+                }
+              ],
+              "createdAt": "2026-07-28T01:54:34.000Z",
+              "updatedAt": "2026-07-28T01:54:34.000Z",
+              "uid": "35240-05b3e017-9c61-4235-b0fa-e9cefd53199a"
+            },
+            {
+              "name": "Grafana Update User Preferences",
+              "id": "d9ab8050-0e1c-45fb-a8f2-0664383d49be",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"system\",\n  \"timezone\": \"utc\",\n  \"weekStart\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user/preferences",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "preferences"
+                  ]
+                },
+                "description": "Updates the preferences for the currently authenticated user in Grafana, allowing modification of settings such as theme (light/dark), home dashboard, timezone, and language preferences. This endpoint requires authentication and only affects the preferences of the user making the request. The operation accepts a JSON payload containing the preference fields to be updated, and returns the updated preference object upon successful modification. Changes take effect immediately for the user's session and persist across logins."
+              },
+              "response": [
+                {
+                  "id": "f0df8df5-db10-4fb1-860e-4c7cab31089a",
+                  "name": "An OKResponse is returned if the request was successful.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"system\",\n  \"timezone\": \"utc\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/user/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-f0df8df5-db10-4fb1-860e-4c7cab31089a"
+                },
+                {
+                  "id": "cfd8d244-b7e9-4a22-964b-9ec3457d3271",
+                  "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"system\",\n  \"timezone\": \"utc\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/user/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-cfd8d244-b7e9-4a22-964b-9ec3457d3271"
+                },
+                {
+                  "id": "d12c340e-753d-44c1-8d82-37a011177e27",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"system\",\n  \"timezone\": \"utc\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/user/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-d12c340e-753d-44c1-8d82-37a011177e27"
+                },
+                {
+                  "id": "bbc482db-7328-439c-a3cf-91925a86168c",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"system\",\n  \"timezone\": \"utc\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/user/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-bbc482db-7328-439c-a3cf-91925a86168c"
+                }
+              ],
+              "createdAt": "2026-07-28T01:54:34.000Z",
+              "updatedAt": "2026-07-28T01:54:34.000Z",
+              "uid": "35240-d9ab8050-0e1c-45fb-a8f2-0664383d49be"
+            },
+            {
+              "name": "Grafana Patch User Preferences",
+              "id": "e3812448-b265-4e6d-a1b7-7739f8795665",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"light\",\n  \"timezone\": \"browser\",\n  \"weekStart\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user/preferences",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "preferences"
+                  ]
+                },
+                "description": "Updates the preferences for the currently authenticated user by allowing partial modifications to settings such as theme (light/dark), timezone, home dashboard ID, and UI preferences. This PATCH endpoint enables users to customize their Grafana experience by submitting only the specific preference fields they want to change, without needing to provide all preference values. The operation requires authentication and only affects the preferences of the user making the request, leaving unchanged any preference fields not included in the request body."
+              },
+              "response": [
+                {
+                  "id": "01574f28-fd63-4bdf-9bd5-da54556b38de",
+                  "name": "An OKResponse is returned if the request was successful.",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"light\",\n  \"timezone\": \"browser\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/user/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-01574f28-fd63-4bdf-9bd5-da54556b38de"
+                },
+                {
+                  "id": "f62b766b-84ac-489c-9368-74268db79d52",
+                  "name": "BadRequestError is returned when the request is invalid and it cannot be processed.",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"light\",\n  \"timezone\": \"browser\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/user/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-f62b766b-84ac-489c-9368-74268db79d52"
+                },
+                {
+                  "id": "169c80cb-f9b2-4d30-88e9-a08ba1f06381",
+                  "name": "UnauthorizedError is returned when the request is not authenticated.",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"light\",\n  \"timezone\": \"browser\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/user/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-169c80cb-f9b2-4d30-88e9-a08ba1f06381"
+                },
+                {
+                  "id": "71aaaeca-0c15-4a7a-b42d-d864b4ff5086",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cookies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"homeDashboardId\": 0,\n  \"homeDashboardUID\": \"<string>\",\n  \"language\": \"<string>\",\n  \"navbar\": {\n    \"bookmarkUrls\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"queryHistory\": {\n    \"homeTab\": \"<string>\"\n  },\n  \"regionalFormat\": \"<string>\",\n  \"theme\": \"light\",\n  \"timezone\": \"browser\",\n  \"weekStart\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/user/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "preferences"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:54:34.000Z",
+                  "updatedAt": "2026-07-28T01:54:34.000Z",
+                  "uid": "35240-71aaaeca-0c15-4a7a-b42d-d864b4ff5086"
+                }
+              ],
+              "createdAt": "2026-07-28T01:54:34.000Z",
+              "updatedAt": "2026-07-28T01:54:34.000Z",
+              "uid": "35240-e3812448-b265-4e6d-a1b7-7739f8795665"
+            }
+          ],
+          "id": "78567ed8-0b00-4859-8f2c-9e5f94f8e337",
+          "createdAt": "2026-07-28T01:54:34.000Z",
+          "updatedAt": "2026-07-28T01:54:34.000Z",
+          "uid": "35240-78567ed8-0b00-4859-8f2c-9e5f94f8e337"
+        }
+      ],
+      "id": "b9aab806-8ff3-4f31-af8f-0df85939fa5a",
+      "createdAt": "2026-07-28T01:54:34.000Z",
+      "updatedAt": "2026-07-28T01:54:34.000Z",
+      "uid": "35240-b9aab806-8ff3-4f31-af8f-0df85939fa5a"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}

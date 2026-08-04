@@ -1,0 +1,461 @@
+{
+  "info": {
+    "_postman_id": "132ac29b-7dc0-4e57-b5f1-ff7d95ee5cdb",
+    "name": "Grafana HTTP Access API",
+    "description": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:50:36.000Z",
+    "updatedAt": "2026-07-28T01:50:36.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-132ac29b-7dc0-4e57-b5f1-ff7d95ee5cdb"
+  },
+  "item": [
+    {
+      "name": "access-control",
+      "item": [
+        {
+          "name": "status",
+          "item": [
+            {
+              "name": "Grafana Get Access Control Status",
+              "id": "2f84d03d-3e1e-4ccf-ad0c-cdcab7b4c8df",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/access-control/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "access-control",
+                    "status"
+                  ]
+                },
+                "description": "This API operation retrieves the current status of Grafana's access control system, providing information about whether fine-grained access control (RBAC) is enabled and operational within the Grafana instance. It returns details about the access control configuration and its current state, allowing administrators to verify that permission management features are functioning correctly and to understand which access control mode is active. This is particularly useful for troubleshooting permission-related issues or confirming that enterprise access control features are properly configured."
+              },
+              "response": [
+                {
+                  "id": "e78f22d8-1d9d-46f6-8cb7-97fd9afd8510",
+                  "name": "(empty)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/access-control/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "access-control",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "<integer>",
+                  "createdAt": "2026-07-28T01:50:36.000Z",
+                  "updatedAt": "2026-07-28T01:50:36.000Z",
+                  "uid": "35240-e78f22d8-1d9d-46f6-8cb7-97fd9afd8510"
+                },
+                {
+                  "id": "d68b74d3-d0b3-4054-bb49-0eab838a4759",
+                  "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/access-control/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "access-control",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:50:36.000Z",
+                  "updatedAt": "2026-07-28T01:50:36.000Z",
+                  "uid": "35240-d68b74d3-d0b3-4054-bb49-0eab838a4759"
+                },
+                {
+                  "id": "0d1d2b39-0737-488e-a842-4df54f6b96de",
+                  "name": "NotFoundError is returned when the requested resource was not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/access-control/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "access-control",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:50:36.000Z",
+                  "updatedAt": "2026-07-28T01:50:36.000Z",
+                  "uid": "35240-0d1d2b39-0737-488e-a842-4df54f6b96de"
+                },
+                {
+                  "id": "5d510890-6881-46eb-aa46-48549ae1e153",
+                  "name": "InternalServerError is a general error indicating something went wrong internally.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/access-control/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "access-control",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:50:36.000Z",
+                  "updatedAt": "2026-07-28T01:50:36.000Z",
+                  "uid": "35240-5d510890-6881-46eb-aa46-48549ae1e153"
+                }
+              ],
+              "createdAt": "2026-07-28T01:50:36.000Z",
+              "updatedAt": "2026-07-28T01:50:36.000Z",
+              "uid": "35240-2f84d03d-3e1e-4ccf-ad0c-cdcab7b4c8df"
+            }
+          ],
+          "id": "b6a8fbe2-ca69-4d82-b10a-609e6163825d",
+          "createdAt": "2026-07-28T01:50:36.000Z",
+          "updatedAt": "2026-07-28T01:50:36.000Z",
+          "uid": "35240-b6a8fbe2-ca69-4d82-b10a-609e6163825d"
+        }
+      ],
+      "id": "10c3f39c-0e0f-45be-874c-55a29e1029fb",
+      "createdAt": "2026-07-28T01:50:36.000Z",
+      "updatedAt": "2026-07-28T01:50:36.000Z",
+      "uid": "35240-10c3f39c-0e0f-45be-874c-55a29e1029fb"
+    },
+    {
+      "name": "admin",
+      "item": [
+        {
+          "name": "provisioning",
+          "item": [
+            {
+              "name": "access-control",
+              "item": [
+                {
+                  "name": "reload",
+                  "item": [
+                    {
+                      "name": "Grafana Admin Provisioning Reload Access Control",
+                      "id": "db1076c0-ead5-4dec-b6d4-fc88b06d1a87",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/admin/provisioning/access-control/reload",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "admin",
+                            "provisioning",
+                            "access-control",
+                            "reload"
+                          ]
+                        },
+                        "description": "This API operation performs a POST request to the '/admin/provisioning/access-control/reload' endpoint in Grafana's admin provisioning system. It triggers a reload of the access control configuration, allowing administrators to refresh and apply any changes made to access control provisioning files without requiring a full Grafana server restart. This is particularly useful in environments where role-based access control (RBAC) settings are managed through provisioning configurations and need to be updated dynamically. The operation requires administrative privileges to execute and ensures that the latest access control policies and permissions are loaded into the running Grafana instance."
+                      },
+                      "response": [
+                        {
+                          "id": "4a131491-384c-42c7-9215-ee0fa4718b7a",
+                          "name": "AcceptedResponse",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/provisioning/access-control/reload",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "provisioning",
+                                "access-control",
+                                "reload"
+                              ]
+                            }
+                          },
+                          "status": "Accepted",
+                          "code": 202,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:50:36.000Z",
+                          "updatedAt": "2026-07-28T01:50:36.000Z",
+                          "uid": "35240-4a131491-384c-42c7-9215-ee0fa4718b7a"
+                        },
+                        {
+                          "id": "34f91ec4-8fb7-4182-a3cb-68ce6034ef4e",
+                          "name": "UnauthorizedError is returned when the request is not authenticated.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/provisioning/access-control/reload",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "provisioning",
+                                "access-control",
+                                "reload"
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:50:36.000Z",
+                          "updatedAt": "2026-07-28T01:50:36.000Z",
+                          "uid": "35240-34f91ec4-8fb7-4182-a3cb-68ce6034ef4e"
+                        },
+                        {
+                          "id": "e4f9a095-1fdb-4671-8680-15d7fffea80a",
+                          "name": "ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/admin/provisioning/access-control/reload",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "admin",
+                                "provisioning",
+                                "access-control",
+                                "reload"
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"error\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:50:36.000Z",
+                          "updatedAt": "2026-07-28T01:50:36.000Z",
+                          "uid": "35240-e4f9a095-1fdb-4671-8680-15d7fffea80a"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:50:36.000Z",
+                      "updatedAt": "2026-07-28T01:50:36.000Z",
+                      "uid": "35240-db1076c0-ead5-4dec-b6d4-fc88b06d1a87"
+                    }
+                  ],
+                  "id": "3f9f2195-4b59-48cd-8f72-29990735bf47",
+                  "createdAt": "2026-07-28T01:50:36.000Z",
+                  "updatedAt": "2026-07-28T01:50:36.000Z",
+                  "uid": "35240-3f9f2195-4b59-48cd-8f72-29990735bf47"
+                }
+              ],
+              "id": "f8a7e96d-60a5-4400-b7d9-f92404febc69",
+              "createdAt": "2026-07-28T01:50:36.000Z",
+              "updatedAt": "2026-07-28T01:50:36.000Z",
+              "uid": "35240-f8a7e96d-60a5-4400-b7d9-f92404febc69"
+            }
+          ],
+          "id": "1d97bd5d-2c9e-4598-8954-cd18503157af",
+          "createdAt": "2026-07-28T01:50:36.000Z",
+          "updatedAt": "2026-07-28T01:50:36.000Z",
+          "uid": "35240-1d97bd5d-2c9e-4598-8954-cd18503157af"
+        }
+      ],
+      "id": "49501417-84be-4d72-a29d-bb127d0f412a",
+      "createdAt": "2026-07-28T01:50:36.000Z",
+      "updatedAt": "2026-07-28T01:50:36.000Z",
+      "uid": "35240-49501417-84be-4d72-a29d-bb127d0f412a"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "instance",
+      "value": "your-instance"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{instance}}.grafana.net/api"
+    }
+  ]
+}
