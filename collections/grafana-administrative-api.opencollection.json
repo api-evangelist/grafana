@@ -1,0 +1,261 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Administrative API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Administrative",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Admin Get Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/admin/settings"
+          },
+          "docs": "The Admin Get Settings endpoint in Grafana's Admin API allows administrators with appropriate permissions to retrieve the current configuration settings of the Grafana instance. This GET operation at the /admin/settings path returns a comprehensive view of all server settings, including data source configurations, authentication settings, feature toggles, and other system-wide parameters. The endpoint is typically used for administrative tasks such as auditing configurations, troubleshooting iss"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Get Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/admin/stats"
+          },
+          "docs": "The Grafana Admin Get Stats API operation is an administrative endpoint accessible via HTTP GET request at `/admin/stats` that retrieves statistical information and metrics about the Grafana instance. This endpoint requires administrator privileges and provides aggregated data such as user counts, dashboard counts, data source statistics, organization metrics, and other system-wide analytics that help administrators monitor the overall health, usage, and growth of their Grafana deployment. The s"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Provisioning Reload Access Control",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/admin/provisioning/access-control/reload"
+          },
+          "docs": "This API operation performs a POST request to the '/admin/provisioning/access-control/reload' endpoint in Grafana's admin provisioning system. It triggers a reload of the access control configuration, allowing administrators to refresh and apply any changes made to access control provisioning files without requiring a full Grafana server restart. This is particularly useful in environments where role-based access control (RBAC) settings are managed through provisioning configurations and need to"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Provisioning Reload Dashboards",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/admin/provisioning/dashboards/reload"
+          },
+          "docs": "This API operation is a POST request to the '/admin/provisioning/dashboards/reload' endpoint in Grafana that allows administrators to trigger a reload of provisioned dashboards without requiring a full Grafana server restart. When invoked, this endpoint scans the configured provisioning directories and reloads all dashboard configurations, applying any changes made to the provisioning files such as new dashboards, modifications to existing ones, or deletions. This is particularly useful in autom"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Provisioning Reload Datasources",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/admin/provisioning/datasources/reload"
+          },
+          "docs": "This API endpoint allows administrators to trigger a reload of provisioned datasources in Grafana. When invoked via a POST request to '/admin/provisioning/datasources/reload', it refreshes the datasource configurations from the provisioning files without requiring a full Grafana restart. This is particularly useful when datasource configuration files have been modified on disk and need to be applied immediately to the running Grafana instance. The operation requires admin-level privileges to exe"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Provisioning Reload Plugins",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/admin/provisioning/plugins/reload"
+          },
+          "docs": "This API operation is an administrative endpoint in Grafana that triggers a reload of provisioned plugins without requiring a full system restart. When invoked via a POST request to the /admin/provisioning/plugins/reload path, it forces Grafana to re-scan and reload plugin configurations that have been set up through the provisioning system, allowing administrators to apply changes to plugin provisioning files dynamically. This is particularly useful in automated deployment scenarios or when man"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Create User",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/admin/users",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows administrators to create new users in Grafana through a POST request to the /admin/users endpoint. It is an administrative function that requires elevated privileges and enables the programmatic addition of user accounts to the Grafana system. When invoked, the operation accepts user details such as username, email, password, and other relevant attributes in the request body, then creates a new user account with the specified credentials and settings. This endpoint is p"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Delete User",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows Grafana administrators with appropriate permissions to permanently delete a specific user account from the Grafana instance by making a DELETE request to the /admin/users/{user_id} endpoint, where {user_id} is the unique identifier of the target user. This is a privileged administrative function that removes the user and all associated data from the system, and should be used with caution as the deletion is typically irreversible. The operation requires admin-level auth"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Get User Auth Tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id/auth-tokens",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of authentication tokens associated with a specific user account in Grafana. This administrative endpoint requires admin privileges and allows system administrators to view all active auth tokens that have been generated for a particular user identified by their user ID. The operation returns token metadata including creation dates, last used timestamps, and token names, which helps administrators audit user access, monitor authentication activity, and identify potentially unaut"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Disable User",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id/disable",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows Grafana administrators to disable a specific user account by sending a POST request to the /admin/users/{user_id}/disable endpoint. The operation requires administrative privileges and targets a user identified by their unique user_id parameter in the URL path. When executed, this endpoint deactivates the specified user account, preventing them from logging in or accessing Grafana resources while preserving their user data and configurations for potential future reactiv"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Enable User",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id/enable",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation is used by Grafana administrators to re-enable a previously disabled user account. It requires a POST request to the endpoint with the specific user ID as a path parameter. Only users with admin privileges can execute this operation, which restores access for users who may have been temporarily disabled due to security concerns, policy violations, or administrative purposes. Upon successful execution, the specified user account is activated and the user can log in and access G"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Logout User",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id/logout",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows a Grafana administrator to forcibly log out a specific user by sending a POST request to the endpoint with the target user's ID. When invoked, it invalidates all active sessions for the specified user, effectively disconnecting them from Grafana and requiring them to re-authenticate before accessing the system again. This is typically used for security purposes, such as immediately revoking access when a user account is compromised, when enforcing policy changes, or whe"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Update User Password",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id/password",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows Grafana administrators to programmatically update the password for a specific user account by sending a PUT request to the endpoint with the target user's ID. The administrator must provide the new password in the request body, and this action requires admin-level privileges to execute. This operation is particularly useful for password resets, account recovery scenarios, or when administrators need to enforce password changes for security purposes without requiring the"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Update User Permissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id/permissions",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the permissions for a specific user in Grafana through an administrative endpoint. This operation requires admin privileges and allows modification of user permission settings by targeting a specific user via their user_id parameter in the URL path. The PUT method indicates this is a full update of the user's permission configuration, replacing the existing permissions with the new settings provided in the request body. This is typically used by system administrators to grant or revoke a"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Revoke User Auth Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id/revoke-auth-token",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows a Grafana administrator to forcibly revoke a specific authentication token for a given user by making a POST request to the endpoint with the target user's ID. When executed, it invalidates the specified auth token, effectively logging out that user from any session using that particular token, which is useful for security purposes such as when a token may have been compromised or when an administrator needs to terminate a user's access immediately without affecting oth"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

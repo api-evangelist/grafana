@@ -1,0 +1,108 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Templates API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Templates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Route Get Templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/templates"
+          },
+          "docs": "This API operation retrieves provisioning templates from Grafana's alerting system. It is accessed via a GET request to the `/v1/provisioning/templates` endpoint and returns a collection of message templates that can be used for alert notifications. These templates define how alert messages are formatted and presented when notifications are sent through various channels, allowing administrators to standardize and customize the appearance and content of alert messages across their Grafana instanc"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/templates/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Template group name"
+              }
+            ]
+          },
+          "docs": "The Get Template operation retrieves a specific notification template by its name from Grafana's provisioning API. This endpoint allows users to fetch the complete configuration details of a previously created template, including its content, title, and any associated metadata. By making a GET request to /v1/provisioning/templates/{name} where {name} is the unique identifier of the template, administrators can programmatically access template definitions that are used for formatting alert notifi"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Put Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/templates/:name",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Template group name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing notification template in Grafana's provisioning system by replacing the template configuration identified by the specified name parameter. This PUT operation allows administrators to modify template content, formatting, and other properties used for alert notifications. The route accepts the template name as a path parameter and expects the complete updated template definition in the request body, which will overwrite the existing template configuration while maintaining the "
+        },
+        {
+          "info": {
+            "name": "Grafana Route Delete Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/templates/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Template group name"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Version of template to use for optimistic concurrency. Leave empty to disable validation"
+              }
+            ]
+          },
+          "docs": "This API operation deletes a specific notification template from Grafana's provisioning system by its name. When called with a DELETE request to the endpoint /v1/provisioning/templates/{name}, where {name} is the unique identifier of the template, it removes the specified template from the system's configuration. This is part of Grafana's provisioning API that allows programmatic management of notification templates, enabling administrators to automate the cleanup and removal of templates that a"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

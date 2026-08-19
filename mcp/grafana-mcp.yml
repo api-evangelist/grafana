@@ -7,38 +7,92 @@ server:
   repo: https://github.com/grafana/mcp-grafana
   docs: https://grafana.com/docs/grafana/latest/developer-resources/mcp/
   docker_image: mcp/grafana
-  transport: stdio        # also supports http (SSE / streamable-http)
-  transports: [stdio, sse, streamable-http]
+  transport: stdio
+  transports:
+  - stdio
+  - sse
+  - streamable-http
   auth:
     env:
     - GRAFANA_URL
     - GRAFANA_SERVICE_ACCOUNT_TOKEN
   requires: Grafana 9.0 or later
-description: >-
-  Official Grafana MCP server. Gives AI assistants and LLM clients access to a Grafana
-  instance: query metrics and logs, search and manage dashboards, manage alert rules,
-  work with Grafana Incident, Sift and OnCall, and generate deeplinks. Tools are grouped
-  by product area and can be enabled/disabled per category.
+description: 'Official Grafana MCP server. Gives AI assistants and LLM clients access to a Grafana instance:
+  query metrics and logs, search and manage dashboards, manage alert rules, work with Grafana Incident,
+  Sift and OnCall, and generate deeplinks. Tools are grouped by product area and can be enabled/disabled
+  per category.'
 tool_categories:
 - name: dashboards
-  tools: [search_dashboards, get_dashboard_summary, get_dashboard_panel_queries, update_dashboard, patch_dashboard]
+  tools:
+  - search_dashboards
+  - get_dashboard_summary
+  - get_dashboard_panel_queries
+  - update_dashboard
+  - patch_dashboard
 - name: folders
-  tools: [search_folders, create_folder]
+  tools:
+  - search_folders
+  - create_folder
 - name: datasources
-  tools: [list_datasources, get_datasource_by_uid, query_prometheus, query_loki, query_influxdb, query_clickhouse, query_snowflake, query_cloudwatch, query_elasticsearch, query_pyroscope]
+  tools:
+  - list_datasources
+  - get_datasource_by_uid
+  - query_prometheus
+  - query_loki
+  - query_influxdb
+  - query_clickhouse
+  - query_snowflake
+  - query_cloudwatch
+  - query_elasticsearch
+  - query_pyroscope
 - name: alerting
-  tools: [list_alert_rules, get_alert_rule, list_contact_points, list_notification_policies]
+  tools:
+  - list_alert_rules
+  - get_alert_rule
+  - list_contact_points
+  - list_notification_policies
 - name: incident
-  tools: [list_incidents, create_incident, add_activity_to_incident, get_incident]
+  tools:
+  - list_incidents
+  - create_incident
+  - add_activity_to_incident
+  - get_incident
 - name: sift
-  tools: [list_sift_investigations, get_sift_investigation, find_error_pattern_logs, find_slow_requests]
+  tools:
+  - list_sift_investigations
+  - get_sift_investigation
+  - find_error_pattern_logs
+  - find_slow_requests
 - name: oncall
-  tools: [list_oncall_schedules, get_oncall_shift, get_current_oncall_users, list_oncall_teams, list_alert_groups]
+  tools:
+  - list_oncall_schedules
+  - get_oncall_shift
+  - get_current_oncall_users
+  - list_oncall_teams
+  - list_alert_groups
 - name: navigation
-  tools: [generate_deeplink]
+  tools:
+  - generate_deeplink
 - name: annotations
-  tools: [list_annotations, create_annotation]
+  tools:
+  - list_annotations
+  - create_annotation
 - name: snapshots
-  tools: [list_snapshots, get_snapshot, create_snapshot, delete_snapshot]
+  tools:
+  - list_snapshots
+  - get_snapshot
+  - create_snapshot
+  - delete_snapshot
 - name: rendering
-  tools: [render_panel_image, render_dashboard_image]
+  tools:
+  - render_panel_image
+  - render_dashboard_image
+deployment:
+  mode: none
+  endpoint: https://grafana.com/docs/grafana/latest/developer-resources/mcp/
+  verified: probed
+  probe: dead
+  note: the endpoint this manifest claimed did not answer; recorded as none rather than deleted so the
+    claim stays auditable
+  checked: '2026-08-12'
+  source: catalog MCP census

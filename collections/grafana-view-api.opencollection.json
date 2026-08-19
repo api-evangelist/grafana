@@ -1,0 +1,42 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access View API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "View",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana View Public Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/public/dashboards/:accessToken",
+            "params": [
+              {
+                "name": "accessToken",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and displays a public Grafana dashboard using a unique access token. When a GET request is made to the endpoint with a valid accessToken parameter, it returns the dashboard configuration and visualization data that has been publicly shared. This allows users to view specific dashboards without requiring authentication or login credentials, making it useful for sharing monitoring data, metrics, and analytics with external stakeholders or embedding dashboards in public"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

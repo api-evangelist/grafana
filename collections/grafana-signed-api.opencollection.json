@@ -1,0 +1,72 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Signed API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Signed",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Get Signed In User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/user"
+          },
+          "docs": "Retrieves the currently authenticated user's details in Grafana. This endpoint returns information about the user who is currently signed in based on the authentication credentials provided in the request, including user properties such as ID, login name, email, name, and organizational details. It's commonly used to verify authentication status and display user-specific information in the Grafana interface or when integrating with external applications."
+        },
+        {
+          "info": {
+            "name": "Grafana Update Signed In User",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/user",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the profile information for the currently authenticated user in Grafana, allowing modification of fields such as email address, name, login username, and theme preferences. This endpoint requires the user to be signed in and operates on the user's own account, making it a self-service operation for managing personal account details. The request accepts a JSON payload containing the user attributes to be updated, and upon successful execution, returns the updated user information along wi"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Signed In User Org List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/user/orgs"
+          },
+          "docs": "This API endpoint retrieves a list of all organizations associated with the currently authenticated user in Grafana. When called with a GET request to /user/orgs, it returns information about each organization the signed-in user belongs to, typically including details such as organization ID, name, and the user's role within each organization. This is useful for applications that need to display or process the organizational memberships of the current user, allowing them to understand which orga"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Signed In User Team List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/user/teams"
+          },
+          "docs": "This API operation retrieves a list of all teams that the currently authenticated user is a member of in Grafana. When called, it returns team information associated with the signed-in user's account, allowing applications to determine which teams the user belongs to and potentially their roles or permissions within those teams. This is useful for displaying team memberships in user interfaces, implementing team-based access controls, or filtering content based on team associations."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

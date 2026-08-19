@@ -1,0 +1,191 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Mute API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Mute",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Route Get Mute Timings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings"
+          },
+          "docs": "The Get Mute Timings operation retrieves a list of all configured mute timings from Grafana's alerting system. Mute timings are scheduling rules that define time intervals during which alert notifications should be suppressed, such as during maintenance windows or outside business hours. This GET endpoint at /v1/provisioning/mute-timings returns the complete collection of mute timing configurations, allowing administrators to view when and under what conditions notifications will be automaticall"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Post Mute Timing",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The POST /v1/provisioning/mute-timings endpoint in Grafana allows administrators to create a new mute timing configuration through the provisioning API. Mute timings define specific time intervals during which alert notifications should be silenced, such as maintenance windows, weekends, or business hours exclusions. By posting to this endpoint with the appropriate JSON payload containing the timing specifications (including recurrence rules, time ranges, and date intervals), users can programma"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Export Mute Timings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              }
+            ]
+          },
+          "docs": "The Route Export Mute Timings operation in Grafana's provisioning API allows users to retrieve and export configured mute timing definitions through a GET request to the /v1/provisioning/mute-timings/export endpoint. This endpoint provides a way to extract mute timing configurations, which define time-based rules for suppressing alert notifications during specific periods such as maintenance windows or off-hours. The exported data can be used for backup purposes, migration between Grafana instan"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Mute Timing",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Mute timing name"
+              }
+            ]
+          },
+          "docs": "The Get Mute Timing operation retrieves a specific mute timing configuration by its unique name from Grafana's alerting system. Mute timings are used to define time intervals during which alert notifications should be suppressed, allowing users to prevent alerts during scheduled maintenance windows or known periods of reduced monitoring. By providing the mute timing name as a path parameter, this GET endpoint returns the complete configuration details of that particular mute timing, including it"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Put Mute Timing",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings/:name",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Mute timing name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The PUT operation on the `/v1/provisioning/mute-timings/{name}` endpoint in Grafana is used to update or replace an existing mute timing configuration identified by its name parameter. Mute timings define time-based rules that silence alert notifications during specific periods, such as maintenance windows or non-business hours. This endpoint allows administrators to modify the schedule, time intervals, or other properties of a previously created mute timing by providing the complete updated con"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Delete Mute Timing",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings/:name",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Mute timing name"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Version of mute timing to use for optimistic concurrency. Leave empty to disable validation"
+              }
+            ]
+          },
+          "docs": "This API operation deletes a specific mute timing configuration in Grafana's alerting system by its unique name. Mute timings are schedules that define time intervals during which alert notifications should be suppressed, and this DELETE endpoint removes the identified mute timing from the provisioning configuration. The operation requires the mute timing's name as a path parameter and is typically used when a previously configured silence schedule is no longer needed or needs to be replaced wit"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Export Mute Timing",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings/:name/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Mute timing name"
+              }
+            ]
+          },
+          "docs": "The Export Mute Timing API operation in Grafana allows users to retrieve and export the configuration details of a specific mute timing by providing its name as a path parameter. This GET endpoint is part of the provisioning API and enables administrators to programmatically access mute timing definitions, which are used to suppress alert notifications during specified time periods. The exported configuration can be used for backup purposes, migrating configurations between Grafana instances, or"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

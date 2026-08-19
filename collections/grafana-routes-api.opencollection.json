@@ -1,0 +1,1067 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Routes API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Routes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Get Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules"
+          },
+          "docs": "This API operation retrieves Prometheus or Cortex alerting and recording rules from a configured data source and converts them into Grafana's unified alerting format. It acts as a migration utility that fetches existing Prometheus-compatible rules and transforms them so they can be imported or managed within Grafana's alerting system, enabling users to consolidate their monitoring rules into Grafana's native rule structure while maintaining compatibility with Prometheus-style rule definitions."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Post Rule Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "This API operation converts Prometheus or Cortex rule group configurations into Grafana's native format by accepting a POST request to the /convert/api/prom/rules endpoint. It enables users to migrate their existing Prometheus-style alerting and recording rules from Prometheus or Cortex deployments into Grafana, facilitating the transition between monitoring systems while preserving rule logic and structure. The endpoint processes the submitted rule groups and transforms them into a format compa"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Get Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and converts Prometheus or Cortex rule configurations from a specific namespace in Grafana. By making a GET request to the endpoint with a namespace title parameter, it fetches the alerting and recording rules defined within that namespace and converts them into a format compatible with Grafana's unified alerting system. This is particularly useful when migrating from Prometheus-style alerting rules to Grafana's native alerting framework, allowing users to maintain t"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Post Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle",
+            "headers": [
+              {
+                "name": "x-grafana-alerting-datasource-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-recording-rules-paused",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-alert-rules-paused",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-target-datasource-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-folder-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-notification-settings",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The Grafana API operation POST /convert/api/prom/rules/{NamespaceTitle} converts and creates a Prometheus or Cortex rule group within a specified namespace. This endpoint accepts Prometheus-style rule definitions and transforms them into Grafana's native alert rule format, allowing users to migrate their existing Prometheus alerting and recording rules into Grafana's unified alerting system. The {NamespaceTitle} parameter identifies the target namespace where the converted rule group will be sto"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Delete Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation deletes a specific Prometheus or Cortex rule namespace within Grafana's conversion or migration layer. By sending a DELETE request to the endpoint with a namespace title parameter, users can remove an entire namespace and its associated alert rules or recording rules that were previously converted or imported from Prometheus/Cortex format. This is useful during cleanup operations, when reorganizing rule structures, or when removing legacy configurations that have been migrated"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Get Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle/:Group",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific Prometheus rule group from a designated namespace in Grafana's Cortex ruler service. The endpoint accepts two path parameters: NamespaceTitle which identifies the namespace containing the rule group, and Group which specifies the name of the rule group to retrieve. When called, it returns the configuration and rules defined within that particular rule group, allowing users to view and manage their Prometheus alerting and recording rules that have been conv"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Delete Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle/:Group",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation is used to delete a specific Prometheus rule group within Grafana's Cortex-based alerting system. It targets a rule group identified by both its namespace title and group name through the URL path parameters. When called with the DELETE HTTP method, it removes the entire rule group configuration from the specified namespace, effectively eliminating all alert and recording rules contained within that group from the Prometheus-compatible rules engine in Grafana."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Get Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules"
+          },
+          "docs": "This API operation retrieves Prometheus alerting and recording rules from a Grafana instance and converts them into a standardized configuration format. When a GET request is made to the /convert/prometheus/config/v1/rules endpoint, it fetches the existing Prometheus-style rules configured within Grafana and transforms them into a version 1 configuration schema, making it easier to migrate, backup, or integrate these rules with other systems or Prometheus instances. This is particularly useful f"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Post Rule Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "This API operation converts Prometheus rule group configurations to Grafana's format via a POST request to the /convert/prometheus/config/v1/rules endpoint. It accepts Prometheus-formatted rule groups as input and transforms them into a compatible format that can be used within Grafana's alerting and recording rule system, facilitating migration or integration between Prometheus and Grafana monitoring setups."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Get Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and converts Prometheus alerting and recording rules from a specific namespace within Grafana. By making a GET request to the endpoint with a specified namespace title, it fetches the Prometheus rule configuration for that namespace and converts it into a format compatible with Grafana's alerting system. This is particularly useful when migrating from Prometheus-based alerting to Grafana's unified alerting system, allowing users to import existing Prometheus rule def"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Post Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle",
+            "headers": [
+              {
+                "name": "x-grafana-alerting-datasource-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-recording-rules-paused",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-alert-rules-paused",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-target-datasource-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-folder-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-notification-settings",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation converts Prometheus rule group configurations to Grafana's native format by accepting a POST request to the endpoint /convert/prometheus/config/v1/rules/{NamespaceTitle}, where {NamespaceTitle} represents the target namespace for the rule group. It takes Prometheus-formatted alerting and recording rules as input and transforms them into Grafana-compatible rule configurations, facilitating migration or integration between Prometheus and Grafana alerting systems. The operation a"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Delete Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a Prometheus rule namespace configuration in Grafana's conversion API. This operation removes all rules associated with the specified namespace by its title, effectively cleaning up converted Prometheus alerting and recording rules that were previously imported or managed through the conversion endpoint. The route is part of Grafana's Prometheus configuration conversion functionality, allowing administrators to manage the lifecycle of converted rule namespaces programmatically."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Get Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle/:Group",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and converts a Prometheus rule group configuration from a specific namespace in Grafana. It accepts GET requests at the endpoint path that includes both the namespace title and group name as path parameters, allowing users to fetch the configuration details of a particular Prometheus alerting or recording rule group. The operation is part of Grafana's conversion utilities that help transform Prometheus-native rule configurations into Grafana's internal format or vice"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Delete Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle/:Group",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation is used to delete a Prometheus rule group from a specific namespace in Grafana's configuration. It targets a particular rule group identified by both the namespace title and group name through the URL path parameters. When invoked with a DELETE HTTP method, it removes the specified rule group configuration from the Prometheus-compatible alerting and recording rules system within Grafana, effectively cleaning up rules that are no longer needed or are being replaced."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules"
+          },
+          "docs": "This API operation retrieves alert rules from Grafana's provisioning system. It uses a GET request to the /v1/provisioning/alert-rules endpoint to fetch configured alert rules that have been set up through Grafana's provisioning mechanism. The operation returns a list of alert rule definitions including their conditions, notifications, and metadata, allowing administrators and applications to programmatically query and review the current alerting configuration without manual access to the Grafan"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Post Alert Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new alert rule in Grafana's provisioning API, allowing administrators to programmatically define alerting conditions, evaluation intervals, notification settings, and query expressions. This endpoint accepts a POST request with a JSON payload containing the alert rule configuration including the rule name, folder location, data source queries, alert conditions, evaluation group, and notification channels. The operation enables infrastructure-as-code practices by allowing alert rules to"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rules Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "folderUid",
+                "value": "",
+                "type": "query",
+                "description": "UIDs of folders from which to export rules"
+              },
+              {
+                "name": "group",
+                "value": "",
+                "type": "query",
+                "description": "Name of group of rules to export. Must be specified only together with a single folder UID"
+              },
+              {
+                "name": "ruleUid",
+                "value": "",
+                "type": "query",
+                "description": "UID of alert rule to export. If specified, parameters folderUid and group must be empty."
+              }
+            ]
+          },
+          "docs": "This API operation retrieves alert rules from Grafana in an exportable format, allowing administrators to extract alert rule configurations for backup, migration, or version control purposes. The GET endpoint at /v1/provisioning/alert-rules/export provides a way to programmatically access the complete definition of configured alert rules, including their conditions, notification settings, and metadata. This is particularly useful for maintaining infrastructure as code, replicating alert configur"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:UID",
+            "params": [
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "Alert rule UID"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific alert rule from Grafana's provisioning system using the alert rule's unique identifier (UID). When called with a GET request to the endpoint /v1/provisioning/alert-rules/{UID}, it returns the complete configuration details of the specified alert rule, including its conditions, labels, annotations, and evaluation settings. This endpoint is part of Grafana's provisioning API, which allows programmatic management of alert rules outside of the standard UI inte"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Put Alert Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:UID",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "Alert rule UID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing alert rule in Grafana's provisioning API by specifying the rule's unique identifier (UID) in the path. This endpoint allows you to modify all aspects of an alert rule including its condition, evaluation interval, notification settings, labels, and annotations. The request requires a complete alert rule definition in the body, and the UID in the path must match the UID in the request body. This operation is part of Grafana's provisioning capabilities, enabling programmatic man"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Delete Alert Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:UID",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "Alert rule UID"
+              }
+            ]
+          },
+          "docs": "Deletes a specific alert rule from Grafana's provisioning system by its unique identifier (UID). This operation permanently removes the alert rule configuration from the system, including all associated settings such as conditions, labels, annotations, and notification policies. The deletion is immediate and cannot be undone, so the UID must be carefully specified to avoid removing the wrong alert rule. This endpoint is part of Grafana's provisioning API, which allows programmatic management of "
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:UID/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "Alert rule UID"
+              }
+            ]
+          },
+          "docs": "The Get Alert Rule Export endpoint allows you to export a specific alert rule configuration from Grafana by providing its unique identifier (UID). This operation retrieves the complete alert rule definition in a format suitable for provisioning, enabling you to back up, version control, or migrate alert rules between Grafana instances. By making a GET request to /v1/provisioning/alert-rules/{UID}/export, you can obtain the alert rule's configuration including its conditions, notification setting"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Contactpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/contact-points",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves all configured contact points in Grafana's alerting system through a GET request to the /v1/provisioning/contact-points endpoint. Contact points define the destinations where alert notifications are sent, such as email addresses, Slack channels, PagerDuty services, or webhook URLs. When called, this endpoint returns a list of all provisioned contact points along with their configuration details, including the notification channel type, settings, and metadata. This is"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Post Contactpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/contact-points",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new contact point in Grafana's alerting system through the provisioning API. This endpoint allows administrators to programmatically configure notification channels by defining how and where alert notifications should be sent. The contact point can specify various integration types such as email, Slack, PagerDuty, webhook, or other supported notification methods, along with their respective configuration settings. This is typically used for infrastructure-as-code deployments or automat"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Contactpoints Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/contact-points/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "decrypt",
+                "value": "",
+                "type": "query",
+                "description": "Whether any contained secure settings should be decrypted or left redacted. Redacted settings will contain RedactedValue instead. Currently, only org admin can view decrypted secure settings."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the exported configuration of contact points from Grafana's provisioning system. It uses a GET request to the `/v1/provisioning/contact-points/export` endpoint and returns contact point definitions that can be used for backup, migration, or version control purposes. Contact points define how and where Grafana sends alert notifications, such as email addresses, Slack webhooks, or PagerDuty integrations, and exporting them allows administrators to maintain consistent a"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Put Contactpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/contact-points/:UID",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "UID is the contact point unique identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing contact point in Grafana's alerting system using its unique identifier (UID). This PUT operation allows administrators to modify the configuration of a specific notification channel or contact point, such as updating webhook URLs, email addresses, Slack channels, or other alerting destination settings. The endpoint requires the contact point's UID in the path and accepts a request body containing the updated contact point configuration including its name, type, and integratio"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Delete Contactpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/contact-points/:UID",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "UID is the contact point unique identifier"
+              }
+            ]
+          },
+          "docs": "The Delete Contact Points API operation in Grafana allows administrators to remove a specific notification contact point from the alerting configuration by referencing its unique identifier (UID). This endpoint uses the DELETE HTTP method at the path /v1/provisioning/contact-points/{UID}, where {UID} is the unique identifier of the contact point to be deleted. When executed, it permanently removes the specified contact point from the system's provisioning configuration, which means alerts will n"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/folder/:FolderUID/rule-groups/:Group",
+            "params": [
+              {
+                "name": "FolderUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific alert rule group within a designated folder in Grafana's provisioning system. By providing the folder's unique identifier (FolderUID) and the name of the alert rule group (Group) in the request path, users can fetch the complete configuration and details of that particular rule group. This GET endpoint is part of Grafana's provisioning API, which allows programmatic management of alerting configurations, enabling administrators and automation systems to qu"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Put Alert Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/folder/:FolderUID/rule-groups/:Group",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "FolderUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing alert rule group identified by the folder UID and group name in Grafana's provisioning API. This PUT operation allows you to modify the configuration of alert rules within a specific rule group, including updating rule definitions, thresholds, evaluation intervals, and notification settings. The endpoint requires both the FolderUID parameter to identify the containing folder and the Group parameter to specify which alert rule group to update, with the updated configuration pr"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Delete Alert Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/folder/:FolderUID/rule-groups/:Group",
+            "params": [
+              {
+                "name": "FolderUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific alert rule group within a designated folder in Grafana's provisioning API. This operation requires both the folder's unique identifier (FolderUID) and the name of the alert rule group (Group) to be specified in the URL path. When executed, it removes the entire rule group and all alert rules contained within it from the Grafana instance. This is a destructive operation typically used when cleaning up monitoring configurations or reorganizing alert structures, and it requires a"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule Group Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/folder/:FolderUID/rule-groups/:Group/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "FolderUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and exports a specific alert rule group from Grafana's provisioning system by providing both the parent folder's unique identifier (FolderUID) and the alert rule group name (Group) as path parameters. It allows users to obtain the complete configuration of an alert rule group in an exportable format, which can be used for backup purposes, migration between Grafana instances, or version control of alerting configurations. The GET method ensures this is a read-only ope"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Mute Timings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings"
+          },
+          "docs": "The Get Mute Timings operation retrieves a list of all configured mute timings from Grafana's alerting system. Mute timings are scheduling rules that define time intervals during which alert notifications should be suppressed, such as during maintenance windows or outside business hours. This GET endpoint at /v1/provisioning/mute-timings returns the complete collection of mute timing configurations, allowing administrators to view when and under what conditions notifications will be automaticall"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Post Mute Timing",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The POST /v1/provisioning/mute-timings endpoint in Grafana allows administrators to create a new mute timing configuration through the provisioning API. Mute timings define specific time intervals during which alert notifications should be silenced, such as maintenance windows, weekends, or business hours exclusions. By posting to this endpoint with the appropriate JSON payload containing the timing specifications (including recurrence rules, time ranges, and date intervals), users can programma"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Export Mute Timings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              }
+            ]
+          },
+          "docs": "The Route Export Mute Timings operation in Grafana's provisioning API allows users to retrieve and export configured mute timing definitions through a GET request to the /v1/provisioning/mute-timings/export endpoint. This endpoint provides a way to extract mute timing configurations, which define time-based rules for suppressing alert notifications during specific periods such as maintenance windows or off-hours. The exported data can be used for backup purposes, migration between Grafana instan"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Mute Timing",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Mute timing name"
+              }
+            ]
+          },
+          "docs": "The Get Mute Timing operation retrieves a specific mute timing configuration by its unique name from Grafana's alerting system. Mute timings are used to define time intervals during which alert notifications should be suppressed, allowing users to prevent alerts during scheduled maintenance windows or known periods of reduced monitoring. By providing the mute timing name as a path parameter, this GET endpoint returns the complete configuration details of that particular mute timing, including it"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Put Mute Timing",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings/:name",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Mute timing name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The PUT operation on the `/v1/provisioning/mute-timings/{name}` endpoint in Grafana is used to update or replace an existing mute timing configuration identified by its name parameter. Mute timings define time-based rules that silence alert notifications during specific periods, such as maintenance windows or non-business hours. This endpoint allows administrators to modify the schedule, time intervals, or other properties of a previously created mute timing by providing the complete updated con"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Delete Mute Timing",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings/:name",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Mute timing name"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Version of mute timing to use for optimistic concurrency. Leave empty to disable validation"
+              }
+            ]
+          },
+          "docs": "This API operation deletes a specific mute timing configuration in Grafana's alerting system by its unique name. Mute timings are schedules that define time intervals during which alert notifications should be suppressed, and this DELETE endpoint removes the identified mute timing from the provisioning configuration. The operation requires the mute timing's name as a path parameter and is typically used when a previously configured silence schedule is no longer needed or needs to be replaced wit"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Export Mute Timing",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings/:name/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Mute timing name"
+              }
+            ]
+          },
+          "docs": "The Export Mute Timing API operation in Grafana allows users to retrieve and export the configuration details of a specific mute timing by providing its name as a path parameter. This GET endpoint is part of the provisioning API and enables administrators to programmatically access mute timing definitions, which are used to suppress alert notifications during specified time periods. The exported configuration can be used for backup purposes, migrating configurations between Grafana instances, or"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Policy Tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/policies"
+          },
+          "docs": "This API operation retrieves the entire notification policy tree configuration from Grafana's alerting system. It returns the hierarchical structure that defines how alerts are routed to different contact points based on matching labels and conditions. The policy tree includes the root policy and all nested policies with their respective matchers, grouping settings, timing intervals, and associated receiver configurations. This endpoint is part of Grafana's provisioning API and requires appropri"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Put Policy Tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/policies",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The PUT operation on the /v1/provisioning/policies endpoint in Grafana allows administrators to update or replace the entire notification policy tree for alert routing. This API call enables programmatic management of how alerts are organized, grouped, and routed to different contact points based on matching labels and conditions. By submitting a complete policy tree structure, users can define the hierarchy of policies, including root and nested policies, their matchers, grouping configurations"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Reset Policy Tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/policies",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "This API operation resets the notification policy tree in Grafana back to its default state by deleting all custom policy configurations. When invoked via a DELETE request to the /v1/provisioning/policies endpoint, it removes any user-defined notification routing rules, matchers, and nested policy hierarchies that have been configured, effectively reverting the alert notification policies to the system's original configuration. This is particularly useful for cleaning up testing configurations, "
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Policy Tree Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/policies/export"
+          },
+          "docs": "This API operation retrieves and exports the complete policy tree structure from Grafana's provisioning system. It returns a comprehensive representation of all configured notification policies in an exportable format, which can be used for backup purposes, version control, or migration to other Grafana instances. The GET request to this endpoint provides administrators with a way to programmatically access and manage their alerting policy configurations outside of the Grafana UI, facilitating i"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/templates"
+          },
+          "docs": "This API operation retrieves provisioning templates from Grafana's alerting system. It is accessed via a GET request to the `/v1/provisioning/templates` endpoint and returns a collection of message templates that can be used for alert notifications. These templates define how alert messages are formatted and presented when notifications are sent through various channels, allowing administrators to standardize and customize the appearance and content of alert messages across their Grafana instanc"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/templates/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Template group name"
+              }
+            ]
+          },
+          "docs": "The Get Template operation retrieves a specific notification template by its name from Grafana's provisioning API. This endpoint allows users to fetch the complete configuration details of a previously created template, including its content, title, and any associated metadata. By making a GET request to /v1/provisioning/templates/{name} where {name} is the unique identifier of the template, administrators can programmatically access template definitions that are used for formatting alert notifi"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Put Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/templates/:name",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Template group name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing notification template in Grafana's provisioning system by replacing the template configuration identified by the specified name parameter. This PUT operation allows administrators to modify template content, formatting, and other properties used for alert notifications. The route accepts the template name as a path parameter and expects the complete updated template definition in the request body, which will overwrite the existing template configuration while maintaining the "
+        },
+        {
+          "info": {
+            "name": "Grafana Route Delete Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/templates/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Template group name"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Version of template to use for optimistic concurrency. Leave empty to disable validation"
+              }
+            ]
+          },
+          "docs": "This API operation deletes a specific notification template from Grafana's provisioning system by its name. When called with a DELETE request to the endpoint /v1/provisioning/templates/{name}, where {name} is the unique identifier of the template, it removes the specified template from the system's configuration. This is part of Grafana's provisioning API that allows programmatic management of notification templates, enabling administrators to automate the cleanup and removal of templates that a"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,46 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Move API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Move",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Move Folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/folders/:folder_uid/move",
+            "params": [
+              {
+                "name": "folder_uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation moves a Grafana folder identified by its unique identifier (folder_uid) to a new location within the folder hierarchy. It uses a POST request to the /folders/{folder_uid}/move endpoint and allows administrators to reorganize their Grafana folder structure by changing a folder's parent or position. The operation requires the folder_uid path parameter to specify which folder to move, and typically accepts a request body containing the destination folder information or new parent"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

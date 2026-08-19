@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Reset API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Reset",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Route Reset Policy Tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/policies",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "This API operation resets the notification policy tree in Grafana back to its default state by deleting all custom policy configurations. When invoked via a DELETE request to the /v1/provisioning/policies endpoint, it removes any user-defined notification routing rules, matchers, and nested policy hierarchies that have been configured, effectively reverting the alert notification policies to the system's original configuration. This is particularly useful for cleaning up testing configurations, "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

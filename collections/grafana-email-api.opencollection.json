@@ -1,0 +1,69 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Email API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Email",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Send Test Email",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/reports/test-email",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows users to send a test email for Grafana reporting functionality. By making a POST request to the /reports/test-email endpoint, administrators can verify that their email configuration is working correctly before scheduling actual reports. The operation sends a sample email to a specified recipient address, helping to validate SMTP settings, authentication credentials, and email delivery paths within the Grafana instance. This is particularly useful during initial setup o"
+        },
+        {
+          "info": {
+            "name": "Grafana Update User Email",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/user/email/update"
+          },
+          "docs": "This API operation allows for updating the email address associated with a user account in Grafana. When invoked via a GET request to the /user/email/update endpoint, it modifies the email address of the currently authenticated user. The operation requires the user to be logged in and typically needs the new email address to be provided as a parameter. This endpoint is useful for maintaining accurate user contact information and ensuring proper communication channels within the Grafana platform."
+        },
+        {
+          "info": {
+            "name": "Grafana Get User By Login Or Email",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/users/lookup",
+            "params": [
+              {
+                "name": "loginOrEmail",
+                "value": "",
+                "type": "query",
+                "description": "loginOrEmail of the user"
+              }
+            ]
+          },
+          "docs": "The Grafana API endpoint /users/lookup with the GET method allows administrators to retrieve detailed information about a specific user by providing either their login username or email address as a query parameter. This operation is particularly useful when you need to fetch user details but only have their login credentials or email rather than their numeric user ID. The endpoint returns comprehensive user information including the user's ID, email, name, login, theme preferences, organization"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

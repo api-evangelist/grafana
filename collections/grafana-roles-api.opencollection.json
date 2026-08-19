@@ -1,0 +1,175 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Roles API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Roles",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana List Roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/access-control/roles",
+            "params": [
+              {
+                "name": "delegatable",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "includeHidden",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "<endpoint>\nThis API operation retrieves a list of all available roles within Grafana's access control system. When invoked with a GET request to the /access-control/roles endpoint, it returns a comprehensive collection of role definitions that exist in the Grafana instance, including both built-in system roles and any custom roles that have been created. The response typically includes role metadata such as role names, descriptions, UIDs, permissions associated with each role, and other relevant"
+        },
+        {
+          "info": {
+            "name": "Grafana List Teams Roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/access-control/teams/roles/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation performs a search for team roles within Grafana's access control system. It uses a POST request to the /access-control/teams/roles/search endpoint to retrieve a list of roles that are associated with teams in the Grafana instance. The operation allows administrators to query and discover which roles have been assigned to various teams, helping them manage permissions and access control policies. This is useful for auditing team permissions, understanding role assignments, and "
+        },
+        {
+          "info": {
+            "name": "Grafana List Team Roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/access-control/teams/:teamId/roles",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves all roles assigned to a specific team in Grafana's access control system. By making a GET request to the endpoint with a team identifier, users can view the complete list of roles and their associated permissions that have been granted to that particular team. This is useful for auditing team permissions, understanding what access levels a team has across different resources, and managing role-based access control (RBAC) configurations within Grafana."
+        },
+        {
+          "info": {
+            "name": "Grafana Set Team Roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/access-control/teams/:teamId/roles",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation updates the complete set of RBAC (Role-Based Access Control) roles assigned to a specific team in Grafana by replacing any existing role assignments with the new ones provided in the request. It uses the PUT method on the endpoint /access-control/teams/{teamId}/roles, where {teamId} is the unique identifier of the team whose roles are being modified. This is a destructive operation that overwrites the current role configuration rather than adding to it, making it useful for sc"
+        },
+        {
+          "info": {
+            "name": "Grafana List Users Roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/access-control/users/roles/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to search and retrieve a list of roles assigned to users within Grafana's access control system. By sending a POST request to the /access-control/users/roles/search endpoint, you can query and filter user role assignments based on various criteria. The operation is useful for administrators who need to audit user permissions, manage access control policies, or retrieve information about which roles are assigned to specific users across the Grafana instance. The POST"
+        },
+        {
+          "info": {
+            "name": "Grafana List User Roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/access-control/users/:userId/roles",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves all roles assigned to a specific user in Grafana's access control system. By making a GET request to the endpoint with a user's unique identifier (userId) in the path, you can obtain a comprehensive list of roles that define the user's permissions and access levels within the Grafana instance. This is useful for auditing user permissions, verifying access levels, or managing role-based access control (RBAC) configurations."
+        },
+        {
+          "info": {
+            "name": "Grafana Set User Roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/access-control/users/:userId/roles",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows administrators to assign or modify the complete set of roles for a specific user in Grafana's access control system. By making a PUT request to the endpoint with a user's ID, you can replace all existing role assignments for that user with a new set of roles defined in the request body. This is useful for managing user permissions at scale, ensuring users have the appropriate access levels to dashboards, data sources, and other Grafana resources. The operation requires "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Group Roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/groupsync/groups/:group_id/roles",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the roles associated with a specific group in Grafana's group synchronization system. By providing a group_id in the URL path, the GET request returns information about what roles have been assigned to that particular group, which is useful for managing permissions and access control in Grafana when using external group synchronization features like LDAP or OAuth."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

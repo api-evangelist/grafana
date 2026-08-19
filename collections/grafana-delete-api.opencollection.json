@@ -1,0 +1,764 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Delete API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Delete",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Delete Data Source By Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/datasources/name/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes a data source from Grafana by specifying its unique name rather than its numeric ID. This operation permanently deletes the data source configuration including all associated settings, credentials, and metadata. Once deleted, any dashboards or panels that reference this data source will no longer function properly until reconfigured with an alternative data source. This endpoint is particularly useful when automating data source management through scripts or infrastructure-as-code tools "
+        },
+        {
+          "info": {
+            "name": "Grafana Datasource Proxy DELETE By UID Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/datasources/proxy/uid/:uid/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation performs a DELETE request to a Grafana datasource through the proxy endpoint, utilizing the datasource's unique identifier (UID) and a specific proxy route. It allows clients to make DELETE operations against the underlying datasource via Grafana's proxy layer, which handles authentication, authorization, and request routing. The operation is typically invoked by Grafana's user interface to delete resources or data from configured datasources without direct client access to th"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Data Source By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a data source from Grafana by its unique identifier (UID). This operation permanently removes the specified data source configuration from the Grafana instance, including all its settings and connection details. The UID parameter in the URL path identifies which data source to delete. This is a destructive action that cannot be undone, and any dashboards or panels relying on this data source will lose their connection to it. Proper permissions are required to execute this operation, typi"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Correlation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:uid/correlations/:correlationUID",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "correlationUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation deletes a specific correlation in Grafana by targeting both the data source and correlation identifiers. The endpoint requires two parameters: the UID of the data source that owns the correlation and the correlationUID which uniquely identifies the correlation to be removed. When executed with a DELETE HTTP method, it permanently removes the specified correlation configuration that links queries or data between different data sources, helping administrators clean up unused or "
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Data Source By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/datasources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation removes a specific data source from Grafana by referencing its unique identifier. When executed, it performs a DELETE request to the endpoint /datasources/{id}, where {id} represents the numeric identifier of the data source to be removed. The operation permanently deletes the data source configuration from Grafana, including all its associated settings and connection details. This action requires appropriate administrative permissions and cannot be undone once completed. Upon"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/folders/:folder_uid",
+            "params": [
+              {
+                "name": "folder_uid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "forceDeleteRules",
+                "value": "",
+                "type": "query",
+                "description": "If `true` any Grafana 8 Alerts under this folder will be deleted.\nSet to `false` so that the request will fail if the folder contains any Grafana 8 Alerts."
+              }
+            ]
+          },
+          "docs": "This API operation deletes a specific folder in Grafana by providing its unique identifier (folder_uid) in the request path. When executed, it permanently removes the folder and potentially all its contents from the Grafana instance, which may include dashboards, alerts, and other resources stored within that folder. The operation requires appropriate permissions to delete folders and returns a confirmation response upon successful deletion, though the exact behavior regarding cascade deletion o"
+        },
+        {
+          "info": {
+            "name": "Grafana Mass Delete Annotations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/annotations/mass-delete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The Mass Delete Annotations API operation in Grafana allows users to delete multiple annotations in a single request by sending a POST request to the /annotations/mass-delete endpoint. This operation is useful for bulk cleanup of annotations based on specific criteria such as time range, dashboard ID, panel ID, tags, or annotation IDs. Instead of deleting annotations one by one, users can specify filter parameters in the request body to target multiple annotations at once, improving efficiency w"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Annotation By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/annotations/:annotation_id",
+            "params": [
+              {
+                "name": "annotation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific annotation from Grafana using its unique identifier. This operation permanently removes the annotation record from the system, including any associated metadata such as tags, text, and time range information. The annotation ID must be provided in the URL path to identify which annotation should be deleted. This is typically used when an annotation is no longer relevant or was created in error. The user making the request must have appropriate permissions to delete annotations "
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Library Element By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/library-elements/:library_element_uid",
+            "params": [
+              {
+                "name": "library_element_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes a library element from Grafana by specifying its unique identifier (UID) in the URL path. This DELETE operation permanently deletes the specified library element, which can be a panel or other reusable dashboard component that was stored in the Grafana library for sharing across multiple dashboards. The endpoint requires the library element's UID as a path parameter and appropriate authentication credentials with sufficient permissions to delete library resources. Once deleted, the libra"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Query",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/query-history/:query_history_uid",
+            "params": [
+              {
+                "name": "query_history_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation removes a specific query from the Grafana query history by targeting its unique identifier (query_history_uid). When executed, it permanently deletes the query entry associated with the provided UID from the system's query history records. This is useful for cleaning up unwanted or obsolete queries that users no longer need to reference, helping maintain an organized query history within Grafana."
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Org By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/orgs/:org_id",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows an authenticated user with appropriate permissions to permanently delete a specific organization from Grafana by providing the organization's unique identifier (org_id) in the URL path. When executed via HTTP DELETE method, it removes the organization and all its associated resources, including dashboards, data sources, users, and configurations that belong to that organization. This is a destructive operation that typically requires administrator-level privileges and s"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Team By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/teams/:team_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation removes a specific team from a Grafana instance by providing the team's unique identifier in the URL path. When executed, it performs a DELETE request to the endpoint /teams/{team_id}, where {team_id} is replaced with the numerical ID of the team to be deleted. The operation requires appropriate administrative permissions and will permanently remove the team along with its associated configurations, memberships, and permissions. Upon successful execution, the team will no long"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Role",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/access-control/roles/:roleUID",
+            "params": [
+              {
+                "name": "force",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "global",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "roleUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes a custom role from Grafana's access control system by specifying its unique identifier (roleUID). This operation permanently deletes the role definition along with all its associated permissions and assignments to users or teams. Only custom roles can be deleted through this endpoint, as built-in system roles are protected from deletion. The operation requires appropriate administrative permissions and will fail if the specified roleUID does not exist or references a non-deletable system"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete License Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/licensing/token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation removes the currently active license token from a Grafana instance. When executed, it deletes the stored license information, effectively reverting the instance to an unlicensed state or to use any default licensing configuration. This endpoint requires appropriate administrative permissions and is typically used when decommissioning a licensed Grafana installation, switching to a different license, or troubleshooting license-related issues. The DELETE method ensures complete "
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/reports/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation deletes a specific report in Grafana by providing the unique report identifier in the URL path. When a DELETE request is made to the /reports/{id} endpoint, it permanently removes the report configuration and associated data from the system. The operation requires the report ID as a path parameter and typically requires appropriate authentication and authorization permissions to ensure only authorized users can delete reports. Upon successful execution, the report is removed f"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Service Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/serviceaccounts/:serviceAccountId",
+            "params": [
+              {
+                "name": "serviceAccountId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific service account from Grafana by its unique identifier. This operation permanently removes the service account and revokes all associated tokens and permissions. The service account ID must be provided in the URL path parameter. Once deleted, the service account cannot be recovered and any integrations or automations using this account will cease to function. This is a destructive operation that requires appropriate administrative permissions to execute."
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/serviceaccounts/:serviceAccountId/tokens/:tokenId",
+            "params": [
+              {
+                "name": "tokenId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "serviceAccountId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific service account token in Grafana by providing both the service account ID and the token ID as path parameters. This operation permanently removes the authentication token, immediately revoking its access to the Grafana instance. Once deleted, any applications or services using this token will no longer be able to authenticate, making this a critical operation for token lifecycle management and security hygiene when rotating credentials or removing access for service accounts."
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Delete User",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows Grafana administrators with appropriate permissions to permanently delete a specific user account from the Grafana instance by making a DELETE request to the /admin/users/{user_id} endpoint, where {user_id} is the unique identifier of the target user. This is a privileged administrative function that removes the user and all associated data from the system, and should be used with caution as the deletion is typically irreversible. The operation requires admin-level auth"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/migration/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path",
+                "description": "UID of a migration session"
+              }
+            ]
+          },
+          "docs": "Deletes a specific cloud migration session identified by its unique identifier (uid) in Grafana. This operation removes all data associated with the migration session, including configuration details, progress tracking information, and any temporary migration artifacts. Once deleted, the migration session cannot be recovered and any in-progress migration activities associated with this session will be terminated. This endpoint is typically used to clean up completed migrations or to cancel and r"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Cloud Migration Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/token/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path",
+                "description": "UID of a cloud migration token"
+              }
+            ]
+          },
+          "docs": "Deletes a specific cloud migration token identified by its unique identifier (UID) from Grafana. This operation permanently removes the authentication token that was previously created to facilitate data migration to Grafana Cloud. Once deleted, the token can no longer be used for migration purposes, and any ongoing migration processes using this token will be invalidated. This is typically used when a migration is complete, a token has been compromised, or when cleaning up unused credentials fo"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Delete Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation deletes a specific Prometheus or Cortex rule namespace within Grafana's conversion or migration layer. By sending a DELETE request to the endpoint with a namespace title parameter, users can remove an entire namespace and its associated alert rules or recording rules that were previously converted or imported from Prometheus/Cortex format. This is useful during cleanup operations, when reorganizing rule structures, or when removing legacy configurations that have been migrated"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Delete Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle/:Group",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation is used to delete a specific Prometheus rule group within Grafana's Cortex-based alerting system. It targets a rule group identified by both its namespace title and group name through the URL path parameters. When called with the DELETE HTTP method, it removes the entire rule group configuration from the specified namespace, effectively eliminating all alert and recording rules contained within that group from the Prometheus-compatible rules engine in Grafana."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Delete Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a Prometheus rule namespace configuration in Grafana's conversion API. This operation removes all rules associated with the specified namespace by its title, effectively cleaning up converted Prometheus alerting and recording rules that were previously imported or managed through the conversion endpoint. The route is part of Grafana's Prometheus configuration conversion functionality, allowing administrators to manage the lifecycle of converted rule namespaces programmatically."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Delete Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle/:Group",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation is used to delete a Prometheus rule group from a specific namespace in Grafana's configuration. It targets a particular rule group identified by both the namespace title and group name through the URL path parameters. When invoked with a DELETE HTTP method, it removes the specified rule group configuration from the Prometheus-compatible alerting and recording rules system within Grafana, effectively cleaning up rules that are no longer needed or are being replaced."
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Public Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:dashboardUid/public-dashboards/:uid",
+            "params": [
+              {
+                "name": "dashboardUid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a public dashboard by its unique identifier, removing public access to the specified dashboard. This operation requires both the dashboard's UID and the public dashboard's UID to locate and remove the specific public sharing configuration. Once deleted, the public link previously associated with this dashboard will no longer be accessible, and any users who had the public URL will lose access to view the dashboard anonymously. This is a permanent action that revokes the public sharing se"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Dashboard By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific Grafana dashboard using its unique identifier (UID). This operation permanently removes the dashboard and all its associated configurations, panels, and settings from the Grafana instance. The UID parameter in the URL path identifies which dashboard to delete, and successful execution returns a confirmation of the deletion. This is a destructive action that cannot be undone, so it should be used carefully, typically requiring appropriate administrative permissions to execute."
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Dashboard Snapshot By Delete Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/snapshots-delete/:deleteKey",
+            "params": [
+              {
+                "name": "deleteKey",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows you to remove a dashboard snapshot from Grafana using its unique delete key. When a snapshot is created, it generates a special delete key that provides authorized deletion access without requiring authentication. By making a GET request to this endpoint with the appropriate deleteKey parameter, the associated snapshot will be permanently removed from the system. This provides a secure way to clean up temporary or unwanted dashboard snapshots, particularly useful when s"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Dashboard Snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/snapshots/:key",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a dashboard snapshot identified by its unique key from Grafana. This operation permanently removes the snapshot, making it inaccessible via its sharing URL. Snapshots are point-in-time captures of dashboards that can be shared externally without requiring authentication to the Grafana instance. Once deleted, the snapshot key becomes invalid and any attempts to access it will result in a not found error. This is typically used to revoke access to previously shared dashboard data or to cle"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Group Mappings",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/groupsync/groups/:group_id",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation removes group mappings associated with a specific group in Grafana's group synchronization system. By sending a DELETE request to the endpoint with a particular group ID, administrators can eliminate the synchronization configuration that links external identity provider groups to Grafana teams or roles. This is useful when cleaning up deprecated mappings, removing access controls, or reconfiguring how external groups are mapped within Grafana's authorization structure."
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Playlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/playlists/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes a specific playlist from Grafana by its unique identifier (UID). This operation permanently deletes the playlist configuration including all associated settings, such as the list of dashboards, intervals, and playback order. The playlist UID must be provided in the URL path to identify which playlist to remove. Once deleted, the playlist cannot be recovered and will no longer be available for playback. This is an irreversible action that requires appropriate permissions to execute."
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Recording Rule Write Target",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/recording-rules/writer"
+          },
+          "docs": "This API operation removes a configured recording rule write target from Grafana. Recording rule write targets define external destinations where pre-aggregated metric data can be stored, and deleting a write target will disconnect Grafana from that specific storage endpoint. This DELETE operation is typically used when decommissioning a remote write destination, cleaning up unused configurations, or reconfiguring the recording rules infrastructure. Once deleted, recording rules will no longer w"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Recording Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/recording-rules/:recordingRuleID",
+            "params": [
+              {
+                "name": "recordingRuleID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific recording rule from Grafana by providing its unique identifier in the request path. Recording rules are used to pre-compute frequently needed or computationally expensive expressions and save their results as new time series data. This DELETE operation permanently removes the recording rule configuration identified by the recordingRuleID parameter, stopping any future evaluations and recordings associated with that rule. The operation requires appropriate authentication and au"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Delete Alert Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:UID",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "Alert rule UID"
+              }
+            ]
+          },
+          "docs": "Deletes a specific alert rule from Grafana's provisioning system by its unique identifier (UID). This operation permanently removes the alert rule configuration from the system, including all associated settings such as conditions, labels, annotations, and notification policies. The deletion is immediate and cannot be undone, so the UID must be carefully specified to avoid removing the wrong alert rule. This endpoint is part of Grafana's provisioning API, which allows programmatic management of "
+        },
+        {
+          "info": {
+            "name": "Grafana Route Delete Contactpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/contact-points/:UID",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "UID is the contact point unique identifier"
+              }
+            ]
+          },
+          "docs": "The Delete Contact Points API operation in Grafana allows administrators to remove a specific notification contact point from the alerting configuration by referencing its unique identifier (UID). This endpoint uses the DELETE HTTP method at the path /v1/provisioning/contact-points/{UID}, where {UID} is the unique identifier of the contact point to be deleted. When executed, it permanently removes the specified contact point from the system's provisioning configuration, which means alerts will n"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Delete Alert Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/folder/:FolderUID/rule-groups/:Group",
+            "params": [
+              {
+                "name": "FolderUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific alert rule group within a designated folder in Grafana's provisioning API. This operation requires both the folder's unique identifier (FolderUID) and the name of the alert rule group (Group) to be specified in the URL path. When executed, it removes the entire rule group and all alert rules contained within it from the Grafana instance. This is a destructive operation typically used when cleaning up monitoring configurations or reorganizing alert structures, and it requires a"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Delete Mute Timing",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings/:name",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Mute timing name"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Version of mute timing to use for optimistic concurrency. Leave empty to disable validation"
+              }
+            ]
+          },
+          "docs": "This API operation deletes a specific mute timing configuration in Grafana's alerting system by its unique name. Mute timings are schedules that define time intervals during which alert notifications should be suppressed, and this DELETE endpoint removes the identified mute timing from the provisioning configuration. The operation requires the mute timing's name as a path parameter and is typically used when a previously configured silence schedule is no longer needed or needs to be replaced wit"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Delete Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/templates/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Template group name"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Version of template to use for optimistic concurrency. Leave empty to disable validation"
+              }
+            ]
+          },
+          "docs": "This API operation deletes a specific notification template from Grafana's provisioning system by its name. When called with a DELETE request to the endpoint /v1/provisioning/templates/{name}, where {name} is the unique identifier of the template, it removes the specified template from the system's configuration. This is part of Grafana's provisioning API that allows programmatic management of notification templates, enabling administrators to automate the cleanup and removal of templates that a"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

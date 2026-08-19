@@ -1,0 +1,395 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Alerts API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Alerts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all alert rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules"
+          },
+          "docs": "List all alert rules"
+        },
+        {
+          "info": {
+            "name": "Create an alert rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an alert rule"
+        },
+        {
+          "info": {
+            "name": "Get alert rule by UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get alert rule by UID"
+        },
+        {
+          "info": {
+            "name": "Update alert rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update alert rule"
+        },
+        {
+          "info": {
+            "name": "Delete alert rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete alert rule"
+        },
+        {
+          "info": {
+            "name": "List contact points",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/contact-points"
+          },
+          "docs": "List contact points"
+        },
+        {
+          "info": {
+            "name": "Create a contact point",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/contact-points",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a contact point"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rules Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "folderUid",
+                "value": "",
+                "type": "query",
+                "description": "UIDs of folders from which to export rules"
+              },
+              {
+                "name": "group",
+                "value": "",
+                "type": "query",
+                "description": "Name of group of rules to export. Must be specified only together with a single folder UID"
+              },
+              {
+                "name": "ruleUid",
+                "value": "",
+                "type": "query",
+                "description": "UID of alert rule to export. If specified, parameters folderUid and group must be empty."
+              }
+            ]
+          },
+          "docs": "This API operation retrieves alert rules from Grafana in an exportable format, allowing administrators to extract alert rule configurations for backup, migration, or version control purposes. The GET endpoint at /v1/provisioning/alert-rules/export provides a way to programmatically access the complete definition of configured alert rules, including their conditions, notification settings, and metadata. This is particularly useful for maintaining infrastructure as code, replicating alert configur"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:UID",
+            "params": [
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "Alert rule UID"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific alert rule from Grafana's provisioning system using the alert rule's unique identifier (UID). When called with a GET request to the endpoint /v1/provisioning/alert-rules/{UID}, it returns the complete configuration details of the specified alert rule, including its conditions, labels, annotations, and evaluation settings. This endpoint is part of Grafana's provisioning API, which allows programmatic management of alert rules outside of the standard UI inte"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Put Alert Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:UID",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "Alert rule UID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing alert rule in Grafana's provisioning API by specifying the rule's unique identifier (UID) in the path. This endpoint allows you to modify all aspects of an alert rule including its condition, evaluation interval, notification settings, labels, and annotations. The request requires a complete alert rule definition in the body, and the UID in the path must match the UID in the request body. This operation is part of Grafana's provisioning capabilities, enabling programmatic man"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Delete Alert Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:UID",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "Alert rule UID"
+              }
+            ]
+          },
+          "docs": "Deletes a specific alert rule from Grafana's provisioning system by its unique identifier (UID). This operation permanently removes the alert rule configuration from the system, including all associated settings such as conditions, labels, annotations, and notification policies. The deletion is immediate and cannot be undone, so the UID must be carefully specified to avoid removing the wrong alert rule. This endpoint is part of Grafana's provisioning API, which allows programmatic management of "
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:UID/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "Alert rule UID"
+              }
+            ]
+          },
+          "docs": "The Get Alert Rule Export endpoint allows you to export a specific alert rule configuration from Grafana by providing its unique identifier (UID). This operation retrieves the complete alert rule definition in a format suitable for provisioning, enabling you to back up, version control, or migrate alert rules between Grafana instances. By making a GET request to /v1/provisioning/alert-rules/{UID}/export, you can obtain the alert rule's configuration including its conditions, notification setting"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/folder/:FolderUID/rule-groups/:Group",
+            "params": [
+              {
+                "name": "FolderUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific alert rule group within a designated folder in Grafana's provisioning system. By providing the folder's unique identifier (FolderUID) and the name of the alert rule group (Group) in the request path, users can fetch the complete configuration and details of that particular rule group. This GET endpoint is part of Grafana's provisioning API, which allows programmatic management of alerting configurations, enabling administrators and automation systems to qu"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Put Alert Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/folder/:FolderUID/rule-groups/:Group",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "FolderUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing alert rule group identified by the folder UID and group name in Grafana's provisioning API. This PUT operation allows you to modify the configuration of alert rules within a specific rule group, including updating rule definitions, thresholds, evaluation intervals, and notification settings. The endpoint requires both the FolderUID parameter to identify the containing folder and the Group parameter to specify which alert rule group to update, with the updated configuration pr"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Delete Alert Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/folder/:FolderUID/rule-groups/:Group",
+            "params": [
+              {
+                "name": "FolderUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific alert rule group within a designated folder in Grafana's provisioning API. This operation requires both the folder's unique identifier (FolderUID) and the name of the alert rule group (Group) to be specified in the URL path. When executed, it removes the entire rule group and all alert rules contained within it from the Grafana instance. This is a destructive operation typically used when cleaning up monitoring configurations or reorganizing alert structures, and it requires a"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule Group Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/folder/:FolderUID/rule-groups/:Group/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "FolderUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and exports a specific alert rule group from Grafana's provisioning system by providing both the parent folder's unique identifier (FolderUID) and the alert rule group name (Group) as path parameters. It allows users to obtain the complete configuration of an alert rule group in an exportable format, which can be used for backup purposes, migration between Grafana instances, or version control of alerting configurations. The GET method ensures this is a read-only ope"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

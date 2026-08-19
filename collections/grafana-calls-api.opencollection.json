@@ -1,0 +1,139 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Calls API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Calls",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Datasource Proxy GET By UID Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/proxy/uid/:uid/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation performs a GET request to proxy datasource calls through Grafana using a datasource's unique identifier (UID). It forwards requests to the configured datasource via the specified proxy route, allowing Grafana to act as an intermediary between the client and the actual datasource. The operation uses the path pattern '/datasources/proxy/uid/{uid}/{datasource_proxy_route}' where {uid} identifies the specific datasource and {datasource_proxy_route} represents the downstream API pa"
+        },
+        {
+          "info": {
+            "name": "Grafana Datasource Proxy POST By UID Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/proxy/uid/:uid/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation enables POST requests to be proxied through Grafana to a configured datasource identified by its unique identifier (UID). The endpoint acts as an intermediary, forwarding requests from the Grafana UI to the target datasource using the specified proxy route path. This allows Grafana to securely communicate with various datasources without exposing their direct endpoints to clients, while maintaining authentication and authorization controls. The datasource_proxy_route parameter"
+        },
+        {
+          "info": {
+            "name": "Grafana Datasource Proxy DELETE By UID Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/datasources/proxy/uid/:uid/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation performs a DELETE request to a Grafana datasource through the proxy endpoint, utilizing the datasource's unique identifier (UID) and a specific proxy route. It allows clients to make DELETE operations against the underlying datasource via Grafana's proxy layer, which handles authentication, authorization, and request routing. The operation is typically invoked by Grafana's user interface to delete resources or data from configured datasources without direct client access to th"
+        },
+        {
+          "info": {
+            "name": "Grafana Datasource Proxy GET calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/proxy/:id/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation provides a proxy endpoint for executing GET requests against a configured datasource in Grafana. By specifying the datasource ID and a custom proxy route, it allows Grafana to forward requests to the underlying data source while handling authentication, CORS, and other middleware concerns transparently. This is particularly useful for querying data sources that may have complex authentication requirements or need to be accessed from the browser without exposing credentials, as"
+        },
+        {
+          "info": {
+            "name": "Grafana Datasource Proxy POST Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/proxy/:id/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The Grafana datasource proxy POST operation allows users to send POST requests to a configured datasource through Grafana's proxy endpoint by specifying the datasource ID and the target route. This API call acts as an intermediary that forwards HTTP POST requests to the underlying datasource while handling authentication, connection management, and security concerns on behalf of the client. The endpoint accepts a datasource identifier in the path along with a dynamic route parameter that determi"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

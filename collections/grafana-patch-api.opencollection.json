@@ -1,0 +1,98 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Patch API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Patch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Patch Annotation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/annotations/:annotation_id",
+            "params": [
+              {
+                "name": "annotation_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing annotation in Grafana by its unique identifier. This PATCH operation allows you to modify specific properties of an annotation without replacing the entire resource. You can update fields such as the annotation text, tags, time range, or associated dashboard and panel IDs. The request requires the annotation_id as a path parameter and accepts a JSON body containing only the fields you wish to modify. This is useful for correcting or enhancing existing annotations without need"
+        },
+        {
+          "info": {
+            "name": "Grafana Patch Query Comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/query-history/:query_history_uid",
+            "params": [
+              {
+                "name": "query_history_uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the comment of a specific query in the query history by its unique identifier. This endpoint allows users to modify the descriptive comment associated with a previously executed query, making it easier to document and organize query history. The operation requires the query history UID as a path parameter and accepts the updated comment data in the request body. This is useful for adding context, notes, or explanations to queries after they have been run, improving collaboration and quer"
+        },
+        {
+          "info": {
+            "name": "Grafana Patch Org Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/org/preferences",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the preferences for the current organization, allowing administrators to modify settings such as the default theme (light/dark/system), home dashboard ID, timezone preferences, and week start day. This endpoint accepts a partial preferences object via PATCH request, meaning only the fields that need to be changed should be included in the request body while other settings remain unchanged. The operation requires organization admin permissions and returns the updated preferences object up"
+        },
+        {
+          "info": {
+            "name": "Grafana Patch User Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/user/preferences",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the preferences for the currently authenticated user by allowing partial modifications to settings such as theme (light/dark), timezone, home dashboard ID, and UI preferences. This PATCH endpoint enables users to customize their Grafana experience by submitting only the specific preference fields they want to change, without needing to provide all preference values. The operation requires authentication and only affects the preferences of the user making the request, leaving unchanged an"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

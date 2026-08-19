@@ -1,0 +1,42 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Counts API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Counts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Get Folder Descendant Counts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/folders/:folder_uid/counts",
+            "params": [
+              {
+                "name": "folder_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns statistical information about the descendants of a specified folder in Grafana, identified by its unique folder UID. This endpoint retrieves count data for various types of resources that exist within the folder hierarchy, such as dashboards, alerts, and other nested folders, providing administrators and users with a quick overview of the folder's contents without needing to traverse the entire folder structure manually."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

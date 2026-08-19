@@ -1,0 +1,118 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Cache API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Cache",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Get Data Source Cache Config",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/:dataSourceUID/cache",
+            "params": [
+              {
+                "name": "dataSourceUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves the caching configuration settings for a specific data source in Grafana identified by its unique identifier (dataSourceUID). This GET operation allows administrators and users with appropriate permissions to view the current cache configuration parameters associated with a particular data source, which may include settings such as cache TTL (time-to-live), cache size limits, and enabled/disabled status. The response provides insight into how query results from this data source are bei"
+        },
+        {
+          "info": {
+            "name": "Grafana Set Data Source Cache Config",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/:dataSourceUID/cache",
+            "params": [
+              {
+                "name": "dataSourceUID",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets the cache configuration for a specific data source in Grafana identified by its unique identifier (dataSourceUID). This POST operation allows administrators to configure caching parameters such as TTL (time-to-live), cache size limits, and other cache-related settings that control how query results from the data source are stored and retrieved. By enabling and configuring caching at the data source level, users can improve dashboard performance and reduce the load on backend data sources by"
+        },
+        {
+          "info": {
+            "name": "Grafana Clean Data Source Cache",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/:dataSourceUID/cache/clean",
+            "params": [
+              {
+                "name": "dataSourceUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows you to clear the cache for a specific data source in Grafana by sending a POST request to the endpoint with the data source's unique identifier (UID). When invoked, it removes all cached query results and stored data associated with that particular data source, forcing subsequent queries to fetch fresh data directly from the source. This is useful when you need to ensure users see the most up-to-date information, troubleshoot data inconsistencies, or after making config"
+        },
+        {
+          "info": {
+            "name": "Grafana Disable Data Source Cache",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/:dataSourceUID/cache/disable",
+            "params": [
+              {
+                "name": "dataSourceUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Disables the caching functionality for a specific Grafana data source identified by its unique identifier (dataSourceUID). When executed via a POST request to the endpoint /datasources/{dataSourceUID}/cache/disable, this operation turns off query result caching for the specified data source, causing subsequent queries to fetch fresh data directly from the source rather than serving cached results. This is useful when real-time data accuracy is critical or when troubleshooting data freshness issu"
+        },
+        {
+          "info": {
+            "name": "Grafana Enable Data Source Cache",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/:dataSourceUID/cache/enable",
+            "params": [
+              {
+                "name": "dataSourceUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation enables caching functionality for a specific data source in Grafana by sending a POST request to the endpoint with the data source's unique identifier (UID). When invoked, it activates the caching mechanism for the specified data source, which can improve query performance by storing and reusing query results instead of repeatedly fetching data from the original source. This is particularly useful for data sources that have slow response times or rate limits, as cached data ca"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,84 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Policies API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Policies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Route Get Policy Tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/policies"
+          },
+          "docs": "This API operation retrieves the entire notification policy tree configuration from Grafana's alerting system. It returns the hierarchical structure that defines how alerts are routed to different contact points based on matching labels and conditions. The policy tree includes the root policy and all nested policies with their respective matchers, grouping settings, timing intervals, and associated receiver configurations. This endpoint is part of Grafana's provisioning API and requires appropri"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Put Policy Tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/policies",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The PUT operation on the /v1/provisioning/policies endpoint in Grafana allows administrators to update or replace the entire notification policy tree for alert routing. This API call enables programmatic management of how alerts are organized, grouped, and routed to different contact points based on matching labels and conditions. By submitting a complete policy tree structure, users can define the hierarchy of policies, including root and nested policies, their matchers, grouping configurations"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Reset Policy Tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/policies",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "This API operation resets the notification policy tree in Grafana back to its default state by deleting all custom policy configurations. When invoked via a DELETE request to the /v1/provisioning/policies endpoint, it removes any user-defined notification routing rules, matchers, and nested policy hierarchies that have been configured, effectively reverting the alert notification policies to the system's original configuration. This is particularly useful for cleaning up testing configurations, "
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Policy Tree Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/policies/export"
+          },
+          "docs": "This API operation retrieves and exports the complete policy tree structure from Grafana's provisioning system. It returns a comprehensive representation of all configured notification policies in an exportable format, which can be used for backup purposes, version control, or migration to other Grafana instances. The GET request to this endpoint provides administrators with a way to programmatically access and manage their alerting policy configurations outside of the Grafana UI, facilitating i"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

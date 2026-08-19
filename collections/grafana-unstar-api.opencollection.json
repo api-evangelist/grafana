@@ -1,0 +1,60 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Unstar API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Unstar",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Unstar Query",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/query-history/star/:query_history_uid",
+            "params": [
+              {
+                "name": "query_history_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The Grafana unstar query operation is accessed via a DELETE request to the endpoint /query-history/star/{query_history_uid}, where the query_history_uid parameter represents the unique identifier of a previously executed query in the query history. This operation removes the star or favorite marking from a specific query, effectively unmarking it as a saved or bookmarked item in the user's query history. When invoked, it allows users to unmark queries they no longer wish to highlight or quickly "
+        },
+        {
+          "info": {
+            "name": "Grafana Unstar Dashboard By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/user/stars/dashboard/uid/:dashboard_uid",
+            "params": [
+              {
+                "name": "dashboard_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation removes a star from a specific Grafana dashboard for the currently authenticated user by using the dashboard's unique identifier (UID). When executed via an HTTP DELETE request to the endpoint /user/stars/dashboard/uid/{dashboard_uid}, it unmarks the specified dashboard as a favorite, effectively removing it from the user's starred dashboards collection. The operation requires the dashboard_uid parameter to be provided in the URL path to identify which dashboard should be unst"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

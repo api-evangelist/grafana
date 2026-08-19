@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Send API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Send",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Send Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/reports/email",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to send a Grafana report via email by making a POST request to the /reports/email endpoint. When invoked, it triggers the generation and delivery of a specified report to one or more email recipients. The operation typically requires authentication and accepts parameters such as report ID, recipient email addresses, and optional customization settings like date ranges or dashboard variables. This is particularly useful for automating report distribution, scheduling "
+        },
+        {
+          "info": {
+            "name": "Grafana Send Test Email",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/reports/test-email",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows users to send a test email for Grafana reporting functionality. By making a POST request to the /reports/test-email endpoint, administrators can verify that their email configuration is working correctly before scheduling actual reports. The operation sends a sample email to a specified recipient address, helping to validate SMTP settings, authentication credentials, and email delivery paths within the Grafana instance. This is particularly useful during initial setup o"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,2211 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Get API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Get",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Get Data Sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources"
+          },
+          "docs": "The GET /datasources endpoint in the Grafana HTTP API retrieves a list of all configured data sources within the Grafana instance. This operation returns an array of data source objects, each containing details such as the data source ID, name, type (like Prometheus, InfluxDB, or Elasticsearch), URL, access method, and other configuration parameters. Authentication is required to access this endpoint, and the response will only include data sources that the authenticated user has permission to v"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Correlations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/correlations",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the maximum number of correlations to return per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page index for starting fetching correlations"
+              },
+              {
+                "name": "sourceUID",
+                "value": "",
+                "type": "query",
+                "description": "Source datasource UID filter to be applied to correlations"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves correlation configurations from Grafana datasources. Correlations define relationships between different data sources, allowing users to create links and navigate between related data across multiple datasources. The GET request to the /datasources/correlations endpoint returns a list of all configured correlations in the Grafana instance, including details such as source and target datasources, correlation labels, and transformation rules that enable cross-datasourc"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Data Source Id By Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/id/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the unique identifier of a Grafana data source by providing its name as a path parameter. It performs a GET request to the endpoint '/datasources/id/{name}' where {name} is replaced with the actual name of the data source you want to look up. The operation returns the numeric ID associated with that specific data source, which can be useful for subsequent API calls that require the data source ID rather than its name. This is particularly helpful when you need to pro"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Data Source By Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/name/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific data source configuration from Grafana by using its unique name as an identifier. When you send a GET request to the endpoint with the data source name as a path parameter, Grafana returns the complete configuration details of that data source, including its type, connection settings, authentication credentials, and other relevant metadata. This is particularly useful when you need to programmatically access or verify the configuration of a specific data s"
+        },
+        {
+          "info": {
+            "name": "Grafana Datasource Proxy GET By UID Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/proxy/uid/:uid/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation performs a GET request to proxy datasource calls through Grafana using a datasource's unique identifier (UID). It forwards requests to the configured datasource via the specified proxy route, allowing Grafana to act as an intermediary between the client and the actual datasource. The operation uses the path pattern '/datasources/proxy/uid/{uid}/{datasource_proxy_route}' where {uid} identifies the specific datasource and {datasource_proxy_route} represents the downstream API pa"
+        },
+        {
+          "info": {
+            "name": "Grafana Datasource Proxy GET calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/proxy/:id/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation provides a proxy endpoint for executing GET requests against a configured datasource in Grafana. By specifying the datasource ID and a custom proxy route, it allows Grafana to forward requests to the underlying data source while handling authentication, CORS, and other middleware concerns transparently. This is particularly useful for querying data sources that may have complex authentication requirements or need to be accessed from the browser without exposing credentials, as"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Correlations By Source UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:sourceUID/correlations",
+            "params": [
+              {
+                "name": "sourceUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves all correlations associated with a specific data source in Grafana by providing the data source's unique identifier (UID). It uses a GET request to the endpoint /datasources/uid/{sourceUID}/correlations, where {sourceUID} is replaced with the actual UID of the data source you want to query. The operation returns a list of correlation configurations that have been defined for the specified data source, which are used to link related data across different data sources "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Correlation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:sourceUID/correlations/:correlationUID",
+            "params": [
+              {
+                "name": "sourceUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "correlationUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The Get Correlation API operation in Grafana retrieves a specific correlation configuration between data sources using their unique identifiers. By making a GET request to the endpoint `/datasources/uid/{sourceUID}/correlations/{correlationUID}`, users can fetch detailed information about an existing correlation, including its configuration settings, transformations, and the relationship between a source data source and a target data source. This operation requires both the unique identifier of "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Data Source By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves detailed information about a specific data source in Grafana by providing its unique identifier (UID). When called with a GET request to the endpoint /datasources/uid/{uid}, it returns the complete configuration and metadata for the requested data source, including its name, type, access method, connection details, and other relevant settings. This endpoint is particularly useful when you need to programmatically query or verify the configuration of a specific data s"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Data Source By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves detailed information about a specific data source in Grafana by providing its unique identifier. This endpoint returns comprehensive configuration details for the data source including its name, type, URL, access mode, authentication settings, and other metadata associated with the specified ID. It requires appropriate permissions to view data source configurations and is commonly used when you need to inspect or verify the settings of a particular data source that has already been con"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Folders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/folders",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the maximum number of folders to return"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page index for starting fetching folders"
+              },
+              {
+                "name": "parentUid",
+                "value": "",
+                "type": "query",
+                "description": "The parent folder UID"
+              },
+              {
+                "name": "permission",
+                "value": "",
+                "type": "query",
+                "description": "Set to `Edit` to return folders that the user can edit"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of all folders in the Grafana instance. This endpoint returns folder metadata including folder ID, UID, title, and URL, allowing users to navigate and organize dashboards hierarchically. The operation supports optional query parameters to filter results by limit and page for pagination. Authentication is required and the response includes an array of folder objects that can be used to manage dashboard organization and access control within Grafana."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Folder By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/folders/id/:folder_id",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The GET /folders/id/{folder_id} endpoint in Grafana retrieves detailed information about a specific folder using its unique identifier. This operation allows users to fetch folder metadata including its title, UID, permissions, and other configuration details by providing the numeric folder ID in the path parameter. It's particularly useful when you need to access folder information programmatically and have the folder's ID rather than its UID, returning a JSON response with the complete folder "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Folder By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/folders/:folder_uid",
+            "params": [
+              {
+                "name": "folder_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves detailed information about a specific Grafana folder by providing its unique identifier (UID). By making a GET request to the endpoint with the folder's UID as a path parameter, users can fetch metadata about the folder including its title, UID, ID, URL, version, and other configuration details. This is useful for programmatically accessing folder properties, verifying folder existence, or gathering information needed for subsequent operations such as dashboard manag"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Folder Descendant Counts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/folders/:folder_uid/counts",
+            "params": [
+              {
+                "name": "folder_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns statistical information about the descendants of a specified folder in Grafana, identified by its unique folder UID. This endpoint retrieves count data for various types of resources that exist within the folder hierarchy, such as dashboards, alerts, and other nested folders, providing administrators and users with a quick overview of the folder's contents without needing to traverse the entire folder structure manually."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Folder Permission List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/folders/:folder_uid/permissions",
+            "params": [
+              {
+                "name": "folder_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the complete list of permissions associated with a specific folder in Grafana by providing the folder's unique identifier (UID) in the request path. It returns details about which users, teams, or roles have access to the folder and what level of permissions they possess, such as view, edit, or admin rights. This GET endpoint is useful for auditing folder access controls, understanding the current permission structure, and determining who has what level of access to "
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Get Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/admin/settings"
+          },
+          "docs": "The Admin Get Settings endpoint in Grafana's Admin API allows administrators with appropriate permissions to retrieve the current configuration settings of the Grafana instance. This GET operation at the /admin/settings path returns a comprehensive view of all server settings, including data source configurations, authentication settings, feature toggles, and other system-wide parameters. The endpoint is typically used for administrative tasks such as auditing configurations, troubleshooting iss"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Get Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/admin/stats"
+          },
+          "docs": "The Grafana Admin Get Stats API operation is an administrative endpoint accessible via HTTP GET request at `/admin/stats` that retrieves statistical information and metrics about the Grafana instance. This endpoint requires administrator privileges and provides aggregated data such as user counts, dashboard counts, data source statistics, organization metrics, and other system-wide analytics that help administrators monitor the overall health, usage, and growth of their Grafana deployment. The s"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Annotations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/annotations",
+            "params": [
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Find annotations created after specific epoch datetime in milliseconds."
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Find annotations created before specific epoch datetime in milliseconds."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "query",
+                "description": "Limit response to annotations created by specific user."
+              },
+              {
+                "name": "alertId",
+                "value": "",
+                "type": "query",
+                "description": "Find annotations for a specified alert rule by its ID.\ndeprecated: AlertID is deprecated and will be removed in future versions. Please use AlertUID instead."
+              },
+              {
+                "name": "alertUID",
+                "value": "",
+                "type": "query",
+                "description": "Find annotations for a specified alert rule by its UID."
+              },
+              {
+                "name": "dashboardId",
+                "value": "",
+                "type": "query",
+                "description": "Find annotations that are scoped to a specific dashboard"
+              },
+              {
+                "name": "dashboardUID",
+                "value": "",
+                "type": "query",
+                "description": "Find annotations that are scoped to a specific dashboard"
+              },
+              {
+                "name": "panelId",
+                "value": "",
+                "type": "query",
+                "description": "Find annotations that are scoped to a specific panel"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Max limit for results returned."
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Use this to filter organization annotations. Organization annotations are annotations from an annotation data source that are not connected specifically to a dashboard or panel. You can filter by multiple tags."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Return alerts or user created annotations"
+              },
+              {
+                "name": "matchAny",
+                "value": "",
+                "type": "query",
+                "description": "Match any or all tags"
+              }
+            ]
+          },
+          "docs": "The GET /annotations endpoint in Grafana retrieves annotations that have been created for dashboards and panels. Annotations are metadata markers used to overlay event information on graphs, helping users correlate metrics with significant events like deployments, incidents, or system changes. This operation allows you to query and filter annotations based on various parameters such as time range, dashboard ID, panel ID, tags, and annotation type. The endpoint returns a list of annotation object"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Annotation Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/annotations/tags",
+            "params": [
+              {
+                "name": "tag",
+                "value": "",
+                "type": "query",
+                "description": "Tag is a string that you can use to filter tags."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Max limit for results returned."
+              }
+            ]
+          },
+          "docs": "The Get Annotation Tags operation retrieves all tags that have been used in annotations within Grafana. This endpoint returns a list of tag objects that represent the various labels applied to annotations across the system, making it useful for discovering available tags before filtering annotations or for populating tag selection interfaces. The response provides tag metadata that can be used to query or organize annotations by their associated tags, helping users navigate and categorize their "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Annotation By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/annotations/:annotation_id",
+            "params": [
+              {
+                "name": "annotation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves detailed information about a specific annotation in Grafana using its unique identifier. This GET operation allows users to fetch a single annotation's complete data including its text, tags, time range, dashboard and panel associations, and metadata by providing the annotation ID as a path parameter. It's useful for viewing or auditing individual annotations, or as part of workflows that need to process or display annotation details programmatically."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Library Elements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/library-elements",
+            "params": [
+              {
+                "name": "searchString",
+                "value": "",
+                "type": "query",
+                "description": "Part of the name or description searched for."
+              },
+              {
+                "name": "kind",
+                "value": "",
+                "type": "query",
+                "description": "Kind of element to search for."
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "Sort order of elements."
+              },
+              {
+                "name": "typeFilter",
+                "value": "",
+                "type": "query",
+                "description": "A comma separated list of types to filter the elements by"
+              },
+              {
+                "name": "excludeUid",
+                "value": "",
+                "type": "query",
+                "description": "Element UID to exclude from search results."
+              },
+              {
+                "name": "folderFilter",
+                "value": "",
+                "type": "query",
+                "description": "A comma separated list of folder ID(s) to filter the elements by."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "The number of results per page."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page for a set of records, given that only perPage records are returned at a time. Numbering starts at 1."
+              }
+            ]
+          },
+          "docs": "This API operation retrieves library elements from Grafana, which are reusable components such as panels or variables that can be shared across multiple dashboards. When called, it returns a list of library elements available in the Grafana instance, allowing users to query and fetch these shared resources for dashboard creation or management purposes. The GET request to the /library-elements endpoint provides access to the library element catalog, enabling efficient reuse of dashboard component"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Library Element By Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/library-elements/name/:library_element_name",
+            "params": [
+              {
+                "name": "library_element_name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Gets a library element with the specified name from Grafana's library elements collection. This endpoint retrieves a single library element by providing its unique name as a path parameter. Library elements in Grafana are reusable components like panels or data sources that can be shared across multiple dashboards. The operation returns the complete library element object including its configuration, metadata, and any associated properties. This is useful when you need to reference or reuse a sp"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Library Element By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/library-elements/:library_element_uid",
+            "params": [
+              {
+                "name": "library_element_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific library element from Grafana using its unique identifier (UID). Library elements in Grafana are reusable components such as panels or variables that can be shared across multiple dashboards. By making a GET request to this endpoint with a library element's UID, users can fetch the complete configuration and metadata of that particular library element, including its type, name, model definition, and any associated properties. This is useful when you need to"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Library Element Connections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/library-elements/:library_element_uid/connections/",
+            "params": [
+              {
+                "name": "library_element_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves all the connections associated with a specific library element in Grafana by providing its unique identifier (UID). When called, it returns information about where and how the library element is being used across different dashboards and panels within the Grafana instance. This is particularly useful for understanding dependencies and the impact of modifying or deleting a library element, as it shows all the locations where the element is currently referenced or util"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Org By Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/orgs/name/:org_name",
+            "params": [
+              {
+                "name": "org_name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the details of a specific Grafana organization by searching for it using its unique organization name rather than its numeric ID. This endpoint provides an alternative way to retrieve organization information when you know the organization's name but not its ID, returning the same organization data structure including ID, name, and address that would be obtained through the standard ID-based lookup endpoint."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Org By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/orgs/:org_id",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves detailed information about a specific organization in Grafana by providing its unique organizational identifier. When called with a valid org_id parameter, it returns the organization's configuration data including name, address, and other organizational metadata. This endpoint requires appropriate authentication and authorization to access the organization's details, making it essential for administrative functions and integrations that need to query or display info"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Org Users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/orgs/:org_id/users",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of all users that belong to a specific organization in Grafana by providing the organization ID in the URL path. This GET endpoint returns user details including their names, email addresses, roles, and permissions within the specified organization, allowing administrators to view and manage organization membership and access control."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Current Org",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/org"
+          },
+          "docs": "This API operation retrieves information about the currently authenticated user's organization in Grafana. When called, it returns details of the organization context that the user is currently operating within, including properties such as the organization ID, name, and address. This is a GET request to the /org endpoint that requires authentication and provides essential context about which organizational scope the user's actions and queries will apply to within the Grafana instance."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Pending Org Invites",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/org/invites"
+          },
+          "docs": "This API operation retrieves a list of all pending invitations for the current organization in Grafana. When called using a GET request to the /org/invites endpoint, it returns information about users who have been invited to join the organization but have not yet accepted their invitations. The response typically includes details such as the invitee's email address, invitation date, role assigned, and invitation status. This endpoint is useful for organization administrators to monitor outstand"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Org Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/org/preferences"
+          },
+          "docs": "This API operation retrieves the current preference settings for the active organization in Grafana. When called, it returns a JSON object containing various organizational preferences such as the default theme, home dashboard ID, timezone settings, and other UI-related configurations that apply to all users within the organization. This is a read-only GET request that requires appropriate permissions to access organizational settings and is commonly used by administrators to review or verify th"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Org Users For Current Org",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/org/users",
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a list of all users who belong to the currently authenticated organization in Grafana. When called, it returns user information for members of the organization context associated with the API request, including details such as user IDs, email addresses, login names, roles within the organization, and authentication information. This is useful for administrators who need to audit organization membership, manage user access, or integrate Grafana's user management with "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Org Users For Current Org Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/org/users/lookup",
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves user information for members of the current organization in Grafana by performing a lookup query. It uses a GET request to the '/org/users/lookup' endpoint and returns details about users belonging to the organization context of the authenticated request. This is typically used when you need to search for or validate specific users within your current Grafana organization without iterating through the entire user list, providing a more efficient way to find user data"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Team By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/teams/:team_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "accesscontrol",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves detailed information about a specific team in Grafana by providing the team's unique identifier in the URL path. When a GET request is made to the /teams/{team_id} endpoint with a valid team ID, the API returns comprehensive data about that team, including properties such as the team name, email address, member count, and other relevant team metadata. This endpoint is typically used by administrators or applications that need to fetch information about a particular t"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Team Members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/teams/:team_id/members",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a list of all members belonging to a specific team in Grafana by providing the team's unique identifier in the URL path. When called, it returns detailed information about each team member including their user ID, email, login credentials, and role within the team. This is useful for administrators and team leaders who need to audit team composition, manage access permissions, or integrate Grafana team data with external systems for user management and reporting purp"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Team Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/teams/:team_id/preferences",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the preferences for a specific Grafana team identified by the team_id parameter, which includes settings such as the team's home dashboard, timezone, and theme preferences. This GET endpoint allows administrators and team members with appropriate permissions to retrieve the current preference configuration that applies to all members of the specified team, enabling them to view or audit the team-level settings that override individual user preferences when working within the team context"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Team LBAC Rules Api",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:uid/lbac/teams",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves team-based Label-Based Access Control (LBAC) rules for a specific data source in Grafana identified by its unique identifier (uid). When called with a GET request to the endpoint /datasources/uid/{uid}/lbac/teams, it returns the configured LBAC rules that determine which teams have access to specific labels or subsets of data within the specified data source. This functionality is essential for managing granular permissions and ensuring teams can only query and view "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Data Source Cache Config",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/:dataSourceUID/cache",
+            "params": [
+              {
+                "name": "dataSourceUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves the caching configuration settings for a specific data source in Grafana identified by its unique identifier (dataSourceUID). This GET operation allows administrators and users with appropriate permissions to view the current cache configuration parameters associated with a particular data source, which may include settings such as cache TTL (time-to-live), cache size limits, and enabled/disabled status. The response provides insight into how query results from this data source are bei"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Role",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/access-control/roles/:roleUID",
+            "params": [
+              {
+                "name": "roleUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves detailed information about a specific role in Grafana's access control system by providing the role's unique identifier (roleUID) in the URL path. When called with a GET request, it returns the complete role definition including the role's name, description, version, permissions, and any other associated metadata. This endpoint is useful for administrators who need to inspect role configurations, audit permissions, or retrieve role details before performing updates o"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Role Assignments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/access-control/roles/:roleUID/assignments",
+            "params": [
+              {
+                "name": "roleUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves all current assignments for a specific role in Grafana's access control system by providing the role's unique identifier (roleUID) in the endpoint path. When called with a GET request, it returns a list of users, teams, or service accounts that have been assigned the specified role, allowing administrators to audit and review who has been granted particular permissions within their Grafana instance. This is useful for security audits, compliance checks, and understan"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Access Control Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/access-control/status"
+          },
+          "docs": "This API operation retrieves the current status of Grafana's access control system, providing information about whether fine-grained access control (RBAC) is enabled and operational within the Grafana instance. It returns details about the access control configuration and its current state, allowing administrators to verify that permission management features are functioning correctly and to understand which access control mode is active. This is particularly useful for troubleshooting permissio"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Resource Description",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/access-control/:resource/description",
+            "params": [
+              {
+                "name": "resource",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the description of a specific access control resource in Grafana. By making a GET request to the endpoint with a resource identifier, it returns detailed information about what that particular resource represents within Grafana's role-based access control (RBAC) system. This is useful for understanding the purpose and context of different protected resources when managing permissions and access policies, allowing administrators to view human-readable descriptions of "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Resource Permissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/access-control/:resource/:resourceID",
+            "params": [
+              {
+                "name": "resource",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resourceID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the access control permissions for a specific resource in Grafana by providing the resource type and resource ID as path parameters. It returns detailed information about who has access to the specified resource and what level of permissions they have been granted. This is useful for auditing and managing resource-level permissions within Grafana, allowing administrators to review which users, teams, or service accounts have been granted specific permissions on indiv"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/licensing/check"
+          },
+          "docs": "This API operation retrieves the current licensing status information from a Grafana instance. When invoked using a GET request to the /licensing/check endpoint, it returns details about the active license, including validity, expiration dates, enabled features, and any limitations or restrictions associated with the current license tier. This endpoint is typically used by administrators to monitor license compliance, verify enterprise feature availability, and ensure the Grafana installation is"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Custom Permissions Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/licensing/custom-permissions"
+          },
+          "docs": "This API operation retrieves a custom permissions report from Grafana's licensing endpoint. When invoked via a GET request to the /licensing/custom-permissions path, it returns information about custom permission configurations and their usage within the Grafana instance. This endpoint is typically used by administrators to audit and review customized access control settings, helping them understand how permissions have been tailored beyond the standard roles and ensure compliance with licensing"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Custom Permissions CSV",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/licensing/custom-permissions-csv"
+          },
+          "docs": "This API operation retrieves custom permissions data from Grafana in CSV format through a GET request to the /licensing/custom-permissions-csv endpoint. It allows administrators to export and download a comprehensive list of custom permission configurations that have been set up within their Grafana instance, which can be useful for auditing, backup purposes, or analyzing permission structures across the system. The response is formatted as a CSV file, making it easy to view, process, or import "
+        },
+        {
+          "info": {
+            "name": "Grafana Get License Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/licensing/token"
+          },
+          "docs": "This API operation retrieves the current license token information from a Grafana instance. When invoked with a GET request to the /licensing/token endpoint, it returns details about the active licensing configuration, which may include token metadata, validity status, expiration dates, and associated entitlements or features enabled by the license. This endpoint is typically used by administrators to verify licensing status, check token validity, or retrieve license information for audit and co"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Reports",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/reports"
+          },
+          "docs": "The Get Reports API operation in Grafana retrieves a list of all configured reports in the system. This endpoint allows administrators and authorized users to fetch comprehensive information about existing reports, including their configurations, schedules, and metadata. When invoked via a GET request to the /reports endpoint, it returns an array of report objects that contain details such as report names, dashboards they're associated with, scheduled delivery times, recipients, and rendering op"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Reports By Dashboard UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/reports/dashboards/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves all reports associated with a specific Grafana dashboard by using its unique identifier (UID). When you make a GET request to the endpoint /reports/dashboards/{uid}, where {uid} is replaced with the actual dashboard's UID, Grafana returns a list of all reports that have been configured for that particular dashboard. This is useful for administrators or users who need to view, audit, or manage the reporting configurations linked to a specific dashboard, allowing them "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Settings Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/reports/images/:image"
+          },
+          "docs": "This API operation retrieves a specific image that has been uploaded for use in Grafana reports by providing the image identifier in the URL path parameter. When called, it returns the settings and metadata associated with the requested image resource, allowing users to access images that can be embedded in their scheduled reports or exported dashboards. The GET method ensures read-only access to the image data without modifying any existing configurations."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Report Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/reports/settings"
+          },
+          "docs": "This API operation retrieves the current report settings configuration from Grafana. It is accessed via a GET request to the /reports/settings endpoint and returns the configured parameters that control how reports are generated and delivered within the Grafana instance. These settings typically include options such as branding configurations, email server settings, report scheduling parameters, and other preferences that affect the overall behavior of the reporting functionality. The operation "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/reports/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves the details of a specific report in Grafana by its unique identifier. This operation returns comprehensive information about the configured report including its name, dashboard reference, schedule settings, recipients, format options, and other metadata. The report ID must be provided as a path parameter to fetch the corresponding report configuration, allowing users to view or verify the settings of an existing scheduled report before editing or managing it."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Sync Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/admin/ldap-sync-status"
+          },
+          "docs": "This API endpoint retrieves the current synchronization status between Grafana and LDAP (Lightweight Directory Access Protocol) servers. It is an administrative GET operation that returns information about the last LDAP sync operation, including whether it was successful, when it occurred, and any relevant error messages or warnings. This endpoint is typically used by system administrators to monitor and troubleshoot LDAP integration, ensuring that user accounts and permissions are properly sync"
+        },
+        {
+          "info": {
+            "name": "Grafana Get LDAP Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/admin/ldap/status"
+          },
+          "docs": "This API operation retrieves the current status of LDAP integration in Grafana by sending a GET request to the /admin/ldap/status endpoint. It provides administrators with information about the LDAP connection status, configuration validation, and whether the LDAP authentication system is functioning properly. The endpoint returns details that help verify if Grafana can successfully communicate with the configured LDAP server, making it useful for troubleshooting authentication issues and monito"
+        },
+        {
+          "info": {
+            "name": "Grafana Get User From LDAP",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/admin/ldap/:user_name",
+            "params": [
+              {
+                "name": "user_name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves LDAP user information for a specific username from Grafana's admin interface. By making a GET request to the endpoint with a username parameter, administrators can query the LDAP directory to fetch detailed user data associated with that particular account. This is useful for verifying LDAP user configurations, troubleshooting authentication issues, or confirming user attributes before syncing them into Grafana. The operation requires admin-level permissions and retu"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Get User Auth Tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id/auth-tokens",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of authentication tokens associated with a specific user account in Grafana. This administrative endpoint requires admin privileges and allows system administrators to view all active auth tokens that have been generated for a particular user identified by their user ID. The operation returns token metadata including creation dates, last used timestamps, and token names, which helps administrators audit user access, monitor authentication activity, and identify potentially unaut"
+        },
+        {
+          "info": {
+            "name": "Grafana Get User Quota",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id/quotas",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the current quota limits and usage statistics for a specific user in Grafana. By making a GET request to the /admin/users/{user_id}/quotas endpoint with a valid user ID, administrators can view resource allocation details such as the maximum number of dashboards, data sources, or organizations that the specified user is allowed to create or use. The response provides both the configured quota limits and the current consumption for each quota type, enabling administra"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Current Org Quota",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/org/quotas"
+          },
+          "docs": "This API operation retrieves the current resource quotas configured for the organization in Grafana. When called, it returns the quota limits that have been set for various resources such as the maximum number of users, dashboards, data sources, and API keys allowed within the organization. This is useful for administrators who need to monitor or verify the current quota settings to ensure they align with organizational policies and resource management requirements. The operation requires approp"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Org Quota",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/orgs/:org_id/quotas",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "```\nRetrieves the current resource quota settings for a specific organization in Grafana identified by its organization ID. This endpoint returns quota limits that define resource constraints for the organization, such as maximum number of users, dashboards, data sources, and API keys allowed. The response provides visibility into the configured thresholds that govern resource allocation and help administrators manage and control organizational resource consumption within their Grafana instance."
+        },
+        {
+          "info": {
+            "name": "Grafana Get User Quotas",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/user/quotas"
+          },
+          "docs": "This API operation retrieves the current quota limits and usage for a specific user in Grafana. Quotas define resource limitations such as the maximum number of dashboards, data sources, or organizations that a user can create or belong to. By making a GET request to the /user/quotas endpoint, administrators can view the configured quota settings for the authenticated user, which helps in monitoring resource allocation and ensuring users stay within their assigned limits. The response typically "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Session List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/migration"
+          },
+          "docs": "The GET /cloudmigration/migration endpoint retrieves a list of cloud migration sessions in Grafana, allowing administrators to monitor and track ongoing or historical migration activities from self-hosted Grafana instances to Grafana Cloud. This operation returns details about migration sessions including their status, creation timestamps, configuration parameters, and progress information, enabling users to review migration attempts and their outcomes without requiring additional parameters bey"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/migration/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path",
+                "description": "UID of a migration session"
+              }
+            ]
+          },
+          "docs": "Retrieves details of a specific cloud migration session in Grafana using its unique identifier (uid). This GET endpoint allows administrators to check the status and configuration of an ongoing or completed migration session, including information about what data is being or has been migrated to the cloud. The operation requires the session's uid as a path parameter and returns comprehensive details about that particular migration session, enabling users to monitor and track their cloud migratio"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/migration/:uid/snapshot/:snapshotUid",
+            "params": [
+              {
+                "name": "resultPage",
+                "value": "",
+                "type": "query",
+                "description": "ResultPage is used for pagination with ResultLimit"
+              },
+              {
+                "name": "resultLimit",
+                "value": "",
+                "type": "query",
+                "description": "Max limit for snapshot results returned."
+              },
+              {
+                "name": "resultSortColumn",
+                "value": "",
+                "type": "query",
+                "description": "ResultSortColumn can be used to override the default system sort. Valid values are \"name\", \"resource_type\", and \"status\"."
+              },
+              {
+                "name": "resultSortOrder",
+                "value": "",
+                "type": "query",
+                "description": "ResultSortOrder is used with ResultSortColumn. Valid values are ASC and DESC."
+              },
+              {
+                "name": "errorsOnly",
+                "value": "",
+                "type": "query",
+                "description": "ErrorsOnly is used to only return resources with error statuses"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path",
+                "description": "Session UID of a session"
+              },
+              {
+                "name": "snapshotUid",
+                "value": "",
+                "type": "path",
+                "description": "UID of a snapshot"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific snapshot associated with a cloud migration in Grafana by providing both the migration's unique identifier (uid) and the snapshot's unique identifier (snapshotUid) as path parameters. When called with a GET request, it returns detailed information about the requested snapshot, which represents a point-in-time capture of data or configuration during the migration process. This endpoint is useful for reviewing, auditing, or restoring specific states captured "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Shapshot List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/migration/:uid/snapshots",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page is used for pagination with limit"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Max limit for results returned."
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path",
+                "description": "Session UID of a session"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort with value latest to return results sorted in descending order."
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a list of snapshots associated with a specific cloud migration job in Grafana. By making a GET request to the endpoint with a unique migration identifier (uid), users can obtain details about all snapshots that have been created during the migration process. This is useful for tracking the progress of a migration, reviewing snapshot history, and managing data transfer between Grafana instances or cloud environments."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Resource Dependencies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/resources/dependencies"
+          },
+          "docs": "This API operation retrieves the dependencies for resources involved in a cloud migration process within Grafana. When called, it analyzes and returns information about the relationships and dependencies between various Grafana resources (such as dashboards, data sources, folders, and other configuration elements) that need to be considered during a cloud migration. This is particularly useful for understanding which resources must be migrated together to maintain functionality and avoid broken "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Cloud Migration Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/token"
+          },
+          "docs": "Retrieves the cloud migration token for a Grafana instance, which is used to authenticate and authorize the migration of dashboards, data sources, and other resources from a self-hosted or on-premise Grafana installation to Grafana Cloud. This token serves as a secure credential that enables the migration service to access and transfer configuration data between environments, typically generated when initiating a cloud migration process and required for establishing a trusted connection between "
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Get Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules"
+          },
+          "docs": "This API operation retrieves Prometheus or Cortex alerting and recording rules from a configured data source and converts them into Grafana's unified alerting format. It acts as a migration utility that fetches existing Prometheus-compatible rules and transforms them so they can be imported or managed within Grafana's alerting system, enabling users to consolidate their monitoring rules into Grafana's native rule structure while maintaining compatibility with Prometheus-style rule definitions."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Get Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and converts Prometheus or Cortex rule configurations from a specific namespace in Grafana. By making a GET request to the endpoint with a namespace title parameter, it fetches the alerting and recording rules defined within that namespace and converts them into a format compatible with Grafana's unified alerting system. This is particularly useful when migrating from Prometheus-style alerting rules to Grafana's native alerting framework, allowing users to maintain t"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Get Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle/:Group",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific Prometheus rule group from a designated namespace in Grafana's Cortex ruler service. The endpoint accepts two path parameters: NamespaceTitle which identifies the namespace containing the rule group, and Group which specifies the name of the rule group to retrieve. When called, it returns the configuration and rules defined within that particular rule group, allowing users to view and manage their Prometheus alerting and recording rules that have been conv"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Get Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules"
+          },
+          "docs": "This API operation retrieves Prometheus alerting and recording rules from a Grafana instance and converts them into a standardized configuration format. When a GET request is made to the /convert/prometheus/config/v1/rules endpoint, it fetches the existing Prometheus-style rules configured within Grafana and transforms them into a version 1 configuration schema, making it easier to migrate, backup, or integrate these rules with other systems or Prometheus instances. This is particularly useful f"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Get Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and converts Prometheus alerting and recording rules from a specific namespace within Grafana. By making a GET request to the endpoint with a specified namespace title, it fetches the Prometheus rule configuration for that namespace and converts it into a format compatible with Grafana's alerting system. This is particularly useful when migrating from Prometheus-based alerting to Grafana's unified alerting system, allowing users to import existing Prometheus rule def"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Get Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle/:Group",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and converts a Prometheus rule group configuration from a specific namespace in Grafana. It accepts GET requests at the endpoint path that includes both the namespace title and group name as path parameters, allowing users to fetch the configuration details of a particular Prometheus alerting or recording rule group. The operation is part of Grafana's conversion utilities that help transform Prometheus-native rule configurations into Grafana's internal format or vice"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Home Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/home"
+          },
+          "docs": "The Grafana Get Home Dashboard API operation retrieves the dashboard that is configured as the home dashboard for the current user or organization. When a GET request is made to the /dashboards/home endpoint, it returns the dashboard data that should be displayed when a user first logs into Grafana or navigates to the home page. This endpoint is useful for applications that need to programmatically access the default landing dashboard, whether it's a custom dashboard set by an administrator or t"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Permissions List By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/id/:DashboardID/permissions",
+            "params": [
+              {
+                "name": "DashboardID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the complete list of permissions associated with a specific Grafana dashboard by providing its unique dashboard identifier. It returns details about which users, teams, or roles have access to the dashboard and what level of permissions they possess (such as view, edit, or admin rights). The GET request to this endpoint allows administrators to audit and review the current access control settings for a dashboard, making it useful for security compliance, permission m"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Versions By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/id/:DashboardID/versions",
+            "params": [
+              {
+                "name": "DashboardID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves the version history of a specific Grafana dashboard identified by its unique dashboard ID. This operation returns a list of all saved versions for the dashboard, including metadata such as version numbers, timestamps, user information who made the changes, and version messages or notes. It allows administrators and users to track changes made to a dashboard over time, compare different versions, and understand the evolution of dashboard configurations, which is useful for auditing purp"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Version By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/id/:DashboardID/versions/:DashboardVersionID",
+            "params": [
+              {
+                "name": "DashboardID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "DashboardVersionID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific version of a Grafana dashboard by providing both the dashboard's unique identifier and the desired version identifier. When invoked using the GET method, it returns the complete configuration and metadata for that particular version of the dashboard, allowing users to view historical snapshots, compare changes between versions, or restore previous dashboard states. This is particularly useful for auditing dashboard modifications, understanding what changes"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/tags"
+          },
+          "docs": "This API operation retrieves all tags that have been assigned to dashboards within the Grafana instance. When called, it returns a list of unique tags used across all dashboards, which can be helpful for filtering, organizing, or discovering dashboards based on their categorization. The endpoint is accessed via a GET request to /dashboards/tags and typically returns an array of tag objects containing information about each tag's name and count of associated dashboards. This is commonly used in d"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Public Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:dashboardUid/public-dashboards",
+            "params": [
+              {
+                "name": "dashboardUid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the public dashboard configuration for a specific Grafana dashboard identified by its unique identifier (dashboardUid). When a dashboard has been made publicly accessible, this GET endpoint returns the public dashboard settings and metadata, including information such as the public access token, sharing configuration, enabled state, and any annotations or time range settings that have been configured for public viewing. This allows administrators and applications to "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific Grafana dashboard using its unique identifier (UID). By making a GET request to the endpoint with the dashboard's UID as a path parameter, users can fetch the complete dashboard configuration including its panels, variables, time settings, and metadata. This is commonly used for programmatic access to dashboard definitions, enabling automation tasks such as backup, migration, or integration with external systems. The response typically includes the dashboa"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Permissions List By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:uid/permissions",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the permission settings for a specific Grafana dashboard identified by its unique identifier (UID). When called with a GET request to the endpoint /dashboards/uid/{uid}/permissions, it returns a list of all permissions associated with that dashboard, including which users, teams, or roles have access and their respective permission levels (such as view, edit, or admin rights). This allows administrators and authorized users to review and audit who has access to a par"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Versions By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:uid/versions",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return"
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query",
+                "description": "Version to start from when returning queries"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the version history of a specific Grafana dashboard identified by its unique identifier (UID). When called with a GET request to the endpoint /dashboards/uid/{uid}/versions, it returns a list of all saved versions of the dashboard, allowing users to track changes made over time, view metadata about each version such as creation date and author, and potentially restore previous versions if needed. This is particularly useful for auditing dashboard modifications, under"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Version By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:uid/versions/:DashboardVersionID",
+            "params": [
+              {
+                "name": "DashboardVersionID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific version of a Grafana dashboard by providing both the dashboard's unique identifier (UID) and the desired version ID. It allows users to access historical versions of a dashboard, enabling them to review previous configurations, compare changes over time, or restore an earlier state of the dashboard. The endpoint uses a GET request and requires two path parameters: the dashboard UID which uniquely identifies the dashboard, and the DashboardVersionID which s"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Public Annotations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/public/dashboards/:accessToken/annotations",
+            "params": [
+              {
+                "name": "accessToken",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves public annotations for a specific Grafana dashboard using an access token. It accepts a GET request to the endpoint '/public/dashboards/{accessToken}/annotations' where the accessToken parameter identifies the publicly shared dashboard. The operation returns annotation data that can be displayed on the dashboard timeline, allowing viewers of public dashboards to see relevant markers, events, or notes without requiring authentication. This is particularly useful for s"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/snapshots/:key",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific dashboard snapshot from Grafana using its unique key identifier. When called, it fetches the stored snapshot data which represents a static, point-in-time view of a dashboard that was previously captured. The snapshot includes all panel configurations, data visualizations, and dashboard settings as they existed at the moment the snapshot was created. This is useful for sharing dashboard views with external users who may not have access to the live Grafana "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Mapped Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/groupsync/groups"
+          },
+          "docs": "The Get Mapped Groups API operation retrieves a list of groups that have been configured for synchronization in Grafana's group sync functionality. This GET endpoint at /groupsync/groups returns information about groups that are mapped between an external authentication provider (such as LDAP, OAuth, or SAML) and Grafana's internal team structure, allowing administrators to view which external groups are currently being synchronized and how they correspond to teams within Grafana for access cont"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Group Roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/groupsync/groups/:group_id/roles",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the roles associated with a specific group in Grafana's group synchronization system. By providing a group_id in the URL path, the GET request returns information about what roles have been assigned to that particular group, which is useful for managing permissions and access control in Grafana when using external group synchronization features like LDAP or OAuth."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Health",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/health"
+          },
+          "docs": "The Grafana Health API endpoint is a GET operation accessible at the /health path that provides a simple health check mechanism to determine the operational status of the Grafana instance. This endpoint returns basic information about whether the Grafana server is running and responding to requests, making it essential for monitoring, load balancing, and automated health verification in production environments. It typically returns a straightforward response indicating the service status without"
+        },
+        {
+          "info": {
+            "name": "Grafana Get SAML Logout",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/logout/saml"
+          },
+          "docs": "The GET /logout/saml endpoint in Grafana handles SAML-based logout operations, providing a way to terminate authenticated user sessions that were established using SAML (Security Assertion Markup Language) single sign-on. When invoked, this endpoint initiates the SAML logout flow, which typically involves invalidating the user's session within Grafana and potentially communicating with the SAML identity provider to perform a global logout across all SAML-integrated applications. This endpoint is"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/saml/metadata"
+          },
+          "docs": "This API operation retrieves SAML (Security Assertion Markup Language) metadata from a Grafana instance. When called using a GET request to the /saml/metadata endpoint, it returns the service provider metadata document in XML format, which contains configuration details necessary for establishing SAML-based single sign-on (SSO) authentication. This metadata typically includes information such as entity IDs, assertion consumer service URLs, certificate details, and supported SAML bindings that id"
+        },
+        {
+          "info": {
+            "name": "Grafana Get SLO",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/saml/slo"
+          },
+          "docs": "The Grafana SAML Single Logout (SLO) GET endpoint at /saml/slo facilitates the logout process for users authenticated via SAML by handling logout requests from the identity provider. When invoked, this endpoint processes SAML logout requests, terminates the user's Grafana session, and coordinates the single sign-out flow to ensure the user is properly logged out from both Grafana and the SAML identity provider, maintaining security and session consistency across the federated authentication syst"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Playlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/playlists/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific playlist from Grafana using its unique identifier (UID). When you make a GET request to the /playlists/{uid} endpoint with a valid playlist UID, Grafana returns the complete details of that playlist, including its name, interval settings, and the list of dashboards it contains. This operation is useful for viewing the configuration of an existing playlist, whether you need to display its properties, verify its contents, or retrieve its data for further pro"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Playlist Items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/playlists/:uid/items",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves all items associated with a specific playlist in Grafana by providing the playlist's unique identifier (uid) in the URL path. When called with a GET request, it returns a list of dashboard references that are configured to be displayed in sequence as part of the specified playlist, including details such as the dashboard titles, IDs, and their order within the playlist rotation."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Recording Rule Write Target",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/recording-rules/writer"
+          },
+          "docs": "This API operation retrieves the configured write target for recording rules in Grafana. When called using a GET request to the /recording-rules/writer endpoint, it returns information about where recording rule data is being written, which typically includes details about the remote write configuration or storage backend that has been set up to receive and store the results of recording rule evaluations. This is useful for administrators who need to verify or audit the destination of their reco"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Sharing Options",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/snapshot/shared-options"
+          },
+          "docs": "This API operation retrieves the available sharing options for snapshots in Grafana. When invoked via a GET request to the /snapshot/shared-options endpoint, it returns configuration details about how snapshots can be shared, including available sharing methods, permissions, and any constraints or settings that govern snapshot sharing behavior within the Grafana instance. This information is useful for determining what sharing capabilities are enabled and how users can distribute dashboard snaps"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Team Groups Api",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/teams/:teamId/groups",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the list of external groups that are synchronized with a specific team in Grafana. By providing a team ID in the path parameter, the endpoint returns all groups that have been mapped or linked to that team, which is particularly useful in environments where Grafana teams are integrated with external authentication providers like LDAP, OAuth, or SAML. This allows administrators to view and verify which external directory groups have access to a particular Grafana team"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Signed In User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/user"
+          },
+          "docs": "Retrieves the currently authenticated user's details in Grafana. This endpoint returns information about the user who is currently signed in based on the authentication credentials provided in the request, including user properties such as ID, login name, email, name, and organizational details. It's commonly used to verify authentication status and display user-specific information in the Grafana interface or when integrating with external applications."
+        },
+        {
+          "info": {
+            "name": "Grafana Get User Auth Tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/user/auth-tokens"
+          },
+          "docs": "This API operation retrieves a list of authentication tokens associated with the currently authenticated user in Grafana. When called via a GET request to the /user/auth-tokens endpoint, it returns information about active auth tokens that have been generated for the user's account, typically including details such as token IDs, creation timestamps, last used dates, and expiration information. This allows users to view and manage their active sessions and API tokens for security and access contr"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Signed In User Org List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/user/orgs"
+          },
+          "docs": "This API endpoint retrieves a list of all organizations associated with the currently authenticated user in Grafana. When called with a GET request to /user/orgs, it returns information about each organization the signed-in user belongs to, typically including details such as organization ID, name, and the user's role within each organization. This is useful for applications that need to display or process the organizational memberships of the current user, allowing them to understand which orga"
+        },
+        {
+          "info": {
+            "name": "Grafana Get User Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/user/preferences"
+          },
+          "docs": "This API operation retrieves the current preferences for the authenticated user in Grafana. It returns configuration settings such as the user's preferred theme (light or dark mode), home dashboard ID, timezone settings, and UI language preferences. The endpoint requires authentication and returns a JSON object containing all the preference values associated with the logged-in user's account, allowing applications to understand and respect the user's personalized Grafana interface settings."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Signed In User Team List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/user/teams"
+          },
+          "docs": "This API operation retrieves a list of all teams that the currently authenticated user is a member of in Grafana. When called, it returns team information associated with the signed-in user's account, allowing applications to determine which teams the user belongs to and potentially their roles or permissions within those teams. This is useful for displaying team memberships in user interfaces, implementing team-based access controls, or filtering content based on team associations."
+        },
+        {
+          "info": {
+            "name": "Grafana Get User By Login Or Email",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/users/lookup",
+            "params": [
+              {
+                "name": "loginOrEmail",
+                "value": "",
+                "type": "query",
+                "description": "loginOrEmail of the user"
+              }
+            ]
+          },
+          "docs": "The Grafana API endpoint /users/lookup with the GET method allows administrators to retrieve detailed information about a specific user by providing either their login username or email address as a query parameter. This operation is particularly useful when you need to fetch user details but only have their login credentials or email rather than their numeric user ID. The endpoint returns comprehensive user information including the user's ID, email, name, login, theme preferences, organization"
+        },
+        {
+          "info": {
+            "name": "Grafana Get User By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves detailed information about a specific Grafana user by their unique user identifier. By sending a GET request to the endpoint with a valid user_id parameter, administrators or authorized users can fetch comprehensive user data including username, email, authentication details, organization memberships, and user preferences. This operation is typically used for user management tasks, displaying user profiles, or verifying user information within Grafana instances, and "
+        },
+        {
+          "info": {
+            "name": "Grafana Get User Org List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/users/:user_id/orgs",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of all organizations associated with a specific user identified by their user ID in Grafana. This endpoint returns organization membership information for the specified user, including details about each organization they belong to. It requires appropriate authentication and permissions to access user-organization relationship data, making it useful for administrators who need to audit user access across multiple organizations or for displaying a user's organizational affiliatio"
+        },
+        {
+          "info": {
+            "name": "Grafana Get User Teams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/users/:user_id/teams",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a list of all teams that a specific user belongs to in Grafana. By making a GET request to the endpoint with a valid user ID parameter, the system returns information about the teams associated with that particular user, including team details such as team names, IDs, and potentially other relevant metadata. This is useful for administrators or applications that need to understand a user's team memberships and access permissions within the Grafana environment."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules"
+          },
+          "docs": "This API operation retrieves alert rules from Grafana's provisioning system. It uses a GET request to the /v1/provisioning/alert-rules endpoint to fetch configured alert rules that have been set up through Grafana's provisioning mechanism. The operation returns a list of alert rule definitions including their conditions, notifications, and metadata, allowing administrators and applications to programmatically query and review the current alerting configuration without manual access to the Grafan"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rules Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "folderUid",
+                "value": "",
+                "type": "query",
+                "description": "UIDs of folders from which to export rules"
+              },
+              {
+                "name": "group",
+                "value": "",
+                "type": "query",
+                "description": "Name of group of rules to export. Must be specified only together with a single folder UID"
+              },
+              {
+                "name": "ruleUid",
+                "value": "",
+                "type": "query",
+                "description": "UID of alert rule to export. If specified, parameters folderUid and group must be empty."
+              }
+            ]
+          },
+          "docs": "This API operation retrieves alert rules from Grafana in an exportable format, allowing administrators to extract alert rule configurations for backup, migration, or version control purposes. The GET endpoint at /v1/provisioning/alert-rules/export provides a way to programmatically access the complete definition of configured alert rules, including their conditions, notification settings, and metadata. This is particularly useful for maintaining infrastructure as code, replicating alert configur"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:UID",
+            "params": [
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "Alert rule UID"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific alert rule from Grafana's provisioning system using the alert rule's unique identifier (UID). When called with a GET request to the endpoint /v1/provisioning/alert-rules/{UID}, it returns the complete configuration details of the specified alert rule, including its conditions, labels, annotations, and evaluation settings. This endpoint is part of Grafana's provisioning API, which allows programmatic management of alert rules outside of the standard UI inte"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:UID/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "Alert rule UID"
+              }
+            ]
+          },
+          "docs": "The Get Alert Rule Export endpoint allows you to export a specific alert rule configuration from Grafana by providing its unique identifier (UID). This operation retrieves the complete alert rule definition in a format suitable for provisioning, enabling you to back up, version control, or migrate alert rules between Grafana instances. By making a GET request to /v1/provisioning/alert-rules/{UID}/export, you can obtain the alert rule's configuration including its conditions, notification setting"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Contactpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/contact-points",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves all configured contact points in Grafana's alerting system through a GET request to the /v1/provisioning/contact-points endpoint. Contact points define the destinations where alert notifications are sent, such as email addresses, Slack channels, PagerDuty services, or webhook URLs. When called, this endpoint returns a list of all provisioned contact points along with their configuration details, including the notification channel type, settings, and metadata. This is"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Contactpoints Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/contact-points/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "decrypt",
+                "value": "",
+                "type": "query",
+                "description": "Whether any contained secure settings should be decrypted or left redacted. Redacted settings will contain RedactedValue instead. Currently, only org admin can view decrypted secure settings."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the exported configuration of contact points from Grafana's provisioning system. It uses a GET request to the `/v1/provisioning/contact-points/export` endpoint and returns contact point definitions that can be used for backup, migration, or version control purposes. Contact points define how and where Grafana sends alert notifications, such as email addresses, Slack webhooks, or PagerDuty integrations, and exporting them allows administrators to maintain consistent a"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/folder/:FolderUID/rule-groups/:Group",
+            "params": [
+              {
+                "name": "FolderUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific alert rule group within a designated folder in Grafana's provisioning system. By providing the folder's unique identifier (FolderUID) and the name of the alert rule group (Group) in the request path, users can fetch the complete configuration and details of that particular rule group. This GET endpoint is part of Grafana's provisioning API, which allows programmatic management of alerting configurations, enabling administrators and automation systems to qu"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule Group Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/folder/:FolderUID/rule-groups/:Group/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "FolderUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and exports a specific alert rule group from Grafana's provisioning system by providing both the parent folder's unique identifier (FolderUID) and the alert rule group name (Group) as path parameters. It allows users to obtain the complete configuration of an alert rule group in an exportable format, which can be used for backup purposes, migration between Grafana instances, or version control of alerting configurations. The GET method ensures this is a read-only ope"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Mute Timings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings"
+          },
+          "docs": "The Get Mute Timings operation retrieves a list of all configured mute timings from Grafana's alerting system. Mute timings are scheduling rules that define time intervals during which alert notifications should be suppressed, such as during maintenance windows or outside business hours. This GET endpoint at /v1/provisioning/mute-timings returns the complete collection of mute timing configurations, allowing administrators to view when and under what conditions notifications will be automaticall"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Mute Timing",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Mute timing name"
+              }
+            ]
+          },
+          "docs": "The Get Mute Timing operation retrieves a specific mute timing configuration by its unique name from Grafana's alerting system. Mute timings are used to define time intervals during which alert notifications should be suppressed, allowing users to prevent alerts during scheduled maintenance windows or known periods of reduced monitoring. By providing the mute timing name as a path parameter, this GET endpoint returns the complete configuration details of that particular mute timing, including it"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Policy Tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/policies"
+          },
+          "docs": "This API operation retrieves the entire notification policy tree configuration from Grafana's alerting system. It returns the hierarchical structure that defines how alerts are routed to different contact points based on matching labels and conditions. The policy tree includes the root policy and all nested policies with their respective matchers, grouping settings, timing intervals, and associated receiver configurations. This endpoint is part of Grafana's provisioning API and requires appropri"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Policy Tree Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/policies/export"
+          },
+          "docs": "This API operation retrieves and exports the complete policy tree structure from Grafana's provisioning system. It returns a comprehensive representation of all configured notification policies in an exportable format, which can be used for backup purposes, version control, or migration to other Grafana instances. The GET request to this endpoint provides administrators with a way to programmatically access and manage their alerting policy configurations outside of the Grafana UI, facilitating i"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/templates"
+          },
+          "docs": "This API operation retrieves provisioning templates from Grafana's alerting system. It is accessed via a GET request to the `/v1/provisioning/templates` endpoint and returns a collection of message templates that can be used for alert notifications. These templates define how alert messages are formatted and presented when notifications are sent through various channels, allowing administrators to standardize and customize the appearance and content of alert messages across their Grafana instanc"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/templates/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Template group name"
+              }
+            ]
+          },
+          "docs": "The Get Template operation retrieves a specific notification template by its name from Grafana's provisioning API. This endpoint allows users to fetch the complete configuration details of a previously created template, including its content, title, and any associated metadata. By making a GET request to /v1/provisioning/templates/{name} where {name} is the unique identifier of the template, administrators can programmatically access template definitions that are used for formatting alert notifi"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Provider Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/sso-settings/:key",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves the configuration settings for a specific Single Sign-On (SSO) provider in Grafana by providing the provider's unique key identifier. This GET operation returns detailed information about the SSO provider's configuration, including authentication parameters, user mapping rules, and other provider-specific settings that control how users authenticate and are provisioned within Grafana through that particular SSO integration."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

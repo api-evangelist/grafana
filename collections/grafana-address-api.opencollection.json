@@ -1,0 +1,61 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Address API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Address",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Update Org Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/orgs/:org_id/address",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation updates the address information for a specific organization in Grafana by sending a PUT request to the /orgs/{org_id}/address endpoint, where {org_id} is the unique identifier of the organization whose address needs to be modified. The operation allows administrators to maintain accurate organizational address details within the Grafana system, typically requiring appropriate authentication and authorization permissions to execute successfully. The request body would contain t"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Current Org Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/org/address",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the physical address information for the currently authenticated organization in Grafana. This PUT endpoint modifies the organization's address details, which may include street address, city, state, postal code, and country information. The operation requires appropriate authentication and permissions to modify organization settings, and it affects only the organization context of the current user session. The updated address information is typically used for administrative purposes, bi"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,253 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Annotations API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Annotations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Find annotations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/annotations",
+            "params": [
+              {
+                "name": "from",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dashboardId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "panelId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Find annotations"
+        },
+        {
+          "info": {
+            "name": "Create annotation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/annotations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create annotation"
+        },
+        {
+          "info": {
+            "name": "Delete annotation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/annotations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete annotation"
+        },
+        {
+          "info": {
+            "name": "Grafana Post Graphite Annotation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/annotations/graphite",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new Graphite-style annotation in Grafana by submitting annotation data through a POST request to the /annotations/graphite endpoint. This operation allows users to mark specific points in time on their graphs with contextual information, which is particularly useful for correlating system events, deployments, or incidents with metric changes. The annotation typically includes details such as timestamp, tags, and descriptive text that will be displayed on Grafana dashboards when hoverin"
+        },
+        {
+          "info": {
+            "name": "Grafana Mass Delete Annotations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/annotations/mass-delete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The Mass Delete Annotations API operation in Grafana allows users to delete multiple annotations in a single request by sending a POST request to the /annotations/mass-delete endpoint. This operation is useful for bulk cleanup of annotations based on specific criteria such as time range, dashboard ID, panel ID, tags, or annotation IDs. Instead of deleting annotations one by one, users can specify filter parameters in the request body to target multiple annotations at once, improving efficiency w"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Annotation Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/annotations/tags",
+            "params": [
+              {
+                "name": "tag",
+                "value": "",
+                "type": "query",
+                "description": "Tag is a string that you can use to filter tags."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Max limit for results returned."
+              }
+            ]
+          },
+          "docs": "The Get Annotation Tags operation retrieves all tags that have been used in annotations within Grafana. This endpoint returns a list of tag objects that represent the various labels applied to annotations across the system, making it useful for discovering available tags before filtering annotations or for populating tag selection interfaces. The response provides tag metadata that can be used to query or organize annotations by their associated tags, helping users navigate and categorize their "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Annotation By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/annotations/:annotation_id",
+            "params": [
+              {
+                "name": "annotation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves detailed information about a specific annotation in Grafana using its unique identifier. This GET operation allows users to fetch a single annotation's complete data including its text, tags, time range, dashboard and panel associations, and metadata by providing the annotation ID as a path parameter. It's useful for viewing or auditing individual annotations, or as part of workflows that need to process or display annotation details programmatically."
+        },
+        {
+          "info": {
+            "name": "Grafana Update Annotation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/annotations/:annotation_id",
+            "params": [
+              {
+                "name": "annotation_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation updates an existing annotation in Grafana by sending a PUT request to the /annotations/{annotation_id} endpoint, where {annotation_id} is the unique identifier of the annotation to be modified. Annotations in Grafana are metadata that can be overlaid on graphs to mark specific points or time ranges with descriptive information, such as deployment events, system outages, or other significant occurrences. When invoking this endpoint, users can modify various properties of the an"
+        },
+        {
+          "info": {
+            "name": "Grafana Patch Annotation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/annotations/:annotation_id",
+            "params": [
+              {
+                "name": "annotation_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing annotation in Grafana by its unique identifier. This PATCH operation allows you to modify specific properties of an annotation without replacing the entire resource. You can update fields such as the annotation text, tags, time range, or associated dashboard and panel IDs. The request requires the annotation_id as a path parameter and accepts a JSON body containing only the fields you wish to modify. This is useful for correcting or enhancing existing annotations without need"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Annotation By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/annotations/:annotation_id",
+            "params": [
+              {
+                "name": "annotation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific annotation from Grafana using its unique identifier. This operation permanently removes the annotation record from the system, including any associated metadata such as tags, text, and time range information. The annotation ID must be provided in the URL path to identify which annotation should be deleted. This is typically used when an annotation is no longer relevant or was created in error. The user making the request must have appropriate permissions to delete annotations "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Public Annotations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/public/dashboards/:accessToken/annotations",
+            "params": [
+              {
+                "name": "accessToken",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves public annotations for a specific Grafana dashboard using an access token. It accepts a GET request to the endpoint '/public/dashboards/{accessToken}/annotations' where the accessToken parameter identifies the publicly shared dashboard. The operation returns annotation data that can be displayed on the dashboard timeline, allowing viewers of public dashboards to see relevant markers, events, or notes without requiring authentication. This is particularly useful for s"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

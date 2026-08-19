@@ -1,0 +1,328 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Lists API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Lists",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Get Folder Permission List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/folders/:folder_uid/permissions",
+            "params": [
+              {
+                "name": "folder_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the complete list of permissions associated with a specific folder in Grafana by providing the folder's unique identifier (UID) in the request path. It returns details about which users, teams, or roles have access to the folder and what level of permissions they possess, such as view, edit, or admin rights. This GET endpoint is useful for auditing folder access controls, understanding the current permission structure, and determining who has what level of access to "
+        },
+        {
+          "info": {
+            "name": "Grafana List Roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/access-control/roles",
+            "params": [
+              {
+                "name": "delegatable",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "includeHidden",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "<endpoint>\nThis API operation retrieves a list of all available roles within Grafana's access control system. When invoked with a GET request to the /access-control/roles endpoint, it returns a comprehensive collection of role definitions that exist in the Grafana instance, including both built-in system roles and any custom roles that have been created. The response typically includes role metadata such as role names, descriptions, UIDs, permissions associated with each role, and other relevant"
+        },
+        {
+          "info": {
+            "name": "Grafana List Teams Roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/access-control/teams/roles/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation performs a search for team roles within Grafana's access control system. It uses a POST request to the /access-control/teams/roles/search endpoint to retrieve a list of roles that are associated with teams in the Grafana instance. The operation allows administrators to query and discover which roles have been assigned to various teams, helping them manage permissions and access control policies. This is useful for auditing team permissions, understanding role assignments, and "
+        },
+        {
+          "info": {
+            "name": "Grafana List Team Roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/access-control/teams/:teamId/roles",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves all roles assigned to a specific team in Grafana's access control system. By making a GET request to the endpoint with a team identifier, users can view the complete list of roles and their associated permissions that have been granted to that particular team. This is useful for auditing team permissions, understanding what access levels a team has across different resources, and managing role-based access control (RBAC) configurations within Grafana."
+        },
+        {
+          "info": {
+            "name": "Grafana List Users Roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/access-control/users/roles/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to search and retrieve a list of roles assigned to users within Grafana's access control system. By sending a POST request to the /access-control/users/roles/search endpoint, you can query and filter user role assignments based on various criteria. The operation is useful for administrators who need to audit user permissions, manage access control policies, or retrieve information about which roles are assigned to specific users across the Grafana instance. The POST"
+        },
+        {
+          "info": {
+            "name": "Grafana List User Roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/access-control/users/:userId/roles",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves all roles assigned to a specific user in Grafana's access control system. By making a GET request to the endpoint with a user's unique identifier (userId) in the path, you can obtain a comprehensive list of roles that define the user's permissions and access levels within the Grafana instance. This is useful for auditing user permissions, verifying access levels, or managing role-based access control (RBAC) configurations."
+        },
+        {
+          "info": {
+            "name": "Grafana List Tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/serviceaccounts/:serviceAccountId/tokens",
+            "params": [
+              {
+                "name": "serviceAccountId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns a list of all tokens associated with a specific service account in Grafana, identified by the serviceAccountId parameter. This endpoint allows administrators and authorized users to view all authentication tokens that have been generated for a particular service account, which is useful for managing API access, monitoring token usage, and maintaining security by auditing which tokens are currently active or have been created for automated integrations and external services."
+        },
+        {
+          "info": {
+            "name": "Grafana List Devices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/anonymous/devices"
+          },
+          "docs": "This API operation retrieves a list of devices from Grafana's anonymous device management system. It uses the HTTP GET method to query the /anonymous/devices endpoint, returning device information without requiring authenticated user credentials. The operation is useful for monitoring and managing devices that have been registered or accessed anonymously within the Grafana platform, providing administrators with visibility into device activity and enabling device inventory management."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Session List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/migration"
+          },
+          "docs": "The GET /cloudmigration/migration endpoint retrieves a list of cloud migration sessions in Grafana, allowing administrators to monitor and track ongoing or historical migration activities from self-hosted Grafana instances to Grafana Cloud. This operation returns details about migration sessions including their status, creation timestamps, configuration parameters, and progress information, enabling users to review migration attempts and their outcomes without requiring additional parameters bey"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Shapshot List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/migration/:uid/snapshots",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page is used for pagination with limit"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Max limit for results returned."
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path",
+                "description": "Session UID of a session"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort with value latest to return results sorted in descending order."
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a list of snapshots associated with a specific cloud migration job in Grafana. By making a GET request to the endpoint with a unique migration identifier (uid), users can obtain details about all snapshots that have been created during the migration process. This is useful for tracking the progress of a migration, reviewing snapshot history, and managing data transfer between Grafana instances or cloud environments."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Permissions List By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/id/:DashboardID/permissions",
+            "params": [
+              {
+                "name": "DashboardID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the complete list of permissions associated with a specific Grafana dashboard by providing its unique dashboard identifier. It returns details about which users, teams, or roles have access to the dashboard and what level of permissions they possess (such as view, edit, or admin rights). The GET request to this endpoint allows administrators to audit and review the current access control settings for a dashboard, making it useful for security compliance, permission m"
+        },
+        {
+          "info": {
+            "name": "Grafana List Public Dashboards",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/public-dashboards"
+          },
+          "docs": "This API operation retrieves a list of all public dashboards available in Grafana. It uses a GET request to the /dashboards/public-dashboards endpoint and returns information about dashboards that have been made publicly accessible, meaning they can be viewed without authentication. The response typically includes details such as dashboard UIDs, titles, access tokens, and configuration settings for each public dashboard. This endpoint is useful for administrators who need to audit or manage whic"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Permissions List By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:uid/permissions",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the permission settings for a specific Grafana dashboard identified by its unique identifier (UID). When called with a GET request to the endpoint /dashboards/uid/{uid}/permissions, it returns a list of all permissions associated with that dashboard, including which users, teams, or roles have access and their respective permission levels (such as view, edit, or admin rights). This allows administrators and authorized users to review and audit who has access to a par"
+        },
+        {
+          "info": {
+            "name": "Grafana List Recording Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/recording-rules"
+          },
+          "docs": "This API operation retrieves a list of all recording rules configured in Grafana. Recording rules are used to pre-compute frequently needed or computationally expensive expressions and save their result as a new set of time series data, which can improve query performance and reduce load on data sources. The GET request to the /recording-rules endpoint returns details about existing recording rules including their names, expressions, labels, and associated data sources, allowing administrators a"
+        },
+        {
+          "info": {
+            "name": "Grafana List Sort Options",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/search/sorting"
+          },
+          "docs": "This API operation retrieves the available sorting options that can be used when searching or listing resources in Grafana. When called using a GET request to the /search/sorting endpoint, it returns the various sorting criteria and methods supported by the Grafana search functionality, allowing clients to understand how they can order search results such as by name, date, relevance, or other applicable metadata fields. This endpoint is typically used by frontend applications or integrations tha"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Signed In User Org List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/user/orgs"
+          },
+          "docs": "This API endpoint retrieves a list of all organizations associated with the currently authenticated user in Grafana. When called with a GET request to /user/orgs, it returns information about each organization the signed-in user belongs to, typically including details such as organization ID, name, and the user's role within each organization. This is useful for applications that need to display or process the organizational memberships of the current user, allowing them to understand which orga"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Signed In User Team List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/user/teams"
+          },
+          "docs": "This API operation retrieves a list of all teams that the currently authenticated user is a member of in Grafana. When called, it returns team information associated with the signed-in user's account, allowing applications to determine which teams the user belongs to and potentially their roles or permissions within those teams. This is useful for displaying team memberships in user interfaces, implementing team-based access controls, or filtering content based on team associations."
+        },
+        {
+          "info": {
+            "name": "Grafana Get User Org List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/users/:user_id/orgs",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of all organizations associated with a specific user identified by their user ID in Grafana. This endpoint returns organization membership information for the specified user, including details about each organization they belong to. It requires appropriate authentication and permissions to access user-organization relationship data, making it useful for administrators who need to audit user access across multiple organizations or for displaying a user's organizational affiliatio"
+        },
+        {
+          "info": {
+            "name": "Grafana List All Providers Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/sso-settings"
+          },
+          "docs": "This API operation retrieves the configuration settings for all Single Sign-On (SSO) providers that have been configured in Grafana. When called, it returns a comprehensive list containing the settings and parameters for each SSO provider, such as OAuth, SAML, or other authentication mechanisms that are available in the system. This endpoint is useful for administrators who need to review or audit the current SSO configurations across their Grafana instance, providing visibility into which authe"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

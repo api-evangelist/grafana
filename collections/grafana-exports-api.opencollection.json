@@ -1,0 +1,237 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Exports API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Exports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rules Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "folderUid",
+                "value": "",
+                "type": "query",
+                "description": "UIDs of folders from which to export rules"
+              },
+              {
+                "name": "group",
+                "value": "",
+                "type": "query",
+                "description": "Name of group of rules to export. Must be specified only together with a single folder UID"
+              },
+              {
+                "name": "ruleUid",
+                "value": "",
+                "type": "query",
+                "description": "UID of alert rule to export. If specified, parameters folderUid and group must be empty."
+              }
+            ]
+          },
+          "docs": "This API operation retrieves alert rules from Grafana in an exportable format, allowing administrators to extract alert rule configurations for backup, migration, or version control purposes. The GET endpoint at /v1/provisioning/alert-rules/export provides a way to programmatically access the complete definition of configured alert rules, including their conditions, notification settings, and metadata. This is particularly useful for maintaining infrastructure as code, replicating alert configur"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:UID/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "Alert rule UID"
+              }
+            ]
+          },
+          "docs": "The Get Alert Rule Export endpoint allows you to export a specific alert rule configuration from Grafana by providing its unique identifier (UID). This operation retrieves the complete alert rule definition in a format suitable for provisioning, enabling you to back up, version control, or migrate alert rules between Grafana instances. By making a GET request to /v1/provisioning/alert-rules/{UID}/export, you can obtain the alert rule's configuration including its conditions, notification setting"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Contactpoints Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/contact-points/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "decrypt",
+                "value": "",
+                "type": "query",
+                "description": "Whether any contained secure settings should be decrypted or left redacted. Redacted settings will contain RedactedValue instead. Currently, only org admin can view decrypted secure settings."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the exported configuration of contact points from Grafana's provisioning system. It uses a GET request to the `/v1/provisioning/contact-points/export` endpoint and returns contact point definitions that can be used for backup, migration, or version control purposes. Contact points define how and where Grafana sends alert notifications, such as email addresses, Slack webhooks, or PagerDuty integrations, and exporting them allows administrators to maintain consistent a"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule Group Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/folder/:FolderUID/rule-groups/:Group/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "FolderUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and exports a specific alert rule group from Grafana's provisioning system by providing both the parent folder's unique identifier (FolderUID) and the alert rule group name (Group) as path parameters. It allows users to obtain the complete configuration of an alert rule group in an exportable format, which can be used for backup purposes, migration between Grafana instances, or version control of alerting configurations. The GET method ensures this is a read-only ope"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Export Mute Timings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              }
+            ]
+          },
+          "docs": "The Route Export Mute Timings operation in Grafana's provisioning API allows users to retrieve and export configured mute timing definitions through a GET request to the /v1/provisioning/mute-timings/export endpoint. This endpoint provides a way to extract mute timing configurations, which define time-based rules for suppressing alert notifications during specific periods such as maintenance windows or off-hours. The exported data can be used for backup purposes, migration between Grafana instan"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Export Mute Timing",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings/:name/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Mute timing name"
+              }
+            ]
+          },
+          "docs": "The Export Mute Timing API operation in Grafana allows users to retrieve and export the configuration details of a specific mute timing by providing its name as a path parameter. This GET endpoint is part of the provisioning API and enables administrators to programmatically access mute timing definitions, which are used to suppress alert notifications during specified time periods. The exported configuration can be used for backup purposes, migrating configurations between Grafana instances, or"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Policy Tree Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/policies/export"
+          },
+          "docs": "This API operation retrieves and exports the complete policy tree structure from Grafana's provisioning system. It returns a comprehensive representation of all configured notification policies in an exportable format, which can be used for backup purposes, version control, or migration to other Grafana instances. The GET request to this endpoint provides administrators with a way to programmatically access and manage their alerting policy configurations outside of the Grafana UI, facilitating i"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

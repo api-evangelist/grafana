@@ -1,0 +1,133 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Element API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Element",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Create Library Element",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/library-elements",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new library element in Grafana, which is a reusable component such as a panel or variable that can be shared across multiple dashboards. This endpoint accepts a POST request with the library element configuration in the request body, including properties like name, model, kind (panel or variable), and folder ID where the element should be stored. Upon successful creation, it returns the newly created library element object with its unique identifier, allowing users to reference and reu"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Library Element By Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/library-elements/name/:library_element_name",
+            "params": [
+              {
+                "name": "library_element_name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Gets a library element with the specified name from Grafana's library elements collection. This endpoint retrieves a single library element by providing its unique name as a path parameter. Library elements in Grafana are reusable components like panels or data sources that can be shared across multiple dashboards. The operation returns the complete library element object including its configuration, metadata, and any associated properties. This is useful when you need to reference or reuse a sp"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Library Element By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/library-elements/:library_element_uid",
+            "params": [
+              {
+                "name": "library_element_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific library element from Grafana using its unique identifier (UID). Library elements in Grafana are reusable components such as panels or variables that can be shared across multiple dashboards. By making a GET request to this endpoint with a library element's UID, users can fetch the complete configuration and metadata of that particular library element, including its type, name, model definition, and any associated properties. This is useful when you need to"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Library Element",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/library-elements/:library_element_uid",
+            "params": [
+              {
+                "name": "library_element_uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to update an existing library element in Grafana by specifying its unique identifier (UID) in the request path. Using the PATCH HTTP method, you can modify specific properties of the library element without needing to provide the complete resource definition. Library elements in Grafana are reusable components such as panels or data sources that can be shared across multiple dashboards, and this endpoint enables you to make incremental changes to these shared resour"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Library Element By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/library-elements/:library_element_uid",
+            "params": [
+              {
+                "name": "library_element_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes a library element from Grafana by specifying its unique identifier (UID) in the URL path. This DELETE operation permanently deletes the specified library element, which can be a panel or other reusable dashboard component that was stored in the Grafana library for sharing across multiple dashboards. The endpoint requires the library element's UID as a path parameter and appropriate authentication credentials with sufficient permissions to delete library resources. Once deleted, the libra"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Library Element Connections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/library-elements/:library_element_uid/connections/",
+            "params": [
+              {
+                "name": "library_element_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves all the connections associated with a specific library element in Grafana by providing its unique identifier (UID). When called, it returns information about where and how the library element is being used across different dashboards and panels within the Grafana instance. This is particularly useful for understanding dependencies and the impact of modifying or deleting a library element, as it shows all the locations where the element is currently referenced or util"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

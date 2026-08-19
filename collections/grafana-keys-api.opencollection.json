@@ -1,0 +1,42 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Keys API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Keys",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Delete Dashboard Snapshot By Delete Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/snapshots-delete/:deleteKey",
+            "params": [
+              {
+                "name": "deleteKey",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows you to remove a dashboard snapshot from Grafana using its unique delete key. When a snapshot is created, it generates a special delete key that provides authorized deletion access without requiring authentication. By making a GET request to this endpoint with the appropriate deleteKey parameter, the associated snapshot will be permanently removed from the system. This provides a secure way to clean up temporary or unwanted dashboard snapshots, particularly useful when s"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

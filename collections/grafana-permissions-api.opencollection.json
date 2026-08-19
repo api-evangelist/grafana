@@ -1,0 +1,334 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Permissions API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Permissions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Get Folder Permission List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/folders/:folder_uid/permissions",
+            "params": [
+              {
+                "name": "folder_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the complete list of permissions associated with a specific folder in Grafana by providing the folder's unique identifier (UID) in the request path. It returns details about which users, teams, or roles have access to the folder and what level of permissions they possess, such as view, edit, or admin rights. This GET endpoint is useful for auditing folder access controls, understanding the current permission structure, and determining who has what level of access to "
+        },
+        {
+          "info": {
+            "name": "Grafana Update Folder Permissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/folders/:folder_uid/permissions",
+            "params": [
+              {
+                "name": "folder_uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to modify the access permissions for a specific folder in Grafana by making a POST request to the endpoint with the folder's unique identifier (UID). You can use it to grant or revoke permissions for users, teams, or roles, controlling who can view, edit, or administer the folder and its contents. The request body typically includes permission items specifying the permission level (viewer, editor, or admin) and the entity being granted access (user ID, team ID, or r"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Resource Permissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/access-control/:resource/:resourceID",
+            "params": [
+              {
+                "name": "resource",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resourceID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the access control permissions for a specific resource in Grafana by providing the resource type and resource ID as path parameters. It returns detailed information about who has access to the specified resource and what level of permissions they have been granted. This is useful for auditing and managing resource-level permissions within Grafana, allowing administrators to review which users, teams, or service accounts have been granted specific permissions on indiv"
+        },
+        {
+          "info": {
+            "name": "Grafana Set Resource Permissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/access-control/:resource/:resourceID",
+            "params": [
+              {
+                "name": "resource",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resourceID",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets access control permissions for a specific resource in Grafana, allowing administrators to define granular role-based permissions for individual resources identified by their resource type and ID. This endpoint accepts permission configurations in the request body and applies them to the specified resource, enabling fine-grained control over who can view, edit, or manage particular dashboards, folders, data sources, or other Grafana resources. The operation requires appropriate administrativ"
+        },
+        {
+          "info": {
+            "name": "Grafana Set Resource Permissions For Built In Role",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/access-control/:resource/:resourceID/builtInRoles/:builtInRole",
+            "params": [
+              {
+                "name": "resource",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resourceID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "builtInRole",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows administrators to configure and assign specific resource-level permissions to a built-in role within Grafana's access control system. By making a POST request to this endpoint with a specified resource type, resource ID, and built-in role identifier, you can define granular permissions that determine what actions the built-in role can perform on that particular resource. This is useful for customizing access control policies beyond default settings, enabling fine-graine"
+        },
+        {
+          "info": {
+            "name": "Grafana Set Resource Permissions For Team",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/access-control/:resource/:resourceID/teams/:teamID",
+            "params": [
+              {
+                "name": "resource",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resourceID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "teamID",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to configure specific permissions for a team on a particular resource in Grafana's access control system. By making a POST request to this endpoint with the resource type, resource ID, and team ID, you can grant or update the access rights that a specific team has for that resource. This is part of Grafana's role-based access control (RBAC) functionality, enabling administrators to manage fine-grained permissions by assigning different levels of access to teams for "
+        },
+        {
+          "info": {
+            "name": "Grafana Set Resource Permissions For User",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/access-control/:resource/:resourceID/users/:userID",
+            "params": [
+              {
+                "name": "resource",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resourceID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows administrators to configure specific access control permissions for an individual user on a particular Grafana resource. By making a POST request to this endpoint with the resource type, resource ID, and user ID, you can grant or modify the permissions that determine what actions the specified user can perform on that resource. This granular permission management enables fine-tuned control over user access rights within Grafana, allowing administrators to implement role"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Custom Permissions Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/licensing/custom-permissions"
+          },
+          "docs": "This API operation retrieves a custom permissions report from Grafana's licensing endpoint. When invoked via a GET request to the /licensing/custom-permissions path, it returns information about custom permission configurations and their usage within the Grafana instance. This endpoint is typically used by administrators to audit and review customized access control settings, helping them understand how permissions have been tailored beyond the standard roles and ensure compliance with licensing"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Custom Permissions CSV",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/licensing/custom-permissions-csv"
+          },
+          "docs": "This API operation retrieves custom permissions data from Grafana in CSV format through a GET request to the /licensing/custom-permissions-csv endpoint. It allows administrators to export and download a comprehensive list of custom permission configurations that have been set up within their Grafana instance, which can be useful for auditing, backup purposes, or analyzing permission structures across the system. The response is formatted as a CSV file, making it easy to view, process, or import "
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Update User Permissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id/permissions",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the permissions for a specific user in Grafana through an administrative endpoint. This operation requires admin privileges and allows modification of user permission settings by targeting a specific user via their user_id parameter in the URL path. The PUT method indicates this is a full update of the user's permission configuration, replacing the existing permissions with the new settings provided in the request body. This is typically used by system administrators to grant or revoke a"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Permissions List By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/id/:DashboardID/permissions",
+            "params": [
+              {
+                "name": "DashboardID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the complete list of permissions associated with a specific Grafana dashboard by providing its unique dashboard identifier. It returns details about which users, teams, or roles have access to the dashboard and what level of permissions they possess (such as view, edit, or admin rights). The GET request to this endpoint allows administrators to audit and review the current access control settings for a dashboard, making it useful for security compliance, permission m"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Dashboard Permissions By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/dashboards/id/:DashboardID/permissions",
+            "params": [
+              {
+                "name": "DashboardID",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows administrators to modify the access control permissions for a specific Grafana dashboard by providing its unique dashboard ID in the URL path. By sending a POST request to this endpoint with the appropriate permission payload, users can grant or revoke access rights for teams, users, or roles, defining who can view, edit, or administer the dashboard. The operation requires proper authentication and authorization, typically at an administrator or dashboard owner level, a"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Permissions List By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:uid/permissions",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the permission settings for a specific Grafana dashboard identified by its unique identifier (UID). When called with a GET request to the endpoint /dashboards/uid/{uid}/permissions, it returns a list of all permissions associated with that dashboard, including which users, teams, or roles have access and their respective permission levels (such as view, edit, or admin rights). This allows administrators and authorized users to review and audit who has access to a par"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Dashboard Permissions By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:uid/permissions",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the access control permissions for a dashboard identified by its unique identifier (UID). This POST endpoint allows administrators to modify who can view, edit, or administrate a specific dashboard by sending permission configurations in the request body. The permissions can be set for individual users, teams, or roles, defining their level of access to the dashboard. This operation requires appropriate administrative privileges and is commonly used to manage dashboard security and colla"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

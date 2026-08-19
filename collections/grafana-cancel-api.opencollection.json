@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Cancel API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Cancel",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Cancel Snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/migration/:uid/snapshot/:snapshotUid/cancel",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path",
+                "description": "Session UID of a session"
+              },
+              {
+                "name": "snapshotUid",
+                "value": "",
+                "type": "path",
+                "description": "UID of a snapshot"
+              }
+            ]
+          },
+          "docs": "This API operation cancels an in-progress snapshot within a specific cloud migration in Grafana. It uses a POST request to the endpoint '/cloudmigration/migration/{uid}/snapshot/{snapshotUid}/cancel', where {uid} represents the unique identifier of the migration and {snapshotUid} represents the unique identifier of the snapshot to be cancelled. When invoked, this operation terminates the snapshot process for the specified migration, allowing users to stop an ongoing snapshot creation or transfer"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,79 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Revoke API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Revoke",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Revoke Invite",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/org/invites/:invitation_code/revoke",
+            "params": [
+              {
+                "name": "invitation_code",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation revokes a pending organization invitation in Grafana by deleting it using the specified invitation code. When executed via a DELETE request to the endpoint /org/invites/{invitation_code}/revoke, it cancels an outstanding invitation that was previously sent to a user, preventing them from accepting it and joining the organization. The invitation_code path parameter uniquely identifies which pending invite should be revoked, and successful execution removes the invitation from t"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Revoke User Auth Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id/revoke-auth-token",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows a Grafana administrator to forcibly revoke a specific authentication token for a given user by making a POST request to the endpoint with the target user's ID. When executed, it invalidates the specified auth token, effectively logging out that user from any session using that particular token, which is useful for security purposes such as when a token may have been compromised or when an administrator needs to terminate a user's access immediately without affecting oth"
+        },
+        {
+          "info": {
+            "name": "Grafana Revoke User Auth Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/user/revoke-auth-token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows for the revocation of a specific authentication token associated with a user in Grafana. When invoked via a POST request to the /user/revoke-auth-token endpoint, it invalidates the specified auth token, effectively logging out the user from any session using that particular token. This is useful for security purposes when a user wants to manually terminate access from a specific device or session, or when an administrator needs to force a logout. The operation requires "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,82 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Ldap API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Ldap",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Reload LDAP Cfg",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/admin/ldap/reload"
+          },
+          "docs": "Reloads the LDAP configuration in Grafana without requiring a server restart. This administrative endpoint triggers a refresh of LDAP settings, allowing changes made to the LDAP configuration file to take effect immediately. It is particularly useful when updates to LDAP connection parameters, search bases, group mappings, or authentication settings need to be applied on-the-fly. Only users with administrator privileges can execute this operation, and it requires proper authentication and author"
+        },
+        {
+          "info": {
+            "name": "Grafana Get LDAP Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/admin/ldap/status"
+          },
+          "docs": "This API operation retrieves the current status of LDAP integration in Grafana by sending a GET request to the /admin/ldap/status endpoint. It provides administrators with information about the LDAP connection status, configuration validation, and whether the LDAP authentication system is functioning properly. The endpoint returns details that help verify if Grafana can successfully communicate with the configured LDAP server, making it useful for troubleshooting authentication issues and monito"
+        },
+        {
+          "info": {
+            "name": "Grafana Post Sync User With LDAP",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/admin/ldap/sync/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation triggers a synchronization between a specific Grafana user and LDAP directory services by sending a POST request to the endpoint with the target user's ID. When invoked, it forces Grafana to retrieve the latest user information, groups, and permissions from the configured LDAP server for the specified user, updating their local Grafana profile accordingly. This is particularly useful when LDAP user attributes or group memberships have changed and you need to immediately reflec"
+        },
+        {
+          "info": {
+            "name": "Grafana Get User From LDAP",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/admin/ldap/:user_name",
+            "params": [
+              {
+                "name": "user_name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves LDAP user information for a specific username from Grafana's admin interface. By making a GET request to the endpoint with a username parameter, administrators can query the LDAP directory to fetch detailed user data associated with that particular account. This is useful for verifying LDAP user configurations, troubleshooting authentication issues, or confirming user attributes before syncing them into Grafana. The operation requires admin-level permissions and retu"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

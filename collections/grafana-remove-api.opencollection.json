@@ -1,0 +1,181 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Remove API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Remove",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Remove Org User",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/orgs/:org_id/users/:user_id",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation removes a specific user from a designated organization in Grafana by sending a DELETE request to the endpoint /orgs/{org_id}/users/{user_id}, where org_id represents the unique identifier of the organization and user_id represents the unique identifier of the user to be removed. When executed successfully, this operation revokes the user's membership and access rights within the specified organization, effectively disconnecting them from that particular organizational context "
+        },
+        {
+          "info": {
+            "name": "Grafana Remove Org User For Current Org",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/org/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation removes a specified user from the current organization in Grafana by making a DELETE request to the endpoint /org/users/{user_id}, where {user_id} is the unique identifier of the user to be removed. When executed, it disassociates the targeted user from the organization context in which the API call is made, effectively revoking their access and permissions within that specific organization. This operation requires appropriate administrative privileges within the current organ"
+        },
+        {
+          "info": {
+            "name": "Grafana Remove Team Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/teams/:team_id/members/:user_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes a specific user from a team by their user ID. This operation requires the team ID and user ID as path parameters. When executed, it deletes the membership association between the specified user and team, effectively revoking the user's access to team-specific resources and permissions. This is typically used when a user no longer needs to be part of a team or when reorganizing team structures within Grafana."
+        },
+        {
+          "info": {
+            "name": "Grafana Remove Team Role",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/access-control/teams/:teamId/roles/:roleUID",
+            "params": [
+              {
+                "name": "roleUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation removes a specific role assignment from a team in Grafana's access control system. It uses a DELETE request to the endpoint /access-control/teams/{teamId}/roles/{roleUID}, where teamId identifies the target team and roleUID specifies the role to be removed. When executed, it revokes the specified role's permissions from the team, effectively removing that role's access rights from all members of that team without affecting other role assignments the team may have."
+        },
+        {
+          "info": {
+            "name": "Grafana Remove User Role",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/access-control/users/:userId/roles/:roleUID",
+            "params": [
+              {
+                "name": "global",
+                "value": "",
+                "type": "query",
+                "description": "A flag indicating if the assignment is global or not. If set to false, the default org ID of the authenticated user will be used from the request to remove assignment."
+              },
+              {
+                "name": "roleUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes a specific role assignment from a user in Grafana's access control system. This API endpoint deletes the association between a user (identified by userId) and a particular role (identified by roleUID), effectively revoking the permissions granted by that role from the user. The operation requires appropriate administrative privileges and is typically used when managing user permissions, reorganizing team structures, or removing access rights that are no longer needed. Upon successful exe"
+        },
+        {
+          "info": {
+            "name": "Grafana Remove Team Group Api Query",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/teams/:teamId/groups",
+            "params": [
+              {
+                "name": "groupId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation removes an external group mapping from a specified team in Grafana. When executed, it performs a DELETE request to the endpoint /teams/{teamId}/groups, where {teamId} represents the unique identifier of the team from which the group association should be removed. The operation is used to disconnect external authentication provider groups (such as LDAP, OAuth, or SAML groups) from Grafana teams, effectively revoking the automatic team membership that was granted to users belong"
+        },
+        {
+          "info": {
+            "name": "Grafana Remove Provider Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/sso-settings/:key",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows you to delete a specific single sign-on (SSO) provider configuration from Grafana by specifying the provider's unique key in the URL path. When executed, it removes all settings and configuration associated with that particular SSO provider, effectively disabling that authentication method for your Grafana instance. This is useful when you need to decommission an SSO integration, clean up unused authentication providers, or reconfigure your authentication setup from scr"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

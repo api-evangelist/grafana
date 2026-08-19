@@ -1,0 +1,371 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Identifiers API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Identifiers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Get Data Source Id By Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/id/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the unique identifier of a Grafana data source by providing its name as a path parameter. It performs a GET request to the endpoint '/datasources/id/{name}' where {name} is replaced with the actual name of the data source you want to look up. The operation returns the numeric ID associated with that specific data source, which can be useful for subsequent API calls that require the data source ID rather than its name. This is particularly helpful when you need to pro"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Data Source By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves detailed information about a specific data source in Grafana by providing its unique identifier. This endpoint returns comprehensive configuration details for the data source including its name, type, URL, access mode, authentication settings, and other metadata associated with the specified ID. It requires appropriate permissions to view data source configurations and is commonly used when you need to inspect or verify the settings of a particular data source that has already been con"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Data Source By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/datasources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing data source in Grafana by specifying its unique identifier in the URL path. This PUT operation requires the complete data source configuration including connection details, authentication credentials, and any custom settings. The request must include all data source properties as the PUT method typically replaces the entire resource rather than partially updating it. Users need appropriate permissions to modify data sources, and the operation returns the updated data source c"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Data Source By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/datasources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation removes a specific data source from Grafana by referencing its unique identifier. When executed, it performs a DELETE request to the endpoint /datasources/{id}, where {id} represents the numeric identifier of the data source to be removed. The operation permanently deletes the data source configuration from Grafana, including all its associated settings and connection details. This action requires appropriate administrative permissions and cannot be undone once completed. Upon"
+        },
+        {
+          "info": {
+            "name": "Grafana Check Datasource Health By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/:id/health",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Sends a health check request to the data source identified by its numeric ID and returns the current operational status. This endpoint verifies whether Grafana can successfully connect to and communicate with the specified data source, helping administrators diagnose connectivity issues or validate data source configurations. The response typically includes status information indicating whether the data source is reachable and functioning properly, along with any relevant error messages if the h"
+        },
+        {
+          "info": {
+            "name": "Grafana Call Datasource Resource By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/:id/resources/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows you to make GET requests to a specific Grafana datasource's custom resources by providing the datasource ID and a resource route path. It acts as a proxy that forwards requests to the underlying datasource plugin's resource handler, enabling access to datasource-specific endpoints and functionality that may not be covered by standard Grafana APIs. The datasource_proxy_route parameter is a wildcard path that gets passed through to the datasource's backend, allowing flexi"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Folder By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/folders/id/:folder_id",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The GET /folders/id/{folder_id} endpoint in Grafana retrieves detailed information about a specific folder using its unique identifier. This operation allows users to fetch folder metadata including its title, UID, permissions, and other configuration details by providing the numeric folder ID in the path parameter. It's particularly useful when you need to access folder information programmatically and have the folder's ID rather than its UID, returning a JSON response with the complete folder "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Annotation By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/annotations/:annotation_id",
+            "params": [
+              {
+                "name": "annotation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves detailed information about a specific annotation in Grafana using its unique identifier. This GET operation allows users to fetch a single annotation's complete data including its text, tags, time range, dashboard and panel associations, and metadata by providing the annotation ID as a path parameter. It's useful for viewing or auditing individual annotations, or as part of workflows that need to process or display annotation details programmatically."
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Annotation By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/annotations/:annotation_id",
+            "params": [
+              {
+                "name": "annotation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific annotation from Grafana using its unique identifier. This operation permanently removes the annotation record from the system, including any associated metadata such as tags, text, and time range information. The annotation ID must be provided in the URL path to identify which annotation should be deleted. This is typically used when an annotation is no longer relevant or was created in error. The user making the request must have appropriate permissions to delete annotations "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Org By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/orgs/:org_id",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves detailed information about a specific organization in Grafana by providing its unique organizational identifier. When called with a valid org_id parameter, it returns the organization's configuration data including name, address, and other organizational metadata. This endpoint requires appropriate authentication and authorization to access the organization's details, making it essential for administrative functions and integrations that need to query or display info"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Org By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/orgs/:org_id",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows an authenticated user with appropriate permissions to permanently delete a specific organization from Grafana by providing the organization's unique identifier (org_id) in the URL path. When executed via HTTP DELETE method, it removes the organization and all its associated resources, including dashboards, data sources, users, and configurations that belong to that organization. This is a destructive operation that typically requires administrator-level privileges and s"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Team By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/teams/:team_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "accesscontrol",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves detailed information about a specific team in Grafana by providing the team's unique identifier in the URL path. When a GET request is made to the /teams/{team_id} endpoint with a valid team ID, the API returns comprehensive data about that team, including properties such as the team name, email address, member count, and other relevant team metadata. This endpoint is typically used by administrators or applications that need to fetch information about a particular t"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Team By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/teams/:team_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation removes a specific team from a Grafana instance by providing the team's unique identifier in the URL path. When executed, it performs a DELETE request to the endpoint /teams/{team_id}, where {team_id} is replaced with the numerical ID of the team to be deleted. The operation requires appropriate administrative permissions and will permanently remove the team along with its associated configurations, memberships, and permissions. Upon successful execution, the team will no long"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Permissions List By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/id/:DashboardID/permissions",
+            "params": [
+              {
+                "name": "DashboardID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the complete list of permissions associated with a specific Grafana dashboard by providing its unique dashboard identifier. It returns details about which users, teams, or roles have access to the dashboard and what level of permissions they possess (such as view, edit, or admin rights). The GET request to this endpoint allows administrators to audit and review the current access control settings for a dashboard, making it useful for security compliance, permission m"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Dashboard Permissions By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/dashboards/id/:DashboardID/permissions",
+            "params": [
+              {
+                "name": "DashboardID",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows administrators to modify the access control permissions for a specific Grafana dashboard by providing its unique dashboard ID in the URL path. By sending a POST request to this endpoint with the appropriate permission payload, users can grant or revoke access rights for teams, users, or roles, defining who can view, edit, or administer the dashboard. The operation requires proper authentication and authorization, typically at an administrator or dashboard owner level, a"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Versions By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/id/:DashboardID/versions",
+            "params": [
+              {
+                "name": "DashboardID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves the version history of a specific Grafana dashboard identified by its unique dashboard ID. This operation returns a list of all saved versions for the dashboard, including metadata such as version numbers, timestamps, user information who made the changes, and version messages or notes. It allows administrators and users to track changes made to a dashboard over time, compare different versions, and understand the evolution of dashboard configurations, which is useful for auditing purp"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Version By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/id/:DashboardID/versions/:DashboardVersionID",
+            "params": [
+              {
+                "name": "DashboardID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "DashboardVersionID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific version of a Grafana dashboard by providing both the dashboard's unique identifier and the desired version identifier. When invoked using the GET method, it returns the complete configuration and metadata for that particular version of the dashboard, allowing users to view historical snapshots, compare changes between versions, or restore previous dashboard states. This is particularly useful for auditing dashboard modifications, understanding what changes"
+        },
+        {
+          "info": {
+            "name": "Grafana Get User By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves detailed information about a specific Grafana user by their unique user identifier. By sending a GET request to the endpoint with a valid user_id parameter, administrators or authorized users can fetch comprehensive user data including username, email, authentication details, organization memberships, and user preferences. This operation is typically used for user management tasks, displaying user profiles, or verifying user information within Grafana instances, and "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

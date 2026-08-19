@@ -1,0 +1,119 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Correlation API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Correlation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Create Correlation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:sourceUID/correlations",
+            "params": [
+              {
+                "name": "sourceUID",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new correlation in Grafana between two data sources, allowing users to establish relationships and navigate between different data sources using the specified source data source UID. This operation enables the creation of links that help connect related data across different monitoring or logging systems, facilitating easier investigation and analysis workflows by defining how data in one source relates to data in another source through correlation configurations."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Correlation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:sourceUID/correlations/:correlationUID",
+            "params": [
+              {
+                "name": "sourceUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "correlationUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The Get Correlation API operation in Grafana retrieves a specific correlation configuration between data sources using their unique identifiers. By making a GET request to the endpoint `/datasources/uid/{sourceUID}/correlations/{correlationUID}`, users can fetch detailed information about an existing correlation, including its configuration settings, transformations, and the relationship between a source data source and a target data source. This operation requires both the unique identifier of "
+        },
+        {
+          "info": {
+            "name": "Grafana Update Correlation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:sourceUID/correlations/:correlationUID",
+            "params": [
+              {
+                "name": "sourceUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "correlationUID",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing correlation identified by its UID within a specific data source, also identified by UID. This PATCH operation allows you to modify the properties of a correlation, which defines relationships between queries or data across different data sources in Grafana. The correlation UID and source data source UID must be provided in the path parameters to target the specific correlation to update. The request typically includes fields such as the target data source, transformation expr"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Correlation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:uid/correlations/:correlationUID",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "correlationUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation deletes a specific correlation in Grafana by targeting both the data source and correlation identifiers. The endpoint requires two parameters: the UID of the data source that owns the correlation and the correlationUID which uniquely identifies the correlation to be removed. When executed with a DELETE HTTP method, it permanently removes the specified correlation configuration that links queries or data between different data sources, helping administrators clean up unused or "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

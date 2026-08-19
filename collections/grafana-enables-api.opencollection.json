@@ -1,0 +1,60 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Enables API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Enables",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Enable Data Source Cache",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/:dataSourceUID/cache/enable",
+            "params": [
+              {
+                "name": "dataSourceUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation enables caching functionality for a specific data source in Grafana by sending a POST request to the endpoint with the data source's unique identifier (UID). When invoked, it activates the caching mechanism for the specified data source, which can improve query performance by storing and reusing query results instead of repeatedly fetching data from the original source. This is particularly useful for data sources that have slow response times or rate limits, as cached data ca"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Enable User",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id/enable",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation is used by Grafana administrators to re-enable a previously disabled user account. It requires a POST request to the endpoint with the specific user ID as a path parameter. Only users with admin privileges can execute this operation, which restores access for users who may have been temporarily disabled due to security concerns, policy violations, or administrative purposes. Upon successful execution, the specified user account is activated and the user can log in and access G"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

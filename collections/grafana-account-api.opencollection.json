@@ -1,0 +1,97 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Account API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Account",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Create Service Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/serviceaccounts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new service account in Grafana, which is a special type of user designed for automated tasks and API interactions rather than human login. Service accounts can be assigned specific permissions and roles to programmatically access Grafana resources, making them ideal for integrations, CI/CD pipelines, monitoring scripts, and other automated workflows. The request requires authentication and appropriate administrative permissions, and upon successful creation, returns details about the n"
+        },
+        {
+          "info": {
+            "name": "Grafana Retrieve Service Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/serviceaccounts/:serviceAccountId",
+            "params": [
+              {
+                "name": "serviceAccountId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns detailed information about a specific Grafana service account by its unique identifier. This operation allows administrators to fetch the complete configuration and metadata of a service account, including its name, role, status, and associated permissions. The service account ID must be provided as a path parameter to identify which service account to retrieve. This is useful for auditing purposes, verifying service account configurations, or retrieving details before performing updates"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Service Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/serviceaccounts/:serviceAccountId",
+            "params": [
+              {
+                "name": "serviceAccountId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing service account in Grafana by modifying its properties such as name, role, or other configuration settings. This PATCH operation targets a specific service account identified by its unique serviceAccountId in the URL path, allowing administrators to make partial updates to the service account without replacing the entire resource. Service accounts are commonly used for programmatic access to Grafana, enabling applications and automated systems to authenticate and interact wit"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Service Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/serviceaccounts/:serviceAccountId",
+            "params": [
+              {
+                "name": "serviceAccountId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific service account from Grafana by its unique identifier. This operation permanently removes the service account and revokes all associated tokens and permissions. The service account ID must be provided in the URL path parameter. Once deleted, the service account cannot be recovered and any integrations or automations using this account will cease to function. This is a destructive operation that requires appropriate administrative permissions to execute."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

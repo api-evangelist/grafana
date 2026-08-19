@@ -1,0 +1,96 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Member API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Member",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Add Team Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/teams/:team_id/members",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation adds a new member to a specific team in Grafana by making a POST request to the /teams/{team_id}/members endpoint, where {team_id} is the unique identifier of the team. The operation allows administrators or users with appropriate permissions to expand team membership by associating additional users with an existing team, typically requiring the user ID or username to be specified in the request body to identify which user should be added to the team."
+        },
+        {
+          "info": {
+            "name": "Grafana Update Team Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/teams/:team_id/members/:user_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the permissions of an existing team member in Grafana by specifying the team ID and user ID in the request path. This PUT operation allows administrators to modify a user's role or permission level within a specific team, such as changing them from a member to an admin or vice versa. The request typically requires authentication and appropriate administrative privileges to execute successfully, and it modifies the existing team membership record rather than creating a new one."
+        },
+        {
+          "info": {
+            "name": "Grafana Remove Team Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/teams/:team_id/members/:user_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes a specific user from a team by their user ID. This operation requires the team ID and user ID as path parameters. When executed, it deletes the membership association between the specified user and team, effectively revoking the user's access to team-specific resources and permissions. This is typically used when a user no longer needs to be part of a team or when reorganizing team structures within Grafana."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

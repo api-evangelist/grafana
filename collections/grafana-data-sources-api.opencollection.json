@@ -1,0 +1,346 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Data Sources API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data Sources",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all data sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources"
+          },
+          "docs": "List all data sources"
+        },
+        {
+          "info": {
+            "name": "Create a data source",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a data source"
+        },
+        {
+          "info": {
+            "name": "Get data source by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get data source by ID"
+        },
+        {
+          "info": {
+            "name": "Update data source by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/datasources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update data source by ID"
+        },
+        {
+          "info": {
+            "name": "Delete data source by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/datasources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete data source by ID"
+        },
+        {
+          "info": {
+            "name": "Get data source by UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get data source by UID"
+        },
+        {
+          "info": {
+            "name": "Grafana Datasource Proxy GET By UID Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/proxy/uid/:uid/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation performs a GET request to proxy datasource calls through Grafana using a datasource's unique identifier (UID). It forwards requests to the configured datasource via the specified proxy route, allowing Grafana to act as an intermediary between the client and the actual datasource. The operation uses the path pattern '/datasources/proxy/uid/{uid}/{datasource_proxy_route}' where {uid} identifies the specific datasource and {datasource_proxy_route} represents the downstream API pa"
+        },
+        {
+          "info": {
+            "name": "Grafana Datasource Proxy POST By UID Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/proxy/uid/:uid/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation enables POST requests to be proxied through Grafana to a configured datasource identified by its unique identifier (UID). The endpoint acts as an intermediary, forwarding requests from the Grafana UI to the target datasource using the specified proxy route path. This allows Grafana to securely communicate with various datasources without exposing their direct endpoints to clients, while maintaining authentication and authorization controls. The datasource_proxy_route parameter"
+        },
+        {
+          "info": {
+            "name": "Grafana Datasource Proxy DELETE By UID Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/datasources/proxy/uid/:uid/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation performs a DELETE request to a Grafana datasource through the proxy endpoint, utilizing the datasource's unique identifier (UID) and a specific proxy route. It allows clients to make DELETE operations against the underlying datasource via Grafana's proxy layer, which handles authentication, authorization, and request routing. The operation is typically invoked by Grafana's user interface to delete resources or data from configured datasources without direct client access to th"
+        },
+        {
+          "info": {
+            "name": "Grafana Datasource Proxy GET calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/proxy/:id/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation provides a proxy endpoint for executing GET requests against a configured datasource in Grafana. By specifying the datasource ID and a custom proxy route, it allows Grafana to forward requests to the underlying data source while handling authentication, CORS, and other middleware concerns transparently. This is particularly useful for querying data sources that may have complex authentication requirements or need to be accessed from the browser without exposing credentials, as"
+        },
+        {
+          "info": {
+            "name": "Grafana Datasource Proxy POST Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/proxy/:id/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The Grafana datasource proxy POST operation allows users to send POST requests to a configured datasource through Grafana's proxy endpoint by specifying the datasource ID and the target route. This API call acts as an intermediary that forwards HTTP POST requests to the underlying datasource while handling authentication, connection management, and security concerns on behalf of the client. The endpoint accepts a datasource identifier in the path along with a dynamic route parameter that determi"
+        },
+        {
+          "info": {
+            "name": "Grafana Datasource Proxy DELET Ecalls",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/datasources/proxy/:id/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The Datasource Proxy DELETE operation in Grafana allows users to send HTTP DELETE requests to a configured datasource through Grafana's proxy endpoint by specifying the datasource ID and the target route path. This API endpoint follows the pattern /datasources/proxy/{id}/{datasource_proxy_route} where {id} represents the unique identifier of the datasource and {datasource_proxy_route} is the specific path on the target datasource that should receive the DELETE request. This proxying mechanism en"
+        },
+        {
+          "info": {
+            "name": "Grafana Check Datasource Health With UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:uid/health",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation performs a health check on a specific Grafana datasource identified by its unique identifier (UID). When invoked via a GET request to the endpoint '/datasources/uid/{uid}/health', it verifies the connectivity and operational status of the datasource, returning information about whether the datasource is accessible and functioning correctly. This is useful for monitoring and troubleshooting datasource configurations, allowing administrators to quickly determine if a particular "
+        },
+        {
+          "info": {
+            "name": "Grafana Call Datasource Resource With UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:uid/resources/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation enables clients to interact with a specific datasource in Grafana by making GET requests to custom resource endpoints exposed by that datasource. It uses the datasource's unique identifier (UID) rather than its numeric ID to route requests through Grafana's proxy to the underlying datasource's resource paths. The operation accepts a variable datasource_proxy_route parameter that allows accessing different resource endpoints specific to the datasource type, effectively acting a"
+        },
+        {
+          "info": {
+            "name": "Grafana Check Datasource Health By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/:id/health",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Sends a health check request to the data source identified by its numeric ID and returns the current operational status. This endpoint verifies whether Grafana can successfully connect to and communicate with the specified data source, helping administrators diagnose connectivity issues or validate data source configurations. The response typically includes status information indicating whether the data source is reachable and functioning properly, along with any relevant error messages if the h"
+        },
+        {
+          "info": {
+            "name": "Grafana Call Datasource Resource By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/:id/resources/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows you to make GET requests to a specific Grafana datasource's custom resources by providing the datasource ID and a resource route path. It acts as a proxy that forwards requests to the underlying datasource plugin's resource handler, enabling access to datasource-specific endpoints and functionality that may not be covered by standard Grafana APIs. The datasource_proxy_route parameter is a wildcard path that gets passed through to the datasource's backend, allowing flexi"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

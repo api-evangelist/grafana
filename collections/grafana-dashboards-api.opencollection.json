@@ -1,0 +1,663 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Dashboards API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Dashboards",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create or update a dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/dashboards/db",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create or update a dashboard"
+        },
+        {
+          "info": {
+            "name": "Get dashboard by UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get dashboard by UID"
+        },
+        {
+          "info": {
+            "name": "Delete dashboard by UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete dashboard by UID"
+        },
+        {
+          "info": {
+            "name": "Search dashboards and folders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/search",
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tag",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "folderIds",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Search dashboards and folders"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Reports By Dashboard UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/reports/dashboards/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves all reports associated with a specific Grafana dashboard by using its unique identifier (UID). When you make a GET request to the endpoint /reports/dashboards/{uid}, where {uid} is replaced with the actual dashboard's UID, Grafana returns a list of all reports that have been configured for that particular dashboard. This is useful for administrators or users who need to view, audit, or manage the reporting configurations linked to a specific dashboard, allowing them "
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Provisioning Reload Dashboards",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/admin/provisioning/dashboards/reload"
+          },
+          "docs": "This API operation is a POST request to the '/admin/provisioning/dashboards/reload' endpoint in Grafana that allows administrators to trigger a reload of provisioned dashboards without requiring a full Grafana server restart. When invoked, this endpoint scans the configured provisioning directories and reloads all dashboard configurations, applying any changes made to the provisioning files such as new dashboards, modifications to existing ones, or deletions. This is particularly useful in autom"
+        },
+        {
+          "info": {
+            "name": "Grafana Search Dashboard Snapshots",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboard/snapshots",
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Search Query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the number of returned results"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of dashboard snapshots based on specified search criteria. This operation allows users to query and filter existing snapshots that have been created from Grafana dashboards, returning metadata about each snapshot such as its name, key, creation timestamp, and expiration details. Users can apply various parameters to narrow down results, including searching by snapshot name, limiting the number of results returned, or filtering by tags. The endpoint is useful for managing and dis"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Home Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/home"
+          },
+          "docs": "The Grafana Get Home Dashboard API operation retrieves the dashboard that is configured as the home dashboard for the current user or organization. When a GET request is made to the /dashboards/home endpoint, it returns the dashboard data that should be displayed when a user first logs into Grafana or navigates to the home page. This endpoint is useful for applications that need to programmatically access the default landing dashboard, whether it's a custom dashboard set by an administrator or t"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Permissions List By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/id/:DashboardID/permissions",
+            "params": [
+              {
+                "name": "DashboardID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the complete list of permissions associated with a specific Grafana dashboard by providing its unique dashboard identifier. It returns details about which users, teams, or roles have access to the dashboard and what level of permissions they possess (such as view, edit, or admin rights). The GET request to this endpoint allows administrators to audit and review the current access control settings for a dashboard, making it useful for security compliance, permission m"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Dashboard Permissions By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/dashboards/id/:DashboardID/permissions",
+            "params": [
+              {
+                "name": "DashboardID",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows administrators to modify the access control permissions for a specific Grafana dashboard by providing its unique dashboard ID in the URL path. By sending a POST request to this endpoint with the appropriate permission payload, users can grant or revoke access rights for teams, users, or roles, defining who can view, edit, or administer the dashboard. The operation requires proper authentication and authorization, typically at an administrator or dashboard owner level, a"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Versions By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/id/:DashboardID/versions",
+            "params": [
+              {
+                "name": "DashboardID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves the version history of a specific Grafana dashboard identified by its unique dashboard ID. This operation returns a list of all saved versions for the dashboard, including metadata such as version numbers, timestamps, user information who made the changes, and version messages or notes. It allows administrators and users to track changes made to a dashboard over time, compare different versions, and understand the evolution of dashboard configurations, which is useful for auditing purp"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Version By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/id/:DashboardID/versions/:DashboardVersionID",
+            "params": [
+              {
+                "name": "DashboardID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "DashboardVersionID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific version of a Grafana dashboard by providing both the dashboard's unique identifier and the desired version identifier. When invoked using the GET method, it returns the complete configuration and metadata for that particular version of the dashboard, allowing users to view historical snapshots, compare changes between versions, or restore previous dashboard states. This is particularly useful for auditing dashboard modifications, understanding what changes"
+        },
+        {
+          "info": {
+            "name": "Grafana Import Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/dashboards/import",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows users to import a dashboard into Grafana by sending a POST request to the /dashboards/import endpoint. The operation accepts dashboard configuration data, typically in JSON format, which can include the complete dashboard definition, settings, and panel configurations. Users can import dashboards that were previously exported from Grafana or created externally, specify the target folder for the imported dashboard, and optionally override certain properties like the dash"
+        },
+        {
+          "info": {
+            "name": "Grafana Interpolate Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/dashboards/interpolate"
+          },
+          "docs": "This API operation performs variable interpolation on Grafana dashboard elements by resolving template variables within dashboard configurations. When invoked via POST request to the /dashboards/interpolate endpoint, it processes dashboard JSON payloads containing template variable syntax (such as $variable or [[variable]]) and replaces these placeholders with their actual values based on the current dashboard context, time range, data source queries, or user-defined variable values, returning t"
+        },
+        {
+          "info": {
+            "name": "Grafana List Public Dashboards",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/public-dashboards"
+          },
+          "docs": "This API operation retrieves a list of all public dashboards available in Grafana. It uses a GET request to the /dashboards/public-dashboards endpoint and returns information about dashboards that have been made publicly accessible, meaning they can be viewed without authentication. The response typically includes details such as dashboard UIDs, titles, access tokens, and configuration settings for each public dashboard. This endpoint is useful for administrators who need to audit or manage whic"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/tags"
+          },
+          "docs": "This API operation retrieves all tags that have been assigned to dashboards within the Grafana instance. When called, it returns a list of unique tags used across all dashboards, which can be helpful for filtering, organizing, or discovering dashboards based on their categorization. The endpoint is accessed via a GET request to /dashboards/tags and typically returns an array of tag objects containing information about each tag's name and count of associated dashboards. This is commonly used in d"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Public Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:dashboardUid/public-dashboards",
+            "params": [
+              {
+                "name": "dashboardUid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the public dashboard configuration for a specific Grafana dashboard identified by its unique identifier (dashboardUid). When a dashboard has been made publicly accessible, this GET endpoint returns the public dashboard settings and metadata, including information such as the public access token, sharing configuration, enabled state, and any annotations or time range settings that have been configured for public viewing. This allows administrators and applications to "
+        },
+        {
+          "info": {
+            "name": "Grafana Create Public Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:dashboardUid/public-dashboards",
+            "params": [
+              {
+                "name": "dashboardUid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a public dashboard that enables external users to view a specific Grafana dashboard without authentication. This operation takes a dashboard UID as a path parameter and accepts configuration options in the request body to control how the dashboard is shared publicly, including settings for time range, template variables, and access permissions. Once created, it generates a unique public URL that can be shared with anyone to view the dashboard's visualizations and data without requiring G"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Public Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:dashboardUid/public-dashboards/:uid",
+            "params": [
+              {
+                "name": "dashboardUid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to update an existing public dashboard in Grafana by specifying both the parent dashboard's unique identifier (dashboardUid) and the public dashboard's unique identifier (uid) in the endpoint path. Using the PATCH HTTP method, you can modify specific properties of the public dashboard configuration without replacing the entire resource, such as toggling public access, changing sharing settings, or updating time range configurations. This endpoint is particularly use"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Public Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:dashboardUid/public-dashboards/:uid",
+            "params": [
+              {
+                "name": "dashboardUid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a public dashboard by its unique identifier, removing public access to the specified dashboard. This operation requires both the dashboard's UID and the public dashboard's UID to locate and remove the specific public sharing configuration. Once deleted, the public link previously associated with this dashboard will no longer be accessible, and any users who had the public URL will lose access to view the dashboard anonymously. This is a permanent action that revokes the public sharing se"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Permissions List By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:uid/permissions",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the permission settings for a specific Grafana dashboard identified by its unique identifier (UID). When called with a GET request to the endpoint /dashboards/uid/{uid}/permissions, it returns a list of all permissions associated with that dashboard, including which users, teams, or roles have access and their respective permission levels (such as view, edit, or admin rights). This allows administrators and authorized users to review and audit who has access to a par"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Dashboard Permissions By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:uid/permissions",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the access control permissions for a dashboard identified by its unique identifier (UID). This POST endpoint allows administrators to modify who can view, edit, or administrate a specific dashboard by sending permission configurations in the request body. The permissions can be set for individual users, teams, or roles, defining their level of access to the dashboard. This operation requires appropriate administrative privileges and is commonly used to manage dashboard security and colla"
+        },
+        {
+          "info": {
+            "name": "Grafana Restore Dashboard Version By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:uid/restore",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation restores a specific version of a Grafana dashboard identified by its unique identifier (UID). When invoked via a POST request to the endpoint /dashboards/uid/{uid}/restore, it allows users to revert a dashboard to a previous state by specifying the desired version number in the request body. This is particularly useful for recovering from unwanted changes, comparing different dashboard iterations, or rolling back to a known working configuration. The operation requires appropr"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Versions By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:uid/versions",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return"
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query",
+                "description": "Version to start from when returning queries"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the version history of a specific Grafana dashboard identified by its unique identifier (UID). When called with a GET request to the endpoint /dashboards/uid/{uid}/versions, it returns a list of all saved versions of the dashboard, allowing users to track changes made over time, view metadata about each version such as creation date and author, and potentially restore previous versions if needed. This is particularly useful for auditing dashboard modifications, under"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Version By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:uid/versions/:DashboardVersionID",
+            "params": [
+              {
+                "name": "DashboardVersionID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific version of a Grafana dashboard by providing both the dashboard's unique identifier (UID) and the desired version ID. It allows users to access historical versions of a dashboard, enabling them to review previous configurations, compare changes over time, or restore an earlier state of the dashboard. The endpoint uses a GET request and requires two path parameters: the dashboard UID which uniquely identifies the dashboard, and the DashboardVersionID which s"
+        },
+        {
+          "info": {
+            "name": "Grafana View Public Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/public/dashboards/:accessToken",
+            "params": [
+              {
+                "name": "accessToken",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and displays a public Grafana dashboard using a unique access token. When a GET request is made to the endpoint with a valid accessToken parameter, it returns the dashboard configuration and visualization data that has been publicly shared. This allows users to view specific dashboards without requiring authentication or login credentials, making it useful for sharing monitoring data, metrics, and analytics with external stakeholders or embedding dashboards in public"
+        },
+        {
+          "info": {
+            "name": "Grafana Query Public Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/public/dashboards/:accessToken/panels/:panelId/query",
+            "params": [
+              {
+                "name": "accessToken",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "panelId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The Grafana POST endpoint at /public/dashboards/{accessToken}/panels/{panelId}/query enables querying data from a specific panel within a publicly shared dashboard. This operation requires an access token that grants permission to view the public dashboard and a panel ID to identify which panel's data should be retrieved. The endpoint allows external applications or users to programmatically fetch panel data without authentication beyond the public access token, making it useful for embedding da"
+        },
+        {
+          "info": {
+            "name": "Grafana Create Dashboard Snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/snapshots",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new dashboard snapshot in Grafana, allowing users to capture and share the current state of a dashboard at a specific point in time. This operation accepts a POST request containing the dashboard data, metadata, and optional configuration parameters such as expiration time and external sharing settings. The snapshot preserves all panel configurations, queries, and visualizations as they appear at the moment of creation, generating a unique URL that can be shared with others without req"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Dashboard Snapshot By Delete Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/snapshots-delete/:deleteKey",
+            "params": [
+              {
+                "name": "deleteKey",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows you to remove a dashboard snapshot from Grafana using its unique delete key. When a snapshot is created, it generates a special delete key that provides authorized deletion access without requiring authentication. By making a GET request to this endpoint with the appropriate deleteKey parameter, the associated snapshot will be permanently removed from the system. This provides a secure way to clean up temporary or unwanted dashboard snapshots, particularly useful when s"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Dashboard Snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/snapshots/:key",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific dashboard snapshot from Grafana using its unique key identifier. When called, it fetches the stored snapshot data which represents a static, point-in-time view of a dashboard that was previously captured. The snapshot includes all panel configurations, data visualizations, and dashboard settings as they existed at the moment the snapshot was created. This is useful for sharing dashboard views with external users who may not have access to the live Grafana "
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Dashboard Snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/snapshots/:key",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a dashboard snapshot identified by its unique key from Grafana. This operation permanently removes the snapshot, making it inaccessible via its sharing URL. Snapshots are point-in-time captures of dashboards that can be shared externally without requiring authentication to the Grafana instance. Once deleted, the snapshot key becomes invalid and any attempts to access it will result in a not found error. This is typically used to revoke access to previously shared dashboard data or to cle"
+        },
+        {
+          "info": {
+            "name": "Grafana Star Dashboard By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/user/stars/dashboard/uid/:dashboard_uid",
+            "params": [
+              {
+                "name": "dashboard_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows an authenticated user to mark a specific dashboard as a favorite or \"starred\" item in Grafana by providing the dashboard's unique identifier (UID) in the URL path. When a POST request is made to this endpoint with a valid dashboard UID, the system records that the current user has starred that particular dashboard, making it easier to access from their list of favorite dashboards. This is a user-specific action that helps organize and quickly navigate to frequently used"
+        },
+        {
+          "info": {
+            "name": "Grafana Unstar Dashboard By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/user/stars/dashboard/uid/:dashboard_uid",
+            "params": [
+              {
+                "name": "dashboard_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation removes a star from a specific Grafana dashboard for the currently authenticated user by using the dashboard's unique identifier (UID). When executed via an HTTP DELETE request to the endpoint /user/stars/dashboard/uid/{dashboard_uid}, it unmarks the specified dashboard as a favorite, effectively removing it from the user's starred dashboards collection. The operation requires the dashboard_uid parameter to be provided in the URL path to identify which dashboard should be unst"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

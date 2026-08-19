@@ -1,0 +1,385 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Post API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Post",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Datasource Proxy POST By UID Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/proxy/uid/:uid/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation enables POST requests to be proxied through Grafana to a configured datasource identified by its unique identifier (UID). The endpoint acts as an intermediary, forwarding requests from the Grafana UI to the target datasource using the specified proxy route path. This allows Grafana to securely communicate with various datasources without exposing their direct endpoints to clients, while maintaining authentication and authorization controls. The datasource_proxy_route parameter"
+        },
+        {
+          "info": {
+            "name": "Grafana Datasource Proxy POST Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/proxy/:id/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The Grafana datasource proxy POST operation allows users to send POST requests to a configured datasource through Grafana's proxy endpoint by specifying the datasource ID and the target route. This API call acts as an intermediary that forwards HTTP POST requests to the underlying datasource while handling authentication, connection management, and security concerns on behalf of the client. The endpoint accepts a datasource identifier in the path along with a dynamic route parameter that determi"
+        },
+        {
+          "info": {
+            "name": "Grafana Post Annotation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/annotations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new annotation in Grafana, which is a way to mark points in time on graphs with rich metadata. Annotations can be associated with specific dashboards, panels, or tags, and are commonly used to mark events like deployments, incidents, or system changes that help correlate metrics with real-world events. The request requires authentication and accepts parameters such as time range, text description, tags, and optional dashboard or panel IDs to specify where the annotation should appear. "
+        },
+        {
+          "info": {
+            "name": "Grafana Post Graphite Annotation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/annotations/graphite",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new Graphite-style annotation in Grafana by submitting annotation data through a POST request to the /annotations/graphite endpoint. This operation allows users to mark specific points in time on their graphs with contextual information, which is particularly useful for correlating system events, deployments, or incidents with metric changes. The annotation typically includes details such as timestamp, tags, and descriptive text that will be displayed on Grafana dashboards when hoverin"
+        },
+        {
+          "info": {
+            "name": "Grafana Post License Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/licensing/token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows administrators to activate or update a Grafana Enterprise license by submitting a license token via a POST request to the /licensing/token endpoint. When called, it accepts a license token string in the request body, validates the token with Grafana's licensing service, and applies the license to the Grafana instance if valid. This operation is typically used during initial Enterprise setup or when renewing an existing license, and it requires administrative privileges "
+        },
+        {
+          "info": {
+            "name": "Grafana Post Renew License Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/licensing/token/renew"
+          },
+          "docs": "This API operation is used to renew an existing Grafana Enterprise license token. When invoked via a POST request to the /licensing/token/renew endpoint, it initiates the license token renewal process, typically validating the current token and requesting a fresh token from the Grafana licensing server. This operation is essential for maintaining continuous access to Grafana Enterprise features by ensuring the license remains valid and up-to-date. Authentication and appropriate permissions are r"
+        },
+        {
+          "info": {
+            "name": "Grafana Post Sync User With LDAP",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/admin/ldap/sync/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation triggers a synchronization between a specific Grafana user and LDAP directory services by sending a POST request to the endpoint with the target user's ID. When invoked, it forces Grafana to retrieve the latest user information, groups, and permissions from the configured LDAP server for the specified user, updating their local Grafana profile accordingly. This is particularly useful when LDAP user attributes or group memberships have changed and you need to immediately reflec"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Post Rule Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "This API operation converts Prometheus or Cortex rule group configurations into Grafana's native format by accepting a POST request to the /convert/api/prom/rules endpoint. It enables users to migrate their existing Prometheus-style alerting and recording rules from Prometheus or Cortex deployments into Grafana, facilitating the transition between monitoring systems while preserving rule logic and structure. The endpoint processes the submitted rule groups and transforms them into a format compa"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Post Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle",
+            "headers": [
+              {
+                "name": "x-grafana-alerting-datasource-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-recording-rules-paused",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-alert-rules-paused",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-target-datasource-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-folder-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-notification-settings",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The Grafana API operation POST /convert/api/prom/rules/{NamespaceTitle} converts and creates a Prometheus or Cortex rule group within a specified namespace. This endpoint accepts Prometheus-style rule definitions and transforms them into Grafana's native alert rule format, allowing users to migrate their existing Prometheus alerting and recording rules into Grafana's unified alerting system. The {NamespaceTitle} parameter identifies the target namespace where the converted rule group will be sto"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Post Rule Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "This API operation converts Prometheus rule group configurations to Grafana's format via a POST request to the /convert/prometheus/config/v1/rules endpoint. It accepts Prometheus-formatted rule groups as input and transforms them into a compatible format that can be used within Grafana's alerting and recording rule system, facilitating migration or integration between Prometheus and Grafana monitoring setups."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Post Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle",
+            "headers": [
+              {
+                "name": "x-grafana-alerting-datasource-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-recording-rules-paused",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-alert-rules-paused",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-target-datasource-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-folder-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-notification-settings",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation converts Prometheus rule group configurations to Grafana's native format by accepting a POST request to the endpoint /convert/prometheus/config/v1/rules/{NamespaceTitle}, where {NamespaceTitle} represents the target namespace for the rule group. It takes Prometheus-formatted alerting and recording rules as input and transforms them into Grafana-compatible rule configurations, facilitating migration or integration between Prometheus and Grafana alerting systems. The operation a"
+        },
+        {
+          "info": {
+            "name": "Grafana Post Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/dashboards/db",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or updates a Grafana dashboard in the database. This endpoint accepts a dashboard JSON model along with optional metadata such as folder ID, message for the version history, and overwrite settings. The dashboard must include a unique identifier (UID) and will be saved to the specified folder or the General folder if none is provided. If a dashboard with the same UID exists, it can be overwritten by setting the overwrite flag to true. The operation returns the saved dashboard's ID, UID, U"
+        },
+        {
+          "info": {
+            "name": "Grafana Post ACS",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/saml/acs",
+            "params": [
+              {
+                "name": "RelayState",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "The Grafana SAML ACS (Assertion Consumer Service) POST endpoint receives and processes SAML authentication responses from identity providers after a user attempts to log in. When a user authenticates with an external IdP, the IdP sends a signed SAML assertion to this endpoint containing user identity information and authentication status. Grafana validates the SAML response signature, extracts user attributes like email, username, and roles, then creates or updates the user session accordingly. "
+        },
+        {
+          "info": {
+            "name": "Grafana Post SLO",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/saml/slo",
+            "params": [
+              {
+                "name": "SAMLRequest",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "SAMLResponse",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "The Grafana SAML Single Logout (SLO) POST endpoint processes logout requests in SAML-based authentication workflows, allowing users to securely terminate their sessions across all connected service providers. When invoked, this endpoint receives SAML logout request or response messages, validates the SAML assertions, and performs the necessary cleanup to end the user's authenticated session in Grafana. This operation is essential for maintaining security in enterprise environments where centrali"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Post Alert Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new alert rule in Grafana's provisioning API, allowing administrators to programmatically define alerting conditions, evaluation intervals, notification settings, and query expressions. This endpoint accepts a POST request with a JSON payload containing the alert rule configuration including the rule name, folder location, data source queries, alert conditions, evaluation group, and notification channels. The operation enables infrastructure-as-code practices by allowing alert rules to"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Post Contactpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/contact-points",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new contact point in Grafana's alerting system through the provisioning API. This endpoint allows administrators to programmatically configure notification channels by defining how and where alert notifications should be sent. The contact point can specify various integration types such as email, Slack, PagerDuty, webhook, or other supported notification methods, along with their respective configuration settings. This is typically used for infrastructure-as-code deployments or automat"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Post Mute Timing",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/mute-timings",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The POST /v1/provisioning/mute-timings endpoint in Grafana allows administrators to create a new mute timing configuration through the provisioning API. Mute timings define specific time intervals during which alert notifications should be silenced, such as maintenance windows, weekends, or business hours exclusions. By posting to this endpoint with the appropriate JSON payload containing the timing specifications (including recurrence rules, time ranges, and date intervals), users can programma"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

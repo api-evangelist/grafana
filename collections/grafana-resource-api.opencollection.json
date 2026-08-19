@@ -1,0 +1,245 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Resource API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Resource",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Call Datasource Resource With UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:uid/resources/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation enables clients to interact with a specific datasource in Grafana by making GET requests to custom resource endpoints exposed by that datasource. It uses the datasource's unique identifier (UID) rather than its numeric ID to route requests through Grafana's proxy to the underlying datasource's resource paths. The operation accepts a variable datasource_proxy_route parameter that allows accessing different resource endpoints specific to the datasource type, effectively acting a"
+        },
+        {
+          "info": {
+            "name": "Grafana Call Datasource Resource By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/:id/resources/:datasource_proxy_route",
+            "params": [
+              {
+                "name": "datasource_proxy_route",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows you to make GET requests to a specific Grafana datasource's custom resources by providing the datasource ID and a resource route path. It acts as a proxy that forwards requests to the underlying datasource plugin's resource handler, enabling access to datasource-specific endpoints and functionality that may not be covered by standard Grafana APIs. The datasource_proxy_route parameter is a wildcard path that gets passed through to the datasource's backend, allowing flexi"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Resource Description",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/access-control/:resource/description",
+            "params": [
+              {
+                "name": "resource",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the description of a specific access control resource in Grafana. By making a GET request to the endpoint with a resource identifier, it returns detailed information about what that particular resource represents within Grafana's role-based access control (RBAC) system. This is useful for understanding the purpose and context of different protected resources when managing permissions and access policies, allowing administrators to view human-readable descriptions of "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Resource Permissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/access-control/:resource/:resourceID",
+            "params": [
+              {
+                "name": "resource",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resourceID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the access control permissions for a specific resource in Grafana by providing the resource type and resource ID as path parameters. It returns detailed information about who has access to the specified resource and what level of permissions they have been granted. This is useful for auditing and managing resource-level permissions within Grafana, allowing administrators to review which users, teams, or service accounts have been granted specific permissions on indiv"
+        },
+        {
+          "info": {
+            "name": "Grafana Set Resource Permissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/access-control/:resource/:resourceID",
+            "params": [
+              {
+                "name": "resource",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resourceID",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets access control permissions for a specific resource in Grafana, allowing administrators to define granular role-based permissions for individual resources identified by their resource type and ID. This endpoint accepts permission configurations in the request body and applies them to the specified resource, enabling fine-grained control over who can view, edit, or manage particular dashboards, folders, data sources, or other Grafana resources. The operation requires appropriate administrativ"
+        },
+        {
+          "info": {
+            "name": "Grafana Set Resource Permissions For Built In Role",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/access-control/:resource/:resourceID/builtInRoles/:builtInRole",
+            "params": [
+              {
+                "name": "resource",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resourceID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "builtInRole",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows administrators to configure and assign specific resource-level permissions to a built-in role within Grafana's access control system. By making a POST request to this endpoint with a specified resource type, resource ID, and built-in role identifier, you can define granular permissions that determine what actions the built-in role can perform on that particular resource. This is useful for customizing access control policies beyond default settings, enabling fine-graine"
+        },
+        {
+          "info": {
+            "name": "Grafana Set Resource Permissions For Team",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/access-control/:resource/:resourceID/teams/:teamID",
+            "params": [
+              {
+                "name": "resource",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resourceID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "teamID",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to configure specific permissions for a team on a particular resource in Grafana's access control system. By making a POST request to this endpoint with the resource type, resource ID, and team ID, you can grant or update the access rights that a specific team has for that resource. This is part of Grafana's role-based access control (RBAC) functionality, enabling administrators to manage fine-grained permissions by assigning different levels of access to teams for "
+        },
+        {
+          "info": {
+            "name": "Grafana Set Resource Permissions For User",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/access-control/:resource/:resourceID/users/:userID",
+            "params": [
+              {
+                "name": "resource",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resourceID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows administrators to configure specific access control permissions for an individual user on a particular Grafana resource. By making a POST request to this endpoint with the resource type, resource ID, and user ID, you can grant or modify the permissions that determine what actions the specified user can perform on that resource. This granular permission management enables fine-tuned control over user access rights within Grafana, allowing administrators to implement role"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Resource Dependencies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/resources/dependencies"
+          },
+          "docs": "This API operation retrieves the dependencies for resources involved in a cloud migration process within Grafana. When called, it analyzes and returns information about the relationships and dependencies between various Grafana resources (such as dashboards, data sources, folders, and other configuration elements) that need to be considered during a cloud migration. This is particularly useful for understanding which resources must be migrated together to maintain functionality and avoid broken "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

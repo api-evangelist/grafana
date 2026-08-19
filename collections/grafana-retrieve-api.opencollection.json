@@ -1,0 +1,53 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Retrieve API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Retrieve",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Retrieve Service Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/serviceaccounts/:serviceAccountId",
+            "params": [
+              {
+                "name": "serviceAccountId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns detailed information about a specific Grafana service account by its unique identifier. This operation allows administrators to fetch the complete configuration and metadata of a service account, including its name, role, status, and associated permissions. The service account ID must be provided as a path parameter to identify which service account to retrieve. This is useful for auditing purposes, verifying service account configurations, or retrieving details before performing updates"
+        },
+        {
+          "info": {
+            "name": "Grafana Retrieve JWKS",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/signing-keys/keys"
+          },
+          "docs": "The Grafana API endpoint `/signing-keys/keys` using the GET method retrieves the JSON Web Key Set (JWKS) for the Grafana instance. This endpoint returns the public keys used for verifying JSON Web Tokens (JWTs) issued by Grafana, which is essential for validating authentication tokens in distributed systems or when integrating with external services. The JWKS contains cryptographic key information in a standardized format that allows clients to verify the signature of JWTs without needing to sto"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

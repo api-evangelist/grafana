@@ -1,0 +1,244 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Reports API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Reports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Get Custom Permissions Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/licensing/custom-permissions"
+          },
+          "docs": "This API operation retrieves a custom permissions report from Grafana's licensing endpoint. When invoked via a GET request to the /licensing/custom-permissions path, it returns information about custom permission configurations and their usage within the Grafana instance. This endpoint is typically used by administrators to audit and review customized access control settings, helping them understand how permissions have been tailored beyond the standard roles and ensure compliance with licensing"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Reports",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/reports"
+          },
+          "docs": "The Get Reports API operation in Grafana retrieves a list of all configured reports in the system. This endpoint allows administrators and authorized users to fetch comprehensive information about existing reports, including their configurations, schedules, and metadata. When invoked via a GET request to the /reports endpoint, it returns an array of report objects that contain details such as report names, dashboards they're associated with, scheduled delivery times, recipients, and rendering op"
+        },
+        {
+          "info": {
+            "name": "Grafana Create Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/reports",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new dashboard report in Grafana that can be automatically generated and distributed on a scheduled basis. This operation allows you to configure report parameters including the target dashboard, time range, layout options, orientation, and recipients who will receive the report via email. The report can be set to recur daily, weekly, or monthly, and supports various output formats such as PDF or image. You can customize branding elements, include specific dashboard panels, and define v"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Reports By Dashboard UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/reports/dashboards/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves all reports associated with a specific Grafana dashboard by using its unique identifier (UID). When you make a GET request to the endpoint /reports/dashboards/{uid}, where {uid} is replaced with the actual dashboard's UID, Grafana returns a list of all reports that have been configured for that particular dashboard. This is useful for administrators or users who need to view, audit, or manage the reporting configurations linked to a specific dashboard, allowing them "
+        },
+        {
+          "info": {
+            "name": "Grafana Send Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/reports/email",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to send a Grafana report via email by making a POST request to the /reports/email endpoint. When invoked, it triggers the generation and delivery of a specified report to one or more email recipients. The operation typically requires authentication and accepts parameters such as report ID, recipient email addresses, and optional customization settings like date ranges or dashboard variables. This is particularly useful for automating report distribution, scheduling "
+        },
+        {
+          "info": {
+            "name": "Grafana Render Report CS Vs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/reports/render/csvs",
+            "params": [
+              {
+                "name": "dashboards",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "title",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves rendered CSV versions of Grafana reports. When invoked with a GET request to the /reports/render/csvs endpoint, it processes and returns report data in CSV (Comma-Separated Values) format, making it suitable for exporting Grafana dashboard metrics and analytics into spreadsheet applications or for further data processing. This endpoint is particularly useful for users who need to access report information in a structured, tabular format outside of the Grafana interfa"
+        },
+        {
+          "info": {
+            "name": "Grafana Render Report PD Fs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/reports/render/pdfs",
+            "params": [
+              {
+                "name": "dashboards",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "orientation",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "layout",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "title",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "scaleFactor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "includeTables",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves rendered PDF versions of reports from Grafana. When invoked with a GET request to the /reports/render/pdfs endpoint, it allows users to access pre-generated or on-demand PDF renderings of Grafana reports, which typically contain dashboards, panels, and visualizations. The operation is useful for exporting report data in a portable, shareable format that can be distributed to stakeholders or archived for record-keeping purposes. Users would typically need appropriate "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Report Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/reports/settings"
+          },
+          "docs": "This API operation retrieves the current report settings configuration from Grafana. It is accessed via a GET request to the /reports/settings endpoint and returns the configured parameters that control how reports are generated and delivered within the Grafana instance. These settings typically include options such as branding configurations, email server settings, report scheduling parameters, and other preferences that affect the overall behavior of the reporting functionality. The operation "
+        },
+        {
+          "info": {
+            "name": "Grafana Save Report Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/reports/settings",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Saves the configuration settings for the Grafana reporting feature, allowing administrators to define parameters such as email delivery options, branding preferences, report generation schedules, and output formats. This POST endpoint updates the global report settings that will be applied across all generated reports in the Grafana instance, enabling customization of how reports are created, formatted, and distributed to users."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/reports/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves the details of a specific report in Grafana by its unique identifier. This operation returns comprehensive information about the configured report including its name, dashboard reference, schedule settings, recipients, format options, and other metadata. The report ID must be provided as a path parameter to fetch the corresponding report configuration, allowing users to view or verify the settings of an existing scheduled report before editing or managing it."
+        },
+        {
+          "info": {
+            "name": "Grafana Update Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/reports/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing report in Grafana by its unique identifier. This operation allows you to modify the configuration of a scheduled report, including parameters such as the report name, dashboard source, recipient list, schedule frequency, time range, and format options. The request requires the report ID in the URL path and accepts a JSON payload containing the updated report properties. Upon successful execution, it returns the modified report object with all current settings. This endpoint i"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/reports/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation deletes a specific report in Grafana by providing the unique report identifier in the URL path. When a DELETE request is made to the /reports/{id} endpoint, it permanently removes the report configuration and associated data from the system. The operation requires the report ID as a path parameter and typically requires appropriate authentication and authorization permissions to ensure only authorized users can delete reports. Upon successful execution, the report is removed f"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,141 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Settings API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Settings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Admin Get Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/admin/settings"
+          },
+          "docs": "The Admin Get Settings endpoint in Grafana's Admin API allows administrators with appropriate permissions to retrieve the current configuration settings of the Grafana instance. This GET operation at the /admin/settings path returns a comprehensive view of all server settings, including data source configurations, authentication settings, feature toggles, and other system-wide parameters. The endpoint is typically used for administrative tasks such as auditing configurations, troubleshooting iss"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Settings Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/reports/images/:image"
+          },
+          "docs": "This API operation retrieves a specific image that has been uploaded for use in Grafana reports by providing the image identifier in the URL path parameter. When called, it returns the settings and metadata associated with the requested image resource, allowing users to access images that can be embedded in their scheduled reports or exported dashboards. The GET method ensures read-only access to the image data without modifying any existing configurations."
+        },
+        {
+          "info": {
+            "name": "Grafana Get Report Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/reports/settings"
+          },
+          "docs": "This API operation retrieves the current report settings configuration from Grafana. It is accessed via a GET request to the /reports/settings endpoint and returns the configured parameters that control how reports are generated and delivered within the Grafana instance. These settings typically include options such as branding configurations, email server settings, report scheduling parameters, and other preferences that affect the overall behavior of the reporting functionality. The operation "
+        },
+        {
+          "info": {
+            "name": "Grafana Save Report Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/reports/settings",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Saves the configuration settings for the Grafana reporting feature, allowing administrators to define parameters such as email delivery options, branding preferences, report generation schedules, and output formats. This POST endpoint updates the global report settings that will be applied across all generated reports in the Grafana instance, enabling customization of how reports are created, formatted, and distributed to users."
+        },
+        {
+          "info": {
+            "name": "Grafana List All Providers Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/sso-settings"
+          },
+          "docs": "This API operation retrieves the configuration settings for all Single Sign-On (SSO) providers that have been configured in Grafana. When called, it returns a comprehensive list containing the settings and parameters for each SSO provider, such as OAuth, SAML, or other authentication mechanisms that are available in the system. This endpoint is useful for administrators who need to review or audit the current SSO configurations across their Grafana instance, providing visibility into which authe"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Provider Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/sso-settings/:key",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves the configuration settings for a specific Single Sign-On (SSO) provider in Grafana by providing the provider's unique key identifier. This GET operation returns detailed information about the SSO provider's configuration, including authentication parameters, user mapping rules, and other provider-specific settings that control how users authenticate and are provisioned within Grafana through that particular SSO integration."
+        },
+        {
+          "info": {
+            "name": "Grafana Update Provider Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/v1/sso-settings/:key",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the configuration settings for a specific Single Sign-On (SSO) provider in Grafana identified by the provided key parameter. This PUT operation allows administrators to modify authentication provider settings such as client credentials, authorization endpoints, scopes, and other SSO-related parameters for the specified provider. The request requires the provider's unique key in the URL path and accepts a JSON payload containing the updated configuration values, enabling centralized manag"
+        },
+        {
+          "info": {
+            "name": "Grafana Remove Provider Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/sso-settings/:key",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows you to delete a specific single sign-on (SSO) provider configuration from Grafana by specifying the provider's unique key in the URL path. When executed, it removes all settings and configuration associated with that particular SSO provider, effectively disabling that authentication method for your Grafana instance. This is useful when you need to decommission an SSO integration, clean up unused authentication providers, or reconfigure your authentication setup from scr"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

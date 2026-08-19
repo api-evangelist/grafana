@@ -1,0 +1,65 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Migrations API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Migrations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Get Cloud Migration Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/token"
+          },
+          "docs": "Retrieves the cloud migration token for a Grafana instance, which is used to authenticate and authorize the migration of dashboards, data sources, and other resources from a self-hosted or on-premise Grafana installation to Grafana Cloud. This token serves as a secure credential that enables the migration service to access and transfer configuration data between environments, typically generated when initiating a cloud migration process and required for establishing a trusted connection between "
+        },
+        {
+          "info": {
+            "name": "Grafana Create Cloud Migration Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/token"
+          },
+          "docs": "Creates a new cloud migration token in Grafana that enables secure data transfer and authentication between a self-hosted Grafana instance and Grafana Cloud during migration operations. This endpoint generates a temporary authentication token that authorizes the migration service to access and migrate dashboards, data sources, alerts, and other Grafana resources from the source instance to the cloud destination. The token serves as a security credential to establish a trusted connection and shou"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Cloud Migration Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/token/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path",
+                "description": "UID of a cloud migration token"
+              }
+            ]
+          },
+          "docs": "Deletes a specific cloud migration token identified by its unique identifier (UID) from Grafana. This operation permanently removes the authentication token that was previously created to facilitate data migration to Grafana Cloud. Once deleted, the token can no longer be used for migration purposes, and any ongoing migration processes using this token will be invalidated. This is typically used when a migration is complete, a token has been compromised, or when cleaning up unused credentials fo"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

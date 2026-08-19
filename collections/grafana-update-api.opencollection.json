@@ -1,0 +1,793 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Update API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Update",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Update Correlation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:sourceUID/correlations/:correlationUID",
+            "params": [
+              {
+                "name": "sourceUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "correlationUID",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing correlation identified by its UID within a specific data source, also identified by UID. This PATCH operation allows you to modify the properties of a correlation, which defines relationships between queries or data across different data sources in Grafana. The correlation UID and source data source UID must be provided in the path parameters to target the specific correlation to update. The request typically includes fields such as the target data source, transformation expr"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Data Source By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation updates an existing data source in Grafana by specifying its unique identifier (UID) in the URL path. The PUT request allows administrators to modify the configuration of a data source, including its name, type, URL, authentication settings, and other connection parameters. The operation requires the data source's UID as a path parameter and accepts a JSON payload containing the updated data source configuration in the request body. Upon successful execution, it returns the up"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Data Source By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/datasources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing data source in Grafana by specifying its unique identifier in the URL path. This PUT operation requires the complete data source configuration including connection details, authentication credentials, and any custom settings. The request must include all data source properties as the PUT method typically replaces the entire resource rather than partially updating it. Users need appropriate permissions to modify data sources, and the operation returns the updated data source c"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/folders/:folder_uid",
+            "params": [
+              {
+                "name": "folder_uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing folder in Grafana identified by its unique folder UID. This PUT operation allows you to modify folder properties such as the folder's title, and optionally update the folder's version for optimistic concurrency control. The request requires authentication and appropriate permissions to modify the specified folder. Upon successful execution, it returns the updated folder object with its current metadata including the new title, UID, ID, URL, and updated version number. This op"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Folder Permissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/folders/:folder_uid/permissions",
+            "params": [
+              {
+                "name": "folder_uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to modify the access permissions for a specific folder in Grafana by making a POST request to the endpoint with the folder's unique identifier (UID). You can use it to grant or revoke permissions for users, teams, or roles, controlling who can view, edit, or administer the folder and its contents. The request body typically includes permission items specifying the permission level (viewer, editor, or admin) and the entity being granted access (user ID, team ID, or r"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Annotation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/annotations/:annotation_id",
+            "params": [
+              {
+                "name": "annotation_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation updates an existing annotation in Grafana by sending a PUT request to the /annotations/{annotation_id} endpoint, where {annotation_id} is the unique identifier of the annotation to be modified. Annotations in Grafana are metadata that can be overlaid on graphs to mark specific points or time ranges with descriptive information, such as deployment events, system outages, or other significant occurrences. When invoking this endpoint, users can modify various properties of the an"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Library Element",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/library-elements/:library_element_uid",
+            "params": [
+              {
+                "name": "library_element_uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to update an existing library element in Grafana by specifying its unique identifier (UID) in the request path. Using the PATCH HTTP method, you can modify specific properties of the library element without needing to provide the complete resource definition. Library elements in Grafana are reusable components such as panels or data sources that can be shared across multiple dashboards, and this endpoint enables you to make incremental changes to these shared resour"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Org",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/orgs/:org_id",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing organization in Grafana by specifying the organization ID in the URL path. This PUT operation allows administrators to modify organization properties such as the organization name. The request requires authentication and appropriate permissions to manage organizations. When successful, it returns the updated organization details including its ID, name, and address information. This endpoint is typically used by Grafana administrators who need to change organization metadata o"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Org Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/orgs/:org_id/address",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation updates the address information for a specific organization in Grafana by sending a PUT request to the /orgs/{org_id}/address endpoint, where {org_id} is the unique identifier of the organization whose address needs to be modified. The operation allows administrators to maintain accurate organizational address details within the Grafana system, typically requiring appropriate authentication and authorization permissions to execute successfully. The request body would contain t"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Org User",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/orgs/:org_id/users/:user_id",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation updates an existing user's role within a specific organization in Grafana. It uses a PATCH request to the endpoint /orgs/{org_id}/users/{user_id}, where org_id identifies the target organization and user_id specifies which user's permissions should be modified. The operation allows administrators to change a user's role (such as Viewer, Editor, or Admin) within the organization context, enabling granular control over user permissions and access levels across different Grafana "
+        },
+        {
+          "info": {
+            "name": "Grafana Update Current Org",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/org",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the current organization's settings in Grafana, allowing modifications to the organization's name and other configuration properties. This operation requires authentication and operates on the organization context of the currently authenticated user. The request body should contain the updated organization details as a JSON object, and upon successful execution, it returns the updated organization information. This is typically used by organization administrators to manage their organiza"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Current Org Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/org/address",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the physical address information for the currently authenticated organization in Grafana. This PUT endpoint modifies the organization's address details, which may include street address, city, state, postal code, and country information. The operation requires appropriate authentication and permissions to modify organization settings, and it affects only the organization context of the current user session. The updated address information is typically used for administrative purposes, bi"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Org Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/org/preferences",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to modify the configuration settings and preferences for a specific organization in Grafana. By sending a PUT request to the /org/preferences endpoint, you can update various organizational-level settings such as the UI theme, home dashboard, timezone, and other display or operational preferences that apply to all users within that organization. The request typically requires appropriate administrative permissions and accepts a JSON payload containing the preference"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Org User For Current Org",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/org/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to update an existing organization user's details within the currently authenticated organization in Grafana. By sending a PATCH request to the endpoint with a specific user ID, you can modify properties such as the user's role within the organization without affecting their underlying Grafana user account. This is particularly useful for managing permissions and access levels of team members, allowing administrators to promote users to admin roles or adjust their o"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Team",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/teams/:team_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing team in Grafana by modifying its properties such as name and email address. This endpoint requires the team ID as a path parameter and accepts a JSON payload containing the updated team information. The operation is typically used by administrators or users with appropriate permissions to maintain team configurations, ensuring that team metadata remains current and accurate within the Grafana organization."
+        },
+        {
+          "info": {
+            "name": "Grafana Update Team Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/teams/:team_id/members/:user_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the permissions of an existing team member in Grafana by specifying the team ID and user ID in the request path. This PUT operation allows administrators to modify a user's role or permission level within a specific team, such as changing them from a member to an admin or vice versa. The request typically requires authentication and appropriate administrative privileges to execute successfully, and it modifies the existing team membership record rather than creating a new one."
+        },
+        {
+          "info": {
+            "name": "Grafana Update Team Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/teams/:team_id/preferences",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the preferences for a specific team in Grafana by making a PUT request to the /teams/{team_id}/preferences endpoint. This operation allows administrators or team members with appropriate permissions to modify team-level settings such as the default home dashboard, timezone, and theme preferences. The team_id parameter in the URL path identifies which team's preferences should be updated, and the request body contains the preference values to be applied. These preferences will affect the "
+        },
+        {
+          "info": {
+            "name": "Grafana Update Team LBAC Rules Api",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:uid/lbac/teams",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation updates the Label-Based Access Control (LBAC) rules for teams associated with a specific data source in Grafana. It uses the PUT method and targets a data source identified by its unique identifier (uid) in the endpoint path. The operation allows administrators to modify which teams have access to specific labels or subsets of data within the data source, enabling fine-grained access control at the team level. By updating these LBAC rules, organizations can ensure that differe"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Role",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/access-control/roles/:roleUID",
+            "params": [
+              {
+                "name": "roleUID",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation updates an existing role in Grafana's access control system by sending a PUT request to the endpoint with the role's unique identifier (roleUID) in the path. It allows administrators to modify role properties such as the role name, description, permissions, and other attributes associated with that specific role. The request requires the roleUID parameter to identify which role to update, and the request body contains the updated role configuration. This operation is typically"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/reports/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing report in Grafana by its unique identifier. This operation allows you to modify the configuration of a scheduled report, including parameters such as the report name, dashboard source, recipient list, schedule frequency, time range, and format options. The request requires the report ID in the URL path and accepts a JSON payload containing the updated report properties. Upon successful execution, it returns the modified report object with all current settings. This endpoint i"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Service Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/serviceaccounts/:serviceAccountId",
+            "params": [
+              {
+                "name": "serviceAccountId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing service account in Grafana by modifying its properties such as name, role, or other configuration settings. This PATCH operation targets a specific service account identified by its unique serviceAccountId in the URL path, allowing administrators to make partial updates to the service account without replacing the entire resource. Service accounts are commonly used for programmatic access to Grafana, enabling applications and automated systems to authenticate and interact wit"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Update User Password",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id/password",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows Grafana administrators to programmatically update the password for a specific user account by sending a PUT request to the endpoint with the target user's ID. The administrator must provide the new password in the request body, and this action requires admin-level privileges to execute. This operation is particularly useful for password resets, account recovery scenarios, or when administrators need to enforce password changes for security purposes without requiring the"
+        },
+        {
+          "info": {
+            "name": "Grafana Admin Update User Permissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id/permissions",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the permissions for a specific user in Grafana through an administrative endpoint. This operation requires admin privileges and allows modification of user permission settings by targeting a specific user via their user_id parameter in the URL path. The PUT method indicates this is a full update of the user's permission configuration, replacing the existing permissions with the new settings provided in the request body. This is typically used by system administrators to grant or revoke a"
+        },
+        {
+          "info": {
+            "name": "Grafana Update User Quota",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/admin/users/:user_id/quotas/:quota_target",
+            "params": [
+              {
+                "name": "quota_target",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows Grafana administrators to update quota limits for a specific user by targeting a particular quota type. It uses a PUT request to modify the quota value associated with the specified user ID and quota target, which could be related to resources like dashboards, data sources, or other Grafana entities. The operation requires admin-level privileges and accepts the user ID and quota target as path parameters, along with the new quota value in the request body, enabling fine"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Org Quota",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/orgs/:org_id/quotas/:quota_target",
+            "params": [
+              {
+                "name": "quota_target",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows administrators to update a specific quota limit for an organization in Grafana by making a PUT request to the endpoint with the organization ID and quota target specified in the path. The quota target represents the type of resource being limited, such as users, dashboards, data sources, or API keys. The request body should contain the new quota limit value to be applied. This operation requires administrative privileges and is typically used for managing resource alloc"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Dashboard Permissions By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/dashboards/id/:DashboardID/permissions",
+            "params": [
+              {
+                "name": "DashboardID",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows administrators to modify the access control permissions for a specific Grafana dashboard by providing its unique dashboard ID in the URL path. By sending a POST request to this endpoint with the appropriate permission payload, users can grant or revoke access rights for teams, users, or roles, defining who can view, edit, or administer the dashboard. The operation requires proper authentication and authorization, typically at an administrator or dashboard owner level, a"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Public Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:dashboardUid/public-dashboards/:uid",
+            "params": [
+              {
+                "name": "dashboardUid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to update an existing public dashboard in Grafana by specifying both the parent dashboard's unique identifier (dashboardUid) and the public dashboard's unique identifier (uid) in the endpoint path. Using the PATCH HTTP method, you can modify specific properties of the public dashboard configuration without replacing the entire resource, such as toggling public access, changing sharing settings, or updating time range configurations. This endpoint is particularly use"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Dashboard Permissions By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:uid/permissions",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the access control permissions for a dashboard identified by its unique identifier (UID). This POST endpoint allows administrators to modify who can view, edit, or administrate a specific dashboard by sending permission configurations in the request body. The permissions can be set for individual users, teams, or roles, defining their level of access to the dashboard. This operation requires appropriate administrative privileges and is commonly used to manage dashboard security and colla"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Group Mappings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/groupsync/groups/:group_id",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation updates the group mappings for a specific group in Grafana's group synchronization system. By sending a PUT request to the endpoint with a particular group ID, administrators can modify how external authentication groups (such as those from LDAP, OAuth, or SAML providers) are mapped to internal Grafana groups. This allows for dynamic management of user permissions and access control by adjusting which external groups correspond to specific Grafana organizational roles and team"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Playlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/playlists/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing playlist in Grafana identified by its unique identifier (UID). This operation allows you to modify playlist properties such as name, interval between dashboards, and the list of dashboards included in the playlist. You must provide the complete updated playlist configuration in the request body, and appropriate permissions are required to modify the playlist. The endpoint returns the updated playlist object upon successful execution, making it useful for programmatically mana"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Recording Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/recording-rules",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing recording rule in Grafana's alerting system. Recording rules are used to pre-calculate frequently needed or computationally expensive expressions and save their results as a new set of time series. This operation allows you to modify the configuration of a recording rule including its query expressions, labels, evaluation interval, and other parameters. You need to provide the complete updated recording rule configuration in the request body, and the rule will be identified b"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Signed In User",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/user",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the profile information for the currently authenticated user in Grafana, allowing modification of fields such as email address, name, login username, and theme preferences. This endpoint requires the user to be signed in and operates on the user's own account, making it a self-service operation for managing personal account details. The request accepts a JSON payload containing the user attributes to be updated, and upon successful execution, returns the updated user information along wi"
+        },
+        {
+          "info": {
+            "name": "Grafana Update User Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/user/preferences",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the preferences for the currently authenticated user in Grafana, allowing modification of settings such as theme (light/dark), home dashboard, timezone, and language preferences. This endpoint requires authentication and only affects the preferences of the user making the request. The operation accepts a JSON payload containing the preference fields to be updated, and returns the updated preference object upon successful modification. Changes take effect immediately for the user's sessio"
+        },
+        {
+          "info": {
+            "name": "Grafana Update User Email",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/user/email/update"
+          },
+          "docs": "This API operation allows for updating the email address associated with a user account in Grafana. When invoked via a GET request to the /user/email/update endpoint, it modifies the email address of the currently authenticated user. The operation requires the user to be logged in and typically needs the new email address to be provided as a parameter. This endpoint is useful for maintaining accurate user contact information and ensuring proper communication channels within the Grafana platform."
+        },
+        {
+          "info": {
+            "name": "Grafana Update User",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The PUT operation on the /users/{user_id} endpoint in Grafana allows administrators to update an existing user's account information by specifying the user's unique identifier in the URL path. This endpoint enables modification of user attributes such as email address, login username, display name, and theme preferences. The request requires appropriate administrative privileges and accepts a JSON payload containing the fields to be updated. Upon successful execution, the API returns the updated"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Provider Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/v1/sso-settings/:key",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the configuration settings for a specific Single Sign-On (SSO) provider in Grafana identified by the provided key parameter. This PUT operation allows administrators to modify authentication provider settings such as client credentials, authorization endpoints, scopes, and other SSO-related parameters for the specified provider. The request requires the provider's unique key in the URL path and accepts a JSON payload containing the updated configuration values, enabling centralized manag"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

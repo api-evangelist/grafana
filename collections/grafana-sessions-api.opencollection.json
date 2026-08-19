@@ -1,0 +1,88 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Sessions API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sessions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Get Session List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/migration"
+          },
+          "docs": "The GET /cloudmigration/migration endpoint retrieves a list of cloud migration sessions in Grafana, allowing administrators to monitor and track ongoing or historical migration activities from self-hosted Grafana instances to Grafana Cloud. This operation returns details about migration sessions including their status, creation timestamps, configuration parameters, and progress information, enabling users to review migration attempts and their outcomes without requiring additional parameters bey"
+        },
+        {
+          "info": {
+            "name": "Grafana Create Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/migration",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new cloud migration session in Grafana that initializes the process for migrating a Grafana instance or its resources to Grafana Cloud. This operation sets up the necessary session context and parameters required to begin transferring dashboards, data sources, folders, and other configuration elements from a self-hosted or existing Grafana installation to a cloud-based environment, returning a session identifier that can be used to track and manage the migration progress throughout its"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/migration/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path",
+                "description": "UID of a migration session"
+              }
+            ]
+          },
+          "docs": "Retrieves details of a specific cloud migration session in Grafana using its unique identifier (uid). This GET endpoint allows administrators to check the status and configuration of an ongoing or completed migration session, including information about what data is being or has been migrated to the cloud. The operation requires the session's uid as a path parameter and returns comprehensive details about that particular migration session, enabling users to monitor and track their cloud migratio"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/migration/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path",
+                "description": "UID of a migration session"
+              }
+            ]
+          },
+          "docs": "Deletes a specific cloud migration session identified by its unique identifier (uid) in Grafana. This operation removes all data associated with the migration session, including configuration details, progress tracking information, and any temporary migration artifacts. Once deleted, the migration session cannot be recovered and any in-progress migration activities associated with this session will be terminated. This endpoint is typically used to clean up completed migrations or to cancel and r"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,68 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Invites API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Invites",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Get Pending Org Invites",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/org/invites"
+          },
+          "docs": "This API operation retrieves a list of all pending invitations for the current organization in Grafana. When called using a GET request to the /org/invites endpoint, it returns information about users who have been invited to join the organization but have not yet accepted their invitations. The response typically includes details such as the invitee's email address, invitation date, role assigned, and invitation status. This endpoint is useful for organization administrators to monitor outstand"
+        },
+        {
+          "info": {
+            "name": "Grafana Add Org Invite",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/org/invites",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to create and send an invitation for a user to join a specific organization in Grafana. By making a POST request to the /org/invites endpoint, administrators can invite new members by providing details such as the invitee's email address, username, and the role they should have within the organization. The invitation generates a unique token that is sent to the specified user, allowing them to accept the invitation and gain access to the organization with the assign"
+        },
+        {
+          "info": {
+            "name": "Grafana Revoke Invite",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/org/invites/:invitation_code/revoke",
+            "params": [
+              {
+                "name": "invitation_code",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation revokes a pending organization invitation in Grafana by deleting it using the specified invitation code. When executed via a DELETE request to the endpoint /org/invites/{invitation_code}/revoke, it cancels an outstanding invitation that was previously sent to a user, preventing them from accepting it and joining the organization. The invitation_code path parameter uniquely identifies which pending invite should be revoked, and successful execution removes the invitation from t"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,463 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Search API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Search Queries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/query-history",
+            "params": [
+              {
+                "name": "datasourceUid",
+                "value": "",
+                "type": "query",
+                "description": "List of data source UIDs to search for"
+              },
+              {
+                "name": "searchString",
+                "value": "",
+                "type": "query",
+                "description": "Text inside query or comments that is searched for"
+              },
+              {
+                "name": "onlyStarred",
+                "value": "",
+                "type": "query",
+                "description": "Flag indicating if only starred queries should be returned"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort method"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Use this parameter to access hits beyond limit. Numbering starts at 1. limit param acts as page size."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the number of returned results"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "From range for the query history search"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "To range for the query history search"
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of query history entries from Grafana based on specified search criteria. This endpoint allows users to filter and search through their saved query history, returning matching queries along with relevant metadata such as query text, timestamp, data source information, and user details. The operation supports various filtering parameters to narrow down results and includes pagination controls to manage large result sets efficiently."
+        },
+        {
+          "info": {
+            "name": "Grafana Search Organizations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/orgs",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "perpage",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page\nThe totalCount field in the response can be used for pagination list E.g. if totalCount is equal to 100 teams and the perpage parameter is set to 10 then there are 10 pages of teams."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "If set it will return results where the query value is contained in the name field. Query values with spaces need to be URL encoded."
+              }
+            ]
+          },
+          "docs": "The GET /orgs endpoint in Grafana allows users to retrieve a list of all organizations within the Grafana instance. This operation performs a search across organizations and returns their details, typically requiring administrative privileges to access. The endpoint supports pagination and filtering parameters to help narrow down results when dealing with multiple organizations. It's commonly used by system administrators to manage multi-tenant Grafana deployments, audit organizational structure"
+        },
+        {
+          "info": {
+            "name": "Grafana Search Org Users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/orgs/:org_id/users/search",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows you to search for users within a specific organization in Grafana by providing the organization ID in the URL path. It uses the GET HTTP method to retrieve a filtered list of users belonging to the specified organization, enabling administrators to query and find specific users based on search criteria. The endpoint is useful for managing organization membership and performing user lookups within the context of a particular Grafana organization."
+        },
+        {
+          "info": {
+            "name": "Grafana Search Teams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/teams/search",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "perpage",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page\nThe totalCount field in the response can be used for pagination list E.g. if totalCount is equal to 100 teams and the perpage parameter is set to 10 then there are 10 pages of teams."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "If set it will return results where the query value is contained in the name field. Query values with spaces need to be URL encoded."
+              },
+              {
+                "name": "accesscontrol",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "The Grafana Teams Search API endpoint allows users to query and retrieve a list of teams within a Grafana instance using a GET request to /teams/search. This operation enables administrators and users with appropriate permissions to search for teams based on various criteria, returning matching team information such as team names, IDs, and associated metadata. The endpoint supports pagination and filtering parameters to help narrow down results when working with large numbers of teams, making it"
+        },
+        {
+          "info": {
+            "name": "Grafana Search Result",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/access-control/assignments/search"
+          },
+          "docs": "The Grafana Access Control Assignments Search API operation is a POST endpoint located at /access-control/assignments/search that enables users to query and retrieve access control assignments within a Grafana instance. This endpoint allows administrators and authorized users to search through role-based access control (RBAC) assignments by submitting search criteria in the request body, returning a filtered list of assignments that match the specified parameters. The search functionality helps "
+        },
+        {
+          "info": {
+            "name": "Grafana Search Org Service Accounts With Paging",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/serviceaccounts/search",
+            "params": [
+              {
+                "name": "Disabled",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "expiredTokens",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "It will return results where the query value is contained in one of the name.\nQuery values with spaces need to be URL encoded."
+              },
+              {
+                "name": "perpage",
+                "value": "",
+                "type": "query",
+                "description": "The default value is 1000."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The default value is 1."
+              }
+            ]
+          },
+          "docs": "The Grafana service accounts search API endpoint allows administrators to retrieve a paginated list of service accounts within an organization. This GET operation on the /serviceaccounts/search path enables filtering and searching through service accounts, returning results in a structured, paginated format that can be navigated through multiple pages. It's particularly useful for managing large numbers of service accounts in an organization, providing capabilities to query and locate specific a"
+        },
+        {
+          "info": {
+            "name": "Grafana Search Devices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/anonymous/search"
+          },
+          "docs": "This API operation performs a GET request to the `/anonymous/search` endpoint in Grafana to search for devices without requiring authentication. It allows users to query and retrieve device information from the Grafana system by submitting search parameters, returning matching device records based on the specified criteria. The anonymous nature of this endpoint means it can be accessed without user credentials, making it suitable for public-facing integrations or dashboard displays where device "
+        },
+        {
+          "info": {
+            "name": "Grafana Search Dashboard Snapshots",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboard/snapshots",
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Search Query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the number of returned results"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of dashboard snapshots based on specified search criteria. This operation allows users to query and filter existing snapshots that have been created from Grafana dashboards, returning metadata about each snapshot such as its name, key, creation timestamp, and expiration details. Users can apply various parameters to narrow down results, including searching by snapshot name, limiting the number of results returned, or filtering by tags. The endpoint is useful for managing and dis"
+        },
+        {
+          "info": {
+            "name": "Grafana Search Playlists",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/playlists",
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "in:limit"
+              }
+            ]
+          },
+          "docs": "The GET /playlists endpoint in Grafana allows users to retrieve a list of playlists based on search criteria. This operation queries the Grafana instance for playlists that match specified parameters, returning playlist metadata such as name, ID, and associated dashboards. Users can filter results using query parameters to narrow down playlists by name or other attributes. The endpoint returns a JSON array containing the matching playlists, making it useful for administrators and users who need "
+        },
+        {
+          "info": {
+            "name": "Grafana Search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/search",
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Search Query"
+              },
+              {
+                "name": "tag",
+                "value": "",
+                "type": "query",
+                "description": "List of tags to search for"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type to search for, dash-folder or dash-db"
+              },
+              {
+                "name": "dashboardIds",
+                "value": "",
+                "type": "query",
+                "description": "List of dashboard id’s to search for\nThis is deprecated: users should use the `dashboardUIDs` query parameter instead"
+              },
+              {
+                "name": "dashboardUIDs",
+                "value": "",
+                "type": "query",
+                "description": "List of dashboard uid’s to search for"
+              },
+              {
+                "name": "folderIds",
+                "value": "",
+                "type": "query",
+                "description": "List of folder id’s to search in for dashboards\nIf it's `0` then it will query for the top level folders\nThis is deprecated: users should use the `folderUIDs` query parameter instead"
+              },
+              {
+                "name": "folderUIDs",
+                "value": "",
+                "type": "query",
+                "description": "List of folder UID’s to search in for dashboards\nIf it's an empty string then it will query for the top level folders"
+              },
+              {
+                "name": "starred",
+                "value": "",
+                "type": "query",
+                "description": "Flag indicating if only starred Dashboards should be returned"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the number of returned results (max 5000)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Use this parameter to access hits beyond limit. Numbering starts at 1. limit param acts as page size. Only available in Grafana v6.2+."
+              },
+              {
+                "name": "permission",
+                "value": "",
+                "type": "query",
+                "description": "Set to `Edit` to return dashboards/folders that the user can edit"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort method; for listing all the possible sort methods use the search sorting endpoint."
+              },
+              {
+                "name": "deleted",
+                "value": "",
+                "type": "query",
+                "description": "Flag indicating if only soft deleted Dashboards should be returned"
+              }
+            ]
+          },
+          "docs": "The Grafana Search API endpoint allows users to query and retrieve dashboards, folders, and other resources within their Grafana instance through a GET request to the /search path. This operation supports various query parameters to filter results, including search terms, tags, folder IDs, dashboard IDs, types (dash-db or dash-folder), starred status, and pagination limits. It returns a JSON array of matching items with metadata such as ID, UID, title, URL, type, tags, and whether the item is st"
+        },
+        {
+          "info": {
+            "name": "Grafana Search Team Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/teams/:teamId/groups/search",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "perpage",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "If set it will return results where the query value is contained in the name field. Query values with spaces need to be URL encoded."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by exact name match"
+              }
+            ]
+          },
+          "docs": "This API operation performs a search for groups associated with a specific team in Grafana by making a GET request to the endpoint /teams/{teamId}/groups/search, where {teamId} is the unique identifier of the team whose groups you want to search. It allows administrators and authorized users to query and retrieve a list of groups that are linked to a particular team, which is useful for managing team memberships, permissions, and organizational structures within Grafana. The search functionality"
+        },
+        {
+          "info": {
+            "name": "Grafana Search Users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/users",
+            "params": [
+              {
+                "name": "perpage",
+                "value": "",
+                "type": "query",
+                "description": "Limit the maximum number of users to return per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page index for starting fetching users"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a list of users from the Grafana instance based on specified search criteria. It performs a GET request to the /users endpoint and allows administrators or users with appropriate permissions to query and filter user accounts within the system. The operation typically supports various query parameters such as pagination limits, search terms, and filters to narrow down results, returning user information including usernames, email addresses, roles, and other relevant a"
+        },
+        {
+          "info": {
+            "name": "Grafana Search Users With Paging",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/users/search"
+          },
+          "docs": "This API operation performs a paginated search of users within a Grafana instance, allowing administrators or authorized users to retrieve a list of user accounts based on specific search criteria. The GET request to the /users/search endpoint returns user information in a structured format with pagination support, making it efficient to handle large numbers of users by breaking results into manageable pages. This operation is commonly used in administrative interfaces, user management dashboard"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

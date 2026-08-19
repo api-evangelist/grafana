@@ -1,0 +1,332 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Convert API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Convert",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Get Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules"
+          },
+          "docs": "This API operation retrieves Prometheus or Cortex alerting and recording rules from a configured data source and converts them into Grafana's unified alerting format. It acts as a migration utility that fetches existing Prometheus-compatible rules and transforms them so they can be imported or managed within Grafana's alerting system, enabling users to consolidate their monitoring rules into Grafana's native rule structure while maintaining compatibility with Prometheus-style rule definitions."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Post Rule Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "This API operation converts Prometheus or Cortex rule group configurations into Grafana's native format by accepting a POST request to the /convert/api/prom/rules endpoint. It enables users to migrate their existing Prometheus-style alerting and recording rules from Prometheus or Cortex deployments into Grafana, facilitating the transition between monitoring systems while preserving rule logic and structure. The endpoint processes the submitted rule groups and transforms them into a format compa"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Get Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and converts Prometheus or Cortex rule configurations from a specific namespace in Grafana. By making a GET request to the endpoint with a namespace title parameter, it fetches the alerting and recording rules defined within that namespace and converts them into a format compatible with Grafana's unified alerting system. This is particularly useful when migrating from Prometheus-style alerting rules to Grafana's native alerting framework, allowing users to maintain t"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Post Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle",
+            "headers": [
+              {
+                "name": "x-grafana-alerting-datasource-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-recording-rules-paused",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-alert-rules-paused",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-target-datasource-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-folder-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-notification-settings",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The Grafana API operation POST /convert/api/prom/rules/{NamespaceTitle} converts and creates a Prometheus or Cortex rule group within a specified namespace. This endpoint accepts Prometheus-style rule definitions and transforms them into Grafana's native alert rule format, allowing users to migrate their existing Prometheus alerting and recording rules into Grafana's unified alerting system. The {NamespaceTitle} parameter identifies the target namespace where the converted rule group will be sto"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Delete Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation deletes a specific Prometheus or Cortex rule namespace within Grafana's conversion or migration layer. By sending a DELETE request to the endpoint with a namespace title parameter, users can remove an entire namespace and its associated alert rules or recording rules that were previously converted or imported from Prometheus/Cortex format. This is useful during cleanup operations, when reorganizing rule structures, or when removing legacy configurations that have been migrated"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Get Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle/:Group",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific Prometheus rule group from a designated namespace in Grafana's Cortex ruler service. The endpoint accepts two path parameters: NamespaceTitle which identifies the namespace containing the rule group, and Group which specifies the name of the rule group to retrieve. When called, it returns the configuration and rules defined within that particular rule group, allowing users to view and manage their Prometheus alerting and recording rules that have been conv"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Delete Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle/:Group",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation is used to delete a specific Prometheus rule group within Grafana's Cortex-based alerting system. It targets a rule group identified by both its namespace title and group name through the URL path parameters. When called with the DELETE HTTP method, it removes the entire rule group configuration from the specified namespace, effectively eliminating all alert and recording rules contained within that group from the Prometheus-compatible rules engine in Grafana."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Get Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules"
+          },
+          "docs": "This API operation retrieves Prometheus alerting and recording rules from a Grafana instance and converts them into a standardized configuration format. When a GET request is made to the /convert/prometheus/config/v1/rules endpoint, it fetches the existing Prometheus-style rules configured within Grafana and transforms them into a version 1 configuration schema, making it easier to migrate, backup, or integrate these rules with other systems or Prometheus instances. This is particularly useful f"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Post Rule Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "This API operation converts Prometheus rule group configurations to Grafana's format via a POST request to the /convert/prometheus/config/v1/rules endpoint. It accepts Prometheus-formatted rule groups as input and transforms them into a compatible format that can be used within Grafana's alerting and recording rule system, facilitating migration or integration between Prometheus and Grafana monitoring setups."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Get Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and converts Prometheus alerting and recording rules from a specific namespace within Grafana. By making a GET request to the endpoint with a specified namespace title, it fetches the Prometheus rule configuration for that namespace and converts it into a format compatible with Grafana's alerting system. This is particularly useful when migrating from Prometheus-based alerting to Grafana's unified alerting system, allowing users to import existing Prometheus rule def"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Post Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle",
+            "headers": [
+              {
+                "name": "x-grafana-alerting-datasource-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-recording-rules-paused",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-alert-rules-paused",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-target-datasource-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-folder-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-notification-settings",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation converts Prometheus rule group configurations to Grafana's native format by accepting a POST request to the endpoint /convert/prometheus/config/v1/rules/{NamespaceTitle}, where {NamespaceTitle} represents the target namespace for the rule group. It takes Prometheus-formatted alerting and recording rules as input and transforms them into Grafana-compatible rule configurations, facilitating migration or integration between Prometheus and Grafana alerting systems. The operation a"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Delete Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a Prometheus rule namespace configuration in Grafana's conversion API. This operation removes all rules associated with the specified namespace by its title, effectively cleaning up converted Prometheus alerting and recording rules that were previously imported or managed through the conversion endpoint. The route is part of Grafana's Prometheus configuration conversion functionality, allowing administrators to manage the lifecycle of converted rule namespaces programmatically."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Get Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle/:Group",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and converts a Prometheus rule group configuration from a specific namespace in Grafana. It accepts GET requests at the endpoint path that includes both the namespace title and group name as path parameters, allowing users to fetch the configuration details of a particular Prometheus alerting or recording rule group. The operation is part of Grafana's conversion utilities that help transform Prometheus-native rule configurations into Grafana's internal format or vice"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Delete Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle/:Group",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation is used to delete a Prometheus rule group from a specific namespace in Grafana's configuration. It targets a particular rule group identified by both the namespace title and group name through the URL path parameters. When invoked with a DELETE HTTP method, it removes the specified rule group configuration from the Prometheus-compatible alerting and recording rules system within Grafana, effectively cleaning up rules that are no longer needed or are being replaced."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

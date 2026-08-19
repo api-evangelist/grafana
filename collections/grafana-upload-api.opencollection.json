@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Upload API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Upload",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Upload Snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/cloudmigration/migration/:uid/snapshot/:snapshotUid/upload",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path",
+                "description": "Session UID of a session"
+              },
+              {
+                "name": "snapshotUid",
+                "value": "",
+                "type": "path",
+                "description": "UID of a snapshot"
+              }
+            ]
+          },
+          "docs": "This API operation uploads a previously created snapshot to Grafana Cloud as part of a cloud migration process. It requires both a migration UID and a snapshot UID to identify which migration job and specific snapshot are being uploaded. The POST request initiates the transfer of the snapshot data from the source Grafana instance to the target cloud environment, enabling users to migrate their dashboards, data sources, and other configurations. This endpoint is typically used after creating a sn"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

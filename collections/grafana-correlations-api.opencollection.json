@@ -1,0 +1,73 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Correlations API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Correlations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Get Correlations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/correlations",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the maximum number of correlations to return per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page index for starting fetching correlations"
+              },
+              {
+                "name": "sourceUID",
+                "value": "",
+                "type": "query",
+                "description": "Source datasource UID filter to be applied to correlations"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves correlation configurations from Grafana datasources. Correlations define relationships between different data sources, allowing users to create links and navigate between related data across multiple datasources. The GET request to the /datasources/correlations endpoint returns a list of all configured correlations in the Grafana instance, including details such as source and target datasources, correlation labels, and transformation rules that enable cross-datasourc"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Correlations By Source UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:sourceUID/correlations",
+            "params": [
+              {
+                "name": "sourceUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves all correlations associated with a specific data source in Grafana by providing the data source's unique identifier (UID). It uses a GET request to the endpoint /datasources/uid/{sourceUID}/correlations, where {sourceUID} is replaced with the actual UID of the data source you want to query. The operation returns a list of correlation configurations that have been defined for the specified data source, which are used to link related data across different data sources "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

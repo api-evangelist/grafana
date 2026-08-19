@@ -1,0 +1,42 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Clean API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Clean",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Clean Data Source Cache",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/:dataSourceUID/cache/clean",
+            "params": [
+              {
+                "name": "dataSourceUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows you to clear the cache for a specific data source in Grafana by sending a POST request to the endpoint with the data source's unique identifier (UID). When invoked, it removes all cached query results and stored data associated with that particular data source, forcing subsequent queries to fetch fresh data directly from the source. This is useful when you need to ensure users see the most up-to-date information, troubleshoot data inconsistencies, or after making config"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

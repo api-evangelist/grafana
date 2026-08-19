@@ -1,0 +1,314 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Data API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Get Data Sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources"
+          },
+          "docs": "The GET /datasources endpoint in the Grafana HTTP API retrieves a list of all configured data sources within the Grafana instance. This operation returns an array of data source objects, each containing details such as the data source ID, name, type (like Prometheus, InfluxDB, or Elasticsearch), URL, access method, and other configuration parameters. Authentication is required to access this endpoint, and the response will only include data sources that the authenticated user has permission to v"
+        },
+        {
+          "info": {
+            "name": "Grafana Add Data Source",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a new data source to Grafana by creating a configuration that defines how Grafana connects to and retrieves data from external systems such as Prometheus, Elasticsearch, MySQL, or other supported data sources. This POST operation requires authentication and accepts a JSON payload containing the data source properties including the type, name, access mode (proxy or direct), URL, database credentials if applicable, and any additional JSON data specific to the data source type. Upon successful"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Data Source Id By Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/id/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the unique identifier of a Grafana data source by providing its name as a path parameter. It performs a GET request to the endpoint '/datasources/id/{name}' where {name} is replaced with the actual name of the data source you want to look up. The operation returns the numeric ID associated with that specific data source, which can be useful for subsequent API calls that require the data source ID rather than its name. This is particularly helpful when you need to pro"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Data Source By Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/name/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific data source configuration from Grafana by using its unique name as an identifier. When you send a GET request to the endpoint with the data source name as a path parameter, Grafana returns the complete configuration details of that data source, including its type, connection settings, authentication credentials, and other relevant metadata. This is particularly useful when you need to programmatically access or verify the configuration of a specific data s"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Data Source By Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/datasources/name/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes a data source from Grafana by specifying its unique name rather than its numeric ID. This operation permanently deletes the data source configuration including all associated settings, credentials, and metadata. Once deleted, any dashboards or panels that reference this data source will no longer function properly until reconfigured with an alternative data source. This endpoint is particularly useful when automating data source management through scripts or infrastructure-as-code tools "
+        },
+        {
+          "info": {
+            "name": "Grafana Get Data Source By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves detailed information about a specific data source in Grafana by providing its unique identifier (UID). When called with a GET request to the endpoint /datasources/uid/{uid}, it returns the complete configuration and metadata for the requested data source, including its name, type, access method, connection details, and other relevant settings. This endpoint is particularly useful when you need to programmatically query or verify the configuration of a specific data s"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Data Source By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation updates an existing data source in Grafana by specifying its unique identifier (UID) in the URL path. The PUT request allows administrators to modify the configuration of a data source, including its name, type, URL, authentication settings, and other connection parameters. The operation requires the data source's UID as a path parameter and accepts a JSON payload containing the updated data source configuration in the request body. Upon successful execution, it returns the up"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Data Source By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a data source from Grafana by its unique identifier (UID). This operation permanently removes the specified data source configuration from the Grafana instance, including all its settings and connection details. The UID parameter in the URL path identifies which data source to delete. This is a destructive action that cannot be undone, and any dashboards or panels relying on this data source will lose their connection to it. Proper permissions are required to execute this operation, typi"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Data Source By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves detailed information about a specific data source in Grafana by providing its unique identifier. This endpoint returns comprehensive configuration details for the data source including its name, type, URL, access mode, authentication settings, and other metadata associated with the specified ID. It requires appropriate permissions to view data source configurations and is commonly used when you need to inspect or verify the settings of a particular data source that has already been con"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Data Source By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/datasources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing data source in Grafana by specifying its unique identifier in the URL path. This PUT operation requires the complete data source configuration including connection details, authentication credentials, and any custom settings. The request must include all data source properties as the PUT method typically replaces the entire resource rather than partially updating it. Users need appropriate permissions to modify data sources, and the operation returns the updated data source c"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Data Source By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/datasources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation removes a specific data source from Grafana by referencing its unique identifier. When executed, it performs a DELETE request to the endpoint /datasources/{id}, where {id} represents the numeric identifier of the data source to be removed. The operation permanently deletes the data source configuration from Grafana, including all its associated settings and connection details. This action requires appropriate administrative permissions and cannot be undone once completed. Upon"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Data Source Cache Config",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/:dataSourceUID/cache",
+            "params": [
+              {
+                "name": "dataSourceUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves the caching configuration settings for a specific data source in Grafana identified by its unique identifier (dataSourceUID). This GET operation allows administrators and users with appropriate permissions to view the current cache configuration parameters associated with a particular data source, which may include settings such as cache TTL (time-to-live), cache size limits, and enabled/disabled status. The response provides insight into how query results from this data source are bei"
+        },
+        {
+          "info": {
+            "name": "Grafana Set Data Source Cache Config",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/:dataSourceUID/cache",
+            "params": [
+              {
+                "name": "dataSourceUID",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets the cache configuration for a specific data source in Grafana identified by its unique identifier (dataSourceUID). This POST operation allows administrators to configure caching parameters such as TTL (time-to-live), cache size limits, and other cache-related settings that control how query results from the data source are stored and retrieved. By enabling and configuring caching at the data source level, users can improve dashboard performance and reduce the load on backend data sources by"
+        },
+        {
+          "info": {
+            "name": "Grafana Clean Data Source Cache",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/:dataSourceUID/cache/clean",
+            "params": [
+              {
+                "name": "dataSourceUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows you to clear the cache for a specific data source in Grafana by sending a POST request to the endpoint with the data source's unique identifier (UID). When invoked, it removes all cached query results and stored data associated with that particular data source, forcing subsequent queries to fetch fresh data directly from the source. This is useful when you need to ensure users see the most up-to-date information, troubleshoot data inconsistencies, or after making config"
+        },
+        {
+          "info": {
+            "name": "Grafana Disable Data Source Cache",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/:dataSourceUID/cache/disable",
+            "params": [
+              {
+                "name": "dataSourceUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Disables the caching functionality for a specific Grafana data source identified by its unique identifier (dataSourceUID). When executed via a POST request to the endpoint /datasources/{dataSourceUID}/cache/disable, this operation turns off query result caching for the specified data source, causing subsequent queries to fetch fresh data directly from the source rather than serving cached results. This is useful when real-time data accuracy is critical or when troubleshooting data freshness issu"
+        },
+        {
+          "info": {
+            "name": "Grafana Enable Data Source Cache",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/datasources/:dataSourceUID/cache/enable",
+            "params": [
+              {
+                "name": "dataSourceUID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation enables caching functionality for a specific data source in Grafana by sending a POST request to the endpoint with the data source's unique identifier (UID). When invoked, it activates the caching mechanism for the specified data source, which can improve query performance by storing and reusing query results instead of repeatedly fetching data from the original source. This is particularly useful for data sources that have slow response times or rate limits, as cached data ca"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

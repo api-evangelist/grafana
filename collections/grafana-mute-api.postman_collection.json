@@ -1,0 +1,1456 @@
+{
+  "item": [
+    {
+      "id": "8aff400d-17e2-40ad-8d59-74090dc74769",
+      "name": "Mute",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "dca9dbab-c83b-4c28-a142-054b6aec8656",
+          "name": "Grafana Route Get Mute Timings",
+          "request": {
+            "name": "Grafana Route Get Mute Timings",
+            "description": {
+              "content": "The Get Mute Timings operation retrieves a list of all configured mute timings from Grafana's alerting system. Mute timings are scheduling rules that define time intervals during which alert notifications should be suppressed, such as during maintenance windows or outside business hours. This GET endpoint at /v1/provisioning/mute-timings returns the complete collection of mute timing configurations, allowing administrators to view when and under what conditions notifications will be automatically silenced. The response typically includes details like timing names, time intervals, days of the week, months, and any other temporal constraints that have been defined for each mute timing rule.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "provisioning",
+                "mute-timings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{instance}}",
+                  "key": "instance"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0ee09aa1-49ea-4595-91fa-565bd5afe6ff",
+              "name": "MuteTimings",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "provisioning",
+                    "mute-timings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{instance}}",
+                      "key": "instance"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"string\",\n    \"time_intervals\": [\n      {\n        \"name\": \"string\",\n        \"time_intervals\": [\n          {\n            \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n          },\n          {\n            \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n          }\n        ]\n      },\n      {\n        \"name\": \"string\",\n        \"time_intervals\": [\n          {\n            \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n          },\n          {\n            \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n          }\n        ]\n      }\n    ]\n  },\n  {\n    \"name\": \"string\",\n    \"time_intervals\": [\n      {\n        \"name\": \"string\",\n        \"time_intervals\": [\n          {\n            \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n          },\n          {\n            \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n          }\n        ]\n      },\n      {\n        \"name\": \"string\",\n        \"time_intervals\": [\n          {\n            \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n          },\n          {\n            \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n          }\n        ]\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "47ff37c2-f16d-45af-bd2e-54341316ffd7",
+          "name": "Grafana Route Post Mute Timing",
+          "request": {
+            "name": "Grafana Route Post Mute Timing",
+            "description": {
+              "content": "The POST /v1/provisioning/mute-timings endpoint in Grafana allows administrators to create a new mute timing configuration through the provisioning API. Mute timings define specific time intervals during which alert notifications should be silenced, such as maintenance windows, weekends, or business hours exclusions. By posting to this endpoint with the appropriate JSON payload containing the timing specifications (including recurrence rules, time ranges, and date intervals), users can programmatically establish when their alerting system should suppress notifications without requiring manual configuration through the Grafana UI. This is particularly useful for implementing infrastructure-as-code practices and automating alert management across multiple Grafana instances.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "provisioning",
+                "mute-timings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{instance}}",
+                  "key": "instance"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "X-Disable-Provenance",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "66487ee0-8c68-4e0b-b59b-935074c5c950",
+              "name": "MuteTimeInterval",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "provisioning",
+                    "mute-timings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{instance}}",
+                      "key": "instance"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-Disable-Provenance",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "357ba5d4-6929-409f-b750-0f1d27f85c4f",
+              "name": "ValidationError",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "provisioning",
+                    "mute-timings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{instance}}",
+                      "key": "instance"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-Disable-Provenance",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a60d9b5c-9b13-4ffc-92ff-786d38b67ff3",
+          "name": "Grafana Route Export Mute Timings",
+          "request": {
+            "name": "Grafana Route Export Mute Timings",
+            "description": {
+              "content": "The Route Export Mute Timings operation in Grafana's provisioning API allows users to retrieve and export configured mute timing definitions through a GET request to the /v1/provisioning/mute-timings/export endpoint. This endpoint provides a way to extract mute timing configurations, which define time-based rules for suppressing alert notifications during specific periods such as maintenance windows or off-hours. The exported data can be used for backup purposes, migration between Grafana instances, version control of alerting configurations, or as a basis for creating new mute timings with similar settings. This operation is particularly useful for administrators who need to document their alerting infrastructure, replicate configurations across multiple environments, or maintain a programmatic approach to managing notification silencing schedules.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "provisioning",
+                "mute-timings",
+                "export"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "download",
+                  "value": "false",
+                  "description": "Whether to initiate a download of the file or not."
+                },
+                {
+                  "disabled": false,
+                  "key": "format",
+                  "value": "<string>",
+                  "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{instance}}",
+                  "key": "instance"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "31592513-8c40-441a-b7ab-90ed41b65784",
+              "name": "AlertingFileExport",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "provisioning",
+                    "mute-timings",
+                    "export"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "download",
+                      "value": "false"
+                    },
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{instance}}",
+                      "key": "instance"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"apiVersion\": 4790,\n  \"contactPoints\": [\n    {\n      \"name\": \"string\",\n      \"orgId\": 6280,\n      \"receivers\": [\n        {\n          \"disableResolveMessage\": false,\n          \"settings\": {},\n          \"type\": \"string\",\n          \"uid\": \"string\"\n        },\n        {\n          \"disableResolveMessage\": false,\n          \"settings\": {},\n          \"type\": \"string\",\n          \"uid\": \"string\"\n        }\n      ]\n    },\n    {\n      \"name\": \"string\",\n      \"orgId\": 9315,\n      \"receivers\": [\n        {\n          \"disableResolveMessage\": false,\n          \"settings\": {},\n          \"type\": \"string\",\n          \"uid\": \"string\"\n        },\n        {\n          \"disableResolveMessage\": false,\n          \"settings\": {},\n          \"type\": \"string\",\n          \"uid\": \"string\"\n        }\n      ]\n    }\n  ],\n  \"groups\": [\n    {\n      \"folder\": \"string\",\n      \"interval\": 106,\n      \"name\": \"string\",\n      \"orgId\": 184,\n      \"rules\": [\n        {\n          \"annotations\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"condition\": \"string\",\n          \"dashboardUid\": \"string\",\n          \"data\": [\n            {\n              \"datasourceUid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"model\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"queryType\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"refId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"relativeTimeRange\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"datasourceUid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"model\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"queryType\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"refId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"relativeTimeRange\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"execErrState\": \"OK\",\n          \"for\": 7245,\n          \"isPaused\": false,\n          \"keepFiringFor\": 2536,\n          \"labels\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"missing_series_evals_to_resolve\": 6233,\n          \"noDataState\": \"Alerting\",\n          \"notification_settings\": {\n            \"active_time_intervals\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"group_by\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"group_interval\": \"string\",\n            \"group_wait\": \"string\",\n            \"mute_time_intervals\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"receiver\": \"string\",\n            \"repeat_interval\": \"string\"\n          },\n          \"panelId\": 2268,\n          \"record\": {\n            \"from\": \"string\",\n            \"metric\": \"string\",\n            \"targetDatasourceUid\": \"string\"\n          },\n          \"title\": \"string\",\n          \"uid\": \"string\"\n        },\n        {\n          \"annotations\": {\n            \"key_0\": \"string\"\n          },\n          \"condition\": \"string\",\n          \"dashboardUid\": \"string\",\n          \"data\": [\n            {\n              \"datasourceUid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"model\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"queryType\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"refId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"relativeTimeRange\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"datasourceUid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"model\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"queryType\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"refId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"relativeTimeRange\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"execErrState\": \"Error\",\n          \"for\": 4953,\n          \"isPaused\": true,\n          \"keepFiringFor\": 2931,\n          \"labels\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"missing_series_evals_to_resolve\": 5160,\n          \"noDataState\": \"Alerting\",\n          \"notification_settings\": {\n            \"active_time_intervals\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"group_by\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"group_interval\": \"string\",\n            \"group_wait\": \"string\",\n            \"mute_time_intervals\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"receiver\": \"string\",\n            \"repeat_interval\": \"string\"\n          },\n          \"panelId\": 8750,\n          \"record\": {\n            \"from\": \"string\",\n            \"metric\": \"string\",\n            \"targetDatasourceUid\": \"string\"\n          },\n          \"title\": \"string\",\n          \"uid\": \"string\"\n        }\n      ]\n    },\n    {\n      \"folder\": \"string\",\n      \"interval\": 8009,\n      \"name\": \"string\",\n      \"orgId\": 7971,\n      \"rules\": [\n        {\n          \"annotations\": {\n            \"key_0\": \"string\"\n          },\n          \"condition\": \"string\",\n          \"dashboardUid\": \"string\",\n          \"data\": [\n            {\n              \"datasourceUid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"model\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"queryType\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"refId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"relativeTimeRange\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"datasourceUid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"model\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"queryType\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"refId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"relativeTimeRange\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"execErrState\": \"Alerting\",\n          \"for\": 7847,\n          \"isPaused\": false,\n          \"keepFiringFor\": 3181,\n          \"labels\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"missing_series_evals_to_resolve\": 6814,\n          \"noDataState\": \"OK\",\n          \"notification_settings\": {\n            \"active_time_intervals\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"group_by\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"group_interval\": \"string\",\n            \"group_wait\": \"string\",\n            \"mute_time_intervals\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"receiver\": \"string\",\n            \"repeat_interval\": \"string\"\n          },\n          \"panelId\": 6029,\n          \"record\": {\n            \"from\": \"string\",\n            \"metric\": \"string\",\n            \"targetDatasourceUid\": \"string\"\n          },\n          \"title\": \"string\",\n          \"uid\": \"string\"\n        },\n        {\n          \"annotations\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"condition\": \"string\",\n          \"dashboardUid\": \"string\",\n          \"data\": [\n            {\n              \"datasourceUid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"model\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"queryType\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"refId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"relativeTimeRange\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"datasourceUid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"model\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"queryType\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"refId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"relativeTimeRange\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"execErrState\": \"Error\",\n          \"for\": 8801,\n          \"isPaused\": false,\n          \"keepFiringFor\": 4317,\n          \"labels\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\",\n            \"key_2\": \"string\"\n          },\n          \"missing_series_evals_to_resolve\": 6737,\n          \"noDataState\": \"Alerting\",\n          \"notification_settings\": {\n            \"active_time_intervals\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"group_by\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"group_interval\": \"string\",\n            \"group_wait\": \"string\",\n            \"mute_time_intervals\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"receiver\": \"string\",\n            \"repeat_interval\": \"string\"\n          },\n          \"panelId\": 3022,\n          \"record\": {\n            \"from\": \"string\",\n            \"metric\": \"string\",\n            \"targetDatasourceUid\": \"string\"\n          },\n          \"title\": \"string\",\n          \"uid\": \"string\"\n        }\n      ]\n    }\n  ],\n  \"muteTimes\": [\n    {\n      \"name\": \"string\",\n      \"orgId\": 3017,\n      \"time_intervals\": [\n        {\n          \"name\": \"<string>\",\n          \"time_intervals\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            }\n          ]\n        },\n        {\n          \"name\": \"<string>\",\n          \"time_intervals\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"name\": \"string\",\n      \"orgId\": 5199,\n      \"time_intervals\": [\n        {\n          \"name\": \"<string>\",\n          \"time_intervals\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            }\n          ]\n        },\n        {\n          \"name\": \"<string>\",\n          \"time_intervals\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"policies\": [\n    {\n      \"active_time_intervals\": [\n        \"string\",\n        \"string\"\n      ],\n      \"continue\": false,\n      \"group_by\": [\n        \"string\",\n        \"string\"\n      ],\n      \"group_interval\": \"string\",\n      \"group_wait\": \"string\",\n      \"match\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"match_re\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"matchers\": [\n        {\n          \"Name\": \"string\",\n          \"Type\": 8312,\n          \"Value\": \"string\"\n        },\n        {\n          \"Name\": \"string\",\n          \"Type\": 8896,\n          \"Value\": \"string\"\n        }\n      ],\n      \"mute_time_intervals\": [\n        \"string\",\n        \"string\"\n      ],\n      \"object_matchers\": [\n        [\n          \"string\",\n          \"string\"\n        ],\n        [\n          \"string\",\n          \"string\"\n        ]\n      ],\n      \"orgId\": 1245,\n      \"receiver\": \"string\",\n      \"repeat_interval\": \"string\",\n      \"routes\": [\n        {\n          \"active_time_intervals\": [\n            \"string\",\n            \"string\"\n          ],\n          \"continue\": false,\n          \"group_by\": [\n            \"string\",\n            \"string\"\n          ],\n          \"group_interval\": \"string\",\n          \"group_wait\": \"string\",\n          \"match\": {\n            \"key_0\": \"string\"\n          },\n          \"match_re\": {\n            \"key_0\": \"string\"\n          },\n          \"matchers\": [\n            {\n              \"Name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"Name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"mute_time_intervals\": [\n            \"string\",\n            \"string\"\n          ],\n          \"object_matchers\": [\n            [\n              \"string\",\n              \"string\"\n            ],\n            [\n              \"string\",\n              \"string\"\n            ]\n          ],\n          \"receiver\": \"string\",\n          \"repeat_interval\": \"string\",\n          \"routes\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            }\n          ]\n        },\n        {\n          \"active_time_intervals\": [\n            \"string\",\n            \"string\"\n          ],\n          \"continue\": true,\n          \"group_by\": [\n            \"string\",\n            \"string\"\n          ],\n          \"group_interval\": \"string\",\n          \"group_wait\": \"string\",\n          \"match\": {\n            \"key_0\": \"string\"\n          },\n          \"match_re\": {\n            \"key_0\": \"string\"\n          },\n          \"matchers\": [\n            {\n              \"Name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"Name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"mute_time_intervals\": [\n            \"string\",\n            \"string\"\n          ],\n          \"object_matchers\": [\n            [\n              \"string\",\n              \"string\"\n            ],\n            [\n              \"string\",\n              \"string\"\n            ]\n          ],\n          \"receiver\": \"string\",\n          \"repeat_interval\": \"string\",\n          \"routes\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"active_time_intervals\": [\n        \"string\",\n        \"string\"\n      ],\n      \"continue\": false,\n      \"group_by\": [\n        \"string\",\n        \"string\"\n      ],\n      \"group_interval\": \"string\",\n      \"group_wait\": \"string\",\n      \"match\": {\n        \"key_0\": \"string\"\n      },\n      \"match_re\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"matchers\": [\n        {\n          \"Name\": \"string\",\n          \"Type\": 217,\n          \"Value\": \"string\"\n        },\n        {\n          \"Name\": \"string\",\n          \"Type\": 4413,\n          \"Value\": \"string\"\n        }\n      ],\n      \"mute_time_intervals\": [\n        \"string\",\n        \"string\"\n      ],\n      \"object_matchers\": [\n        [\n          \"string\",\n          \"string\"\n        ],\n        [\n          \"string\",\n          \"string\"\n        ]\n      ],\n      \"orgId\": 2959,\n      \"receiver\": \"string\",\n      \"repeat_interval\": \"string\",\n      \"routes\": [\n        {\n          \"active_time_intervals\": [\n            \"string\",\n            \"string\"\n          ],\n          \"continue\": false,\n          \"group_by\": [\n            \"string\",\n            \"string\"\n          ],\n          \"group_interval\": \"string\",\n          \"group_wait\": \"string\",\n          \"match\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"match_re\": {\n            \"key_0\": \"string\"\n          },\n          \"matchers\": [\n            {\n              \"Name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"Name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"mute_time_intervals\": [\n            \"string\",\n            \"string\"\n          ],\n          \"object_matchers\": [\n            [\n              \"string\",\n              \"string\"\n            ],\n            [\n              \"string\",\n              \"string\"\n            ]\n          ],\n          \"receiver\": \"string\",\n          \"repeat_interval\": \"string\",\n          \"routes\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            }\n          ]\n        },\n        {\n          \"active_time_intervals\": [\n            \"string\",\n            \"string\"\n          ],\n          \"continue\": false,\n          \"group_by\": [\n            \"string\",\n            \"string\"\n          ],\n          \"group_interval\": \"string\",\n          \"group_wait\": \"string\",\n          \"match\": {\n            \"key_0\": \"string\"\n          },\n          \"match_re\": {\n            \"key_0\": \"string\"\n          },\n          \"matchers\": [\n            {\n              \"Name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"Name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"mute_time_intervals\": [\n            \"string\",\n            \"string\"\n          ],\n          \"object_matchers\": [\n            [\n              \"string\",\n              \"string\"\n            ],\n            [\n              \"string\",\n              \"string\"\n            ]\n          ],\n          \"receiver\": \"string\",\n          \"repeat_interval\": \"string\",\n          \"routes\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e8a4d50a-91b2-4939-91cb-d603633646a6",
+              "name": "PermissionDenied",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "provisioning",
+                    "mute-timings",
+                    "export"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "download",
+                      "value": "false"
+                    },
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{instance}}",
+                      "key": "instance"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cd8a0d87-dbd0-476f-abe9-7cea2ed93789",
+          "name": "Grafana Route Get Mute Timing",
+          "request": {
+            "name": "Grafana Route Get Mute Timing",
+            "description": {
+              "content": "The Get Mute Timing operation retrieves a specific mute timing configuration by its unique name from Grafana's alerting system. Mute timings are used to define time intervals during which alert notifications should be suppressed, allowing users to prevent alerts during scheduled maintenance windows or known periods of reduced monitoring. By providing the mute timing name as a path parameter, this GET endpoint returns the complete configuration details of that particular mute timing, including its time intervals, recurrence rules, and any associated metadata, enabling users to review or audit existing notification suppression schedules programmatically.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "provisioning",
+                "mute-timings",
+                ":name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) Mute timing name"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{instance}}",
+                  "key": "instance"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "addb11ce-cf22-40d1-b9b2-13b4de8e64ca",
+              "name": "MuteTimeInterval",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "provisioning",
+                    "mute-timings",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Mute timing name"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{instance}}",
+                      "key": "instance"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e1d06bbb-42c8-437e-8901-e60cf9682c32",
+              "name": "Not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "provisioning",
+                    "mute-timings",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Mute timing name"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{instance}}",
+                      "key": "instance"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f3f42003-42c1-489b-ac7c-8959e90b2f89",
+          "name": "Grafana Route Put Mute Timing",
+          "request": {
+            "name": "Grafana Route Put Mute Timing",
+            "description": {
+              "content": "The PUT operation on the `/v1/provisioning/mute-timings/{name}` endpoint in Grafana is used to update or replace an existing mute timing configuration identified by its name parameter. Mute timings define time-based rules that silence alert notifications during specific periods, such as maintenance windows or non-business hours. This endpoint allows administrators to modify the schedule, time intervals, or other properties of a previously created mute timing by providing the complete updated configuration in the request body. The operation requires appropriate authentication and permissions to manage alert notification policies, and it will overwrite the existing mute timing with the new definition provided in the PUT request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "provisioning",
+                "mute-timings",
+                ":name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) Mute timing name"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{instance}}",
+                  "key": "instance"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "X-Disable-Provenance",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "93061e02-11b3-4155-9d67-3f7cd560f63c",
+              "name": "MuteTimeInterval",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "provisioning",
+                    "mute-timings",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Mute timing name"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{instance}}",
+                      "key": "instance"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-Disable-Provenance",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "42b47ac1-7fd2-4f96-a0be-cb19b8782621",
+              "name": "ValidationError",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "provisioning",
+                    "mute-timings",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Mute timing name"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{instance}}",
+                      "key": "instance"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-Disable-Provenance",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7ecee974-f7fa-43aa-8d11-71de16e5e568",
+              "name": "PublicError",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "provisioning",
+                    "mute-timings",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Mute timing name"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{instance}}",
+                      "key": "instance"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-Disable-Provenance",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"time_intervals\": [\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"time_intervals\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"extra\": {\n    \"key_0\": {}\n  },\n  \"message\": \"string\",\n  \"messageId\": \"string\",\n  \"statusCode\": 1559\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "adbc1455-8c50-4f2a-82e2-ee87203a0e10",
+          "name": "Grafana Route Delete Mute Timing",
+          "request": {
+            "name": "Grafana Route Delete Mute Timing",
+            "description": {
+              "content": "This API operation deletes a specific mute timing configuration in Grafana's alerting system by its unique name. Mute timings are schedules that define time intervals during which alert notifications should be suppressed, and this DELETE endpoint removes the identified mute timing from the provisioning configuration. The operation requires the mute timing's name as a path parameter and is typically used when a previously configured silence schedule is no longer needed or needs to be replaced with a different configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "provisioning",
+                "mute-timings",
+                ":name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "version",
+                  "value": "<string>",
+                  "description": "Version of mute timing to use for optimistic concurrency. Leave empty to disable validation"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) Mute timing name"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{instance}}",
+                  "key": "instance"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "X-Disable-Provenance",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "937d3fab-3a2b-473b-b00e-bfcd79d7d393",
+              "name": "The mute timing was deleted successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "provisioning",
+                    "mute-timings",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "version",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Mute timing name"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{instance}}",
+                      "key": "instance"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-Disable-Provenance",
+                    "value": "<string>",
+                    "description": ""
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6e5cabed-9b00-4132-a87b-59c50ac05adb",
+              "name": "PublicError",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "provisioning",
+                    "mute-timings",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "version",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Mute timing name"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{instance}}",
+                      "key": "instance"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-Disable-Provenance",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"extra\": {\n    \"key_0\": {}\n  },\n  \"message\": \"string\",\n  \"messageId\": \"string\",\n  \"statusCode\": 1559\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0a8c8f79-e23c-4a35-a4bf-44b5953579d3",
+          "name": "Grafana Route Export Mute Timing",
+          "request": {
+            "name": "Grafana Route Export Mute Timing",
+            "description": {
+              "content": "The Export Mute Timing API operation in Grafana allows users to retrieve and export the configuration details of a specific mute timing by providing its name as a path parameter. This GET endpoint is part of the provisioning API and enables administrators to programmatically access mute timing definitions, which are used to suppress alert notifications during specified time periods. The exported configuration can be used for backup purposes, migrating configurations between Grafana instances, or version controlling alerting infrastructure as code. By calling this endpoint with the mute timing's name, users receive the complete configuration in a format that can be stored, shared, or re-imported into Grafana systems.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "provisioning",
+                "mute-timings",
+                ":name",
+                "export"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "download",
+                  "value": "false",
+                  "description": "Whether to initiate a download of the file or not."
+                },
+                {
+                  "disabled": false,
+                  "key": "format",
+                  "value": "<string>",
+                  "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) Mute timing name"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{instance}}",
+                  "key": "instance"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7e09dbd5-0f50-4a0e-9d0c-ff7fe4a57306",
+              "name": "AlertingFileExport",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "provisioning",
+                    "mute-timings",
+                    ":name",
+                    "export"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "download",
+                      "value": "false"
+                    },
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Mute timing name"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{instance}}",
+                      "key": "instance"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"apiVersion\": 869,\n  \"contactPoints\": [\n    {\n      \"name\": \"string\",\n      \"orgId\": 4419,\n      \"receivers\": [\n        {\n          \"disableResolveMessage\": false,\n          \"settings\": {},\n          \"type\": \"string\",\n          \"uid\": \"string\"\n        },\n        {\n          \"disableResolveMessage\": false,\n          \"settings\": {},\n          \"type\": \"string\",\n          \"uid\": \"string\"\n        }\n      ]\n    },\n    {\n      \"name\": \"string\",\n      \"orgId\": 4849,\n      \"receivers\": [\n        {\n          \"disableResolveMessage\": false,\n          \"settings\": {},\n          \"type\": \"string\",\n          \"uid\": \"string\"\n        },\n        {\n          \"disableResolveMessage\": false,\n          \"settings\": {},\n          \"type\": \"string\",\n          \"uid\": \"string\"\n        }\n      ]\n    }\n  ],\n  \"groups\": [\n    {\n      \"folder\": \"string\",\n      \"interval\": 3675,\n      \"name\": \"string\",\n      \"orgId\": 2220,\n      \"rules\": [\n        {\n          \"annotations\": {\n            \"key_0\": \"string\"\n          },\n          \"condition\": \"string\",\n          \"dashboardUid\": \"string\",\n          \"data\": [\n            {\n              \"datasourceUid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"model\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"queryType\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"refId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"relativeTimeRange\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"datasourceUid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"model\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"queryType\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"refId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"relativeTimeRange\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"execErrState\": \"Error\",\n          \"for\": 6844,\n          \"isPaused\": true,\n          \"keepFiringFor\": 7068,\n          \"labels\": {\n            \"key_0\": \"string\"\n          },\n          \"missing_series_evals_to_resolve\": 7721,\n          \"noDataState\": \"OK\",\n          \"notification_settings\": {\n            \"active_time_intervals\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"group_by\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"group_interval\": \"string\",\n            \"group_wait\": \"string\",\n            \"mute_time_intervals\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"receiver\": \"string\",\n            \"repeat_interval\": \"string\"\n          },\n          \"panelId\": 5338,\n          \"record\": {\n            \"from\": \"string\",\n            \"metric\": \"string\",\n            \"targetDatasourceUid\": \"string\"\n          },\n          \"title\": \"string\",\n          \"uid\": \"string\"\n        },\n        {\n          \"annotations\": {\n            \"key_0\": \"string\"\n          },\n          \"condition\": \"string\",\n          \"dashboardUid\": \"string\",\n          \"data\": [\n            {\n              \"datasourceUid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"model\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"queryType\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"refId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"relativeTimeRange\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"datasourceUid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"model\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"queryType\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"refId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"relativeTimeRange\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"execErrState\": \"Error\",\n          \"for\": 4130,\n          \"isPaused\": false,\n          \"keepFiringFor\": 9355,\n          \"labels\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\",\n            \"key_2\": \"string\"\n          },\n          \"missing_series_evals_to_resolve\": 62,\n          \"noDataState\": \"Alerting\",\n          \"notification_settings\": {\n            \"active_time_intervals\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"group_by\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"group_interval\": \"string\",\n            \"group_wait\": \"string\",\n            \"mute_time_intervals\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"receiver\": \"string\",\n            \"repeat_interval\": \"string\"\n          },\n          \"panelId\": 2156,\n          \"record\": {\n            \"from\": \"string\",\n            \"metric\": \"string\",\n            \"targetDatasourceUid\": \"string\"\n          },\n          \"title\": \"string\",\n          \"uid\": \"string\"\n        }\n      ]\n    },\n    {\n      \"folder\": \"string\",\n      \"interval\": 4021,\n      \"name\": \"string\",\n      \"orgId\": 7809,\n      \"rules\": [\n        {\n          \"annotations\": {\n            \"key_0\": \"string\"\n          },\n          \"condition\": \"string\",\n          \"dashboardUid\": \"string\",\n          \"data\": [\n            {\n              \"datasourceUid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"model\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"queryType\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"refId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"relativeTimeRange\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"datasourceUid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"model\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"queryType\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"refId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"relativeTimeRange\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"execErrState\": \"Alerting\",\n          \"for\": 4227,\n          \"isPaused\": true,\n          \"keepFiringFor\": 6095,\n          \"labels\": {\n            \"key_0\": \"string\"\n          },\n          \"missing_series_evals_to_resolve\": 984,\n          \"noDataState\": \"Alerting\",\n          \"notification_settings\": {\n            \"active_time_intervals\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"group_by\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"group_interval\": \"string\",\n            \"group_wait\": \"string\",\n            \"mute_time_intervals\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"receiver\": \"string\",\n            \"repeat_interval\": \"string\"\n          },\n          \"panelId\": 977,\n          \"record\": {\n            \"from\": \"string\",\n            \"metric\": \"string\",\n            \"targetDatasourceUid\": \"string\"\n          },\n          \"title\": \"string\",\n          \"uid\": \"string\"\n        },\n        {\n          \"annotations\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\",\n            \"key_2\": \"string\",\n            \"key_3\": \"string\"\n          },\n          \"condition\": \"string\",\n          \"dashboardUid\": \"string\",\n          \"data\": [\n            {\n              \"datasourceUid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"model\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"queryType\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"refId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"relativeTimeRange\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"datasourceUid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"model\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"queryType\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"refId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"relativeTimeRange\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"execErrState\": \"Error\",\n          \"for\": 1335,\n          \"isPaused\": true,\n          \"keepFiringFor\": 4200,\n          \"labels\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"missing_series_evals_to_resolve\": 3560,\n          \"noDataState\": \"OK\",\n          \"notification_settings\": {\n            \"active_time_intervals\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"group_by\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"group_interval\": \"string\",\n            \"group_wait\": \"string\",\n            \"mute_time_intervals\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"receiver\": \"string\",\n            \"repeat_interval\": \"string\"\n          },\n          \"panelId\": 2056,\n          \"record\": {\n            \"from\": \"string\",\n            \"metric\": \"string\",\n            \"targetDatasourceUid\": \"string\"\n          },\n          \"title\": \"string\",\n          \"uid\": \"string\"\n        }\n      ]\n    }\n  ],\n  \"muteTimes\": [\n    {\n      \"name\": \"string\",\n      \"orgId\": 4637,\n      \"time_intervals\": [\n        {\n          \"name\": \"<string>\",\n          \"time_intervals\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            }\n          ]\n        },\n        {\n          \"name\": \"<string>\",\n          \"time_intervals\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"name\": \"string\",\n      \"orgId\": 2723,\n      \"time_intervals\": [\n        {\n          \"name\": \"<string>\",\n          \"time_intervals\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            }\n          ]\n        },\n        {\n          \"name\": \"<string>\",\n          \"time_intervals\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted. detected>\"\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"policies\": [\n    {\n      \"active_time_intervals\": [\n        \"string\",\n        \"string\"\n      ],\n      \"continue\": true,\n      \"group_by\": [\n        \"string\",\n        \"string\"\n      ],\n      \"group_interval\": \"string\",\n      \"group_wait\": \"string\",\n      \"match\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"match_re\": {\n        \"key_0\": \"string\"\n      },\n      \"matchers\": [\n        {\n          \"Name\": \"string\",\n          \"Type\": 3910,\n          \"Value\": \"string\"\n        },\n        {\n          \"Name\": \"string\",\n          \"Type\": 9829,\n          \"Value\": \"string\"\n        }\n      ],\n      \"mute_time_intervals\": [\n        \"string\",\n        \"string\"\n      ],\n      \"object_matchers\": [\n        [\n          \"string\",\n          \"string\"\n        ],\n        [\n          \"string\",\n          \"string\"\n        ]\n      ],\n      \"orgId\": 1850,\n      \"receiver\": \"string\",\n      \"repeat_interval\": \"string\",\n      \"routes\": [\n        {\n          \"active_time_intervals\": [\n            \"string\",\n            \"string\"\n          ],\n          \"continue\": true,\n          \"group_by\": [\n            \"string\",\n            \"string\"\n          ],\n          \"group_interval\": \"string\",\n          \"group_wait\": \"string\",\n          \"match\": {\n            \"key_0\": \"string\"\n          },\n          \"match_re\": {\n            \"key_0\": \"string\"\n          },\n          \"matchers\": [\n            {\n              \"Name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"Name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"mute_time_intervals\": [\n            \"string\",\n            \"string\"\n          ],\n          \"object_matchers\": [\n            [\n              \"string\",\n              \"string\"\n            ],\n            [\n              \"string\",\n              \"string\"\n            ]\n          ],\n          \"receiver\": \"string\",\n          \"repeat_interval\": \"string\",\n          \"routes\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            }\n          ]\n        },\n        {\n          \"active_time_intervals\": [\n            \"string\",\n            \"string\"\n          ],\n          \"continue\": false,\n          \"group_by\": [\n            \"string\",\n            \"string\"\n          ],\n          \"group_interval\": \"string\",\n          \"group_wait\": \"string\",\n          \"match\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"match_re\": {\n            \"key_0\": \"string\"\n          },\n          \"matchers\": [\n            {\n              \"Name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"Name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"mute_time_intervals\": [\n            \"string\",\n            \"string\"\n          ],\n          \"object_matchers\": [\n            [\n              \"string\",\n              \"string\"\n            ],\n            [\n              \"string\",\n              \"string\"\n            ]\n          ],\n          \"receiver\": \"string\",\n          \"repeat_interval\": \"string\",\n          \"routes\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"active_time_intervals\": [\n        \"string\",\n        \"string\"\n      ],\n      \"continue\": true,\n      \"group_by\": [\n        \"string\",\n        \"string\"\n      ],\n      \"group_interval\": \"string\",\n      \"group_wait\": \"string\",\n      \"match\": {\n        \"key_0\": \"string\"\n      },\n      \"match_re\": {\n        \"key_0\": \"string\"\n      },\n      \"matchers\": [\n        {\n          \"Name\": \"string\",\n          \"Type\": 2777,\n          \"Value\": \"string\"\n        },\n        {\n          \"Name\": \"string\",\n          \"Type\": 8305,\n          \"Value\": \"string\"\n        }\n      ],\n      \"mute_time_intervals\": [\n        \"string\",\n        \"string\"\n      ],\n      \"object_matchers\": [\n        [\n          \"string\",\n          \"string\"\n        ],\n        [\n          \"string\",\n          \"string\"\n        ]\n      ],\n      \"orgId\": 6533,\n      \"receiver\": \"string\",\n      \"repeat_interval\": \"string\",\n      \"routes\": [\n        {\n          \"active_time_intervals\": [\n            \"string\",\n            \"string\"\n          ],\n          \"continue\": true,\n          \"group_by\": [\n            \"string\",\n            \"string\"\n          ],\n          \"group_interval\": \"string\",\n          \"group_wait\": \"string\",\n          \"match\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\",\n            \"key_2\": \"string\"\n          },\n          \"match_re\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"matchers\": [\n            {\n              \"Name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"Name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"mute_time_intervals\": [\n            \"string\",\n            \"string\"\n          ],\n          \"object_matchers\": [\n            [\n              \"string\",\n              \"string\"\n            ],\n            [\n              \"string\",\n              \"string\"\n            ]\n          ],\n          \"receiver\": \"string\",\n          \"repeat_interval\": \"string\",\n          \"routes\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            }\n          ]\n        },\n        {\n          \"active_time_intervals\": [\n            \"string\",\n            \"string\"\n          ],\n          \"continue\": true,\n          \"group_by\": [\n            \"string\",\n            \"string\"\n          ],\n          \"group_interval\": \"string\",\n          \"group_wait\": \"string\",\n          \"match\": {\n            \"key_0\": \"string\"\n          },\n          \"match_re\": {\n            \"key_0\": \"string\"\n          },\n          \"matchers\": [\n            {\n              \"Name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"Name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"Value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"mute_time_intervals\": [\n            \"string\",\n            \"string\"\n          ],\n          \"object_matchers\": [\n            [\n              \"string\",\n              \"string\"\n            ],\n            [\n              \"string\",\n              \"string\"\n            ]\n          ],\n          \"receiver\": \"string\",\n          \"repeat_interval\": \"string\",\n          \"routes\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/RouteExport detected>\"\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "20bc2cd3-1358-40fd-8831-516bd5accba0",
+              "name": "PermissionDenied",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "provisioning",
+                    "mute-timings",
+                    ":name",
+                    "export"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "download",
+                      "value": "false"
+                    },
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Mute timing name"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{instance}}",
+                      "key": "instance"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "your-instance",
+      "key": "instance"
+    },
+    {
+      "type": "string",
+      "value": "https://{{instance}}.grafana.net/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "78a074ed-826f-4856-a886-1488b968d187",
+    "name": "Grafana HTTP Access Mute API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.\n\nContact Support:\n Name: Grafana Labs",
+      "type": "text/plain"
+    }
+  }
+}

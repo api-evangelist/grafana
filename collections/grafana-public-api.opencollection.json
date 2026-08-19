@@ -1,0 +1,184 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Public API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Public",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana List Public Dashboards",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/public-dashboards"
+          },
+          "docs": "This API operation retrieves a list of all public dashboards available in Grafana. It uses a GET request to the /dashboards/public-dashboards endpoint and returns information about dashboards that have been made publicly accessible, meaning they can be viewed without authentication. The response typically includes details such as dashboard UIDs, titles, access tokens, and configuration settings for each public dashboard. This endpoint is useful for administrators who need to audit or manage whic"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Public Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:dashboardUid/public-dashboards",
+            "params": [
+              {
+                "name": "dashboardUid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves the public dashboard configuration for a specific Grafana dashboard identified by its unique identifier (dashboardUid). When a dashboard has been made publicly accessible, this GET endpoint returns the public dashboard settings and metadata, including information such as the public access token, sharing configuration, enabled state, and any annotations or time range settings that have been configured for public viewing. This allows administrators and applications to "
+        },
+        {
+          "info": {
+            "name": "Grafana Create Public Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:dashboardUid/public-dashboards",
+            "params": [
+              {
+                "name": "dashboardUid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a public dashboard that enables external users to view a specific Grafana dashboard without authentication. This operation takes a dashboard UID as a path parameter and accepts configuration options in the request body to control how the dashboard is shared publicly, including settings for time range, template variables, and access permissions. Once created, it generates a unique public URL that can be shared with anyone to view the dashboard's visualizations and data without requiring G"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Public Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:dashboardUid/public-dashboards/:uid",
+            "params": [
+              {
+                "name": "dashboardUid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to update an existing public dashboard in Grafana by specifying both the parent dashboard's unique identifier (dashboardUid) and the public dashboard's unique identifier (uid) in the endpoint path. Using the PATCH HTTP method, you can modify specific properties of the public dashboard configuration without replacing the entire resource, such as toggling public access, changing sharing settings, or updating time range configurations. This endpoint is particularly use"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Public Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/dashboards/uid/:dashboardUid/public-dashboards/:uid",
+            "params": [
+              {
+                "name": "dashboardUid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a public dashboard by its unique identifier, removing public access to the specified dashboard. This operation requires both the dashboard's UID and the public dashboard's UID to locate and remove the specific public sharing configuration. Once deleted, the public link previously associated with this dashboard will no longer be accessible, and any users who had the public URL will lose access to view the dashboard anonymously. This is a permanent action that revokes the public sharing se"
+        },
+        {
+          "info": {
+            "name": "Grafana View Public Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/public/dashboards/:accessToken",
+            "params": [
+              {
+                "name": "accessToken",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and displays a public Grafana dashboard using a unique access token. When a GET request is made to the endpoint with a valid accessToken parameter, it returns the dashboard configuration and visualization data that has been publicly shared. This allows users to view specific dashboards without requiring authentication or login credentials, making it useful for sharing monitoring data, metrics, and analytics with external stakeholders or embedding dashboards in public"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Public Annotations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/public/dashboards/:accessToken/annotations",
+            "params": [
+              {
+                "name": "accessToken",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves public annotations for a specific Grafana dashboard using an access token. It accepts a GET request to the endpoint '/public/dashboards/{accessToken}/annotations' where the accessToken parameter identifies the publicly shared dashboard. The operation returns annotation data that can be displayed on the dashboard timeline, allowing viewers of public dashboards to see relevant markers, events, or notes without requiring authentication. This is particularly useful for s"
+        },
+        {
+          "info": {
+            "name": "Grafana Query Public Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/public/dashboards/:accessToken/panels/:panelId/query",
+            "params": [
+              {
+                "name": "accessToken",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "panelId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The Grafana POST endpoint at /public/dashboards/{accessToken}/panels/{panelId}/query enables querying data from a specific panel within a publicly shared dashboard. This operation requires an access token that grants permission to view the public dashboard and a panel ID to identify which panel's data should be retrieved. The endpoint allows external applications or users to programmatically fetch panel data without authentication beyond the public access token, making it useful for embedding da"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

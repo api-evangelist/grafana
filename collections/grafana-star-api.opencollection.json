@@ -1,0 +1,60 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Star API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Star",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Star Query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/query-history/star/:query_history_uid",
+            "params": [
+              {
+                "name": "query_history_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows users to mark a specific query in Grafana's query history as a favorite by starring it. By sending a POST request to the endpoint with a unique query history identifier (query_history_uid), users can flag important or frequently used queries for easier access and reference later. The starred status helps organize and prioritize queries within the query history, making it simpler to locate and reuse commonly executed queries without having to search through the entire hi"
+        },
+        {
+          "info": {
+            "name": "Grafana Star Dashboard By UID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/user/stars/dashboard/uid/:dashboard_uid",
+            "params": [
+              {
+                "name": "dashboard_uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation allows an authenticated user to mark a specific dashboard as a favorite or \"starred\" item in Grafana by providing the dashboard's unique identifier (UID) in the URL path. When a POST request is made to this endpoint with a valid dashboard UID, the system records that the current user has starred that particular dashboard, making it easier to access from their list of favorite dashboards. This is a user-specific action that helps organize and quickly navigate to frequently used"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

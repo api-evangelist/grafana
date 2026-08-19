@@ -1,0 +1,87 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Licenses API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Licenses",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Refresh License Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/licensing/refresh-stats"
+          },
+          "docs": "This API operation refreshes the licensing statistics in Grafana by sending a GET request to the /licensing/refresh-stats endpoint. When invoked, it triggers an update of the current license usage data and metrics, ensuring that the most recent information about license consumption, active users, and other licensing-related statistics are retrieved and synchronized. This operation is typically used by administrators to obtain real-time licensing information without waiting for the automatic refr"
+        },
+        {
+          "info": {
+            "name": "Grafana Get License Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/licensing/token"
+          },
+          "docs": "This API operation retrieves the current license token information from a Grafana instance. When invoked with a GET request to the /licensing/token endpoint, it returns details about the active licensing configuration, which may include token metadata, validity status, expiration dates, and associated entitlements or features enabled by the license. This endpoint is typically used by administrators to verify licensing status, check token validity, or retrieve license information for audit and co"
+        },
+        {
+          "info": {
+            "name": "Grafana Post License Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/licensing/token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows administrators to activate or update a Grafana Enterprise license by submitting a license token via a POST request to the /licensing/token endpoint. When called, it accepts a license token string in the request body, validates the token with Grafana's licensing service, and applies the license to the Grafana instance if valid. This operation is typically used during initial Enterprise setup or when renewing an existing license, and it requires administrative privileges "
+        },
+        {
+          "info": {
+            "name": "Grafana Delete License Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/licensing/token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation removes the currently active license token from a Grafana instance. When executed, it deletes the stored license information, effectively reverting the instance to an unlicensed state or to use any default licensing configuration. This endpoint requires appropriate administrative permissions and is typically used when decommissioning a licensed Grafana installation, switching to a different license, or troubleshooting license-related issues. The DELETE method ensures complete "
+        },
+        {
+          "info": {
+            "name": "Grafana Post Renew License Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/licensing/token/renew"
+          },
+          "docs": "This API operation is used to renew an existing Grafana Enterprise license token. When invoked via a POST request to the /licensing/token/renew endpoint, it initiates the license token renewal process, typically validating the current token and requesting a fresh token from the Grafana licensing server. This operation is essential for maintaining continuous access to Grafana Enterprise features by ensuring the license remains valid and up-to-date. Authentication and appropriate permissions are r"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

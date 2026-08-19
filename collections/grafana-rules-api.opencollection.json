@@ -1,0 +1,704 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Rules API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Rules",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Get Team LBAC Rules Api",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:uid/lbac/teams",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves team-based Label-Based Access Control (LBAC) rules for a specific data source in Grafana identified by its unique identifier (uid). When called with a GET request to the endpoint /datasources/uid/{uid}/lbac/teams, it returns the configured LBAC rules that determine which teams have access to specific labels or subsets of data within the specified data source. This functionality is essential for managing granular permissions and ensuring teams can only query and view "
+        },
+        {
+          "info": {
+            "name": "Grafana Update Team LBAC Rules Api",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/datasources/uid/:uid/lbac/teams",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation updates the Label-Based Access Control (LBAC) rules for teams associated with a specific data source in Grafana. It uses the PUT method and targets a data source identified by its unique identifier (uid) in the endpoint path. The operation allows administrators to modify which teams have access to specific labels or subsets of data within the data source, enabling fine-grained access control at the team level. By updating these LBAC rules, organizations can ensure that differe"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Get Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules"
+          },
+          "docs": "This API operation retrieves Prometheus or Cortex alerting and recording rules from a configured data source and converts them into Grafana's unified alerting format. It acts as a migration utility that fetches existing Prometheus-compatible rules and transforms them so they can be imported or managed within Grafana's alerting system, enabling users to consolidate their monitoring rules into Grafana's native rule structure while maintaining compatibility with Prometheus-style rule definitions."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Post Rule Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "This API operation converts Prometheus or Cortex rule group configurations into Grafana's native format by accepting a POST request to the /convert/api/prom/rules endpoint. It enables users to migrate their existing Prometheus-style alerting and recording rules from Prometheus or Cortex deployments into Grafana, facilitating the transition between monitoring systems while preserving rule logic and structure. The endpoint processes the submitted rule groups and transforms them into a format compa"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Post Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle",
+            "headers": [
+              {
+                "name": "x-grafana-alerting-datasource-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-recording-rules-paused",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-alert-rules-paused",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-target-datasource-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-folder-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-notification-settings",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The Grafana API operation POST /convert/api/prom/rules/{NamespaceTitle} converts and creates a Prometheus or Cortex rule group within a specified namespace. This endpoint accepts Prometheus-style rule definitions and transforms them into Grafana's native alert rule format, allowing users to migrate their existing Prometheus alerting and recording rules into Grafana's unified alerting system. The {NamespaceTitle} parameter identifies the target namespace where the converted rule group will be sto"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Get Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle/:Group",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific Prometheus rule group from a designated namespace in Grafana's Cortex ruler service. The endpoint accepts two path parameters: NamespaceTitle which identifies the namespace containing the rule group, and Group which specifies the name of the rule group to retrieve. When called, it returns the configuration and rules defined within that particular rule group, allowing users to view and manage their Prometheus alerting and recording rules that have been conv"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Cortex Delete Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/convert/api/prom/rules/:NamespaceTitle/:Group",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation is used to delete a specific Prometheus rule group within Grafana's Cortex-based alerting system. It targets a rule group identified by both its namespace title and group name through the URL path parameters. When called with the DELETE HTTP method, it removes the entire rule group configuration from the specified namespace, effectively eliminating all alert and recording rules contained within that group from the Prometheus-compatible rules engine in Grafana."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Get Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules"
+          },
+          "docs": "This API operation retrieves Prometheus alerting and recording rules from a Grafana instance and converts them into a standardized configuration format. When a GET request is made to the /convert/prometheus/config/v1/rules endpoint, it fetches the existing Prometheus-style rules configured within Grafana and transforms them into a version 1 configuration schema, making it easier to migrate, backup, or integrate these rules with other systems or Prometheus instances. This is particularly useful f"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Post Rule Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "This API operation converts Prometheus rule group configurations to Grafana's format via a POST request to the /convert/prometheus/config/v1/rules endpoint. It accepts Prometheus-formatted rule groups as input and transforms them into a compatible format that can be used within Grafana's alerting and recording rule system, facilitating migration or integration between Prometheus and Grafana monitoring setups."
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Post Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle",
+            "headers": [
+              {
+                "name": "x-grafana-alerting-datasource-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-recording-rules-paused",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-alert-rules-paused",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-target-datasource-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-folder-uid",
+                "value": ""
+              },
+              {
+                "name": "x-grafana-alerting-notification-settings",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation converts Prometheus rule group configurations to Grafana's native format by accepting a POST request to the endpoint /convert/prometheus/config/v1/rules/{NamespaceTitle}, where {NamespaceTitle} represents the target namespace for the rule group. It takes Prometheus-formatted alerting and recording rules as input and transforms them into Grafana-compatible rule configurations, facilitating migration or integration between Prometheus and Grafana alerting systems. The operation a"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Get Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle/:Group",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and converts a Prometheus rule group configuration from a specific namespace in Grafana. It accepts GET requests at the endpoint path that includes both the namespace title and group name as path parameters, allowing users to fetch the configuration details of a particular Prometheus alerting or recording rule group. The operation is part of Grafana's conversion utilities that help transform Prometheus-native rule configurations into Grafana's internal format or vice"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Convert Prometheus Delete Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/convert/prometheus/config/v1/rules/:NamespaceTitle/:Group",
+            "params": [
+              {
+                "name": "NamespaceTitle",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation is used to delete a Prometheus rule group from a specific namespace in Grafana's configuration. It targets a particular rule group identified by both the namespace title and group name through the URL path parameters. When invoked with a DELETE HTTP method, it removes the specified rule group configuration from the Prometheus-compatible alerting and recording rules system within Grafana, effectively cleaning up rules that are no longer needed or are being replaced."
+        },
+        {
+          "info": {
+            "name": "Grafana List Recording Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/recording-rules"
+          },
+          "docs": "This API operation retrieves a list of all recording rules configured in Grafana. Recording rules are used to pre-compute frequently needed or computationally expensive expressions and save their result as a new set of time series data, which can improve query performance and reduce load on data sources. The GET request to the /recording-rules endpoint returns details about existing recording rules including their names, expressions, labels, and associated data sources, allowing administrators a"
+        },
+        {
+          "info": {
+            "name": "Grafana Create Recording Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/recording-rules",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new recording rule in Grafana's alerting system that allows you to pre-compute frequently needed or computationally expensive expressions and save their result as a new set of time series. This POST endpoint accepts a recording rule definition including the rule name, query expression, labels, and evaluation interval, then stores it in the Grafana instance for continuous evaluation. Recording rules are particularly useful for dashboard performance optimization and creating aggregated m"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Recording Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/recording-rules",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing recording rule in Grafana's alerting system. Recording rules are used to pre-calculate frequently needed or computationally expensive expressions and save their results as a new set of time series. This operation allows you to modify the configuration of a recording rule including its query expressions, labels, evaluation interval, and other parameters. You need to provide the complete updated recording rule configuration in the request body, and the rule will be identified b"
+        },
+        {
+          "info": {
+            "name": "Grafana Test Create Recording Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/recording-rules/test",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows users to test the creation of a recording rule in Grafana before actually implementing it. By sending a POST request to the /recording-rules/test endpoint, users can validate their recording rule configuration, including the PromQL expression, labels, and other parameters, to ensure it functions as expected without permanently adding it to the system. This testing capability helps prevent errors and allows users to verify that their recording rule will produce the desir"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Recording Rule Write Target",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/recording-rules/writer"
+          },
+          "docs": "This API operation retrieves the configured write target for recording rules in Grafana. When called using a GET request to the /recording-rules/writer endpoint, it returns information about where recording rule data is being written, which typically includes details about the remote write configuration or storage backend that has been set up to receive and store the results of recording rule evaluations. This is useful for administrators who need to verify or audit the destination of their reco"
+        },
+        {
+          "info": {
+            "name": "Grafana Create Recording Rule Write Target",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/recording-rules/writer",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The POST operation on the /recording-rules/writer endpoint in Grafana allows administrators to create a new recording rule write target, which defines a destination where pre-computed metric aggregations (recording rules) should be written. This endpoint accepts configuration details such as the remote write URL, authentication credentials, and other parameters necessary to establish a connection with the target storage system. Recording rule write targets enable Grafana to send the results of r"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Recording Rule Write Target",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/recording-rules/writer"
+          },
+          "docs": "This API operation removes a configured recording rule write target from Grafana. Recording rule write targets define external destinations where pre-aggregated metric data can be stored, and deleting a write target will disconnect Grafana from that specific storage endpoint. This DELETE operation is typically used when decommissioning a remote write destination, cleaning up unused configurations, or reconfiguring the recording rules infrastructure. Once deleted, recording rules will no longer w"
+        },
+        {
+          "info": {
+            "name": "Grafana Delete Recording Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/recording-rules/:recordingRuleID",
+            "params": [
+              {
+                "name": "recordingRuleID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific recording rule from Grafana by providing its unique identifier in the request path. Recording rules are used to pre-compute frequently needed or computationally expensive expressions and save their results as new time series data. This DELETE operation permanently removes the recording rule configuration identified by the recordingRuleID parameter, stopping any future evaluations and recordings associated with that rule. The operation requires appropriate authentication and au"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules"
+          },
+          "docs": "This API operation retrieves alert rules from Grafana's provisioning system. It uses a GET request to the /v1/provisioning/alert-rules endpoint to fetch configured alert rules that have been set up through Grafana's provisioning mechanism. The operation returns a list of alert rule definitions including their conditions, notifications, and metadata, allowing administrators and applications to programmatically query and review the current alerting configuration without manual access to the Grafan"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Post Alert Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new alert rule in Grafana's provisioning API, allowing administrators to programmatically define alerting conditions, evaluation intervals, notification settings, and query expressions. This endpoint accepts a POST request with a JSON payload containing the alert rule configuration including the rule name, folder location, data source queries, alert conditions, evaluation group, and notification channels. The operation enables infrastructure-as-code practices by allowing alert rules to"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rules Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "folderUid",
+                "value": "",
+                "type": "query",
+                "description": "UIDs of folders from which to export rules"
+              },
+              {
+                "name": "group",
+                "value": "",
+                "type": "query",
+                "description": "Name of group of rules to export. Must be specified only together with a single folder UID"
+              },
+              {
+                "name": "ruleUid",
+                "value": "",
+                "type": "query",
+                "description": "UID of alert rule to export. If specified, parameters folderUid and group must be empty."
+              }
+            ]
+          },
+          "docs": "This API operation retrieves alert rules from Grafana in an exportable format, allowing administrators to extract alert rule configurations for backup, migration, or version control purposes. The GET endpoint at /v1/provisioning/alert-rules/export provides a way to programmatically access the complete definition of configured alert rules, including their conditions, notification settings, and metadata. This is particularly useful for maintaining infrastructure as code, replicating alert configur"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:UID",
+            "params": [
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "Alert rule UID"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific alert rule from Grafana's provisioning system using the alert rule's unique identifier (UID). When called with a GET request to the endpoint /v1/provisioning/alert-rules/{UID}, it returns the complete configuration details of the specified alert rule, including its conditions, labels, annotations, and evaluation settings. This endpoint is part of Grafana's provisioning API, which allows programmatic management of alert rules outside of the standard UI inte"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Put Alert Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:UID",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "Alert rule UID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing alert rule in Grafana's provisioning API by specifying the rule's unique identifier (UID) in the path. This endpoint allows you to modify all aspects of an alert rule including its condition, evaluation interval, notification settings, labels, and annotations. The request requires a complete alert rule definition in the body, and the UID in the path must match the UID in the request body. This operation is part of Grafana's provisioning capabilities, enabling programmatic man"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Delete Alert Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:UID",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "Alert rule UID"
+              }
+            ]
+          },
+          "docs": "Deletes a specific alert rule from Grafana's provisioning system by its unique identifier (UID). This operation permanently removes the alert rule configuration from the system, including all associated settings such as conditions, labels, annotations, and notification policies. The deletion is immediate and cannot be undone, so the UID must be carefully specified to avoid removing the wrong alert rule. This endpoint is part of Grafana's provisioning API, which allows programmatic management of "
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/alert-rules/:UID/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "UID",
+                "value": "",
+                "type": "path",
+                "description": "Alert rule UID"
+              }
+            ]
+          },
+          "docs": "The Get Alert Rule Export endpoint allows you to export a specific alert rule configuration from Grafana by providing its unique identifier (UID). This operation retrieves the complete alert rule definition in a format suitable for provisioning, enabling you to back up, version control, or migrate alert rules between Grafana instances. By making a GET request to /v1/provisioning/alert-rules/{UID}/export, you can obtain the alert rule's configuration including its conditions, notification setting"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/folder/:FolderUID/rule-groups/:Group",
+            "params": [
+              {
+                "name": "FolderUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves a specific alert rule group within a designated folder in Grafana's provisioning system. By providing the folder's unique identifier (FolderUID) and the name of the alert rule group (Group) in the request path, users can fetch the complete configuration and details of that particular rule group. This GET endpoint is part of Grafana's provisioning API, which allows programmatic management of alerting configurations, enabling administrators and automation systems to qu"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Put Alert Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/folder/:FolderUID/rule-groups/:Group",
+            "headers": [
+              {
+                "name": "X-Disable-Provenance",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "FolderUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing alert rule group identified by the folder UID and group name in Grafana's provisioning API. This PUT operation allows you to modify the configuration of alert rules within a specific rule group, including updating rule definitions, thresholds, evaluation intervals, and notification settings. The endpoint requires both the FolderUID parameter to identify the containing folder and the Group parameter to specify which alert rule group to update, with the updated configuration pr"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Delete Alert Rule Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/folder/:FolderUID/rule-groups/:Group",
+            "params": [
+              {
+                "name": "FolderUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific alert rule group within a designated folder in Grafana's provisioning API. This operation requires both the folder's unique identifier (FolderUID) and the name of the alert rule group (Group) to be specified in the URL path. When executed, it removes the entire rule group and all alert rules contained within it from the Grafana instance. This is a destructive operation typically used when cleaning up monitoring configurations or reorganizing alert structures, and it requires a"
+        },
+        {
+          "info": {
+            "name": "Grafana Route Get Alert Rule Group Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/v1/provisioning/folder/:FolderUID/rule-groups/:Group/export",
+            "params": [
+              {
+                "name": "download",
+                "value": "",
+                "type": "query",
+                "description": "Whether to initiate a download of the file or not."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format of the downloaded file. Supported yaml, json or hcl. Accept header can also be used, but the query parameter will take precedence."
+              },
+              {
+                "name": "FolderUID",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API operation retrieves and exports a specific alert rule group from Grafana's provisioning system by providing both the parent folder's unique identifier (FolderUID) and the alert rule group name (Group) as path parameters. It allows users to obtain the complete configuration of an alert rule group in an exportable format, which can be used for backup purposes, migration between Grafana instances, or version control of alerting configurations. The GET method ensures this is a read-only ope"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

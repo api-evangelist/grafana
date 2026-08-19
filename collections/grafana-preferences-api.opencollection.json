@@ -1,0 +1,146 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Grafana HTTP Access Preferences API",
+    "version": "11.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Preferences",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grafana Get Org Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/org/preferences"
+          },
+          "docs": "This API operation retrieves the current preference settings for the active organization in Grafana. When called, it returns a JSON object containing various organizational preferences such as the default theme, home dashboard ID, timezone settings, and other UI-related configurations that apply to all users within the organization. This is a read-only GET request that requires appropriate permissions to access organizational settings and is commonly used by administrators to review or verify th"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Org Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/org/preferences",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API operation allows you to modify the configuration settings and preferences for a specific organization in Grafana. By sending a PUT request to the /org/preferences endpoint, you can update various organizational-level settings such as the UI theme, home dashboard, timezone, and other display or operational preferences that apply to all users within that organization. The request typically requires appropriate administrative permissions and accepts a JSON payload containing the preference"
+        },
+        {
+          "info": {
+            "name": "Grafana Patch Org Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/org/preferences",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the preferences for the current organization, allowing administrators to modify settings such as the default theme (light/dark/system), home dashboard ID, timezone preferences, and week start day. This endpoint accepts a partial preferences object via PATCH request, meaning only the fields that need to be changed should be included in the request body while other settings remain unchanged. The operation requires organization admin permissions and returns the updated preferences object up"
+        },
+        {
+          "info": {
+            "name": "Grafana Get Team Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/teams/:team_id/preferences",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the preferences for a specific Grafana team identified by the team_id parameter, which includes settings such as the team's home dashboard, timezone, and theme preferences. This GET endpoint allows administrators and team members with appropriate permissions to retrieve the current preference configuration that applies to all members of the specified team, enabling them to view or audit the team-level settings that override individual user preferences when working within the team context"
+        },
+        {
+          "info": {
+            "name": "Grafana Update Team Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/teams/:team_id/preferences",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the preferences for a specific team in Grafana by making a PUT request to the /teams/{team_id}/preferences endpoint. This operation allows administrators or team members with appropriate permissions to modify team-level settings such as the default home dashboard, timezone, and theme preferences. The team_id parameter in the URL path identifies which team's preferences should be updated, and the request body contains the preference values to be applied. These preferences will affect the "
+        },
+        {
+          "info": {
+            "name": "Grafana Get User Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{instance}.grafana.net/api/user/preferences"
+          },
+          "docs": "This API operation retrieves the current preferences for the authenticated user in Grafana. It returns configuration settings such as the user's preferred theme (light or dark mode), home dashboard ID, timezone settings, and UI language preferences. The endpoint requires authentication and returns a JSON object containing all the preference values associated with the logged-in user's account, allowing applications to understand and respect the user's personalized Grafana interface settings."
+        },
+        {
+          "info": {
+            "name": "Grafana Update User Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{instance}.grafana.net/api/user/preferences",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the preferences for the currently authenticated user in Grafana, allowing modification of settings such as theme (light/dark), home dashboard, timezone, and language preferences. This endpoint requires authentication and only affects the preferences of the user making the request. The operation accepts a JSON payload containing the preference fields to be updated, and returns the updated preference object upon successful modification. Changes take effect immediately for the user's sessio"
+        },
+        {
+          "info": {
+            "name": "Grafana Patch User Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{instance}.grafana.net/api/user/preferences",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the preferences for the currently authenticated user by allowing partial modifications to settings such as theme (light/dark), timezone, home dashboard ID, and UI preferences. This PATCH endpoint enables users to customize their Grafana experience by submitting only the specific preference fields they want to change, without needing to provide all preference values. The operation requires authentication and only affects the preferences of the user making the request, leaving unchanged an"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
