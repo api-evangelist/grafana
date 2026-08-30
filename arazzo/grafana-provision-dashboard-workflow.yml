@@ -12,8 +12,11 @@ info:
     description.
   version: 1.0.0
 sourceDescriptions:
-- name: grafanaApi
-  url: ../openapi/grafana-openapi.yml
+- name: createApi
+  url: ../openapi/grafana-create-api-openapi.yml
+  type: openapi
+- name: dashboardsApi
+  url: ../openapi/grafana-dashboards-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: provision-dashboard
@@ -81,7 +84,7 @@ workflows:
     description: >-
       Save the dashboard JSON into the folder created above. Grafana returns the
       assigned UID, the version number, and the URL to reach it.
-    operationId: postDashboard
+    operationId: createUpdateDashboard
     requestBody:
       contentType: application/json
       payload:
@@ -101,7 +104,7 @@ workflows:
     description: >-
       Read the saved dashboard back by UID to confirm it landed in the intended
       folder and to capture the stored model and metadata.
-    operationId: getDashboardByUID
+    operationId: getDashboardByUid
     parameters:
     - name: uid
       in: path

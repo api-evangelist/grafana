@@ -13,8 +13,17 @@ info:
     opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: grafanaApi
-  url: ../openapi/grafana-openapi.yml
+- name: alertsApi
+  url: ../openapi/grafana-alerts-api-openapi.yml
+  type: openapi
+- name: getApi
+  url: ../openapi/grafana-get-api-openapi.yml
+  type: openapi
+- name: policiesApi
+  url: ../openapi/grafana-policies-api-openapi.yml
+  type: openapi
+- name: postApi
+  url: ../openapi/grafana-post-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: provision-alerting
@@ -200,7 +209,7 @@ workflows:
       Create the alert rule last, now that a receiver exists and the tree routes
       to it. The rule's labels must match the route's object_matchers or the
       notification falls through to the default receiver.
-    operationId: routePostAlertRule
+    operationId: createAlertRule
     requestBody:
       contentType: application/json
       payload:
