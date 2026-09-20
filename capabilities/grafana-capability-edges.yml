@@ -1,0 +1,150 @@
+slug: grafana
+provider: Grafana
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 14
+edges:
+- tag: Dashboards
+  spec_file: grafana-dashboards-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.85
+  evidence: POST /dashboards/db createUpdateDashboard 'Create or update a dashboard'; GET /search searchDashboards
+    'Search dashboards and folders'; schemas Panel, DashboardLink, TemplateVariable
+  reason: Full lifecycle management of analytics dashboards, panels, versions and permissions on a visualization
+    platform — this is delivery of reporting/BI content, i.e. Analytics & BI Management.
+- tag: Ldap
+  spec_file: grafana-ldap-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /admin/ldap/reload reloadLDAPCfg; POST /admin/ldap/sync/{user_id} postSyncUserWithLDAP
+  reason: Directory (LDAP) configuration reload and per-user directory synchronisation is squarely identity
+    federation and access management.
+- tag: Remove
+  spec_file: grafana-remove-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: DELETE /access-control/users/{userId}/roles/{roleUID}  removeUserRole; DELETE /orgs/{org_id}/users/{user_id}  removeOrgUser
+  reason: Operations remove users from organisations and revoke role assignments — access-control administration,
+    mapping to Identity & Access Management.
+- tag: Role
+  spec_file: grafana-role-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: PUT /access-control/roles/{roleUID}  updateRole; PUT /access-control/roles/{roleUID}/assignments  setRoleAssignments
+  reason: RBAC role definition and assignment management under /access-control — squarely Identity & Access
+    Management.
+- tag: Roles
+  spec_file: grafana-roles-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: PUT /access-control/users/{userId}/roles  setUserRoles
+  reason: Assigning roles to users and teams via access-control endpoints is access administration (IAM).
+- tag: Account
+  spec_file: grafana-account-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: POST /serviceaccounts  createServiceAccount; schemas CreateServiceAccountForm, ServiceAccountProfileDTO,
+    Role
+  reason: Lifecycle management of service accounts (non-human identities) with attached roles — identity
+    and access administration, not any finance 'account' notion despite the tag string.
+- tag: Alerts
+  spec_file: grafana-alerts-api-openapi.yml
+  capability_id: BC-4220.20
+  capability_id_l1: BC-4220
+  capability_name: Observability Management
+  confidence: 0.7
+  evidence: POST /v1/provisioning/alert-rules  createAlertRule; GET /v1/provisioning/contact-points  getContactPoints;
+    schema AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.
+  reason: Alert rules evaluated over monitoring queries plus notification contact points on an observability
+    platform — this is production monitoring, explicitly NOT financial-crime or business alerting. Sits
+    between Observability and Incident Response detection, hence 0.7 on the sub-capability.
+- tag: Built
+  spec_file: grafana-built-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: POST /access-control/{resource}/{resourceID}/builtInRoles/{builtInRole}  setResourcePermissionsForBuiltInRole;
+    schema setPermissionCommand
+  reason: Despite the meaningless tag fragment 'Built', the single operation assigns resource permissions
+    to built-in roles — role-based authorisation administration.
+- tag: Groups
+  spec_file: grafana-groups-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: PUT /groupsync/groups/{group_id} updateGroupMappings; GET /teams/{teamId}/groups/search searchTeamGroups;
+    schema TeamGroupDTO
+  reason: Operations map external directory groups onto Grafana teams (group sync), which is directory-to-application
+    group membership administration — identity and access management.
+- tag: Member
+  spec_file: grafana-member-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: PUT /teams/{team_id}/members/{user_id} updateTeamMember; DELETE /teams/{team_id}/members/{user_id}
+    removeTeamMember
+  reason: Adding/updating and removing users from teams governs who has what access in the platform —
+    team membership administration under identity and access management.
+- tag: Metrics
+  spec_file: grafana-metrics-api-openapi.yml
+  capability_id: BC-4220.20
+  capability_id_l1: BC-4220
+  capability_name: Observability Management
+  confidence: 0.7
+  evidence: POST /ds/query  queryMetricsWithExpressions  Grafana Query Metrics With Expressions; schemas
+    MetricRequest, TimeRange, QueryDataResponse
+  reason: Operation queries time-series metrics from data sources, the core of making a running service
+    understandable — observability. Some ambiguity with generic Analytics & BI since Grafana also visualises
+    business metrics, hence 0.7 rather than higher.
+- tag: Permissions
+  spec_file: grafana-permissions-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: POST /access-control/{resource}/{resourceID}/users/{userID}  setResourcePermissionsForUser;
+    schema SetResourcePermissionCommand
+  reason: Operations assign resource-level access-control permissions to users and teams — access management.
+    Scope is limited to one product's internal authorisation model rather than enterprise IAM, so 0.7.
+- tag: Reports
+  spec_file: grafana-reports-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.7
+  evidence: 'POST /reports/email  sendReport; schemas: ReportSchedule, ReportDashboard, ReportBrandingOptions'
+  reason: Scheduled emailing and configuration of dashboard reports is delivery of reporting/BI content
+    from the analytics platform.
+- tag: Rules
+  spec_file: grafana-rules-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: 'PUT /datasources/uid/{uid}/lbac/teams  updateTeamLBACRulesApi; schemas: TeamLBACRule'
+  reason: LBAC (label-based access control) rules per team on a data source govern data access permissions
+    — access control configuration, not alerting rules.
