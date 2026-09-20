@@ -1,155 +1,182 @@
-specification: API Commons Plans
-specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
-provider: Grafana
-providerId: grafana
-created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags:
-  - Alerting
-  - Analytics
-  - Dashboards
-  - Logs
-  - Metrics
-  - Monitoring
-  - Observability
-  - Traces
-  - Visualization
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-09-20'
+method: searched
+source: https://grafana.com/pricing/
+sources:
+- https://grafana.com/pricing/
+provenance:
+  tool: planning/api-economics/harvest_pricing.py
+  run: 20260920T120546
+  grounding: every price_text was found verbatim in the fetched page text
+audience: business-product
+pricing_basis: usage-other
+published: true
+note: Grafana Cloud pricing page with Free/Pro/Enterprise tiers plus per-product usage rates; Enterprise
+  per-product rates mostly 'Custom' with $25,000/year minimum commit.
+plan_count: 20
+currency: USD
 plans:
-  - id: grafana-free
-    name: Free
-    type: freemium
-    description: Free entry tier for the Grafana API surface. Intended for evaluation, prototyping, and
-      low-volume integrations. Real limits and pricing must be reconciled with the provider's published
-      plan documentation.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota across all included endpoints
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 1000
-        timeFrame: month
-        geo: global
-        domains:
-          - http://localhost:3000/api
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 10
-        timeFrame: minute
-        geo: global
-        domains:
-          - http://localhost:3000/api
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Public Documentation
-      - name: Community Support
-      - name: Sandbox Access
-      - name: Grafana HTTP API
-  - id: grafana-pro
-    name: Professional
-    type: paid
-    description: Production tier for Grafana. Provides higher quotas, priority support, and access to
-      the broader API portfolio. Pricing placeholder; align with the provider's pricing page.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 100000
-        timeFrame: month
-        geo: global
-        domains:
-          - http://localhost:3000/api
-        unit: 1
-        price: TBD
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
-        geo: global
-        domains:
-          - http://localhost:3000/api
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Overage
-        description: Per-request price after monthly quota is exceeded
-        name: overage
-        type: metered
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: global
-        domains:
-          - http://localhost:3000/api
-        unit: 1000
-        price: TBD
-        userMultiplied: false
-    elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
-      - name: Webhook Subscriptions
-      - name: Grafana HTTP API
-  - id: grafana-enterprise
-    name: Enterprise
-    type: enterprise
-    description: Custom-negotiated tier for Grafana. Includes dedicated capacity, contractual SLAs, security
-      review, data residency options, and named technical account management.
-    entries:
-      - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: configurable
-        domains:
-          - http://localhost:3000/api
-        unit: 1
-        price: custom
-        userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
-        geo: configurable
-        domains:
-          - http://localhost:3000/api
-        unit: 1
-        price: custom
-        userMultiplied: false
-    elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
-      - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
-      - name: Grafana HTTP API
-maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- name: Free
+  price_text: Always $0
+  price: 0
+  currency: USD
+  period: month
+  included_quota: All Grafana Cloud services, with limited usage; 14 days retention for metrics, logs,
+    traces, profiles, & k6 performance tests
+- name: Pro
+  price_text: From $19 / month + usage with volume discounts
+  price: 19
+  currency: USD
+  period: month
+  unit: platform fee + usage
+  included_quota: Free tier allowances, 8X5 email support, 13 months retention for metrics; 30 days retention
+    for logs, traces, profiles, & k6
+  overage: Pay as you go above the Free tier
+- name: Enterprise
+  price_text: Starts at $25,000 / year spend commit
+  price: 25000
+  currency: USD
+  period: year
+  unit: annual spend commit
+  included_quota: Premium support, custom retention, deployment flexibility
+- name: Metrics – Pro
+  price_text: Starts at $6.50 / 1k series
+  price: 6.5
+  currency: USD
+  period: month
+  unit: 1k series
+  included_quota: 10k active series per month
+  overage: then pay as you go
+- name: Metrics – Enterprise
+  price_text: As low as $3 / 1k series
+  price: 3
+  currency: USD
+  period: month
+  unit: 1k series
+  included_quota: Minimum commit of $25,000 per year
+- name: Logs – Pro
+  price_text: Starts at $0.050/GB Process
+  price: 0.05
+  currency: USD
+  period: per-use
+  unit: GB processed
+  included_quota: 50 GB ingested per month
+  overage: Starts at $0.400/GB Write; Starts at $0.100/GB Retain
+- name: Traces – Pro
+  price_text: Starts at $0.400/GB Write
+  price: 0.4
+  currency: USD
+  period: per-use
+  unit: GB written
+  included_quota: 50 GB ingested per month
+  overage: then pay as you go
+- name: Kubernetes Monitoring – Pro
+  price_text: Starts at $0.0100 / per host hour ($7.20/host)
+  currency: USD
+  period: per-use
+  unit: host hour
+  included_quota: 2,232 host hours + 37,944 container hours per month
+  overage: Starts at $0.00070 / per container hour ($0.50/container)
+- name: Application Observability – Pro
+  price_text: Starts at $0.025 / per host hour ($18 / host)
+  currency: USD
+  period: per-use
+  unit: host hour
+  included_quota: 2,232 host hours
+  overage: then pay as you go
+- name: Frontend Observability – Pro
+  price_text: Starts at $0.750 / 1k sessions
+  price: 0.75
+  currency: USD
+  period: per-use
+  unit: 1k sessions
+  included_quota: 50k sessions per month
+  overage: then pay as you go
+- name: Database Observability – Pro
+  price_text: Starts at $0.070 / host hour (~$51 / host)
+  currency: USD
+  period: per-use
+  unit: host hour
+  included_quota: 2,232 database host hours
+  overage: then pay as you go
+- name: Grafana Assistant – Pro
+  price_text: Starts at $20.00 / active AI user (includes 40M tokens per user)
+  price: 20
+  currency: USD
+  period: month
+  unit: active AI user
+  included_quota: 3 active AI users per month (40M tokens / user / mo) & 25M tokens per month for system-initiated
+    usage
+  overage: Starts at $2 / 1M tokens (for additional tokens)
+- name: Investigations – Pro
+  price_text: Starts at $2 / 1M tokens (beyond included allowances)
+  price: 2
+  currency: USD
+  period: per-use
+  unit: 1M tokens
+  included_quota: 25M tokens per month system-initiated & 40M tokens per active AI user
+  overage: pay as you go
+- name: Agent Observability – Pro
+  price_text: Starts at $1.50 / 1k generations
+  price: 1.5
+  currency: USD
+  period: per-use
+  unit: 1k generations
+  included_quota: 30k generations per month & 25M tokens per month for system-initiated usage
+  overage: Starts at $2 / 1M tokens (for Evals & Guards)
+- name: Synthetics API Testing – Pro
+  price_text: Starts at $5.00 / 10k API test executions
+  price: 5
+  currency: USD
+  period: per-use
+  unit: 10k API test executions
+  included_quota: 100k API test executions & 10k browser test executions per month
+  overage: then pay as you go
+- name: Synthetics Browser Testing – Pro
+  price_text: Starts at $50.00 / 10k browser test executions
+  price: 50
+  currency: USD
+  period: per-use
+  unit: 10k browser test executions
+  included_quota: 100k API test executions & 10k browser test executions per month
+  overage: then pay as you go
+- name: Performance Testing (k6) – Pro
+  price_text: Starts at $0.150 / virtual user hour
+  price: 0.15
+  currency: USD
+  period: per-use
+  unit: virtual user hour
+  included_quota: 500 virtual user hours per month
+  overage: then pay as you go
+- name: Grafana Visualization – Pro
+  price_text: Starts at $8.00 / active user
+  price: 8
+  currency: USD
+  period: month
+  unit: active user
+  included_quota: 3 active users per month
+  overage: then pay as you go
+- name: Grafana Visualization with Enterprise Plugins – Pro
+  price_text: Starts at $55.00 / user with Enterprise Plugins
+  price: 55
+  currency: USD
+  period: month
+  unit: active user
+  included_quota: 3 active users per month
+  overage: then pay as you go
+- name: IRM – Pro
+  price_text: Starts at $20.00 / active IRM user
+  price: 20
+  currency: USD
+  period: month
+  unit: active IRM user
+  included_quota: 3 active IRM users per month
+  overage: then pay as you go
+rate_limit_statements:
+- Limited to 10k active series per month
+- Limited to 50 GB ingested per month
+- Limited to 50k sessions per month
+- Limited to 500 virtual user hours per month
+- Limited to 3 active users per month
+- Limited to 100k API test executions & 10k browser test executions per month
+- Scale up to 1 million concurrent virtual users
