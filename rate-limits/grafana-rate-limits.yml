@@ -1,96 +1,50 @@
-specification: API Commons Rate Limits
-specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
-provider: Grafana
-providerId: grafana
-created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags:
-  - Alerting
-  - Analytics
-  - Dashboards
-  - Logs
-  - Metrics
-  - Monitoring
-  - Observability
-  - Traces
-  - Visualization
-  - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Grafana API surface. Captures per-tier quotas,
-  burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to be replaced
-  with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
-responseCodes:
-  throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
+# Rate limits transcribed from the provider's own documentation — see provenance. Quoted, not derived.
+generated: '2026-09-20'
+method: searched
+source: https://grafana.com/docs/loki/latest/operations/request-validation-rate-limits/
+sources:
+- https://grafana.com/docs/loki/latest/operations/request-validation-rate-limits/
+provenance:
+  tool: planning/api-economics/harvest_ratelimits.py
+  run: 20260920T133210
+  grounding: every limit_text was found verbatim in the fetched page text
+published: false
+note: Loki self-hosted page describing configurable ingestion rate limits and validation errors; rate
+  limits are operator-configured per tenant, values given are defaults. Rate-limit errors return 429;
+  validation errors return 400/413/260.
+limit_count: 8
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Grafana HTTP API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Grafana HTTP API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Grafana HTTP API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Grafana HTTP API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Grafana HTTP API
-policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
-maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- name: per_stream_rate_limit default
+  limit_text: 3MB for per_stream_rate_limit
+  scope: unclear
+  endpoint: per stream ingestion
+- name: per_stream_rate_limit_burst default
+  limit_text: 15MB for per_stream_rate_limit_burst
+  scope: unclear
+  endpoint: per stream ingestion
+  kind: burst
+- name: max_recv_msg_size default
+  limit_text: max_recv_msg_size defaults to 100MB
+  scope: unclear
+  endpoint: distributor push request
+- name: max_decompressed_size default
+  limit_text: max_decompressed_size defaults to 5000MB
+  scope: unclear
+  endpoint: distributor push request
+- name: stream label string limit
+  limit_text: A single stream’s label string exceeds 16MB
+  scope: unclear
+  endpoint: push request
+- name: max_label_name_length default
+  limit_text: the default value of 1024
+  scope: unclear
+  endpoint: label names
+- name: max_structured_metadata_size
+  limit_text: 'max_structured_metadata_size (default: 64kb )'
+  scope: unclear
+  endpoint: structured metadata
+- name: max_structured_metadata_entries_count
+  limit_text: 'max_structured_metadata_entries_count (default: 128 )'
+  scope: unclear
+  endpoint: structured metadata
+exceeded_status: 429
