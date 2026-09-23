@@ -1,86 +1,29 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Provider API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
+  title: Grafana Provider API
+  description: Grafana is an open-source analytics and visualization platform that helps you monitor and analyze data from various sources.
   contact:
     name: Grafana Labs
     url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+    email: hello@grafana.com
+  version: 0.0.1
 servers:
-- url: https://{instance}.grafana.net/api
-  description: Grafana Cloud
+- url: http://{defaultHost}
   variables:
-    instance:
-      default: your-instance
-- url: http://localhost:3000/api
-  description: Local Grafana instance
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- basic: []
+- api_key: []
 tags:
 - name: Provider
 paths:
   /v1/sso-settings/{key}:
     parameters: []
-    get:
-      tags:
-      - Provider
-      summary: Grafana Get Provider Settings
-      description: Retrieves the configuration settings for a specific Single Sign-On (SSO) provider in Grafana by providing the provider's unique key identifier. This GET operation returns detailed information about the SSO provider's configuration, including authentication parameters, user mapping rules, and other provider-specific settings that control how users authenticate and are provisioned within Grafana through that particular SSO integration.
-      operationId: getProviderSettings
-      parameters:
-      - name: key
-        in: path
-        description: ''
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/getSSOSettingsResponse'
-        '400':
-          description: BadRequestError is returned when the request is invalid and it cannot be processed.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '404':
-          description: NotFoundError is returned when the requested resource was not found.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
     put:
       tags:
       - Provider
@@ -207,6 +150,17 @@ paths:
         ChooseTags: true
 components:
   schemas:
+    body:
+      title: body
+      type: object
+      properties:
+        id:
+          type: string
+        provider:
+          type: string
+        settings:
+          type: object
+          additionalProperties: {}
     ErrorResponseBody:
       title: ErrorResponseBody
       required:
@@ -231,40 +185,11 @@ components:
       properties:
         message:
           type: string
-    getSSOSettingsResponse:
-      title: getSSOSettingsResponse
-      type: object
-      properties:
-        id:
-          type: string
-        provider:
-          type: string
-        settings:
-          type: object
-          additionalProperties: {}
-        source:
-          type: string
-    body:
-      title: body
-      type: object
-      properties:
-        id:
-          type: string
-        provider:
-          type: string
-        settings:
-          type: object
-          additionalProperties: {}
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: Service account token or API key
-    BasicAuth:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
       type: http
       scheme: basic
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: 'Format: Bearer <api-key>'

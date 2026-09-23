@@ -1,26 +1,24 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Correlation API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
+  title: Grafana Correlation API
+  description: Grafana is an open-source analytics and visualization platform that helps you monitor and analyze data from various sources.
   contact:
     name: Grafana Labs
     url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+    email: hello@grafana.com
+  version: 0.0.1
 servers:
-- url: https://{instance}.grafana.net/api
-  description: Grafana Cloud
+- url: http://{defaultHost}
   variables:
-    instance:
-      default: your-instance
-- url: http://localhost:3000/api
-  description: Local Grafana instance
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- basic: []
+- api_key: []
 tags:
 - name: Correlation
 paths:
@@ -291,6 +289,133 @@ paths:
         ChooseTags: true
 components:
   schemas:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    CorrelationConfigUpdateDTO:
+      title: CorrelationConfigUpdateDTO
+      type: object
+      properties:
+        field:
+          type: string
+          description: Field used to attach the correlation link
+          examples:
+          - message
+        target:
+          type: object
+          additionalProperties: {}
+          description: Target data query
+          examples:
+          - prop1: value1
+            prop2: value
+        transformations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transformation'
+          description: Source data transformations
+          examples:
+          - - type: logfmt
+            - expression: (Superman|Batman)
+              type: regex
+              variable: name
+    UpdateCorrelationCommand:
+      title: UpdateCorrelationCommand
+      type: object
+      properties:
+        config:
+          $ref: '#/components/schemas/CorrelationConfigUpdateDTO'
+        description:
+          type: string
+          description: Optional description of the correlation
+          examples:
+          - Logs to Traces
+        label:
+          type: string
+          description: Optional label identifying the correlation
+          examples:
+          - My label
+        type:
+          type: string
+          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
+
+            +enum'
+      description: UpdateCorrelationCommand is the command for updating a correlation
+    Type1:
+      title: Type1
+      enum:
+      - regex
+      - logfmt
+      type: string
+    CreateCorrelationResponseBody:
+      title: CreateCorrelationResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+          examples:
+          - Correlation created
+        result:
+          allOf:
+          - $ref: '#/components/schemas/Correlation'
+          - description: Correlation is the model for correlations definitions
+      description: CreateCorrelationResponse is the response struct for CreateCorrelationCommand
+    CreateCorrelationCommand:
+      title: CreateCorrelationCommand
+      type: object
+      properties:
+        config:
+          $ref: '#/components/schemas/CorrelationConfig'
+        description:
+          type: string
+          description: Optional description of the correlation
+          examples:
+          - Logs to Traces
+        label:
+          type: string
+          description: Optional label identifying the correlation
+          examples:
+          - My label
+        provisioned:
+          type: boolean
+          description: True if correlation was created with provisioning. This makes it read-only.
+        targetUID:
+          type: string
+          description: Target data source UID to which the correlation is created. required if type = query
+          examples:
+          - PE1C5CBDA0504A6A3
+        type:
+          type: string
+          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
+
+            +enum'
+      description: CreateCorrelationCommand is the command for creating a correlation
+    Transformation:
+      title: Transformation
+      type: object
+      properties:
+        expression:
+          type: string
+        field:
+          type: string
+        mapValue:
+          type: string
+        type:
+          $ref: '#/components/schemas/Type1'
     Correlation:
       title: Correlation
       type: object
@@ -337,84 +462,6 @@ components:
           examples:
           - 50xhMlg9k
       description: Correlation is the model for correlations definitions
-    DeleteCorrelationResponseBody:
-      title: DeleteCorrelationResponseBody
-      type: object
-      properties:
-        message:
-          type: string
-          examples:
-          - Correlation deleted
-    Type1:
-      title: Type1
-      enum:
-      - regex
-      - logfmt
-      type: string
-    UpdateCorrelationResponseBody:
-      title: UpdateCorrelationResponseBody
-      type: object
-      properties:
-        message:
-          type: string
-          examples:
-          - Correlation updated
-        result:
-          allOf:
-          - $ref: '#/components/schemas/Correlation'
-          - description: Correlation is the model for correlations definitions
-    CreateCorrelationCommand:
-      title: CreateCorrelationCommand
-      type: object
-      properties:
-        config:
-          $ref: '#/components/schemas/CorrelationConfig'
-        description:
-          type: string
-          description: Optional description of the correlation
-          examples:
-          - Logs to Traces
-        label:
-          type: string
-          description: Optional label identifying the correlation
-          examples:
-          - My label
-        provisioned:
-          type: boolean
-          description: True if correlation was created with provisioning. This makes it read-only.
-        targetUID:
-          type: string
-          description: Target data source UID to which the correlation is created. required if type = query
-          examples:
-          - PE1C5CBDA0504A6A3
-        type:
-          type: string
-          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
-
-            +enum'
-      description: CreateCorrelationCommand is the command for creating a correlation
-    UpdateCorrelationCommand:
-      title: UpdateCorrelationCommand
-      type: object
-      properties:
-        config:
-          $ref: '#/components/schemas/CorrelationConfigUpdateDTO'
-        description:
-          type: string
-          description: Optional description of the correlation
-          examples:
-          - Logs to Traces
-        label:
-          type: string
-          description: Optional label identifying the correlation
-          examples:
-          - My label
-        type:
-          type: string
-          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
-
-            +enum'
-      description: UpdateCorrelationCommand is the command for updating a correlation
     CorrelationConfig:
       title: CorrelationConfig
       required:
@@ -444,85 +491,31 @@ components:
           description: 'the type of correlation, either query for containing query information, or external for containing an external URL
 
             +enum'
-    CorrelationConfigUpdateDTO:
-      title: CorrelationConfigUpdateDTO
-      type: object
-      properties:
-        field:
-          type: string
-          description: Field used to attach the correlation link
-          examples:
-          - message
-        target:
-          type: object
-          additionalProperties: {}
-          description: Target data query
-          examples:
-          - prop1: value1
-            prop2: value
-        transformations:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transformation'
-          description: Source data transformations
-          examples:
-          - - type: logfmt
-            - expression: (Superman|Batman)
-              type: regex
-              variable: name
-    Transformation:
-      title: Transformation
-      type: object
-      properties:
-        expression:
-          type: string
-        field:
-          type: string
-        mapValue:
-          type: string
-        type:
-          $ref: '#/components/schemas/Type1'
-    ErrorResponseBody:
-      title: ErrorResponseBody
-      required:
-      - message
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
-        message:
-          type: string
-          description: a human readable version of the error
-        status:
-          type: string
-          description: 'Status An optional status to denote the cause of the error.
-
-
-            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
-    CreateCorrelationResponseBody:
-      title: CreateCorrelationResponseBody
+    DeleteCorrelationResponseBody:
+      title: DeleteCorrelationResponseBody
       type: object
       properties:
         message:
           type: string
           examples:
-          - Correlation created
+          - Correlation deleted
+    UpdateCorrelationResponseBody:
+      title: UpdateCorrelationResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+          examples:
+          - Correlation updated
         result:
           allOf:
           - $ref: '#/components/schemas/Correlation'
           - description: Correlation is the model for correlations definitions
-      description: CreateCorrelationResponse is the response struct for CreateCorrelationCommand
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: Service account token or API key
-    BasicAuth:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
       type: http
       scheme: basic
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: 'Format: Bearer <api-key>'

@@ -1,26 +1,24 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Accounts API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
+  title: Grafana Accounts API
+  description: Grafana is an open-source analytics and visualization platform that helps you monitor and analyze data from various sources.
   contact:
     name: Grafana Labs
     url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+    email: hello@grafana.com
+  version: 0.0.1
 servers:
-- url: https://{instance}.grafana.net/api
-  description: Grafana Cloud
+- url: http://{defaultHost}
   variables:
-    instance:
-      default: your-instance
-- url: http://localhost:3000/api
-  description: Local Grafana instance
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- basic: []
+- api_key: []
 tags:
 - name: Accounts
 paths:
@@ -109,48 +107,6 @@ paths:
         ChooseTags: true
 components:
   schemas:
-    ErrorResponseBody:
-      title: ErrorResponseBody
-      required:
-      - message
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
-        message:
-          type: string
-          description: a human readable version of the error
-        status:
-          type: string
-          description: 'Status An optional status to denote the cause of the error.
-
-
-            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
-    SearchOrgServiceAccountsResult:
-      title: SearchOrgServiceAccountsResult
-      type: object
-      properties:
-        page:
-          type: integer
-          contentEncoding: int64
-        perPage:
-          type: integer
-          contentEncoding: int64
-        serviceAccounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServiceAccountDTO'
-          description: ''
-        totalCount:
-          type: integer
-          description: 'It can be used for pagination of the user list
-
-            E.g. if totalCount is equal to 100 users and
-
-            the perpage parameter is set to 10 then there are 10 pages of users.'
-          contentEncoding: int64
-      description: 'swagger: model'
     ServiceAccountDTO:
       title: ServiceAccountDTO
       type: object
@@ -205,16 +161,53 @@ components:
           examples:
           - fe1xejlha91xce
       description: 'swagger: model'
+    SearchOrgServiceAccountsResult:
+      title: SearchOrgServiceAccountsResult
+      type: object
+      properties:
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        serviceAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceAccountDTO'
+          description: ''
+        totalCount:
+          type: integer
+          description: 'It can be used for pagination of the user list
+
+            E.g. if totalCount is equal to 100 users and
+
+            the perpage parameter is set to 10 then there are 10 pages of users.'
+          contentEncoding: int64
+      description: 'swagger: model'
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: Service account token or API key
-    BasicAuth:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
       type: http
       scheme: basic
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: 'Format: Bearer <api-key>'

@@ -1,26 +1,24 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Description API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
+  title: Grafana Description API
+  description: Grafana is an open-source analytics and visualization platform that helps you monitor and analyze data from various sources.
   contact:
     name: Grafana Labs
     url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+    email: hello@grafana.com
+  version: 0.0.1
 servers:
-- url: https://{instance}.grafana.net/api
-  description: Grafana Cloud
+- url: http://{defaultHost}
   variables:
-    instance:
-      default: your-instance
-- url: http://localhost:3000/api
-  description: Local Grafana instance
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- basic: []
+- api_key: []
 tags:
 - name: Description
 paths:
@@ -69,6 +67,18 @@ paths:
         ChooseTags: true
 components:
   schemas:
+    Assignments:
+      title: Assignments
+      type: object
+      properties:
+        builtInRoles:
+          type: boolean
+        serviceAccounts:
+          type: boolean
+        teams:
+          type: boolean
+        users:
+          type: boolean
     ErrorResponseBody:
       title: ErrorResponseBody
       required:
@@ -98,28 +108,11 @@ components:
           items:
             type: string
           description: ''
-    Assignments:
-      title: Assignments
-      type: object
-      properties:
-        builtInRoles:
-          type: boolean
-        serviceAccounts:
-          type: boolean
-        teams:
-          type: boolean
-        users:
-          type: boolean
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: Service account token or API key
-    BasicAuth:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
       type: http
       scheme: basic
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: 'Format: Bearer <api-key>'

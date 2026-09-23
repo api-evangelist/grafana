@@ -1,94 +1,27 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Retrieve API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
+  title: Grafana Retrieve API
+  description: Grafana is an open-source analytics and visualization platform that helps you monitor and analyze data from various sources.
   contact:
     name: Grafana Labs
     url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+    email: hello@grafana.com
+  version: 0.0.1
 servers:
-- url: https://{instance}.grafana.net/api
-  description: Grafana Cloud
+- url: http://{defaultHost}
   variables:
-    instance:
-      default: your-instance
-- url: http://localhost:3000/api
-  description: Local Grafana instance
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- basic: []
+- api_key: []
 tags:
 - name: Retrieve
 paths:
-  /serviceaccounts/{serviceAccountId}:
-    parameters: []
-    get:
-      tags:
-      - Retrieve
-      summary: Grafana Retrieve Service Account
-      description: Returns detailed information about a specific Grafana service account by its unique identifier. This operation allows administrators to fetch the complete configuration and metadata of a service account, including its name, role, status, and associated permissions. The service account ID must be provided as a path parameter to identify which service account to retrieve. This is useful for auditing purposes, verifying service account configurations, or retrieving details before performing updates or deletions.
-      operationId: retrieveServiceAccount
-      parameters:
-      - name: serviceAccountId
-        in: path
-        description: ''
-        required: true
-        schema:
-          type: integer
-          contentEncoding: int64
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceAccountDTO'
-        '400':
-          description: BadRequestError is returned when the request is invalid and it cannot be processed.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '404':
-          description: NotFoundError is returned when the requested resource was not found.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
   /signing-keys/keys:
     parameters: []
     get:
@@ -121,6 +54,59 @@ paths:
         ChooseTags: true
 components:
   schemas:
+    Extension:
+      title: Extension
+      type: object
+      properties:
+        Critical:
+          type: boolean
+        Id:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: ''
+        Value:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: ''
+      description: 'Extension represents the ASN.1 structure of the same name. See RFC
+
+        5280, section 4.2.'
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    PolicyMappingrepresentsapolicymappingentryinthepolicyMappingsextension.:
+      title: PolicyMappingrepresentsapolicymappingentryinthepolicyMappingsextension.
+      type: object
+      properties:
+        IssuerDomainPolicy:
+          type: string
+          description: 'IssuerDomainPolicy contains a policy OID the issuing certificate considers
+
+            equivalent to SubjectDomainPolicy in the subject certificate.'
+        SubjectDomainPolicy:
+          type: string
+          description: 'SubjectDomainPolicy contains a OID the issuing certificate considers
+
+            equivalent to IssuerDomainPolicy in the subject certificate.'
     Name:
       title: Name
       type: object
@@ -169,20 +155,207 @@ components:
         structure. If an accurate representation is needed, asn1.Unmarshal the raw
 
         subject or issuer as an [RDNSequence].'
-    PolicyMappingrepresentsapolicymappingentryinthepolicyMappingsextension.:
-      title: PolicyMappingrepresentsapolicymappingentryinthepolicyMappingsextension.
+    AnIPNetrepresentsanIPnetwork.:
+      title: AnIPNetrepresentsanIPnetwork.
       type: object
       properties:
-        IssuerDomainPolicy:
+        IP:
           type: string
-          description: 'IssuerDomainPolicy contains a policy OID the issuing certificate considers
-
-            equivalent to SubjectDomainPolicy in the subject certificate.'
-        SubjectDomainPolicy:
+        Mask:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: See type [IPNet] and func [ParseCIDR] for details.
+    AURLrepresentsaparsedURLtechnicallyaURIreference.2:
+      title: AURLrepresentsaparsedURLtechnicallyaURIreference.2
+      type: object
+      properties:
+        ForceQuery:
+          type: boolean
+        Fragment:
           type: string
-          description: 'SubjectDomainPolicy contains a OID the issuing certificate considers
+        Host:
+          type: string
+        OmitHost:
+          type: boolean
+        Opaque:
+          type: string
+        Path:
+          type: string
+        RawFragment:
+          type: string
+        RawPath:
+          type: string
+        RawQuery:
+          type: string
+        Scheme:
+          type: string
+        User:
+          type: object
+          description: 'The Userinfo type is an immutable encapsulation of username and
 
-            equivalent to IssuerDomainPolicy in the subject certificate.'
+            password details for a [URL]. An existing Userinfo value is guaranteed
+
+            to have a username set (potentially empty, as allowed by RFC 2396),
+
+            and optionally a password.'
+      description: 'The general form represented is:
+
+
+        [scheme:][//[userinfo@]host][/]path[?query][#fragment]
+
+
+        URLs that do not start with a slash after the scheme are interpreted as:
+
+
+        scheme:opaque[?query][#fragment]
+
+
+        The Host field contains the host and port subcomponents of the URL.
+
+        When the port is present, it is separated from the host with a colon.
+
+        When the host is an IPv6 address, it must be enclosed in square brackets:
+
+        "[fe80::1]:80". The [net.JoinHostPort] function combines a host and port
+
+        into a string suitable for the Host field, adding square brackets to
+
+        the host when necessary.
+
+
+        Note that the Path field is stored in decoded form: /%47%6f%2f becomes /Go/.
+
+        A consequence is that it is impossible to tell which slashes in the Path were
+
+        slashes in the raw URL and which were %2f. This distinction is rarely important,
+
+        but when it is, the code should use the [URL.EscapedPath] method, which preserves
+
+        the original encoding of Path.
+
+
+        The RawPath field is an optional field which is only set when the default
+
+        encoding of Path is different from the escaped path. See the EscapedPath method
+
+        for more details.
+
+
+        URL''s String method uses the EscapedPath method to obtain the path.'
+    jwksResponse:
+      title: jwksResponse
+      type: object
+      properties:
+        keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/JSONWebKey'
+          description: ''
+    JSONWebKey:
+      title: JSONWebKey
+      type: object
+      properties:
+        Algorithm:
+          type: string
+          description: Key algorithm, parsed from `alg` header.
+        CertificateThumbprintSHA1:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: X.509 certificate thumbprint (SHA-1), parsed from `x5t` header.
+        CertificateThumbprintSHA256:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int32
+          description: X.509 certificate thumbprint (SHA-256), parsed from `x5t#S256` header.
+        Certificates:
+          type: array
+          items:
+            $ref: '#/components/schemas/ACertificaterepresentsanX.509certificate.'
+          description: X.509 certificate chain, parsed from `x5c` header.
+        CertificatesURL:
+          allOf:
+          - $ref: '#/components/schemas/AURLrepresentsaparsedURLtechnicallyaURIreference.2'
+          - description: 'The general form represented is:
+
+
+              [scheme:][//[userinfo@]host][/]path[?query][#fragment]
+
+
+              URLs that do not start with a slash after the scheme are interpreted as:
+
+
+              scheme:opaque[?query][#fragment]
+
+
+              The Host field contains the host and port subcomponents of the URL.
+
+              When the port is present, it is separated from the host with a colon.
+
+              When the host is an IPv6 address, it must be enclosed in square brackets:
+
+              "[fe80::1]:80". The [net.JoinHostPort] function combines a host and port
+
+              into a string suitable for the Host field, adding square brackets to
+
+              the host when necessary.
+
+
+              Note that the Path field is stored in decoded form: /%47%6f%2f becomes /Go/.
+
+              A consequence is that it is impossible to tell which slashes in the Path were
+
+              slashes in the raw URL and which were %2f. This distinction is rarely important,
+
+              but when it is, the code should use the [URL.EscapedPath] method, which preserves
+
+              the original encoding of Path.
+
+
+              The RawPath field is an optional field which is only set when the default
+
+              encoding of Path is different from the escaped path. See the EscapedPath method
+
+              for more details.
+
+
+              URL''s String method uses the EscapedPath method to obtain the path.'
+        Key:
+          description: 'Key is the Go in-memory representation of this key. It must have one
+
+            of these types:
+
+            ed25519.PublicKey
+
+            ed25519.PrivateKey
+
+            ecdsa.PublicKey
+
+            ecdsa.PrivateKey
+
+            rsa.PublicKey
+
+            rsa.PrivateKey
+
+            []byte (a symmetric key)
+
+
+            When marshaling this JSONWebKey into JSON, the "kty" header parameter
+
+            will be automatically set based on the type of this field.'
+        KeyID:
+          type: string
+          description: Key identifier, parsed from `kid` header.
+        Use:
+          type: string
+          description: Key use, parsed from `use` header.
+      description: 'JSONWebKey represents a public or private key in JWK format. It can be
+
+        marshaled into JSON and unmarshaled from JSON.'
     AttributeTypeAndValue:
       title: AttributeTypeAndValue
       type: object
@@ -197,48 +370,6 @@ components:
       description: 'AttributeTypeAndValue mirrors the ASN.1 structure of the same name in
 
         RFC 5280, Section 4.1.2.4.'
-    Extension:
-      title: Extension
-      type: object
-      properties:
-        Critical:
-          type: boolean
-        Id:
-          type: array
-          items:
-            type: integer
-            contentEncoding: int64
-          description: ''
-        Value:
-          type: array
-          items:
-            type: integer
-            contentEncoding: int32
-          description: ''
-      description: 'Extension represents the ASN.1 structure of the same name. See RFC
-
-        5280, section 4.2.'
-    jwksResponse:
-      title: jwksResponse
-      type: object
-      properties:
-        keys:
-          type: array
-          items:
-            $ref: '#/components/schemas/JSONWebKey'
-          description: ''
-    AnIPNetrepresentsanIPnetwork.:
-      title: AnIPNetrepresentsanIPnetwork.
-      type: object
-      properties:
-        IP:
-          type: string
-        Mask:
-          type: array
-          items:
-            type: integer
-            contentEncoding: int32
-          description: See type [IPNet] and func [ParseCIDR] for details.
     ACertificaterepresentsanX.509certificate.:
       title: ACertificaterepresentsanX.509certificate.
       type: object
@@ -653,268 +784,11 @@ components:
         Version:
           type: integer
           contentEncoding: int64
-    ErrorResponseBody:
-      title: ErrorResponseBody
-      required:
-      - message
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
-        message:
-          type: string
-          description: a human readable version of the error
-        status:
-          type: string
-          description: 'Status An optional status to denote the cause of the error.
-
-
-            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
-    ServiceAccountDTO:
-      title: ServiceAccountDTO
-      type: object
-      properties:
-        accessControl:
-          type: object
-          additionalProperties:
-            type: boolean
-          examples:
-          - serviceaccounts:delete: true
-            serviceaccounts:read: true
-            serviceaccounts:write: true
-        avatarUrl:
-          type: string
-          examples:
-          - /avatar/85ec38023d90823d3e5b43ef35646af9
-        id:
-          type: integer
-          contentEncoding: int64
-        isDisabled:
-          type: boolean
-          examples:
-          - false
-        isExternal:
-          type: boolean
-          examples:
-          - false
-        login:
-          type: string
-          examples:
-          - sa-grafana
-        name:
-          type: string
-          examples:
-          - grafana
-        orgId:
-          type: integer
-          contentEncoding: int64
-          examples:
-          - 1
-        role:
-          type: string
-          examples:
-          - Viewer
-        tokens:
-          type: integer
-          contentEncoding: int64
-          examples:
-          - 0
-        uid:
-          type: string
-          examples:
-          - fe1xejlha91xce
-      description: 'swagger: model'
-    AURLrepresentsaparsedURLtechnicallyaURIreference.2:
-      title: AURLrepresentsaparsedURLtechnicallyaURIreference.2
-      type: object
-      properties:
-        ForceQuery:
-          type: boolean
-        Fragment:
-          type: string
-        Host:
-          type: string
-        OmitHost:
-          type: boolean
-        Opaque:
-          type: string
-        Path:
-          type: string
-        RawFragment:
-          type: string
-        RawPath:
-          type: string
-        RawQuery:
-          type: string
-        Scheme:
-          type: string
-        User:
-          type: object
-          description: 'The Userinfo type is an immutable encapsulation of username and
-
-            password details for a [URL]. An existing Userinfo value is guaranteed
-
-            to have a username set (potentially empty, as allowed by RFC 2396),
-
-            and optionally a password.'
-      description: 'The general form represented is:
-
-
-        [scheme:][//[userinfo@]host][/]path[?query][#fragment]
-
-
-        URLs that do not start with a slash after the scheme are interpreted as:
-
-
-        scheme:opaque[?query][#fragment]
-
-
-        The Host field contains the host and port subcomponents of the URL.
-
-        When the port is present, it is separated from the host with a colon.
-
-        When the host is an IPv6 address, it must be enclosed in square brackets:
-
-        "[fe80::1]:80". The [net.JoinHostPort] function combines a host and port
-
-        into a string suitable for the Host field, adding square brackets to
-
-        the host when necessary.
-
-
-        Note that the Path field is stored in decoded form: /%47%6f%2f becomes /Go/.
-
-        A consequence is that it is impossible to tell which slashes in the Path were
-
-        slashes in the raw URL and which were %2f. This distinction is rarely important,
-
-        but when it is, the code should use the [URL.EscapedPath] method, which preserves
-
-        the original encoding of Path.
-
-
-        The RawPath field is an optional field which is only set when the default
-
-        encoding of Path is different from the escaped path. See the EscapedPath method
-
-        for more details.
-
-
-        URL''s String method uses the EscapedPath method to obtain the path.'
-    JSONWebKey:
-      title: JSONWebKey
-      type: object
-      properties:
-        Algorithm:
-          type: string
-          description: Key algorithm, parsed from `alg` header.
-        CertificateThumbprintSHA1:
-          type: array
-          items:
-            type: integer
-            contentEncoding: int32
-          description: X.509 certificate thumbprint (SHA-1), parsed from `x5t` header.
-        CertificateThumbprintSHA256:
-          type: array
-          items:
-            type: integer
-            contentEncoding: int32
-          description: X.509 certificate thumbprint (SHA-256), parsed from `x5t#S256` header.
-        Certificates:
-          type: array
-          items:
-            $ref: '#/components/schemas/ACertificaterepresentsanX.509certificate.'
-          description: X.509 certificate chain, parsed from `x5c` header.
-        CertificatesURL:
-          allOf:
-          - $ref: '#/components/schemas/AURLrepresentsaparsedURLtechnicallyaURIreference.2'
-          - description: 'The general form represented is:
-
-
-              [scheme:][//[userinfo@]host][/]path[?query][#fragment]
-
-
-              URLs that do not start with a slash after the scheme are interpreted as:
-
-
-              scheme:opaque[?query][#fragment]
-
-
-              The Host field contains the host and port subcomponents of the URL.
-
-              When the port is present, it is separated from the host with a colon.
-
-              When the host is an IPv6 address, it must be enclosed in square brackets:
-
-              "[fe80::1]:80". The [net.JoinHostPort] function combines a host and port
-
-              into a string suitable for the Host field, adding square brackets to
-
-              the host when necessary.
-
-
-              Note that the Path field is stored in decoded form: /%47%6f%2f becomes /Go/.
-
-              A consequence is that it is impossible to tell which slashes in the Path were
-
-              slashes in the raw URL and which were %2f. This distinction is rarely important,
-
-              but when it is, the code should use the [URL.EscapedPath] method, which preserves
-
-              the original encoding of Path.
-
-
-              The RawPath field is an optional field which is only set when the default
-
-              encoding of Path is different from the escaped path. See the EscapedPath method
-
-              for more details.
-
-
-              URL''s String method uses the EscapedPath method to obtain the path.'
-        Key:
-          description: 'Key is the Go in-memory representation of this key. It must have one
-
-            of these types:
-
-            ed25519.PublicKey
-
-            ed25519.PrivateKey
-
-            ecdsa.PublicKey
-
-            ecdsa.PrivateKey
-
-            rsa.PublicKey
-
-            rsa.PrivateKey
-
-            []byte (a symmetric key)
-
-
-            When marshaling this JSONWebKey into JSON, the "kty" header parameter
-
-            will be automatically set based on the type of this field.'
-        KeyID:
-          type: string
-          description: Key identifier, parsed from `kid` header.
-        Use:
-          type: string
-          description: Key use, parsed from `use` header.
-      description: 'JSONWebKey represents a public or private key in JWK format. It can be
-
-        marshaled into JSON and unmarshaled from JSON.'
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: Service account token or API key
-    BasicAuth:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
       type: http
       scheme: basic
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: 'Format: Bearer <api-key>'

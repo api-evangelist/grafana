@@ -1,93 +1,27 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Member API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
+  title: Grafana Member API
+  description: Grafana is an open-source analytics and visualization platform that helps you monitor and analyze data from various sources.
   contact:
     name: Grafana Labs
     url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+    email: hello@grafana.com
+  version: 0.0.1
 servers:
-- url: https://{instance}.grafana.net/api
-  description: Grafana Cloud
+- url: http://{defaultHost}
   variables:
-    instance:
-      default: your-instance
-- url: http://localhost:3000/api
-  description: Local Grafana instance
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- basic: []
+- api_key: []
 tags:
 - name: Member
 paths:
-  /teams/{team_id}/members:
-    parameters: []
-    post:
-      tags:
-      - Member
-      summary: Grafana Add Team Member
-      description: This API operation adds a new member to a specific team in Grafana by making a POST request to the /teams/{team_id}/members endpoint, where {team_id} is the unique identifier of the team. The operation allows administrators or users with appropriate permissions to expand team membership by associating additional users with an existing team, typically requiring the user ID or username to be specified in the request body to identify which user should be added to the team.
-      operationId: addTeamMember
-      parameters:
-      - name: team_id
-        in: path
-        description: ''
-        required: true
-        schema:
-          type: string
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AddTeamMemberCommand'
-        required: true
-      responses:
-        '200':
-          description: An OKResponse is returned if the request was successful.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SuccessResponseBody'
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '404':
-          description: NotFoundError is returned when the requested resource was not found.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
   /teams/{team_id}/members/{user_id}:
     parameters: []
     put:
@@ -223,6 +157,13 @@ paths:
         ChooseTags: true
 components:
   schemas:
+    UpdateTeamMemberCommand:
+      title: UpdateTeamMemberCommand
+      type: object
+      properties:
+        permission:
+          type: integer
+          contentEncoding: int64
     ErrorResponseBody:
       title: ErrorResponseBody
       required:
@@ -247,32 +188,11 @@ components:
       properties:
         message:
           type: string
-    AddTeamMemberCommand:
-      title: AddTeamMemberCommand
-      required:
-      - userId
-      type: object
-      properties:
-        userId:
-          type: integer
-          contentEncoding: int64
-    UpdateTeamMemberCommand:
-      title: UpdateTeamMemberCommand
-      type: object
-      properties:
-        permission:
-          type: integer
-          contentEncoding: int64
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: Service account token or API key
-    BasicAuth:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
       type: http
       scheme: basic
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: 'Format: Bearer <api-key>'

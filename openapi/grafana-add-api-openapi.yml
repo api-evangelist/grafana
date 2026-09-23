@@ -1,26 +1,24 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Add API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
+  title: Grafana Add API
+  description: Grafana is an open-source analytics and visualization platform that helps you monitor and analyze data from various sources.
   contact:
     name: Grafana Labs
     url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+    email: hello@grafana.com
+  version: 0.0.1
 servers:
-- url: https://{instance}.grafana.net/api
-  description: Grafana Cloud
+- url: http://{defaultHost}
   variables:
-    instance:
-      default: your-instance
-- url: http://localhost:3000/api
-  description: Local Grafana instance
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- basic: []
+- api_key: []
 tags:
 - name: Add
 paths:
@@ -513,83 +511,6 @@ paths:
         ChooseTags: true
 components:
   schemas:
-    createOrUpdateDatasourceResponse:
-      title: createOrUpdateDatasourceResponse
-      required:
-      - datasource
-      - id
-      - message
-      - name
-      type: object
-      properties:
-        datasource:
-          $ref: '#/components/schemas/DataSource'
-        id:
-          type: integer
-          description: ID Identifier of the new data source.
-          contentEncoding: int64
-          examples:
-          - 65
-        message:
-          type: string
-          description: Message Message of the deleted dashboard.
-          examples:
-          - Data source added
-        name:
-          type: string
-          description: Name of the new data source.
-          examples:
-          - My Data source
-    AddDataSourceCommand:
-      title: AddDataSourceCommand
-      type: object
-      properties:
-        access:
-          type: string
-        basicAuth:
-          type: boolean
-        basicAuthUser:
-          type: string
-        database:
-          type: string
-        isDefault:
-          type: boolean
-        jsonData:
-          type: object
-        name:
-          type: string
-        secureJsonData:
-          type: object
-          additionalProperties:
-            type: string
-        type:
-          type: string
-        uid:
-          type: string
-        url:
-          type: string
-        user:
-          type: string
-        withCredentials:
-          type: boolean
-      description: Also acts as api DTO
-    Role:
-      title: Role
-      enum:
-      - None
-      - Viewer
-      - Editor
-      - Admin
-      type: string
-    AddTeamMemberCommand:
-      title: AddTeamMemberCommand
-      required:
-      - userId
-      type: object
-      properties:
-        userId:
-          type: integer
-          contentEncoding: int64
     DataSource:
       title: DataSource
       type: object
@@ -642,44 +563,15 @@ components:
           contentEncoding: int64
         withCredentials:
           type: boolean
-    AddUserRoleCommand:
-      title: AddUserRoleCommand
+    AddTeamMemberCommand:
+      title: AddTeamMemberCommand
+      required:
+      - userId
       type: object
       properties:
-        global:
-          type: boolean
-        roleUid:
-          type: string
-    TeamGroupMapping:
-      title: TeamGroupMapping
-      type: object
-      properties:
-        groupId:
-          type: string
-    AddInviteForm:
-      title: AddInviteForm
-      type: object
-      properties:
-        loginOrEmail:
-          type: string
-        name:
-          type: string
-        role:
-          $ref: '#/components/schemas/Role'
-        sendEmail:
-          type: boolean
-    SuccessResponseBody:
-      title: SuccessResponseBody
-      type: object
-      properties:
-        message:
-          type: string
-    AddTeamRoleCommand:
-      title: AddTeamRoleCommand
-      type: object
-      properties:
-        roleUid:
-          type: string
+        userId:
+          type: integer
+          contentEncoding: int64
     ErrorResponseBody:
       title: ErrorResponseBody
       required:
@@ -698,6 +590,100 @@ components:
 
 
             For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    createOrUpdateDatasourceResponse:
+      title: createOrUpdateDatasourceResponse
+      required:
+      - datasource
+      - id
+      - message
+      - name
+      type: object
+      properties:
+        datasource:
+          $ref: '#/components/schemas/DataSource'
+        id:
+          type: integer
+          description: ID Identifier of the new data source.
+          contentEncoding: int64
+          examples:
+          - 65
+        message:
+          type: string
+          description: Message Message of the deleted dashboard.
+          examples:
+          - Data source added
+        name:
+          type: string
+          description: Name of the new data source.
+          examples:
+          - My Data source
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    AddDataSourceCommand:
+      title: AddDataSourceCommand
+      type: object
+      properties:
+        access:
+          type: string
+        basicAuth:
+          type: boolean
+        basicAuthUser:
+          type: string
+        database:
+          type: string
+        isDefault:
+          type: boolean
+        jsonData:
+          type: object
+        name:
+          type: string
+        secureJsonData:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+        uid:
+          type: string
+        url:
+          type: string
+        user:
+          type: string
+        withCredentials:
+          type: boolean
+      description: Also acts as api DTO
+    Role:
+      title: Role
+      enum:
+      - None
+      - Viewer
+      - Editor
+      - Admin
+      type: string
+    AddUserRoleCommand:
+      title: AddUserRoleCommand
+      type: object
+      properties:
+        global:
+          type: boolean
+        roleUid:
+          type: string
+    TeamGroupMapping:
+      title: TeamGroupMapping
+      type: object
+      properties:
+        groupId:
+          type: string
+    AddTeamRoleCommand:
+      title: AddTeamRoleCommand
+      type: object
+      properties:
+        roleUid:
+          type: string
     AddOrgUserCommand:
       title: AddOrgUserCommand
       type: object
@@ -706,16 +692,23 @@ components:
           type: string
         role:
           $ref: '#/components/schemas/Role'
+    AddInviteForm:
+      title: AddInviteForm
+      type: object
+      properties:
+        loginOrEmail:
+          type: string
+        name:
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+        sendEmail:
+          type: boolean
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: Service account token or API key
-    BasicAuth:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
       type: http
       scheme: basic
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: 'Format: Bearer <api-key>'

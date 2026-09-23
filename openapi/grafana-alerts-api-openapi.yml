@@ -1,14 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Alerts API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
-  contact:
-    name: Grafana Labs
-    url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+  title: Grafana Alerts API
+  version: '1.0'
+  description: 'Operations tagged Alerts across 2 of this provider''s published API definitions: grafana-api.yml, grafana-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://{instance}.grafana.net/api
   description: Grafana Cloud
@@ -17,16 +11,19 @@ servers:
       default: your-instance
 - url: http://localhost:3000/api
   description: Local Grafana instance
-security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 tags:
 - name: Alerts
   description: Alerting rules and notifications
 paths:
   /v1/provisioning/alert-rules:
-    parameters: []
     get:
       tags:
       - Alerts
@@ -41,6 +38,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AlertRule'
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
     post:
       tags:
       - Alerts
@@ -59,6 +60,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AlertRule'
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
+    parameters: []
+    servers:
+    - url: https://{instance}.grafana.net/api
+      description: Grafana Cloud
+      variables:
+        instance:
+          default: your-instance
+    - url: http://localhost:3000/api
+      description: Local Grafana instance
   /v1/provisioning/alert-rules/{uid}:
     get:
       tags:
@@ -78,6 +92,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AlertRule'
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
     put:
       tags:
       - Alerts
@@ -98,6 +116,10 @@ paths:
       responses:
         '200':
           description: Alert rule updated
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
     delete:
       tags:
       - Alerts
@@ -112,6 +134,18 @@ paths:
       responses:
         '204':
           description: Alert rule deleted
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
+    servers:
+    - url: https://{instance}.grafana.net/api
+      description: Grafana Cloud
+      variables:
+        instance:
+          default: your-instance
+    - url: http://localhost:3000/api
+      description: Local Grafana instance
   /v1/provisioning/contact-points:
     get:
       tags:
@@ -127,6 +161,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ContactPoint'
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
     post:
       tags:
       - Alerts
@@ -141,6 +179,18 @@ paths:
       responses:
         '202':
           description: Contact point created
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
+    servers:
+    - url: https://{instance}.grafana.net/api
+      description: Grafana Cloud
+      variables:
+        instance:
+          default: your-instance
+    - url: http://localhost:3000/api
+      description: Local Grafana instance
   /v1/provisioning/alert-rules/export:
     parameters: []
     get:
@@ -220,6 +270,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /v1/provisioning/alert-rules/{UID}:
     parameters: []
     get:
@@ -253,6 +315,9 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
     put:
       tags:
       - Alerts
@@ -299,6 +364,9 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
     delete:
       tags:
       - Alerts
@@ -328,6 +396,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /v1/provisioning/alert-rules/{UID}/export:
     parameters: []
     get:
@@ -390,6 +470,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /v1/provisioning/folder/{FolderUID}/rule-groups/{Group}:
     parameters: []
     get:
@@ -429,6 +521,9 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
     put:
       tags:
       - Alerts
@@ -481,6 +576,9 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
     delete:
       tags:
       - Alerts
@@ -526,6 +624,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /v1/provisioning/folder/{FolderUID}/rule-groups/{Group}/export:
     parameters: []
     get:
@@ -594,18 +704,184 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
 components:
   schemas:
-    RelativeTimeRangeExport:
-      title: RelativeTimeRangeExport
+    AlertRule:
       type: object
       properties:
-        from:
+        uid:
+          type: string
+        title:
+          type: string
+        orgID:
           type: integer
-          contentEncoding: int64
-        to:
-          type: integer
-          contentEncoding: int64
+        folderUID:
+          type: string
+        ruleGroup:
+          type: string
+        condition:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              refId:
+                type: string
+              queryType:
+                type: string
+              relativeTimeRange:
+                type: object
+                properties:
+                  from:
+                    type: integer
+                  to:
+                    type: integer
+              datasourceUid:
+                type: string
+              model:
+                type: object
+        noDataState:
+          type: string
+          enum:
+          - Alerting
+          - NoData
+          - OK
+        execErrState:
+          type: string
+          enum:
+          - Alerting
+          - Error
+          - OK
+        for:
+          type: string
+          description: Duration, e.g. 5m, 1h
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        isPaused:
+          type: boolean
+        provenance:
+          type: string
+    ContactPoint:
+      type: object
+      properties:
+        uid:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          description: 'Receiver type: email, slack, pagerduty, webhook, etc.'
+        settings:
+          type: object
+          description: Type-specific configuration
+        disableResolveMessage:
+          type: boolean
+        provenance:
+          type: string
+    AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.:
+      title: AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.
+      type: object
+      properties:
+        datasourceUid:
+          type: string
+          description: Grafana data source unique identifier; it should be '__expr__' for a Server Side Expression operation.
+        model:
+          type: object
+          description: JSON is the raw JSON query and includes the above properties as well as custom properties.
+        queryType:
+          type: string
+          description: 'QueryType is an optional identifier for the type of query.
+
+            It can be used to distinguish different types of queries.'
+        refId:
+          type: string
+          description: RefID is the unique identifier of the query, set by the frontend call.
+        relativeTimeRange:
+          allOf:
+          - $ref: '#/components/schemas/RelativeTimeRange'
+          - description: 'RelativeTimeRange is the per query start and end time
+
+              for requests.'
+    RouteExport:
+      title: RouteExport
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        continue:
+          type: boolean
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        match:
+          type: object
+          additionalProperties:
+            type: string
+          description: Deprecated. Remove before v1.0 release.
+        match_re:
+          type: object
+          additionalProperties:
+            type: string
+        matchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Matchermodelsthematchingofalabel.'
+          description: 'Matchers is a slice of Matchers that is sortable, implements Stringer, and
+
+            provides a Matches method to match a LabelSet against all Matchers in the
+
+            slice. Note that some users of Matchers might require it to be sorted.'
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        object_matchers:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouteExport'
+          description: ''
+      description: 'RouteExport is the provisioned file export of definitions.Route. This is needed to hide fields that aren''t useable in
+
+        provisioning file format. An alternative would be to define a custom MarshalJSON and MarshalYAML that excludes them.'
     ProvisionedAlertRule:
       title: ProvisionedAlertRule
       required:
@@ -726,6 +1002,114 @@ components:
           type: string
           contentEncoding: date-time
           readOnly: true
+    ForbiddenError:
+      title: ForbiddenError
+      type: object
+      properties:
+        body:
+          allOf:
+          - $ref: '#/components/schemas/PublicError'
+          - description: 'PublicError is derived from Error and only contains information
+
+              available to the end user.'
+    ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.:
+      title: ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.
+      type: object
+      properties:
+        name:
+          type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        receivers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.'
+          description: ''
+    NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.:
+      title: NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        continue:
+          type: boolean
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        match:
+          type: object
+          additionalProperties:
+            type: string
+          description: Deprecated. Remove before v1.0 release.
+        match_re:
+          type: object
+          additionalProperties:
+            type: string
+        matchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Matchermodelsthematchingofalabel.'
+          description: 'Matchers is a slice of Matchers that is sortable, implements Stringer, and
+
+            provides a Matches method to match a LabelSet against all Matchers in the
+
+            slice. Note that some users of Matchers might require it to be sorted.'
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        object_matchers:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        orgId:
+          type: integer
+          contentEncoding: int64
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouteExport'
+          description: ''
+    AlertRuleGroup:
+      title: AlertRuleGroup
+      type: object
+      properties:
+        folderUid:
+          type: string
+        interval:
+          type: integer
+          contentEncoding: int64
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProvisionedAlertRule'
+          description: ''
+        title:
+          type: string
+    format:
+      title: format
+      enum:
+      - yaml
+      - json
+      - hcl
+      type: string
     ValidationError:
       title: ValidationError
       type: object
@@ -758,23 +1142,113 @@ components:
           items:
             $ref: '#/components/schemas/AlertRuleExportistheprovisionedfileexportofmodels.AlertRule.'
           description: ''
-    ContactPoint:
+    RelativeTimeRangeExport:
+      title: RelativeTimeRangeExport
       type: object
       properties:
-        uid:
+        from:
+          type: integer
+          contentEncoding: int64
+        to:
+          type: integer
+          contentEncoding: int64
+    Recordistheprovisionedexportofmodels.Record.:
+      title: Recordistheprovisionedexportofmodels.Record.
+      type: object
+      properties:
+        from:
           type: string
+        metric:
+          type: string
+        targetDatasourceUid:
+          type: string
+    AlertRuleNotificationSettingsExportistheprovisionedexportofmodels.NotificationSettings.:
+      title: AlertRuleNotificationSettingsExportistheprovisionedexportofmodels.NotificationSettings.
+      type: object
+      properties:
+        active_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_by:
+          type: array
+          items:
+            type: string
+          description: ''
+        group_interval:
+          type: string
+        group_wait:
+          type: string
+        mute_time_intervals:
+          type: array
+          items:
+            type: string
+          description: ''
+        receiver:
+          type: string
+        repeat_interval:
+          type: string
+    ExecErrState:
+      title: ExecErrState
+      enum:
+      - OK
+      - Alerting
+      - Error
+      type: string
+    RelativeTimeRange:
+      title: RelativeTimeRange
+      type: object
+      properties:
+        from:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+        to:
+          type: integer
+          description: 'A Duration represents the elapsed time between two instants
+
+            as an int64 nanosecond count. The representation limits the
+
+            largest representable duration to approximately 290 years.'
+          contentEncoding: int64
+      description: 'RelativeTimeRange is the per query start and end time
+
+        for requests.'
+    TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.:
+      title: TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.
+      type: object
+      properties:
         name:
           type: string
-        type:
-          type: string
-          description: 'Receiver type: email, slack, pagerduty, webhook, etc.'
-        settings:
-          type: object
-          description: Type-specific configuration
+        time_intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
+          description: ''
+    ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.:
+      title: ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.
+      type: object
+      properties:
         disableResolveMessage:
           type: boolean
-        provenance:
+        settings:
+          type: object
+        type:
           type: string
+        uid:
+          type: string
+    NoDataState:
+      title: NoDataState
+      enum:
+      - Alerting
+      - NoData
+      - OK
+      type: string
     AlertRuleNotificationSettings:
       title: AlertRuleNotificationSettings
       required:
@@ -857,363 +1331,6 @@ components:
             occurs first. `repeat_interval` should not be less than `group_interval`.'
           examples:
           - 4h
-    RouteExport:
-      title: RouteExport
-      type: object
-      properties:
-        active_time_intervals:
-          type: array
-          items:
-            type: string
-          description: ''
-        continue:
-          type: boolean
-        group_by:
-          type: array
-          items:
-            type: string
-          description: ''
-        group_interval:
-          type: string
-        group_wait:
-          type: string
-        match:
-          type: object
-          additionalProperties:
-            type: string
-          description: Deprecated. Remove before v1.0 release.
-        match_re:
-          type: object
-          additionalProperties:
-            type: string
-        matchers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Matchermodelsthematchingofalabel.'
-          description: 'Matchers is a slice of Matchers that is sortable, implements Stringer, and
-
-            provides a Matches method to match a LabelSet against all Matchers in the
-
-            slice. Note that some users of Matchers might require it to be sorted.'
-        mute_time_intervals:
-          type: array
-          items:
-            type: string
-          description: ''
-        object_matchers:
-          type: array
-          items:
-            type: array
-            items:
-              type: string
-        receiver:
-          type: string
-        repeat_interval:
-          type: string
-        routes:
-          type: array
-          items:
-            $ref: '#/components/schemas/RouteExport'
-          description: ''
-      description: 'RouteExport is the provisioned file export of definitions.Route. This is needed to hide fields that aren''t useable in
-
-        provisioning file format. An alternative would be to define a custom MarshalJSON and MarshalYAML that excludes them.'
-    ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.:
-      title: ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.
-      type: object
-      properties:
-        disableResolveMessage:
-          type: boolean
-        settings:
-          type: object
-        type:
-          type: string
-        uid:
-          type: string
-    format:
-      title: format
-      enum:
-      - yaml
-      - json
-      - hcl
-      type: string
-    AlertRuleGroup:
-      title: AlertRuleGroup
-      type: object
-      properties:
-        folderUid:
-          type: string
-        interval:
-          type: integer
-          contentEncoding: int64
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProvisionedAlertRule'
-          description: ''
-        title:
-          type: string
-    NoDataState:
-      title: NoDataState
-      enum:
-      - Alerting
-      - NoData
-      - OK
-      type: string
-    RelativeTimeRange:
-      title: RelativeTimeRange
-      type: object
-      properties:
-        from:
-          type: integer
-          description: 'A Duration represents the elapsed time between two instants
-
-            as an int64 nanosecond count. The representation limits the
-
-            largest representable duration to approximately 290 years.'
-          contentEncoding: int64
-        to:
-          type: integer
-          description: 'A Duration represents the elapsed time between two instants
-
-            as an int64 nanosecond count. The representation limits the
-
-            largest representable duration to approximately 290 years.'
-          contentEncoding: int64
-      description: 'RelativeTimeRange is the per query start and end time
-
-        for requests.'
-    AlertRuleNotificationSettingsExportistheprovisionedexportofmodels.NotificationSettings.:
-      title: AlertRuleNotificationSettingsExportistheprovisionedexportofmodels.NotificationSettings.
-      type: object
-      properties:
-        active_time_intervals:
-          type: array
-          items:
-            type: string
-          description: ''
-        group_by:
-          type: array
-          items:
-            type: string
-          description: ''
-        group_interval:
-          type: string
-        group_wait:
-          type: string
-        mute_time_intervals:
-          type: array
-          items:
-            type: string
-          description: ''
-        receiver:
-          type: string
-        repeat_interval:
-          type: string
-    Matchermodelsthematchingofalabel.:
-      title: Matchermodelsthematchingofalabel.
-      type: object
-      properties:
-        Name:
-          type: string
-        Type:
-          type: integer
-          contentEncoding: int64
-        Value:
-          type: string
-    ForbiddenError:
-      title: ForbiddenError
-      type: object
-      properties:
-        body:
-          allOf:
-          - $ref: '#/components/schemas/PublicError'
-          - description: 'PublicError is derived from Error and only contains information
-
-              available to the end user.'
-    NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.:
-      title: NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.
-      type: object
-      properties:
-        active_time_intervals:
-          type: array
-          items:
-            type: string
-          description: ''
-        continue:
-          type: boolean
-        group_by:
-          type: array
-          items:
-            type: string
-          description: ''
-        group_interval:
-          type: string
-        group_wait:
-          type: string
-        match:
-          type: object
-          additionalProperties:
-            type: string
-          description: Deprecated. Remove before v1.0 release.
-        match_re:
-          type: object
-          additionalProperties:
-            type: string
-        matchers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Matchermodelsthematchingofalabel.'
-          description: 'Matchers is a slice of Matchers that is sortable, implements Stringer, and
-
-            provides a Matches method to match a LabelSet against all Matchers in the
-
-            slice. Note that some users of Matchers might require it to be sorted.'
-        mute_time_intervals:
-          type: array
-          items:
-            type: string
-          description: ''
-        object_matchers:
-          type: array
-          items:
-            type: array
-            items:
-              type: string
-        orgId:
-          type: integer
-          contentEncoding: int64
-        receiver:
-          type: string
-        repeat_interval:
-          type: string
-        routes:
-          type: array
-          items:
-            $ref: '#/components/schemas/RouteExport'
-          description: ''
-    ExecErrState:
-      title: ExecErrState
-      enum:
-      - OK
-      - Alerting
-      - Error
-      type: string
-    AlertingFileExportisthefullprovisionedfileexport.:
-      title: AlertingFileExportisthefullprovisionedfileexport.
-      type: object
-      properties:
-        apiVersion:
-          type: integer
-          contentEncoding: int64
-        contactPoints:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.'
-          description: ''
-        groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/AlertRuleGroupExportistheprovisionedfileexportofAlertRuleGroupV1.'
-          description: ''
-        muteTimes:
-          type: array
-          items:
-            $ref: '#/components/schemas/MuteTimeIntervalExport'
-          description: ''
-        policies:
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.'
-          description: ''
-    AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.:
-      title: AlertQueryrepresentsasinglequeryassociatedwithanalertdefinition.
-      type: object
-      properties:
-        datasourceUid:
-          type: string
-          description: Grafana data source unique identifier; it should be '__expr__' for a Server Side Expression operation.
-        model:
-          type: object
-          description: JSON is the raw JSON query and includes the above properties as well as custom properties.
-        queryType:
-          type: string
-          description: 'QueryType is an optional identifier for the type of query.
-
-            It can be used to distinguish different types of queries.'
-        refId:
-          type: string
-          description: RefID is the unique identifier of the query, set by the frontend call.
-        relativeTimeRange:
-          allOf:
-          - $ref: '#/components/schemas/RelativeTimeRange'
-          - description: 'RelativeTimeRange is the per query start and end time
-
-              for requests.'
-    ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.:
-      title: ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.
-      type: object
-      properties:
-        name:
-          type: string
-        orgId:
-          type: integer
-          contentEncoding: int64
-        receivers:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReceiverExportistheprovisionedfileexportofalerting.ReceiverV1.'
-          description: ''
-    PublicError:
-      title: PublicError
-      type: object
-      properties:
-        extra:
-          type: object
-          additionalProperties: {}
-        message:
-          type: string
-        messageId:
-          type: string
-        statusCode:
-          type: integer
-          contentEncoding: int64
-      description: 'PublicError is derived from Error and only contains information
-
-        available to the end user.'
-    TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.:
-      title: TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.
-      type: object
-      properties:
-        name:
-          type: string
-        time_intervals:
-          type: array
-          items:
-            $ref: '#/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
-          description: ''
-    Record:
-      title: Record
-      required:
-      - from
-      - metric
-      type: object
-      properties:
-        from:
-          type: string
-          description: Which expression node should be used as the input for the recorded metric.
-          examples:
-          - A
-        metric:
-          type: string
-          description: Name of the recorded metric.
-          examples:
-          - grafana_alerts_ratio
-        target_datasource_uid:
-          type: string
-          description: Which data source should be used to write the output of the recording rule, specified by UID.
-          examples:
-          - my-prom
     AlertRuleExportistheprovisionedfileexportofmodels.AlertRule.:
       title: AlertRuleExportistheprovisionedfileexportofmodels.AlertRule.
       type: object
@@ -1271,77 +1388,60 @@ components:
           type: string
         uid:
           type: string
-    AlertRule:
+    PublicError:
+      title: PublicError
       type: object
       properties:
-        uid:
+        extra:
+          type: object
+          additionalProperties: {}
+        message:
           type: string
-        title:
+        messageId:
           type: string
-        orgID:
+        statusCode:
           type: integer
-        folderUID:
-          type: string
-        ruleGroup:
-          type: string
-        condition:
-          type: string
-        data:
+          contentEncoding: int64
+      description: 'PublicError is derived from Error and only contains information
+
+        available to the end user.'
+    AlertingFileExportisthefullprovisionedfileexport.:
+      title: AlertingFileExportisthefullprovisionedfileexport.
+      type: object
+      properties:
+        apiVersion:
+          type: integer
+          contentEncoding: int64
+        contactPoints:
           type: array
           items:
-            type: object
-            properties:
-              refId:
-                type: string
-              queryType:
-                type: string
-              relativeTimeRange:
-                type: object
-                properties:
-                  from:
-                    type: integer
-                  to:
-                    type: integer
-              datasourceUid:
-                type: string
-              model:
-                type: object
-        noDataState:
-          type: string
-          enum:
-          - Alerting
-          - NoData
-          - OK
-        execErrState:
-          type: string
-          enum:
-          - Alerting
-          - Error
-          - OK
-        for:
-          type: string
-          description: Duration, e.g. 5m, 1h
-        annotations:
-          type: object
-          additionalProperties:
-            type: string
-        labels:
-          type: object
-          additionalProperties:
-            type: string
-        isPaused:
-          type: boolean
-        provenance:
-          type: string
-    Recordistheprovisionedexportofmodels.Record.:
-      title: Recordistheprovisionedexportofmodels.Record.
+            $ref: '#/components/schemas/ContactPointExportistheprovisionedfileexportofalerting.ContactPointV1.'
+          description: ''
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertRuleGroupExportistheprovisionedfileexportofAlertRuleGroupV1.'
+          description: ''
+        muteTimes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MuteTimeIntervalExport'
+          description: ''
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationPolicyExportistheprovisionedfileexportofalerting.NotificiationPolicyV1.'
+          description: ''
+    Matchermodelsthematchingofalabel.:
+      title: Matchermodelsthematchingofalabel.
       type: object
       properties:
-        from:
+        Name:
           type: string
-        metric:
-          type: string
-        targetDatasourceUid:
+        Type:
+          type: integer
+          contentEncoding: int64
+        Value:
           type: string
     MuteTimeIntervalExport:
       title: MuteTimeIntervalExport
@@ -1357,6 +1457,28 @@ components:
           items:
             $ref: '#/components/schemas/TimeIntervalrepresentsanamedsetoftimeintervalsforwhicharouteshouldbemuted.'
           description: ''
+    Record:
+      title: Record
+      required:
+      - from
+      - metric
+      type: object
+      properties:
+        from:
+          type: string
+          description: Which expression node should be used as the input for the recorded metric.
+          examples:
+          - A
+        metric:
+          type: string
+          description: Name of the recorded metric.
+          examples:
+          - grafana_alerts_ratio
+        target_datasource_uid:
+          type: string
+          description: Which data source should be used to write the output of the recording rule, specified by UID.
+          examples:
+          - my-prom
     AlertQueryExportistheprovisionedexportofmodels.AlertQuery.:
       title: AlertQueryExportistheprovisionedexportofmodels.AlertQuery.
       type: object
@@ -1385,3 +1507,13 @@ components:
       in: header
       name: Authorization
       description: 'Format: Bearer <api-key>'
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
+      type: http
+      scheme: basic
+x-refined-from:
+- grafana-api.yml
+- grafana-openapi.yml

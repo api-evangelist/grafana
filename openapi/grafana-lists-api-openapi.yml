@@ -1,101 +1,34 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Lists API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
+  title: Grafana Lists API
+  description: Grafana is an open-source analytics and visualization platform that helps you monitor and analyze data from various sources.
   contact:
     name: Grafana Labs
     url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+    email: hello@grafana.com
+  version: 0.0.1
 servers:
-- url: https://{instance}.grafana.net/api
-  description: Grafana Cloud
+- url: http://{defaultHost}
   variables:
-    instance:
-      default: your-instance
-- url: http://localhost:3000/api
-  description: Local Grafana instance
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- basic: []
+- api_key: []
 tags:
 - name: Lists
 paths:
-  /folders/{folder_uid}/permissions:
-    parameters: []
-    get:
-      tags:
-      - Lists
-      summary: Grafana Get Folder Permission List
-      description: This API operation retrieves the complete list of permissions associated with a specific folder in Grafana by providing the folder's unique identifier (UID) in the request path. It returns details about which users, teams, or roles have access to the folder and what level of permissions they possess, such as view, edit, or admin rights. This GET endpoint is useful for auditing folder access controls, understanding the current permission structure, and determining who has what level of access to dashboards and resources contained within the specified folder.
-      operationId: getFolderPermissionList
-      parameters:
-      - name: folder_uid
-        in: path
-        description: ''
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/DashboardACLInfoDTO'
-                description: ''
-                contentMediaType: application/json
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: 'ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource. '
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '404':
-          description: NotFoundError is returned when the requested resource was not found.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
   /access-control/roles:
     parameters: []
     get:
       tags:
       - Lists
       summary: Grafana List Roles
-      description: '<endpoint>
-
-        This API operation retrieves a list of all available roles within Grafana''s access control system. When invoked with a GET request to the /access-control/roles endpoint, it returns a comprehensive collection of role definitions that exist in the Grafana instance, including both built-in system roles and any custom roles that have been created. The response typically includes role metadata such as role names, descriptions, UIDs, permissions associated with each role, and other relevant attributes that define the access control capabilities granted to users or teams assigned to these roles. This endpoint is commonly used by administrators to audit existing roles, understand the permission structure, or retrieve role information programmatically for integration with external systems or for displaying role management interfaces.
-
-        </endpoint>'
+      description: This API operation retrieves a list of all available roles within Grafana's access control system. When invoked with a GET request to the /access-control/roles endpoint, it returns a comprehensive collection of role definitions that exist in the Grafana instance, including both built-in system roles and any custom roles that have been created. The response typically includes role metadata such as role names, descriptions, UIDs, permissions associated with each role, and other relevant attributes that define the access control capabilities granted to users or teams assigned to these roles. This endpoint is commonly used by administrators to audit existing roles, understand the permission structure, or retrieve role information programmatically for integration with external systems or for displaying role management interfaces.
       operationId: listRoles
       parameters:
       - name: delegatable
@@ -420,354 +353,6 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
-  /anonymous/devices:
-    parameters: []
-    get:
-      tags:
-      - Lists
-      summary: Grafana List Devices
-      description: This API operation retrieves a list of devices from Grafana's anonymous device management system. It uses the HTTP GET method to query the /anonymous/devices endpoint, returning device information without requiring authenticated user credentials. The operation is useful for monitoring and managing devices that have been registered or accessed anonymously within the Grafana platform, providing administrators with visibility into device activity and enabling device inventory management.
-      operationId: listDevices
-      parameters: []
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/deviceDTO'
-                description: ''
-                contentMediaType: application/json
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '404':
-          description: NotFoundError is returned when the requested resource was not found.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
-  /cloudmigration/migration:
-    parameters: []
-    get:
-      tags:
-      - Lists
-      summary: Grafana Get Session List
-      description: The GET /cloudmigration/migration endpoint retrieves a list of cloud migration sessions in Grafana, allowing administrators to monitor and track ongoing or historical migration activities from self-hosted Grafana instances to Grafana Cloud. This operation returns details about migration sessions including their status, creation timestamps, configuration parameters, and progress information, enabling users to review migration attempts and their outcomes without requiring additional parameters beyond proper authentication credentials.
-      operationId: getSessionList
-      parameters: []
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CloudMigrationSessionListResponseDTO'
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
-  /cloudmigration/migration/{uid}/snapshots:
-    parameters: []
-    get:
-      tags:
-      - Lists
-      summary: Grafana Get Shapshot List
-      description: This API operation retrieves a list of snapshots associated with a specific cloud migration job in Grafana. By making a GET request to the endpoint with a unique migration identifier (uid), users can obtain details about all snapshots that have been created during the migration process. This is useful for tracking the progress of a migration, reviewing snapshot history, and managing data transfer between Grafana instances or cloud environments.
-      operationId: getShapshotList
-      parameters:
-      - name: page
-        in: query
-        description: Page is used for pagination with limit
-        style: form
-        explode: true
-        schema:
-          type: integer
-          contentEncoding: int64
-          default: 1
-      - name: limit
-        in: query
-        description: Max limit for results returned.
-        style: form
-        explode: true
-        schema:
-          type: integer
-          contentEncoding: int64
-          default: 100
-      - name: uid
-        in: path
-        description: Session UID of a session
-        required: true
-        schema:
-          type: string
-      - name: sort
-        in: query
-        description: Sort with value latest to return results sorted in descending order.
-        style: form
-        explode: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SnapshotListResponseDTO'
-        '400':
-          description: BadRequestError is returned when the request is invalid and it cannot be processed.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
-  /dashboards/id/{DashboardID}/permissions:
-    parameters: []
-    get:
-      tags:
-      - Lists
-      summary: Grafana Get Dashboard Permissions List By ID
-      description: This API operation retrieves the complete list of permissions associated with a specific Grafana dashboard by providing its unique dashboard identifier. It returns details about which users, teams, or roles have access to the dashboard and what level of permissions they possess (such as view, edit, or admin rights). The GET request to this endpoint allows administrators to audit and review the current access control settings for a dashboard, making it useful for security compliance, permission management, and understanding who can interact with specific dashboards within the Grafana instance.
-      operationId: getDashboardPermissionsListByID
-      parameters:
-      - name: DashboardID
-        in: path
-        description: ''
-        required: true
-        schema:
-          type: integer
-          contentEncoding: int64
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/DashboardACLInfoDTO'
-                description: ''
-                contentMediaType: application/json
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '404':
-          description: NotFoundError is returned when the requested resource was not found.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: true
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
-  /dashboards/public-dashboards:
-    parameters: []
-    get:
-      tags:
-      - Lists
-      summary: Grafana List Public Dashboards
-      description: This API operation retrieves a list of all public dashboards available in Grafana. It uses a GET request to the /dashboards/public-dashboards endpoint and returns information about dashboards that have been made publicly accessible, meaning they can be viewed without authentication. The response typically includes details such as dashboard UIDs, titles, access tokens, and configuration settings for each public dashboard. This endpoint is useful for administrators who need to audit or manage which dashboards are publicly shared and review their sharing settings.
-      operationId: listPublicDashboards
-      parameters: []
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PublicDashboardListResponseWithPagination'
-        '401':
-          description: UnauthorisedPublicError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/publicError1'
-        '403':
-          description: ForbiddenPublicError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/publicError1'
-        '500':
-          description: InternalServerPublicError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/publicError1'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
-  /dashboards/uid/{uid}/permissions:
-    parameters: []
-    get:
-      tags:
-      - Lists
-      summary: Grafana Get Dashboard Permissions List By UID
-      description: This API operation retrieves the permission settings for a specific Grafana dashboard identified by its unique identifier (UID). When called with a GET request to the endpoint /dashboards/uid/{uid}/permissions, it returns a list of all permissions associated with that dashboard, including which users, teams, or roles have access and their respective permission levels (such as view, edit, or admin rights). This allows administrators and authorized users to review and audit who has access to a particular dashboard and what actions they can perform on it.
-      operationId: getDashboardPermissionsListByUID
-      parameters:
-      - name: uid
-        in: path
-        description: ''
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/DashboardACLInfoDTO'
-                description: ''
-                contentMediaType: application/json
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '404':
-          description: NotFoundError is returned when the requested resource was not found.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
   /recording-rules:
     parameters: []
     get:
@@ -853,275 +438,23 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
-  /user/orgs:
-    parameters: []
-    get:
-      tags:
-      - Lists
-      summary: Grafana Get Signed In User Org List
-      description: This API endpoint retrieves a list of all organizations associated with the currently authenticated user in Grafana. When called with a GET request to /user/orgs, it returns information about each organization the signed-in user belongs to, typically including details such as organization ID, name, and the user's role within each organization. This is useful for applications that need to display or process the organizational memberships of the current user, allowing them to understand which organizations they have access to and what permissions they may have in each one.
-      operationId: getSignedInUserOrgList
-      parameters: []
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserOrgDTO'
-                description: ''
-                contentMediaType: application/json
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      security:
-      - basic: []
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
-  /user/teams:
-    parameters: []
-    get:
-      tags:
-      - Lists
-      summary: Grafana Get Signed In User Team List
-      description: This API operation retrieves a list of all teams that the currently authenticated user is a member of in Grafana. When called, it returns team information associated with the signed-in user's account, allowing applications to determine which teams the user belongs to and potentially their roles or permissions within those teams. This is useful for displaying team memberships in user interfaces, implementing team-based access controls, or filtering content based on team associations.
-      operationId: getSignedInUserTeamList
-      parameters: []
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TeamDTO'
-                description: ''
-                contentMediaType: application/json
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
-  /users/{user_id}/orgs:
-    parameters: []
-    get:
-      tags:
-      - Lists
-      summary: Grafana Get User Org List
-      description: Retrieves a list of all organizations associated with a specific user identified by their user ID in Grafana. This endpoint returns organization membership information for the specified user, including details about each organization they belong to. It requires appropriate authentication and permissions to access user-organization relationship data, making it useful for administrators who need to audit user access across multiple organizations or for displaying a user's organizational affiliations in the Grafana interface.
-      operationId: getUserOrgList
-      parameters:
-      - name: user_id
-        in: path
-        description: ''
-        required: true
-        schema:
-          type: integer
-          contentEncoding: int64
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserOrgDTO'
-                description: ''
-                contentMediaType: application/json
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '404':
-          description: NotFoundError is returned when the requested resource was not found.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
-  /v1/sso-settings:
-    parameters: []
-    get:
-      tags:
-      - Lists
-      summary: Grafana List All Providers Settings
-      description: This API operation retrieves the configuration settings for all Single Sign-On (SSO) providers that have been configured in Grafana. When called, it returns a comprehensive list containing the settings and parameters for each SSO provider, such as OAuth, SAML, or other authentication mechanisms that are available in the system. This endpoint is useful for administrators who need to review or audit the current SSO configurations across their Grafana instance, providing visibility into which authentication providers are set up and how they are configured without needing to check each provider individually.
-      operationId: listAllProvidersSettings
-      parameters: []
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/listSSOSettingsResponse'
-                description: ''
-                contentMediaType: application/json
-        '400':
-          description: BadRequestError is returned when the request is invalid and it cannot be processed.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
 components:
   schemas:
-    SnapshotDTO:
-      title: SnapshotDTO
+    Permission:
+      title: Permission
       type: object
       properties:
+        action:
+          type: string
         created:
           type: string
           contentEncoding: date-time
-        finished:
+        scope:
+          type: string
+        updated:
           type: string
           contentEncoding: date-time
-        sessionUid:
-          type: string
-        status:
-          $ref: '#/components/schemas/Status1'
-        uid:
-          type: string
-      description: Base snapshot without results
-    listSortOptionsResponse:
-      title: listSortOptionsResponse
-      type: object
-      properties:
-        description:
-          type: string
-        displayName:
-          type: string
-        meta:
-          type: string
-        name:
-          type: string
-    RolesSearchQuery:
-      title: RolesSearchQuery
-      type: object
-      properties:
-        includeHidden:
-          type: boolean
-        orgId:
-          type: integer
-          contentEncoding: int64
-        teamIds:
-          type: array
-          items:
-            type: integer
-            contentEncoding: int64
-          description: ''
-        userIds:
-          type: array
-          items:
-            type: integer
-            contentEncoding: int64
-          description: ''
-    CloudMigrationSessionListResponseDTO:
-      title: CloudMigrationSessionListResponseDTO
-      type: object
-      properties:
-        sessions:
-          type: array
-          items:
-            $ref: '#/components/schemas/CloudMigrationSessionResponseDTO'
-          description: ''
+      description: Permission is the model for access control permissions
     ErrorResponseBody:
       title: ErrorResponseBody
       required:
@@ -1140,22 +473,6 @@ components:
 
 
             For example, a 412 Precondition Failed error may include additional information of why that error happened.'
-    PublicDashboardListResponse:
-      title: PublicDashboardListResponse
-      type: object
-      properties:
-        accessToken:
-          type: string
-        dashboardUid:
-          type: string
-        isEnabled:
-          type: boolean
-        slug:
-          type: string
-        title:
-          type: string
-        uid:
-          type: string
     RoleDTO:
       title: RoleDTO
       required:
@@ -1201,46 +518,6 @@ components:
         version:
           type: integer
           contentEncoding: int64
-    TeamDTO:
-      title: TeamDTO
-      required:
-      - id
-      - isProvisioned
-      - memberCount
-      - name
-      - orgId
-      - uid
-      type: object
-      properties:
-        accessControl:
-          type: object
-          additionalProperties:
-            type: boolean
-        avatarUrl:
-          type: string
-        email:
-          type: string
-        externalUID:
-          type: string
-        id:
-          type: integer
-          description: '@deprecated Use UID instead'
-          contentEncoding: int64
-        isProvisioned:
-          type: boolean
-        memberCount:
-          type: integer
-          contentEncoding: int64
-        name:
-          type: string
-        orgId:
-          type: integer
-          contentEncoding: int64
-        permission:
-          type: integer
-          contentEncoding: int64
-        uid:
-          type: string
     RecordingRuleJSON:
       title: RecordingRuleJSON
       type: object
@@ -1272,197 +549,26 @@ components:
         target_ref_id:
           type: string
       description: RecordingRuleJSON is the external representation of a recording rule
-    deviceDTO:
-      title: deviceDTO
+    RolesSearchQuery:
+      title: RolesSearchQuery
       type: object
       properties:
-        avatarUrl:
-          type: string
-        clientIp:
-          type: string
-        createdAt:
-          type: string
-          contentEncoding: date-time
-        deviceId:
-          type: string
-        lastSeenAt:
-          type: string
-        updatedAt:
-          type: string
-          contentEncoding: date-time
-        userAgent:
-          type: string
-    UserOrgDTO:
-      title: UserOrgDTO
-      type: object
-      properties:
-        name:
-          type: string
+        includeHidden:
+          type: boolean
         orgId:
           type: integer
           contentEncoding: int64
-        role:
-          $ref: '#/components/schemas/Role'
-    DashboardACLInfoDTO:
-      title: DashboardACLInfoDTO
-      type: object
-      properties:
-        created:
-          type: string
-          contentEncoding: date-time
-        dashboardId:
-          type: integer
-          contentEncoding: int64
-        folderId:
-          type: integer
-          description: 'Deprecated: use FolderUID instead'
-          contentEncoding: int64
-        folderUid:
-          type: string
-        inherited:
-          type: boolean
-        isFolder:
-          type: boolean
-        permission:
-          type: integer
-          contentEncoding: int64
-        permissionName:
-          type: string
-        role:
-          $ref: '#/components/schemas/Role'
-        slug:
-          type: string
-        team:
-          type: string
-        teamAvatarUrl:
-          type: string
-        teamEmail:
-          type: string
-        teamId:
-          type: integer
-          contentEncoding: int64
-        teamUid:
-          type: string
-        title:
-          type: string
-        uid:
-          type: string
-        updated:
-          type: string
-          contentEncoding: date-time
-        url:
-          type: string
-        userAvatarUrl:
-          type: string
-        userEmail:
-          type: string
-        userId:
-          type: integer
-          contentEncoding: int64
-        userLogin:
-          type: string
-        userUid:
-          type: string
-    Permission:
-      title: Permission
-      type: object
-      properties:
-        action:
-          type: string
-        created:
-          type: string
-          contentEncoding: date-time
-        scope:
-          type: string
-        updated:
-          type: string
-          contentEncoding: date-time
-      description: Permission is the model for access control permissions
-    PublicDashboardListResponseWithPagination:
-      title: PublicDashboardListResponseWithPagination
-      type: object
-      properties:
-        page:
-          type: integer
-          contentEncoding: int64
-        perPage:
-          type: integer
-          contentEncoding: int64
-        publicDashboards:
+        teamIds:
           type: array
           items:
-            $ref: '#/components/schemas/PublicDashboardListResponse'
+            type: integer
+            contentEncoding: int64
           description: ''
-        totalCount:
-          type: integer
-          contentEncoding: int64
-    Role:
-      title: Role
-      enum:
-      - None
-      - Viewer
-      - Editor
-      - Admin
-      type: string
-    listSSOSettingsResponse:
-      title: listSSOSettingsResponse
-      type: object
-      properties:
-        id:
-          type: string
-        provider:
-          type: string
-        settings:
-          type: object
-          additionalProperties: {}
-        source:
-          type: string
-    publicError1:
-      title: publicError1
-      required:
-      - messageId
-      - statusCode
-      type: object
-      properties:
-        extra:
-          type: object
-          additionalProperties: {}
-          description: Extra Additional information about the error
-        message:
-          type: string
-          description: Message A human readable message
-        messageId:
-          type: string
-          description: MessageID A unique identifier for the error
-        statusCode:
-          type: integer
-          description: StatusCode The HTTP status code returned
-          contentEncoding: int64
-      description: 'PublicError is derived from Error and only contains information
-
-        available to the end user.'
-    CloudMigrationSessionResponseDTO:
-      title: CloudMigrationSessionResponseDTO
-      type: object
-      properties:
-        created:
-          type: string
-          contentEncoding: date-time
-        slug:
-          type: string
-        uid:
-          type: string
-        updated:
-          type: string
-          contentEncoding: date-time
-    SnapshotListResponseDTO:
-      title: SnapshotListResponseDTO
-      type: object
-      properties:
-        snapshots:
+        userIds:
           type: array
           items:
-            $ref: '#/components/schemas/SnapshotDTO'
+            type: integer
+            contentEncoding: int64
           description: ''
     SuccessResponseBody:
       title: SuccessResponseBody
@@ -1510,30 +616,23 @@ components:
           type: number
           examples:
           - 0
-    Status1:
-      title: Status1
-      enum:
-      - INITIALIZING
-      - CREATING
-      - PENDING_UPLOAD
-      - UPLOADING
-      - PENDING_PROCESSING
-      - PROCESSING
-      - FINISHED
-      - CANCELED
-      - ERROR
-      - UNKNOWN
-      type: string
+    listSortOptionsResponse:
+      title: listSortOptionsResponse
+      type: object
+      properties:
+        description:
+          type: string
+        displayName:
+          type: string
+        meta:
+          type: string
+        name:
+          type: string
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: Service account token or API key
-    BasicAuth:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
       type: http
       scheme: basic
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: 'Format: Bearer <api-key>'

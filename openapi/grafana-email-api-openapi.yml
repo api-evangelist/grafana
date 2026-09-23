@@ -1,26 +1,24 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Email API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
+  title: Grafana Email API
+  description: Grafana is an open-source analytics and visualization platform that helps you monitor and analyze data from various sources.
   contact:
     name: Grafana Labs
     url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+    email: hello@grafana.com
+  version: 0.0.1
 servers:
-- url: https://{instance}.grafana.net/api
-  description: Grafana Cloud
+- url: http://{defaultHost}
   variables:
-    instance:
-      default: your-instance
-- url: http://localhost:3000/api
-  description: Local Grafana instance
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- basic: []
+- api_key: []
 tags:
 - name: Email
 paths:
@@ -173,6 +171,52 @@ paths:
         ChooseTags: true
 components:
   schemas:
+    ReportOptions:
+      title: ReportOptions
+      type: object
+      properties:
+        layout:
+          type: string
+        orientation:
+          type: string
+        pdfCombineOneFile:
+          type: boolean
+        pdfShowTemplateVariables:
+          type: boolean
+        timeRange:
+          $ref: '#/components/schemas/ReportTimeRange'
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    ReportTimeRange:
+      title: ReportTimeRange
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
     ReportSchedule:
       title: ReportSchedule
       type: object
@@ -196,20 +240,6 @@ components:
           type: string
         workdaysOnly:
           type: boolean
-    ReportOptions:
-      title: ReportOptions
-      type: object
-      properties:
-        layout:
-          type: string
-        orientation:
-          type: string
-        pdfCombineOneFile:
-          type: boolean
-        pdfShowTemplateVariables:
-          type: boolean
-        timeRange:
-          $ref: '#/components/schemas/ReportTimeRange'
     CreateOrUpdateReport:
       title: CreateOrUpdateReport
       type: object
@@ -247,12 +277,6 @@ components:
           type: string
           description: +enum
         subject:
-          type: string
-    SuccessResponseBody:
-      title: SuccessResponseBody
-      type: object
-      properties:
-        message:
           type: string
     UserProfileDTO:
       title: UserProfileDTO
@@ -303,32 +327,6 @@ components:
         updatedAt:
           type: string
           contentEncoding: date-time
-    ReportTimeRange:
-      title: ReportTimeRange
-      type: object
-      properties:
-        from:
-          type: string
-        to:
-          type: string
-    ErrorResponseBody:
-      title: ErrorResponseBody
-      required:
-      - message
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
-        message:
-          type: string
-          description: a human readable version of the error
-        status:
-          type: string
-          description: 'Status An optional status to denote the cause of the error.
-
-
-            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
     ReportDashboardID:
       title: ReportDashboardID
       type: object
@@ -351,15 +349,10 @@ components:
         timeRange:
           $ref: '#/components/schemas/ReportTimeRange'
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: Service account token or API key
-    BasicAuth:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
       type: http
       scheme: basic
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: 'Format: Bearer <api-key>'

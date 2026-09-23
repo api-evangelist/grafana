@@ -1,26 +1,24 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Cache API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
+  title: Grafana Cache API
+  description: Grafana is an open-source analytics and visualization platform that helps you monitor and analyze data from various sources.
   contact:
     name: Grafana Labs
     url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+    email: hello@grafana.com
+  version: 0.0.1
 servers:
-- url: https://{instance}.grafana.net/api
-  description: Grafana Cloud
+- url: http://{defaultHost}
   variables:
-    instance:
-      default: your-instance
-- url: http://localhost:3000/api
-  description: Local Grafana instance
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- basic: []
+- api_key: []
 tags:
 - name: Cache
 paths:
@@ -218,6 +216,30 @@ paths:
         ChooseTags: true
 components:
   schemas:
+    CacheConfigSetter:
+      title: CacheConfigSetter
+      type: object
+      properties:
+        dataSourceID:
+          type: integer
+          contentEncoding: int64
+        dataSourceUID:
+          type: string
+        enabled:
+          type: boolean
+        ttlQueriesMs:
+          type: integer
+          description: TTL MS, or "time to live", is how long a cached item will stay in the cache before it is removed (in milliseconds)
+          contentEncoding: int64
+        ttlResourcesMs:
+          type: integer
+          contentEncoding: int64
+        useDefaultTTL:
+          type: boolean
+          description: If UseDefaultTTL is enabled, then the TTLQueriesMS and TTLResourcesMS in this object is always sent as the default TTL located in grafana.ini
+      description: 'ConfigSetter defines the cache parameters that users can configure per datasource
+
+        This is only intended to be consumed by the SetCache HTTP Handler'
     ErrorResponseBody:
       title: ErrorResponseBody
       required:
@@ -272,40 +294,11 @@ components:
         useDefaultTTL:
           type: boolean
           description: If UseDefaultTTL is enabled, then the TTLQueriesMS and TTLResourcesMS in this object is always sent as the default TTL located in grafana.ini
-    CacheConfigSetter:
-      title: CacheConfigSetter
-      type: object
-      properties:
-        dataSourceID:
-          type: integer
-          contentEncoding: int64
-        dataSourceUID:
-          type: string
-        enabled:
-          type: boolean
-        ttlQueriesMs:
-          type: integer
-          description: TTL MS, or "time to live", is how long a cached item will stay in the cache before it is removed (in milliseconds)
-          contentEncoding: int64
-        ttlResourcesMs:
-          type: integer
-          contentEncoding: int64
-        useDefaultTTL:
-          type: boolean
-          description: If UseDefaultTTL is enabled, then the TTLQueriesMS and TTLResourcesMS in this object is always sent as the default TTL located in grafana.ini
-      description: 'ConfigSetter defines the cache parameters that users can configure per datasource
-
-        This is only intended to be consumed by the SetCache HTTP Handler'
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: Service account token or API key
-    BasicAuth:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
       type: http
       scheme: basic
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: 'Format: Bearer <api-key>'

@@ -1,14 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Dashboards API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
-  contact:
-    name: Grafana Labs
-    url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+  title: Grafana Dashboards API
+  version: '1.0'
+  description: 'Operations tagged Dashboards across 2 of this provider''s published API definitions: grafana-api.yml, grafana-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://{instance}.grafana.net/api
   description: Grafana Cloud
@@ -17,16 +11,19 @@ servers:
       default: your-instance
 - url: http://localhost:3000/api
   description: Local Grafana instance
-security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 tags:
 - name: Dashboards
   description: Manage dashboards
 paths:
   /dashboards/db:
-    parameters: []
     post:
       tags:
       - Dashboards
@@ -49,8 +46,20 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-  /dashboards/uid/{uid}:
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
     parameters: []
+    servers:
+    - url: https://{instance}.grafana.net/api
+      description: Grafana Cloud
+      variables:
+        instance:
+          default: your-instance
+    - url: http://localhost:3000/api
+      description: Local Grafana instance
+  /dashboards/uid/{uid}:
     get:
       tags:
       - Dashboards
@@ -71,6 +80,10 @@ paths:
                 $ref: '#/components/schemas/DashboardFullWithMeta'
         '404':
           $ref: '#/components/responses/NotFound'
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
     delete:
       tags:
       - Dashboards
@@ -87,6 +100,19 @@ paths:
           description: Dashboard deleted
         '404':
           $ref: '#/components/responses/NotFound'
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
+    parameters: []
+    servers:
+    - url: https://{instance}.grafana.net/api
+      description: Grafana Cloud
+      variables:
+        instance:
+          default: your-instance
+    - url: http://localhost:3000/api
+      description: Local Grafana instance
   /search:
     get:
       tags:
@@ -136,6 +162,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DashboardSearchHit'
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
+    servers:
+    - url: https://{instance}.grafana.net/api
+      description: Grafana Cloud
+      variables:
+        instance:
+          default: your-instance
+    - url: http://localhost:3000/api
+      description: Local Grafana instance
   /reports/dashboards/{uid}:
     parameters: []
     get:
@@ -190,52 +228,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
-  /admin/provisioning/dashboards/reload:
-    parameters: []
-    post:
-      tags:
-      - Dashboards
-      summary: Grafana Admin Provisioning Reload Dashboards
-      description: This API operation is a POST request to the '/admin/provisioning/dashboards/reload' endpoint in Grafana that allows administrators to trigger a reload of provisioned dashboards without requiring a full Grafana server restart. When invoked, this endpoint scans the configured provisioning directories and reloads all dashboard configurations, applying any changes made to the provisioning files such as new dashboards, modifications to existing ones, or deletions. This is particularly useful in automated environments or when managing dashboards as code, as it enables administrators to update dashboard configurations dynamically and see changes reflected immediately in the Grafana instance without service interruption.
-      operationId: adminProvisioningReloadDashboards
-      parameters: []
-      responses:
-        '200':
-          description: An OKResponse is returned if the request was successful.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SuccessResponseBody'
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
       security:
       - basic: []
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /dashboard/snapshots:
     parameters: []
     get:
@@ -286,6 +290,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /dashboards/home:
     parameters: []
     get:
@@ -323,6 +339,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /dashboards/id/{DashboardID}/permissions:
     parameters: []
     get:
@@ -385,6 +413,9 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
     post:
       tags:
       - Dashboards
@@ -455,6 +486,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /dashboards/id/{DashboardID}/versions:
     parameters: []
     get:
@@ -513,6 +556,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /dashboards/id/{DashboardID}/versions/{DashboardVersionID}:
     parameters: []
     get:
@@ -578,6 +633,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /dashboards/import:
     parameters: []
     post:
@@ -643,6 +710,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /dashboards/interpolate:
     parameters: []
     post:
@@ -694,6 +773,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /dashboards/public-dashboards:
     parameters: []
     get:
@@ -738,6 +829,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /dashboards/tags:
     parameters: []
     get:
@@ -779,6 +882,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /dashboards/uid/{dashboardUid}/public-dashboards:
     parameters: []
     get:
@@ -843,68 +958,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
-    post:
-      tags:
-      - Dashboards
-      summary: Grafana Create Public Dashboard
-      description: Creates a public dashboard that enables external users to view a specific Grafana dashboard without authentication. This operation takes a dashboard UID as a path parameter and accepts configuration options in the request body to control how the dashboard is shared publicly, including settings for time range, template variables, and access permissions. Once created, it generates a unique public URL that can be shared with anyone to view the dashboard's visualizations and data without requiring Grafana login credentials, making it useful for embedding dashboards in public websites or sharing metrics with external stakeholders.
-      operationId: createPublicDashboard
-      parameters:
-      - name: dashboardUid
-        in: path
-        description: ''
-        required: true
-        schema:
-          type: string
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PublicDashboardDTO'
-        required: true
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PublicDashboard'
-        '400':
-          description: BadRequestPublicError is returned when the request is invalid and it cannot be processed.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/publicError1'
-        '401':
-          description: UnauthorisedPublicError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/publicError1'
-        '403':
-          description: ForbiddenPublicError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/publicError1'
-        '500':
-          description: InternalServerPublicError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/publicError1'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /dashboards/uid/{dashboardUid}/public-dashboards/{uid}:
     parameters: []
     delete:
@@ -968,6 +1033,9 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
     patch:
       tags:
       - Dashboards
@@ -1036,6 +1104,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /dashboards/uid/{uid}/permissions:
     parameters: []
     get:
@@ -1097,6 +1177,9 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
     post:
       tags:
       - Dashboards
@@ -1166,6 +1249,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /dashboards/uid/{uid}/restore:
     parameters: []
     post:
@@ -1237,6 +1332,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /dashboards/uid/{uid}/versions:
     parameters: []
     get:
@@ -1312,6 +1419,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /dashboards/uid/{uid}/versions/{DashboardVersionID}:
     parameters: []
     get:
@@ -1376,6 +1495,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /public/dashboards/{accessToken}:
     parameters: []
     get:
@@ -1440,6 +1571,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /public/dashboards/{accessToken}/panels/{panelId}/query:
     parameters: []
     post:
@@ -1511,57 +1654,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
-  /snapshots:
-    parameters: []
-    post:
-      tags:
-      - Dashboards
-      summary: Grafana Create Dashboard Snapshot
-      description: Creates a new dashboard snapshot in Grafana, allowing users to capture and share the current state of a dashboard at a specific point in time. This operation accepts a POST request containing the dashboard data, metadata, and optional configuration parameters such as expiration time and external sharing settings. The snapshot preserves all panel configurations, queries, and visualizations as they appear at the moment of creation, generating a unique URL that can be shared with others without requiring authentication. The API returns a snapshot identifier and access URLs (both for viewing and deletion) that can be used to retrieve or manage the snapshot later. This is particularly useful for creating static references to dashboard states for reporting, troubleshooting, or sharing data insights with external stakeholders without granting full access to the live Grafana instance.
-      operationId: createDashboardSnapshot
-      parameters: []
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateDashboardSnapshotCommand'
-        required: true
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/createDashboardSnapshotResponse'
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /snapshots-delete/{deleteKey}:
     parameters: []
     get:
@@ -1619,6 +1723,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /snapshots/{key}:
     parameters: []
     get:
@@ -1666,6 +1782,9 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
     delete:
       tags:
       - Dashboards
@@ -1714,6 +1833,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /user/stars/dashboard/uid/{dashboard_uid}:
     parameters: []
     post:
@@ -1771,6 +1902,9 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
     delete:
       tags:
       - Dashboards
@@ -1826,14 +1960,70 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
 components:
   schemas:
+    TemplateVariable:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - query
+          - custom
+          - constant
+          - datasource
+          - interval
+          - textbox
+          - adhoc
+        label:
+          type: string
+        datasource:
+          type: object
+        query:
+          type: string
+        current:
+          type: object
+        hide:
+          type: integer
+          enum:
+          - 0
+          - 1
+          - 2
+        multi:
+          type: boolean
+        includeAll:
+          type: boolean
+        allValue:
+          type: string
+        refresh:
+          type: integer
+          enum:
+          - 0
+          - 1
+          - 2
+        sort:
+          type: integer
     Dashboard:
       type: object
       properties:
         id:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           description: Null when creating a new dashboard
         uid:
           type: string
@@ -1907,72 +2097,24 @@ components:
             $ref: '#/components/schemas/DashboardLink'
         liveNow:
           type: boolean
-    DataLink:
-      title: DataLink
+    SaveDashboardCommand:
       type: object
+      required:
+      - dashboard
       properties:
-        internal:
-          allOf:
-          - $ref: '#/components/schemas/InternalDataLink'
-          - description: InternalDataLink definition to allow Explore links to be constructed in the backend
-        targetBlank:
-          type: boolean
-        title:
-          type: string
-        url:
-          type: string
-      description: DataLink define what
-    DashboardSnapshotDTO:
-      title: DashboardSnapshotDTO
-      type: object
-      properties:
-        created:
-          type: string
-          contentEncoding: date-time
-        expires:
-          type: string
-          contentEncoding: date-time
-        external:
-          type: boolean
-        externalUrl:
-          type: string
-        key:
-          type: string
-        name:
-          type: string
-        updated:
-          type: string
-          contentEncoding: date-time
-      description: DashboardSnapshotDTO without dashboard map
-    ReportOptions:
-      title: ReportOptions
-      type: object
-      properties:
-        layout:
-          type: string
-        orientation:
-          type: string
-        pdfCombineOneFile:
-          type: boolean
-        pdfShowTemplateVariables:
-          type: boolean
-        timeRange:
-          $ref: '#/components/schemas/ReportTimeRange'
-    DashboardACLUpdateItem:
-      title: DashboardACLUpdateItem
-      type: object
-      properties:
-        permission:
+        dashboard:
+          $ref: '#/components/schemas/Dashboard'
+        folderId:
           type: integer
-          contentEncoding: int64
-        role:
-          $ref: '#/components/schemas/Role'
-        teamId:
-          type: integer
-          contentEncoding: int64
-        userId:
-          type: integer
-          contentEncoding: int64
+          description: Deprecated - use folderUid
+        folderUid:
+          type: string
+        overwrite:
+          type: boolean
+          default: false
+        message:
+          type: string
+          description: Commit message for version history
     DashboardLink:
       type: object
       properties:
@@ -1999,24 +2141,203 @@ components:
           type: boolean
         keepTime:
           type: boolean
-    NoticeprovidesastructureforpresentingnotificationsinGrafanasuserinterface.:
-      title: NoticeprovidesastructureforpresentingnotificationsinGrafanasuserinterface.
+    SaveDashboardResponse:
       type: object
       properties:
-        inspect:
+        id:
           type: integer
-          contentEncoding: int64
-        link:
+        uid:
           type: string
-          description: 'Link is an optional link for display in the user interface and can be an
-
-            absolute URL or a path relative to Grafana''s root url.'
-        severity:
+        url:
+          type: string
+        status:
+          type: string
+        version:
           type: integer
-          contentEncoding: int64
-        text:
+        slug:
           type: string
-          description: Text is freeform descriptive text for the notice.
+    DashboardFullWithMeta:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/DashboardMeta'
+        dashboard:
+          $ref: '#/components/schemas/Dashboard'
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: string
+    Target:
+      type: object
+      description: Query target - structure varies by data source type
+      properties:
+        refId:
+          type: string
+        datasource:
+          type: object
+          properties:
+            type:
+              type: string
+            uid:
+              type: string
+        expr:
+          type: string
+          description: Prometheus query expression
+        rawSql:
+          type: string
+          description: SQL query for SQL-based data sources
+        format:
+          type: string
+        legendFormat:
+          type: string
+        interval:
+          type: string
+        hide:
+          type: boolean
+    DashboardSearchHit:
+      type: object
+      properties:
+        id:
+          type: integer
+        uid:
+          type: string
+        title:
+          type: string
+        uri:
+          type: string
+        url:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        isStarred:
+          type: boolean
+        folderId:
+          type: integer
+        folderUid:
+          type: string
+        folderTitle:
+          type: string
+        folderUrl:
+          type: string
+        sortMeta:
+          type: integer
+    Panel:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          description: Panel plugin type, e.g. timeseries, stat, gauge, table, barchart, etc.
+        title:
+          type: string
+        description:
+          type: string
+        gridPos:
+          type: object
+          properties:
+            h:
+              type: integer
+            w:
+              type: integer
+            x:
+              type: integer
+            y:
+              type: integer
+        datasource:
+          type: object
+          properties:
+            type:
+              type: string
+            uid:
+              type: string
+        targets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Target'
+        fieldConfig:
+          type: object
+          properties:
+            defaults:
+              type: object
+              properties:
+                unit:
+                  type: string
+                min:
+                  type: number
+                max:
+                  type: number
+                decimals:
+                  type: integer
+                thresholds:
+                  type: object
+                  properties:
+                    mode:
+                      type: string
+                      enum:
+                      - absolute
+                      - percentage
+                    steps:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          color:
+                            type: string
+                          value:
+                            type:
+                            - number
+                            - 'null'
+                color:
+                  type: object
+                  properties:
+                    mode:
+                      type: string
+                mappings:
+                  type: array
+                  items:
+                    type: object
+            overrides:
+              type: array
+              items:
+                type: object
+        options:
+          type: object
+          description: Panel-type-specific options
+        transformations:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              options:
+                type: object
+        transparent:
+          type: boolean
+        links:
+          type: array
+          items:
+            type: object
+        repeat:
+          type: string
+          description: Variable name to repeat panel for
+        repeatDirection:
+          type: string
+          enum:
+          - h
+          - v
+        maxPerRow:
+          type: integer
     DashboardMeta:
       type: object
       properties:
@@ -2060,141 +2381,274 @@ components:
           type: boolean
         provisionedExternalId:
           type: string
-    FrameMetamatches:
-      title: FrameMetamatches
-      type: object
-      properties:
-        channel:
-          type: string
-          description: Channel is the path to a stream in grafana live that has real-time updates for this data.
-        custom:
-          description: Custom datasource specific values.
-        dataTopic:
-          type: string
-          description: nolint:revive
-        executedQueryString:
-          type: string
-          description: 'ExecutedQueryString is the raw query sent to the underlying system. All macros and templating
-
-            have been applied.  When metadata contains this value, it will be shown in the query inspector.'
-        notices:
-          type: array
-          items:
-            $ref: '#/components/schemas/NoticeprovidesastructureforpresentingnotificationsinGrafanasuserinterface.'
-          description: 'Notices provide additional information about the data in the Frame that
-
-            Grafana can display to the user in the user interface.'
-        path:
-          type: string
-          description: Path is a browsable path on the datasource.
-        pathSeparator:
-          type: string
-          description: PathSeparator defines the separator pattern to decode a hierarchy. The default separator is '/'.
-        preferredVisualisationPluginId:
-          type: string
-          description: 'PreferredVisualizationPluginId sets the panel plugin id to use to render the data when using Explore. If
-
-            the plugin cannot be found will fall back to PreferredVisualization.'
-        preferredVisualisationType:
-          type: string
-        stats:
-          type: array
-          items:
-            $ref: '#/components/schemas/QueryStatisusedforstoringarbitrarystatisticsmetadatarelatedtoaqueryanditsresulte.g.totalrequesttimedataprocessingtime.'
-          description: Stats is an array of query result statistics.
-        type:
-          type: string
-          description: 'A FrameType string, when present in a frame''s metadata, asserts that the
-
-            frame''s structure conforms to the FrameType''s specification.
-
-            This property is currently optional, so FrameType may be FrameTypeUnknown even if the properties of
-
-            the Frame correspond to a defined FrameType.
-
-            +enum'
-        typeVersion:
-          type: array
-          items:
-            type: integer
-            contentEncoding: int32
-          description: ''
-        uniqueRowIdFields:
-          type: array
-          items:
-            type: integer
-            contentEncoding: int64
-          description: 'Array of field indices which values create a unique id for each row. Ideally this should be globally unique ID
-
-            but that isn''t guarantied. Should help with keeping track and deduplicating rows in visualizations, especially
-
-            with streaming data with frequent updates.'
-      description: 'https://github.com/grafana/grafana/blob/master/packages/grafana-data/src/types/data.ts#L11
-
-        NOTE -- in javascript this can accept any `[key: string]: any;` however
-
-        this interface only exposes the values we want to be exposed'
-    ErrorResponseBody:
-      title: ErrorResponseBody
-      required:
-      - message
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
-        message:
-          type: string
-          description: a human readable version of the error
-        status:
-          type: string
-          description: 'Status An optional status to denote the cause of the error.
-
-
-            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
-    SaveDashboardCommand:
-      type: object
-      required:
-      - dashboard
-      properties:
-        dashboard:
-          $ref: '#/components/schemas/Dashboard'
-        folderId:
-          type: integer
-          description: Deprecated - use folderUid
-        folderUid:
-          type: string
-        overwrite:
-          type: boolean
-          default: false
-        message:
-          type: string
-          description: Commit message for version history
-    ReportDashboard:
-      title: ReportDashboard
-      type: object
-      properties:
-        dashboard:
-          $ref: '#/components/schemas/ReportDashboardID'
-        reportVariables:
-          type: object
-        timeRange:
-          $ref: '#/components/schemas/ReportTimeRange'
-    PublicDashboardListResponse:
-      title: PublicDashboardListResponse
+    PublicDashboardDTO:
+      title: PublicDashboardDTO
       type: object
       properties:
         accessToken:
           type: string
-        dashboardUid:
-          type: string
+        annotationsEnabled:
+          type: boolean
         isEnabled:
+          type: boolean
+        share:
+          type: string
+        timeSelectionEnabled:
+          type: boolean
+        uid:
+          type: string
+    ReportTimeRange:
+      title: ReportTimeRange
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+    EnumFieldConfig:
+      title: EnumFieldConfig
+      type: object
+      properties:
+        color:
+          type: array
+          items:
+            type: string
+          description: Color is the color value for a given index (empty is undefined)
+        description:
+          type: array
+          items:
+            type: string
+          description: Description of the enum state
+        icon:
+          type: array
+          items:
+            type: string
+          description: Icon supports setting an icon for a given index value
+        text:
+          type: array
+          items:
+            type: string
+          description: Value is the string display value for a given index
+      description: 'Enum field config
+
+        Vector values are used as lookup keys into the enum fields'
+    publicError1:
+      title: publicError1
+      required:
+      - messageId
+      - statusCode
+      type: object
+      properties:
+        extra:
+          type: object
+          additionalProperties: {}
+          description: Extra Additional information about the error
+        message:
+          type: string
+          description: Message A human readable message
+        messageId:
+          type: string
+          description: MessageID A unique identifier for the error
+        statusCode:
+          type: integer
+          description: StatusCode The HTTP status code returned
+          contentEncoding: int64
+      description: 'PublicError is derived from Error and only contains information
+
+        available to the end user.'
+    PublicDashboardListResponseWithPagination:
+      title: PublicDashboardListResponseWithPagination
+      type: object
+      properties:
+        page:
+          type: integer
+          contentEncoding: int64
+        perPage:
+          type: integer
+          contentEncoding: int64
+        publicDashboards:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicDashboardListResponse'
+          description: ''
+        totalCount:
+          type: integer
+          contentEncoding: int64
+    DashboardVersionResponseMeta:
+      title: DashboardVersionResponseMeta
+      type: object
+      properties:
+        continueToken:
+          type: string
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardVersionMeta'
+          description: ''
+    Role:
+      title: Role
+      enum:
+      - None
+      - Viewer
+      - Editor
+      - Admin
+      type: string
+    ThresholdsConfig:
+      title: ThresholdsConfig
+      type: object
+      properties:
+        mode:
+          type: string
+          description: ThresholdsMode absolute or percentage
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/Threshold'
+          description: Must be sorted by 'value', first value is always -Infinity
+      description: ThresholdsConfig setup thresholds
+    TimeRange:
+      title: TimeRange
+      type: object
+      properties:
+        from:
+          type: string
+          contentEncoding: date-time
+        to:
+          type: string
+          contentEncoding: date-time
+      description: Redefining this to avoid an import cycle
+    Gethomedashboardresponse.:
+      title: Gethomedashboardresponse.
+      type: object
+      properties:
+        dashboard:
+          type: object
+        meta:
+          $ref: '#/components/schemas/DashboardMeta_2'
+        redirectUri:
+          type: string
+    DashboardTagCloudItem:
+      title: DashboardTagCloudItem
+      type: object
+      properties:
+        count:
+          type: integer
+          contentEncoding: int64
+        term:
+          type: string
+    DashboardMeta_2:
+      title: DashboardMeta
+      type: object
+      properties:
+        annotationsPermissions:
+          allOf:
+          - $ref: '#/components/schemas/AnnotationPermission'
+          - description: +k8s:deepcopy-gen=true
+        apiVersion:
+          type: string
+        canAdmin:
+          type: boolean
+        canDelete:
+          type: boolean
+        canEdit:
+          type: boolean
+        canSave:
+          type: boolean
+        canStar:
+          type: boolean
+        created:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          type: string
+        expires:
+          type: string
+          contentEncoding: date-time
+        folderId:
+          type: integer
+          description: 'Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderTitle:
+          type: string
+        folderUid:
+          type: string
+        folderUrl:
+          type: string
+        hasAcl:
+          type: boolean
+        isFolder:
+          type: boolean
+        isSnapshot:
+          type: boolean
+        isStarred:
+          type: boolean
+        provisioned:
+          type: boolean
+        provisionedExternalId:
+          type: string
+        publicDashboardEnabled:
           type: boolean
         slug:
           type: string
-        title:
+        type:
           type: string
-        uid:
+        updated:
+          type: string
+          contentEncoding: date-time
+        updatedBy:
+          type: string
+        url:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+    DataResponsecontainstheresultsfromaDataQuery.:
+      title: DataResponsecontainstheresultsfromaDataQuery.
+      type: object
+      properties:
+        Error:
+          type: string
+          description: Error is a property to be set if the corresponding DataQuery has an error.
+        ErrorSource:
+          type: string
+        Frames:
+          type: array
+          items:
+            $ref: '#/components/schemas/FrameisacolumnardatastructurewhereeachcolumnisaField.'
+          description: 'It is the main data container within a backend.DataResponse.
+
+            There should be no `nil` entries in the Frames slice (making them pointers was a mistake).'
+        Status:
+          type: integer
+          contentEncoding: int64
+      description: 'A map of RefIDs (unique query identifiers) to this type makes up the Responses property of a QueryDataResponse.
+
+        The Error property is used to allow for partial success responses from the containing QueryDataResponse.'
+    ReportOptions:
+      title: ReportOptions
+      type: object
+      properties:
+        layout:
+          type: string
+        orientation:
+          type: string
+        pdfCombineOneFile:
+          type: boolean
+        pdfShowTemplateVariables:
+          type: boolean
+        timeRange:
+          $ref: '#/components/schemas/ReportTimeRange'
+    LinkTransformationConfig:
+      title: LinkTransformationConfig
+      type: object
+      properties:
+        expression:
+          type: string
+        field:
+          type: string
+        mapValue:
+          type: string
+        type:
           type: string
     QueryStatisusedforstoringarbitrarystatisticsmetadatarelatedtoaqueryanditsresulte.g.totalrequesttimedataprocessingtime.:
       title: QueryStatisusedforstoringarbitrarystatisticsmetadatarelatedtoaqueryanditsresulte.g.totalrequesttimedataprocessingtime.
@@ -2286,105 +2740,41 @@ components:
       description: 'The embedded FieldConfig''s display name must be set.
 
         It corresponds to the QueryResultMetaStat on the frontend (https://github.com/grafana/grafana/blob/master/packages/grafana-data/src/types/data.ts#L53).'
-    LinkTransformationConfig:
-      title: LinkTransformationConfig
+    QueryDataResponsecontainstheresultsfromaQueryDataRequest.:
+      title: QueryDataResponsecontainstheresultsfromaQueryDataRequest.
       type: object
       properties:
-        expression:
-          type: string
-        field:
-          type: string
-        mapValue:
-          type: string
-        type:
-          type: string
-    RestoreDashboardVersionCommand:
-      title: RestoreDashboardVersionCommand
-      type: object
-      properties:
-        version:
-          type: integer
-          contentEncoding: int64
-    ReportSchedule:
-      title: ReportSchedule
-      type: object
-      properties:
-        dayOfMonth:
-          type: string
-        endDate:
-          type: string
-          contentEncoding: date-time
-        frequency:
-          type: string
-        intervalAmount:
-          type: integer
-          contentEncoding: int64
-        intervalFrequency:
-          type: string
-        startDate:
-          type: string
-          contentEncoding: date-time
-        timeZone:
-          type: string
-        workdaysOnly:
-          type: boolean
-    AnnotationActions:
-      title: AnnotationActions
-      type: object
-      properties:
-        canAdd:
-          type: boolean
-        canDelete:
-          type: boolean
-        canEdit:
-          type: boolean
-      description: +k8s:deepcopy-gen=true
-    postDashboardResponse:
-      title: postDashboardResponse
+        results:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/DataResponsecontainstheresultsfromaDataQuery.'
+          description: 'The QueryData method the QueryDataHandler method will set the RefId
+
+            property on the DataResponses'' frames based on these RefIDs.'
+      description: It is the return type of a QueryData call.
+    deleteDashboardResponse:
+      title: deleteDashboardResponse
       required:
-      - id
-      - status
+      - message
       - title
       - uid
-      - url
-      - version
       type: object
       properties:
-        folderUid:
+        message:
           type: string
-          description: FolderUID The unique identifier (uid) of the folder the dashboard belongs to.
-        id:
-          type: integer
-          description: ID The unique identifier (id) of the created/updated dashboard.
-          contentEncoding: int64
+          description: Message Message of the deleted dashboard.
           examples:
-          - 1
-        status:
-          type: string
-          description: Status status of the response.
-          examples:
-          - success
+          - Dashboard My Dashboard deleted
         title:
           type: string
-          description: Slug The slug of the dashboard.
+          description: Title Title of the deleted dashboard.
           examples:
-          - my-dashboard
+          - My Dashboard
         uid:
           type: string
-          description: UID The unique identifier (uid) of the created/updated dashboard.
+          description: UID Identifier of the deleted dashboard.
           examples:
-          - nHz3SXiiz
-        url:
-          type: string
-          description: URL The relative URL for accessing the created/updated dashboard.
-          examples:
-          - /d/nHz3SXiiz/my-dashboard
-        version:
-          type: integer
-          description: Version The version of the dashboard.
-          contentEncoding: int64
-          examples:
-          - 2
+          - '65'
     ImportDashboardResponseresponseobjectreturnedwhenimportingadashboard.:
       title: ImportDashboardResponseresponseobjectreturnedwhenimportingadashboard.
       type: object
@@ -2424,169 +2814,35 @@ components:
           type: string
         uid:
           type: string
-    Gethomedashboardresponse.:
-      title: Gethomedashboardresponse.
+    SuccessResponseBody:
+      title: SuccessResponseBody
       type: object
       properties:
-        dashboard:
-          type: object
-        meta:
-          $ref: '#/components/schemas/DashboardMeta_2'
-        redirectUri:
+        message:
           type: string
-    DashboardTagCloudItem:
-      title: DashboardTagCloudItem
+    ReportSchedule:
+      title: ReportSchedule
       type: object
       properties:
-        count:
+        dayOfMonth:
+          type: string
+        endDate:
+          type: string
+          contentEncoding: date-time
+        frequency:
+          type: string
+        intervalAmount:
           type: integer
           contentEncoding: int64
-        term:
+        intervalFrequency:
           type: string
-    DashboardVersionResponseMeta:
-      title: DashboardVersionResponseMeta
-      type: object
-      properties:
-        continueToken:
+        startDate:
           type: string
-        versions:
-          type: array
-          items:
-            $ref: '#/components/schemas/DashboardVersionMeta'
-          description: ''
-    SaveDashboardResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        uid:
+          contentEncoding: date-time
+        timeZone:
           type: string
-        url:
-          type: string
-        status:
-          type: string
-        version:
-          type: integer
-        slug:
-          type: string
-    DataResponsecontainstheresultsfromaDataQuery.:
-      title: DataResponsecontainstheresultsfromaDataQuery.
-      type: object
-      properties:
-        Error:
-          type: string
-          description: Error is a property to be set if the corresponding DataQuery has an error.
-        ErrorSource:
-          type: string
-        Frames:
-          type: array
-          items:
-            $ref: '#/components/schemas/FrameisacolumnardatastructurewhereeachcolumnisaField.'
-          description: 'It is the main data container within a backend.DataResponse.
-
-            There should be no `nil` entries in the Frames slice (making them pointers was a mistake).'
-        Status:
-          type: integer
-          contentEncoding: int64
-      description: 'A map of RefIDs (unique query identifiers) to this type makes up the Responses property of a QueryDataResponse.
-
-        The Error property is used to allow for partial success responses from the containing QueryDataResponse.'
-    ReportTimeRange:
-      title: ReportTimeRange
-      type: object
-      properties:
-        from:
-          type: string
-        to:
-          type: string
-    QueryDataResponsecontainstheresultsfromaQueryDataRequest.:
-      title: QueryDataResponsecontainstheresultsfromaQueryDataRequest.
-      type: object
-      properties:
-        results:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/DataResponsecontainstheresultsfromaDataQuery.'
-          description: 'The QueryData method the QueryDataHandler method will set the RefId
-
-            property on the DataResponses'' frames based on these RefIDs.'
-      description: It is the return type of a QueryData call.
-    ImportDashboardInputdefinitionofinputparameterswhenimportingadashboard.:
-      title: ImportDashboardInputdefinitionofinputparameterswhenimportingadashboard.
-      type: object
-      properties:
-        name:
-          type: string
-        pluginId:
-          type: string
-        type:
-          type: string
-        value:
-          type: string
-    TemplateVariable:
-      type: object
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - query
-          - custom
-          - constant
-          - datasource
-          - interval
-          - textbox
-          - adhoc
-        label:
-          type: string
-        datasource:
-          type: object
-        query:
-          type: string
-        current:
-          type: object
-        hide:
-          type: integer
-          enum:
-          - 0
-          - 1
-          - 2
-        multi:
+        workdaysOnly:
           type: boolean
-        includeAll:
-          type: boolean
-        allValue:
-          type: string
-        refresh:
-          type: integer
-          enum:
-          - 0
-          - 1
-          - 2
-        sort:
-          type: integer
-    InternalDataLink:
-      title: InternalDataLink
-      type: object
-      properties:
-        datasourceName:
-          type: string
-        datasourceUid:
-          type: string
-        panelsState:
-          description: This is an object constructed with the keys as the values of the enum VisType and the value being a bag of properties
-        query: {}
-        timeRange:
-          allOf:
-          - $ref: '#/components/schemas/TimeRange'
-          - description: Redefining this to avoid an import cycle
-        transformations:
-          type: array
-          items:
-            $ref: '#/components/schemas/LinkTransformationConfig'
-          description: ''
-      description: InternalDataLink definition to allow Explore links to be constructed in the backend
     Report:
       title: Report
       type: object
@@ -2642,98 +2898,41 @@ components:
         userId:
           type: integer
           contentEncoding: int64
-    TimeRange:
-      title: TimeRange
-      type: object
-      properties:
-        from:
-          type: string
-          contentEncoding: date-time
-        to:
-          type: string
-          contentEncoding: date-time
-      description: Redefining this to avoid an import cycle
-    DashboardACLInfoDTO:
-      title: DashboardACLInfoDTO
+    DashboardSnapshotDTO:
+      title: DashboardSnapshotDTO
       type: object
       properties:
         created:
           type: string
           contentEncoding: date-time
-        dashboardId:
-          type: integer
-          contentEncoding: int64
-        folderId:
-          type: integer
-          description: 'Deprecated: use FolderUID instead'
-          contentEncoding: int64
-        folderUid:
+        expires:
           type: string
-        inherited:
+          contentEncoding: date-time
+        external:
           type: boolean
-        isFolder:
-          type: boolean
-        permission:
-          type: integer
-          contentEncoding: int64
-        permissionName:
+        externalUrl:
           type: string
-        role:
-          $ref: '#/components/schemas/Role'
-        slug:
+        key:
           type: string
-        team:
-          type: string
-        teamAvatarUrl:
-          type: string
-        teamEmail:
-          type: string
-        teamId:
-          type: integer
-          contentEncoding: int64
-        teamUid:
-          type: string
-        title:
-          type: string
-        uid:
+        name:
           type: string
         updated:
           type: string
           contentEncoding: date-time
-        url:
-          type: string
-        userAvatarUrl:
-          type: string
-        userEmail:
-          type: string
-        userId:
-          type: integer
-          contentEncoding: int64
-        userLogin:
-          type: string
-        userUid:
-          type: string
-    ThresholdsConfig:
-      title: ThresholdsConfig
+      description: DashboardSnapshotDTO without dashboard map
+    AnnotationPermission:
+      title: AnnotationPermission
       type: object
       properties:
-        mode:
-          type: string
-          description: ThresholdsMode absolute or percentage
-        steps:
-          type: array
-          items:
-            $ref: '#/components/schemas/Threshold'
-          description: Must be sorted by 'value', first value is always -Infinity
-      description: ThresholdsConfig setup thresholds
-    EmailDTO:
-      title: EmailDTO
-      type: object
-      properties:
-        recipient:
-          type: string
-        uid:
-          type: string
+        dashboard:
+          allOf:
+          - $ref: '#/components/schemas/AnnotationActions'
+          - description: +k8s:deepcopy-gen=true
+        organization:
+          allOf:
+          - $ref: '#/components/schemas/AnnotationActions'
+          - description: +k8s:deepcopy-gen=true
+      description: +k8s:deepcopy-gen=true
     FrameisacolumnardatastructurewhereeachcolumnisaField.:
       title: FrameisacolumnardatastructurewhereeachcolumnisaField.
       type: object
@@ -2767,262 +2966,99 @@ components:
         A Frame is a general data container for Grafana. A Frame can be table data
 
         or time series data depending on its content and field types.'
-    PublicDashboardListResponseWithPagination:
-      title: PublicDashboardListResponseWithPagination
+    EmailDTO:
+      title: EmailDTO
       type: object
       properties:
-        page:
-          type: integer
-          contentEncoding: int64
-        perPage:
-          type: integer
-          contentEncoding: int64
-        publicDashboards:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicDashboardListResponse'
-          description: ''
-        totalCount:
-          type: integer
-          contentEncoding: int64
-    Role:
-      title: Role
-      enum:
-      - None
-      - Viewer
-      - Editor
-      - Admin
-      type: string
-    createDashboardSnapshotResponse:
-      title: createDashboardSnapshotResponse
-      type: object
-      properties:
-        deleteKey:
+        recipient:
           type: string
-          description: Unique key used to delete the snapshot. It is different from the key so that only the creator can delete the snapshot.
-        deleteUrl:
-          type: string
-        id:
-          type: integer
-          description: Snapshot id
-          contentEncoding: int64
-        key:
-          type: string
-          description: Unique key
-        url:
-          type: string
-    DashboardSearchHit:
-      type: object
-      properties:
-        id:
-          type: integer
         uid:
           type: string
-        title:
+    FrameMetamatches:
+      title: FrameMetamatches
+      type: object
+      properties:
+        channel:
           type: string
-        uri:
+          description: Channel is the path to a stream in grafana live that has real-time updates for this data.
+        custom:
+          description: Custom datasource specific values.
+        dataTopic:
           type: string
-        url:
+          description: nolint:revive
+        executedQueryString:
           type: string
-        slug:
+          description: 'ExecutedQueryString is the raw query sent to the underlying system. All macros and templating
+
+            have been applied.  When metadata contains this value, it will be shown in the query inspector.'
+        notices:
+          type: array
+          items:
+            $ref: '#/components/schemas/NoticeprovidesastructureforpresentingnotificationsinGrafanasuserinterface.'
+          description: 'Notices provide additional information about the data in the Frame that
+
+            Grafana can display to the user in the user interface.'
+        path:
           type: string
+          description: Path is a browsable path on the datasource.
+        pathSeparator:
+          type: string
+          description: PathSeparator defines the separator pattern to decode a hierarchy. The default separator is '/'.
+        preferredVisualisationPluginId:
+          type: string
+          description: 'PreferredVisualizationPluginId sets the panel plugin id to use to render the data when using Explore. If
+
+            the plugin cannot be found will fall back to PreferredVisualization.'
+        preferredVisualisationType:
+          type: string
+        stats:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryStatisusedforstoringarbitrarystatisticsmetadatarelatedtoaqueryanditsresulte.g.totalrequesttimedataprocessingtime.'
+          description: Stats is an array of query result statistics.
         type:
           type: string
-        tags:
+          description: 'A FrameType string, when present in a frame''s metadata, asserts that the
+
+            frame''s structure conforms to the FrameType''s specification.
+
+            This property is currently optional, so FrameType may be FrameTypeUnknown even if the properties of
+
+            the Frame correspond to a defined FrameType.
+
+            +enum'
+        typeVersion:
           type: array
           items:
-            type: string
-        isStarred:
-          type: boolean
-        folderId:
-          type: integer
-        folderUid:
-          type: string
-        folderTitle:
-          type: string
-        folderUrl:
-          type: string
-        sortMeta:
-          type: integer
-    Threshold:
-      title: Threshold
-      type: object
-      properties:
-        color:
-          type: string
-        state:
-          type: string
-        value:
-          type: number
-          description: 'ConfFloat64 is a float64. It Marshals float64 values of NaN of Inf
-
-            to null.'
-      description: Threshold a single step on the threshold list
-    DashboardVersionMeta:
-      title: DashboardVersionMeta
-      type: object
-      properties:
-        created:
-          type: string
-          contentEncoding: date-time
-        createdBy:
-          type: string
-        dashboardId:
-          type: integer
-          contentEncoding: int64
-        data:
-          type: object
-        id:
-          type: integer
-          contentEncoding: int64
-        message:
-          type: string
-        parentVersion:
-          type: integer
-          contentEncoding: int64
-        restoredFrom:
-          type: integer
-          contentEncoding: int64
-        uid:
-          type: string
-        version:
-          type: integer
-          contentEncoding: int64
-      description: 'DashboardVersionMeta extends the DashboardVersionDTO with the names
-
-        associated with the UserIds, overriding the field with the same name from
-
-        the DashboardVersionDTO model.'
-    PublicDashboardDTO:
-      title: PublicDashboardDTO
-      type: object
-      properties:
-        accessToken:
-          type: string
-        annotationsEnabled:
-          type: boolean
-        isEnabled:
-          type: boolean
-        share:
-          type: string
-        timeSelectionEnabled:
-          type: boolean
-        uid:
-          type: string
-    PublicDashboard:
-      title: PublicDashboard
-      type: object
-      properties:
-        accessToken:
-          type: string
-        annotationsEnabled:
-          type: boolean
-        createdAt:
-          type: string
-          contentEncoding: date-time
-        createdBy:
-          type: integer
-          contentEncoding: int64
-        dashboardUid:
-          type: string
-        isEnabled:
-          type: boolean
-        recipients:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailDTO'
+            type: integer
+            contentEncoding: int32
           description: ''
-        share:
-          type: string
-        timeSelectionEnabled:
-          type: boolean
-        uid:
-          type: string
-        updatedAt:
-          type: string
-          contentEncoding: date-time
-        updatedBy:
-          type: integer
-          contentEncoding: int64
-    DashboardMeta_2:
-      title: DashboardMeta
+        uniqueRowIdFields:
+          type: array
+          items:
+            type: integer
+            contentEncoding: int64
+          description: 'Array of field indices which values create a unique id for each row. Ideally this should be globally unique ID
+
+            but that isn''t guarantied. Should help with keeping track and deduplicating rows in visualizations, especially
+
+            with streaming data with frequent updates.'
+      description: 'https://github.com/grafana/grafana/blob/master/packages/grafana-data/src/types/data.ts#L11
+
+        NOTE -- in javascript this can accept any `[key: string]: any;` however
+
+        this interface only exposes the values we want to be exposed'
+    FieldTypeConfig:
+      title: FieldTypeConfig
       type: object
       properties:
-        annotationsPermissions:
+        enum:
           allOf:
-          - $ref: '#/components/schemas/AnnotationPermission'
-          - description: +k8s:deepcopy-gen=true
-        apiVersion:
-          type: string
-        canAdmin:
-          type: boolean
-        canDelete:
-          type: boolean
-        canEdit:
-          type: boolean
-        canSave:
-          type: boolean
-        canStar:
-          type: boolean
-        created:
-          type: string
-          contentEncoding: date-time
-        createdBy:
-          type: string
-        expires:
-          type: string
-          contentEncoding: date-time
-        folderId:
-          type: integer
-          description: 'Deprecated: use FolderUID instead'
-          contentEncoding: int64
-        folderTitle:
-          type: string
-        folderUid:
-          type: string
-        folderUrl:
-          type: string
-        hasAcl:
-          type: boolean
-        isFolder:
-          type: boolean
-        isSnapshot:
-          type: boolean
-        isStarred:
-          type: boolean
-        provisioned:
-          type: boolean
-        provisionedExternalId:
-          type: string
-        publicDashboardEnabled:
-          type: boolean
-        slug:
-          type: string
-        type:
-          type: string
-        updated:
-          type: string
-          contentEncoding: date-time
-        updatedBy:
-          type: string
-        url:
-          type: string
-        version:
-          type: integer
-          contentEncoding: int64
-    Unstructured:
-      title: Unstructured
-      type: object
-      properties:
-        Object:
-          type: object
-          additionalProperties: {}
-          description: 'Object is a JSON compatible map with string, float, int, bool, []any,
+          - $ref: '#/components/schemas/EnumFieldConfig'
+          - description: 'Enum field config
 
-            or map[string]any children.'
-      description: 'Unstructured allows objects that do not have Golang structs registered to be manipulated
-
-        generically.'
+              Vector values are used as lookup keys into the enum fields'
+      description: FieldTypeConfig has type specific configs, only one should be active at a time
     FieldConfigrepresentsthedisplaypropertiesforaField.:
       title: FieldConfigrepresentsthedisplaypropertiesforaField.
       type: object
@@ -3108,319 +3144,173 @@ components:
         writeable:
           type: boolean
           description: Writeable indicates that the datasource knows how to update this value
-    UpdateDashboardACLCommand:
-      title: UpdateDashboardACLCommand
+    DashboardACLUpdateItem:
+      title: DashboardACLUpdateItem
       type: object
       properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/DashboardACLUpdateItem'
-          description: ''
-    ErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-        status:
-          type: string
-    CreateDashboardSnapshotCommand:
-      title: CreateDashboardSnapshotCommand
-      required:
-      - dashboard
-      type: object
-      properties:
-        apiVersion:
-          type: string
-          description: 'APIVersion defines the versioned schema of this representation of an object.
-
-            Servers should convert recognized schemas to the latest internal value, and
-
-            may reject unrecognized values.
-
-            More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-
-            +optional'
-        dashboard:
-          allOf:
-          - $ref: '#/components/schemas/Unstructured'
-          - description: 'Unstructured allows objects that do not have Golang structs registered to be manipulated
-
-              generically.'
-        deleteKey:
-          type: string
-          description: Unique key used to delete the snapshot. It is different from the `key` so that only the creator can delete the snapshot. Required if `external` is `true`.
-        expires:
+        permission:
           type: integer
-          description: When the snapshot should expire in seconds in seconds. Default is never to expire.
           contentEncoding: int64
-          default: 0
-        external:
-          type: boolean
-          description: 'these are passed when storing an external snapshot ref
-
-            Save the snapshot on an external server rather than locally.'
-          default: false
-        key:
-          type: string
-          description: Define the unique key. Required if `external` is `true`.
-        kind:
-          type: string
-          description: 'Kind is a string value representing the REST resource this object represents.
-
-            Servers may infer this from the endpoint the client submits requests to.
-
-            Cannot be updated.
-
-            In CamelCase.
-
-            More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-
-            +optional'
-        name:
-          type: string
-          description: Snapshot name
-    publicError1:
-      title: publicError1
-      required:
-      - messageId
-      - statusCode
-      type: object
-      properties:
-        extra:
-          type: object
-          additionalProperties: {}
-          description: Extra Additional information about the error
-        message:
-          type: string
-          description: Message A human readable message
-        messageId:
-          type: string
-          description: MessageID A unique identifier for the error
-        statusCode:
+        role:
+          $ref: '#/components/schemas/Role'
+        teamId:
           type: integer
-          description: StatusCode The HTTP status code returned
           contentEncoding: int64
-      description: 'PublicError is derived from Error and only contains information
-
-        available to the end user.'
-    DashboardFullWithMeta:
-      type: object
-      properties:
-        meta:
-          $ref: '#/components/schemas/DashboardMeta'
-        dashboard:
-          $ref: '#/components/schemas/Dashboard'
-    EnumFieldConfig:
-      title: EnumFieldConfig
-      type: object
-      properties:
-        color:
-          type: array
-          items:
-            type: string
-          description: Color is the color value for a given index (empty is undefined)
-        description:
-          type: array
-          items:
-            type: string
-          description: Description of the enum state
-        icon:
-          type: array
-          items:
-            type: string
-          description: Icon supports setting an icon for a given index value
-        text:
-          type: array
-          items:
-            type: string
-          description: Value is the string display value for a given index
-      description: 'Enum field config
-
-        Vector values are used as lookup keys into the enum fields'
-    FieldTypeConfig:
-      title: FieldTypeConfig
-      type: object
-      properties:
-        enum:
-          allOf:
-          - $ref: '#/components/schemas/EnumFieldConfig'
-          - description: 'Enum field config
-
-              Vector values are used as lookup keys into the enum fields'
-      description: FieldTypeConfig has type specific configs, only one should be active at a time
-    Target:
-      type: object
-      description: Query target - structure varies by data source type
-      properties:
-        refId:
-          type: string
-        datasource:
-          type: object
-          properties:
-            type:
-              type: string
-            uid:
-              type: string
-        expr:
-          type: string
-          description: Prometheus query expression
-        rawSql:
-          type: string
-          description: SQL query for SQL-based data sources
-        format:
-          type: string
-        legendFormat:
-          type: string
-        interval:
-          type: string
-        hide:
-          type: boolean
-    DashboardFullWithMeta_2:
-      title: DashboardFullWithMeta
-      type: object
-      properties:
-        dashboard:
-          type: object
-        meta:
-          $ref: '#/components/schemas/DashboardMeta_2'
-    Panel:
-      type: object
-      properties:
-        id:
+        userId:
           type: integer
-        type:
-          type: string
-          description: Panel plugin type, e.g. timeseries, stat, gauge, table, barchart, etc.
+          contentEncoding: int64
+    DataLink:
+      title: DataLink
+      type: object
+      properties:
+        internal:
+          allOf:
+          - $ref: '#/components/schemas/InternalDataLink'
+          - description: InternalDataLink definition to allow Explore links to be constructed in the backend
+        targetBlank:
+          type: boolean
         title:
           type: string
-        description:
+        url:
           type: string
-        gridPos:
-          type: object
-          properties:
-            h:
-              type: integer
-            w:
-              type: integer
-            x:
-              type: integer
-            y:
-              type: integer
-        datasource:
-          type: object
-          properties:
-            type:
-              type: string
-            uid:
-              type: string
-        targets:
-          type: array
-          items:
-            $ref: '#/components/schemas/Target'
-        fieldConfig:
-          type: object
-          properties:
-            defaults:
-              type: object
-              properties:
-                unit:
-                  type: string
-                min:
-                  type: number
-                max:
-                  type: number
-                decimals:
-                  type: integer
-                thresholds:
-                  type: object
-                  properties:
-                    mode:
-                      type: string
-                      enum:
-                      - absolute
-                      - percentage
-                    steps:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          color:
-                            type: string
-                          value:
-                            type: number
-                            nullable: true
-                color:
-                  type: object
-                  properties:
-                    mode:
-                      type: string
-                mappings:
-                  type: array
-                  items:
-                    type: object
-            overrides:
-              type: array
-              items:
-                type: object
-        options:
-          type: object
-          description: Panel-type-specific options
-        transformations:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              options:
-                type: object
-        transparent:
+      description: DataLink define what
+    PublicDashboardListResponse:
+      title: PublicDashboardListResponse
+      type: object
+      properties:
+        accessToken:
+          type: string
+        dashboardUid:
+          type: string
+        isEnabled:
           type: boolean
-        links:
-          type: array
-          items:
-            type: object
-        repeat:
+        slug:
           type: string
-          description: Variable name to repeat panel for
-        repeatDirection:
-          type: string
-          enum:
-          - h
-          - v
-        maxPerRow:
-          type: integer
-    SuccessResponseBody:
-      title: SuccessResponseBody
-      type: object
-      properties:
-        message:
-          type: string
-    AnnotationPermission:
-      title: AnnotationPermission
-      type: object
-      properties:
-        dashboard:
-          allOf:
-          - $ref: '#/components/schemas/AnnotationActions'
-          - description: +k8s:deepcopy-gen=true
-        organization:
-          allOf:
-          - $ref: '#/components/schemas/AnnotationActions'
-          - description: +k8s:deepcopy-gen=true
-      description: +k8s:deepcopy-gen=true
-    ReportDashboardID:
-      title: ReportDashboardID
-      type: object
-      properties:
-        id:
-          type: integer
-          contentEncoding: int64
-        name:
+        title:
           type: string
         uid:
           type: string
+    ImportDashboardInputdefinitionofinputparameterswhenimportingadashboard.:
+      title: ImportDashboardInputdefinitionofinputparameterswhenimportingadashboard.
+      type: object
+      properties:
+        name:
+          type: string
+        pluginId:
+          type: string
+        type:
+          type: string
+        value:
+          type: string
+    Threshold:
+      title: Threshold
+      type: object
+      properties:
+        color:
+          type: string
+        state:
+          type: string
+        value:
+          type: number
+          description: 'ConfFloat64 is a float64. It Marshals float64 values of NaN of Inf
+
+            to null.'
+      description: Threshold a single step on the threshold list
+    SaveDashboardCommand_2:
+      title: SaveDashboardCommand
+      type: object
+      properties:
+        UpdatedAt:
+          type: string
+          contentEncoding: date-time
+        dashboard:
+          type: object
+        folderId:
+          type: integer
+          description: 'Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+        isFolder:
+          type: boolean
+        message:
+          type: string
+        overwrite:
+          type: boolean
+        userId:
+          type: integer
+          contentEncoding: int64
+    PublicDashboard:
+      title: PublicDashboard
+      type: object
+      properties:
+        accessToken:
+          type: string
+        annotationsEnabled:
+          type: boolean
+        createdAt:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          type: integer
+          contentEncoding: int64
+        dashboardUid:
+          type: string
+        isEnabled:
+          type: boolean
+        recipients:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailDTO'
+          description: ''
+        share:
+          type: string
+        timeSelectionEnabled:
+          type: boolean
+        uid:
+          type: string
+        updatedAt:
+          type: string
+          contentEncoding: date-time
+        updatedBy:
+          type: integer
+          contentEncoding: int64
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    NoticeprovidesastructureforpresentingnotificationsinGrafanasuserinterface.:
+      title: NoticeprovidesastructureforpresentingnotificationsinGrafanasuserinterface.
+      type: object
+      properties:
+        inspect:
+          type: integer
+          contentEncoding: int64
+        link:
+          type: string
+          description: 'Link is an optional link for display in the user interface and can be an
+
+            absolute URL or a path relative to Grafana''s root url.'
+        severity:
+          type: integer
+          contentEncoding: int64
+        text:
+          type: string
+          description: Text is freeform descriptive text for the notice.
     ImportDashboardRequestrequestobjectforimportingadashboard.:
       title: ImportDashboardRequestrequestobjectforimportingadashboard.
       type: object
@@ -3444,6 +3334,96 @@ components:
           type: string
         pluginId:
           type: string
+    UpdateDashboardACLCommand:
+      title: UpdateDashboardACLCommand
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardACLUpdateItem'
+          description: ''
+    DashboardACLInfoDTO:
+      title: DashboardACLInfoDTO
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        dashboardId:
+          type: integer
+          contentEncoding: int64
+        folderId:
+          type: integer
+          description: 'Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+        inherited:
+          type: boolean
+        isFolder:
+          type: boolean
+        permission:
+          type: integer
+          contentEncoding: int64
+        permissionName:
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+        slug:
+          type: string
+        team:
+          type: string
+        teamAvatarUrl:
+          type: string
+        teamEmail:
+          type: string
+        teamId:
+          type: integer
+          contentEncoding: int64
+        teamUid:
+          type: string
+        title:
+          type: string
+        uid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        url:
+          type: string
+        userAvatarUrl:
+          type: string
+        userEmail:
+          type: string
+        userId:
+          type: integer
+          contentEncoding: int64
+        userLogin:
+          type: string
+        userUid:
+          type: string
+    InternalDataLink:
+      title: InternalDataLink
+      type: object
+      properties:
+        datasourceName:
+          type: string
+        datasourceUid:
+          type: string
+        panelsState:
+          description: This is an object constructed with the keys as the values of the enum VisType and the value being a bag of properties
+        query: {}
+        timeRange:
+          allOf:
+          - $ref: '#/components/schemas/TimeRange'
+          - description: Redefining this to avoid an import cycle
+        transformations:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkTransformationConfig'
+          description: ''
+      description: InternalDataLink definition to allow Explore links to be constructed in the backend
     FieldrepresentsatypedcolumnofdatawithinaFrame.:
       title: FieldrepresentsatypedcolumnofdatawithinaFrame.
       type: object
@@ -3466,7 +3446,141 @@ components:
 
 
         The slice data in the Field is a not exported, so methods on the Field are used to to manipulate its data.'
+    RestoreDashboardVersionCommand:
+      title: RestoreDashboardVersionCommand
+      type: object
+      properties:
+        version:
+          type: integer
+          contentEncoding: int64
+    DashboardFullWithMeta_2:
+      title: DashboardFullWithMeta
+      type: object
+      properties:
+        dashboard:
+          type: object
+        meta:
+          $ref: '#/components/schemas/DashboardMeta_2'
+    DashboardVersionMeta:
+      title: DashboardVersionMeta
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        createdBy:
+          type: string
+        dashboardId:
+          type: integer
+          contentEncoding: int64
+        data:
+          type: object
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+        parentVersion:
+          type: integer
+          contentEncoding: int64
+        restoredFrom:
+          type: integer
+          contentEncoding: int64
+        uid:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+      description: 'DashboardVersionMeta extends the DashboardVersionDTO with the names
+
+        associated with the UserIds, overriding the field with the same name from
+
+        the DashboardVersionDTO model.'
+    postDashboardResponse:
+      title: postDashboardResponse
+      required:
+      - id
+      - status
+      - title
+      - uid
+      - url
+      - version
+      type: object
+      properties:
+        folderUid:
+          type: string
+          description: FolderUID The unique identifier (uid) of the folder the dashboard belongs to.
+        id:
+          type: integer
+          description: ID The unique identifier (id) of the created/updated dashboard.
+          contentEncoding: int64
+          examples:
+          - 1
+        status:
+          type: string
+          description: Status status of the response.
+          examples:
+          - success
+        title:
+          type: string
+          description: Slug The slug of the dashboard.
+          examples:
+          - my-dashboard
+        uid:
+          type: string
+          description: UID The unique identifier (uid) of the created/updated dashboard.
+          examples:
+          - nHz3SXiiz
+        url:
+          type: string
+          description: URL The relative URL for accessing the created/updated dashboard.
+          examples:
+          - /d/nHz3SXiiz/my-dashboard
+        version:
+          type: integer
+          description: Version The version of the dashboard.
+          contentEncoding: int64
+          examples:
+          - 2
+    AnnotationActions:
+      title: AnnotationActions
+      type: object
+      properties:
+        canAdd:
+          type: boolean
+        canDelete:
+          type: boolean
+        canEdit:
+          type: boolean
+      description: +k8s:deepcopy-gen=true
+    ReportDashboardID:
+      title: ReportDashboardID
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+        uid:
+          type: string
+    ReportDashboard:
+      title: ReportDashboard
+      type: object
+      properties:
+        dashboard:
+          $ref: '#/components/schemas/ReportDashboardID'
+        reportVariables:
+          type: object
+        timeRange:
+          $ref: '#/components/schemas/ReportTimeRange'
   responses:
+    Unauthorized:
+      description: Unauthorized - invalid or missing authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
     NotFound:
       description: Resource not found
       content:
@@ -3475,12 +3589,6 @@ components:
             $ref: '#/components/schemas/ErrorResponse'
     Forbidden:
       description: Forbidden - insufficient permissions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Unauthorized - invalid or missing authentication
       content:
         application/json:
           schema:
@@ -3498,3 +3606,13 @@ components:
       in: header
       name: Authorization
       description: 'Format: Bearer <api-key>'
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
+      type: http
+      scheme: basic
+x-refined-from:
+- grafana-api.yml
+- grafana-openapi.yml

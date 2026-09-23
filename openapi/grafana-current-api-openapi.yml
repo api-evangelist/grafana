@@ -1,26 +1,24 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Current API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
+  title: Grafana Current API
+  description: Grafana is an open-source analytics and visualization platform that helps you monitor and analyze data from various sources.
   contact:
     name: Grafana Labs
     url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+    email: hello@grafana.com
+  version: 0.0.1
 servers:
-- url: https://{instance}.grafana.net/api
-  description: Grafana Cloud
+- url: http://{defaultHost}
   variables:
-    instance:
-      default: your-instance
-- url: http://localhost:3000/api
-  description: Local Grafana instance
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- basic: []
+- api_key: []
 tags:
 - name: Current
 paths:
@@ -124,64 +122,6 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
-  /org/address:
-    parameters: []
-    put:
-      tags:
-      - Current
-      summary: Grafana Update Current Org Address
-      description: Updates the physical address information for the currently authenticated organization in Grafana. This PUT endpoint modifies the organization's address details, which may include street address, city, state, postal code, and country information. The operation requires appropriate authentication and permissions to modify organization settings, and it affects only the organization context of the current user session. The updated address information is typically used for administrative purposes, billing, or organizational records within Grafana.
-      operationId: updateCurrentOrgAddress
-      parameters: []
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateOrgAddressForm'
-        required: true
-      responses:
-        '200':
-          description: An OKResponse is returned if the request was successful.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SuccessResponseBody'
-        '400':
-          description: BadRequestError is returned when the request is invalid and it cannot be processed.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
   /org/users:
     parameters: []
     get:
@@ -218,55 +158,6 @@ paths:
                   $ref: '#/components/schemas/OrgUserDTO'
                 description: ''
                 contentMediaType: application/json
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
-    post:
-      tags:
-      - Current
-      summary: Grafana Add Org User To Current Org
-      description: This API operation allows administrators to add a new user to the current organization in Grafana by sending a POST request to the /org/users endpoint. When invoked, it creates a new membership association between a specified user and the organization that the authenticated user currently belongs to. The request typically requires parameters such as the user's login credentials or user ID, along with the desired role (Viewer, Editor, or Admin) that the new member should have within the organization. This operation requires appropriate administrative permissions and is commonly used when onboarding team members or managing organizational access control in Grafana instances.
-      operationId: addOrgUserToCurrentOrg
-      parameters: []
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AddOrgUserCommand'
-        required: true
-      responses:
-        '200':
-          description: An OKResponse is returned if the request was successful.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SuccessResponseBody'
         '401':
           description: UnauthorizedError is returned when the request is not authenticated.
           headers: {}
@@ -535,22 +426,68 @@ paths:
         ChooseTags: true
 components:
   schemas:
-    UpdateOrgAddressForm:
-      title: UpdateOrgAddressForm
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
       type: object
       properties:
-        address1:
+        error:
           type: string
-        address2:
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
           type: string
-        city:
+          description: a human readable version of the error
+        status:
           type: string
-        country:
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    UpdateOrgUserCommand:
+      title: UpdateOrgUserCommand
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/Role'
+    UserLookupDTO:
+      title: UserLookupDTO
+      type: object
+      properties:
+        avatarUrl:
           type: string
-        state:
+        login:
           type: string
-        zipcode:
+        uid:
           type: string
+        userId:
+          type: integer
+          contentEncoding: int64
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    OrgDetailsDTO:
+      title: OrgDetailsDTO
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+        id:
+          type: integer
+          contentEncoding: int64
+        name:
+          type: string
+    Role:
+      title: Role
+      enum:
+      - None
+      - Viewer
+      - Editor
+      - Admin
+      type: string
     QuotaDTO:
       title: QuotaDTO
       type: object
@@ -569,14 +506,22 @@ components:
         user_id:
           type: integer
           contentEncoding: int64
-    Role:
-      title: Role
-      enum:
-      - None
-      - Viewer
-      - Editor
-      - Admin
-      type: string
+    Address:
+      title: Address
+      type: object
+      properties:
+        address1:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        zipCode:
+          type: string
     OrgUserDTO:
       title: OrgUserDTO
       type: object
@@ -619,100 +564,17 @@ components:
         userId:
           type: integer
           contentEncoding: int64
-    UpdateOrgUserCommand:
-      title: UpdateOrgUserCommand
-      type: object
-      properties:
-        role:
-          $ref: '#/components/schemas/Role'
-    Address:
-      title: Address
-      type: object
-      properties:
-        address1:
-          type: string
-        address2:
-          type: string
-        city:
-          type: string
-        country:
-          type: string
-        state:
-          type: string
-        zipCode:
-          type: string
-    UserLookupDTO:
-      title: UserLookupDTO
-      type: object
-      properties:
-        avatarUrl:
-          type: string
-        login:
-          type: string
-        uid:
-          type: string
-        userId:
-          type: integer
-          contentEncoding: int64
-    SuccessResponseBody:
-      title: SuccessResponseBody
-      type: object
-      properties:
-        message:
-          type: string
-    ErrorResponseBody:
-      title: ErrorResponseBody
-      required:
-      - message
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
-        message:
-          type: string
-          description: a human readable version of the error
-        status:
-          type: string
-          description: 'Status An optional status to denote the cause of the error.
-
-
-            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
-    OrgDetailsDTO:
-      title: OrgDetailsDTO
-      type: object
-      properties:
-        address:
-          $ref: '#/components/schemas/Address'
-        id:
-          type: integer
-          contentEncoding: int64
-        name:
-          type: string
     UpdateOrgForm:
       title: UpdateOrgForm
       type: object
       properties:
         name:
           type: string
-    AddOrgUserCommand:
-      title: AddOrgUserCommand
-      type: object
-      properties:
-        loginOrEmail:
-          type: string
-        role:
-          $ref: '#/components/schemas/Role'
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: Service account token or API key
-    BasicAuth:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
       type: http
       scheme: basic
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: 'Format: Bearer <api-key>'

@@ -1,100 +1,27 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Create API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
+  title: Grafana Create API
+  description: Grafana is an open-source analytics and visualization platform that helps you monitor and analyze data from various sources.
   contact:
     name: Grafana Labs
     url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+    email: hello@grafana.com
+  version: 0.0.1
 servers:
-- url: https://{instance}.grafana.net/api
-  description: Grafana Cloud
+- url: http://{defaultHost}
   variables:
-    instance:
-      default: your-instance
-- url: http://localhost:3000/api
-  description: Local Grafana instance
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- basic: []
+- api_key: []
 tags:
 - name: Create
 paths:
-  /datasources/uid/{sourceUID}/correlations:
-    parameters: []
-    post:
-      tags:
-      - Create
-      summary: Grafana Create Correlation
-      description: Creates a new correlation in Grafana between two data sources, allowing users to establish relationships and navigate between different data sources using the specified source data source UID. This operation enables the creation of links that help connect related data across different monitoring or logging systems, facilitating easier investigation and analysis workflows by defining how data in one source relates to data in another source through correlation configurations.
-      operationId: createCorrelation
-      parameters:
-      - name: sourceUID
-        in: path
-        description: ''
-        required: true
-        schema:
-          type: string
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateCorrelationCommand'
-        required: true
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateCorrelationResponseBody'
-        '400':
-          description: BadRequestError is returned when the request is invalid and it cannot be processed.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '404':
-          description: NotFoundError is returned when the requested resource was not found.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
   /folders:
     parameters: []
     post:
@@ -508,64 +435,6 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
-  /serviceaccounts:
-    parameters: []
-    post:
-      tags:
-      - Create
-      summary: Grafana Create Service Account
-      description: Creates a new service account in Grafana, which is a special type of user designed for automated tasks and API interactions rather than human login. Service accounts can be assigned specific permissions and roles to programmatically access Grafana resources, making them ideal for integrations, CI/CD pipelines, monitoring scripts, and other automated workflows. The request requires authentication and appropriate administrative permissions, and upon successful creation, returns details about the newly created service account including its unique identifier, which can then be used to generate tokens for API authentication.
-      operationId: createServiceAccount
-      parameters: []
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateServiceAccountForm'
-        required: false
-      responses:
-        '201':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceAccountDTO'
-        '400':
-          description: BadRequestError is returned when the request is invalid and it cannot be processed.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
   /serviceaccounts/{serviceAccountId}/tokens:
     parameters: []
     post:
@@ -640,73 +509,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponseBody'
       deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
-  /admin/users:
-    parameters: []
-    post:
-      tags:
-      - Create
-      summary: Grafana Admin Create User
-      description: This API operation allows administrators to create new users in Grafana through a POST request to the /admin/users endpoint. It is an administrative function that requires elevated privileges and enables the programmatic addition of user accounts to the Grafana system. When invoked, the operation accepts user details such as username, email, password, and other relevant attributes in the request body, then creates a new user account with the specified credentials and settings. This endpoint is particularly useful for bulk user provisioning, automated user management workflows, or integrating Grafana user creation with external identity management systems.
-      operationId: adminCreateUser
-      parameters: []
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminCreateUserForm'
-        required: true
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AdminCreateUserResponse'
-        '400':
-          description: BadRequestError is returned when the request is invalid and it cannot be processed.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '412':
-          description: PreconditionFailedError
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      security:
-      - basic: []
       x-api-evangelist-processing:
         SplitPascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
@@ -807,50 +609,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponseBody'
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
-  /cloudmigration/token:
-    parameters: []
-    post:
-      tags:
-      - Create
-      summary: Grafana Create Cloud Migration Token
-      description: Creates a new cloud migration token in Grafana that enables secure data transfer and authentication between a self-hosted Grafana instance and Grafana Cloud during migration operations. This endpoint generates a temporary authentication token that authorizes the migration service to access and migrate dashboards, data sources, alerts, and other Grafana resources from the source instance to the cloud destination. The token serves as a security credential to establish a trusted connection and should be handled securely throughout the migration process.
-      operationId: createCloudMigrationToken
-      parameters: []
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateAccessTokenResponseDTO'
         '401':
           description: UnauthorizedError is returned when the request is not authenticated.
           headers: {}
@@ -1305,15 +1063,226 @@ paths:
         ChooseTags: true
 components:
   schemas:
-    createReportResponse:
-      title: createReportResponse
+    PublicDashboardDTO:
+      title: PublicDashboardDTO
+      type: object
+      properties:
+        accessToken:
+          type: string
+        annotationsEnabled:
+          type: boolean
+        isEnabled:
+          type: boolean
+        share:
+          type: string
+        timeSelectionEnabled:
+          type: boolean
+        uid:
+          type: string
+    PrometheusRemoteWriteTargetJSON:
+      title: PrometheusRemoteWriteTargetJSON
+      type: object
+      properties:
+        data_source_uid:
+          type: string
+        id:
+          type: string
+        remote_write_path:
+          type: string
+    ReportTimeRange:
+      title: ReportTimeRange
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+    CreateLibraryElementCommand:
+      title: CreateLibraryElementCommand
+      type: object
+      properties:
+        folderId:
+          type: integer
+          description: 'ID of the folder where the library element is stored.
+
+
+            Deprecated: use FolderUID instead'
+          contentEncoding: int64
+        folderUid:
+          type: string
+          description: UID of the folder where the library element is stored.
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/Kind'
+          - description: 'Kind of element to create, Use 1 for library panels or 2 for c.
+
+              Description:
+
+              1 - library panels'
+        model:
+          type: object
+          description: The JSON model for the library element.
+        name:
+          type: string
+          description: Name of the library element.
+        uid:
+          type: string
+      description: CreateLibraryElementCommand is the command for adding a LibraryElement
+    GroupAttributes:
+      title: GroupAttributes
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            type: string
+          description: ''
+    CreateDashboardSnapshotCommand:
+      title: CreateDashboardSnapshotCommand
+      required:
+      - dashboard
+      type: object
+      properties:
+        apiVersion:
+          type: string
+          description: 'APIVersion defines the versioned schema of this representation of an object.
+
+            Servers should convert recognized schemas to the latest internal value, and
+
+            may reject unrecognized values.
+
+            More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+
+            +optional'
+        dashboard:
+          allOf:
+          - $ref: '#/components/schemas/Unstructured'
+          - description: 'Unstructured allows objects that do not have Golang structs registered to be manipulated
+
+              generically.'
+        deleteKey:
+          type: string
+          description: Unique key used to delete the snapshot. It is different from the `key` so that only the creator can delete the snapshot. Required if `external` is `true`.
+        expires:
+          type: integer
+          description: When the snapshot should expire in seconds in seconds. Default is never to expire.
+          contentEncoding: int64
+          default: 0
+        external:
+          type: boolean
+          description: 'these are passed when storing an external snapshot ref
+
+            Save the snapshot on an external server rather than locally.'
+          default: false
+        key:
+          type: string
+          description: Define the unique key. Required if `external` is `true`.
+        kind:
+          type: string
+          description: 'Kind is a string value representing the REST resource this object represents.
+
+            Servers may infer this from the endpoint the client submits requests to.
+
+            Cannot be updated.
+
+            In CamelCase.
+
+            More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+
+            +optional'
+        name:
+          type: string
+          description: Snapshot name
+    CreateSnapshotRequestDTO:
+      title: CreateSnapshotRequestDTO
+      type: object
+      properties:
+        resourceTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceType'
+          description: ''
+    CreateRoleForm:
+      title: CreateRoleForm
+      type: object
+      properties:
+        description:
+          type: string
+        displayName:
+          type: string
+        global:
+          type: boolean
+        group:
+          type: string
+        hidden:
+          type: boolean
+        name:
+          type: string
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+          description: ''
+        uid:
+          type: string
+        version:
+          type: integer
+          contentEncoding: int64
+    publicError1:
+      title: publicError1
+      required:
+      - messageId
+      - statusCode
+      type: object
+      properties:
+        extra:
+          type: object
+          additionalProperties: {}
+          description: Extra Additional information about the error
+        message:
+          type: string
+          description: Message A human readable message
+        messageId:
+          type: string
+          description: MessageID A unique identifier for the error
+        statusCode:
+          type: integer
+          description: StatusCode The HTTP status code returned
+          contentEncoding: int64
+      description: 'PublicError is derived from Error and only contains information
+
+        available to the end user.'
+    createTeamResponse:
+      title: createTeamResponse
+      type: object
+      properties:
+        message:
+          type: string
+        teamId:
+          type: integer
+          contentEncoding: int64
+        uid:
+          type: string
+    messageResponse:
+      title: messageResponse
+      type: object
+      properties:
+        message:
+          type: string
+    Playlist:
+      title: Playlist
       type: object
       properties:
         id:
           type: integer
           contentEncoding: int64
-        message:
+        interval:
           type: string
+        name:
+          type: string
+        uid:
+          type: string
+      description: Playlist model
     ReportOptions:
       title: ReportOptions
       type: object
@@ -1328,202 +1297,60 @@ components:
           type: boolean
         timeRange:
           $ref: '#/components/schemas/ReportTimeRange'
-    LibraryElementDTOMetaisthemetainformationforLibraryElementDTO.:
-      title: LibraryElementDTOMetaisthemetainformationforLibraryElementDTO.
+    LibraryElementDTOMetaUser:
+      title: LibraryElementDTOMetaUser
       type: object
       properties:
-        connectedDashboards:
-          type: integer
-          contentEncoding: int64
-        created:
-          type: string
-          contentEncoding: date-time
-        createdBy:
-          $ref: '#/components/schemas/LibraryElementDTOMetaUser'
-        folderName:
-          type: string
-        folderUid:
-          type: string
-        updated:
-          type: string
-          contentEncoding: date-time
-        updatedBy:
-          $ref: '#/components/schemas/LibraryElementDTOMetaUser'
-    PlaylistItem:
-      title: PlaylistItem
-      type: object
-      properties:
-        Id:
-          type: integer
-          contentEncoding: int64
-        PlaylistId:
-          type: integer
-          contentEncoding: int64
-        order:
-          type: integer
-          contentEncoding: int64
-        title:
-          type: string
-        type:
-          type: string
-        value:
-          type: string
-    QueryHistoryDTO:
-      title: QueryHistoryDTO
-      type: object
-      properties:
-        comment:
-          type: string
-        createdAt:
-          type: integer
-          contentEncoding: int64
-        createdBy:
-          type: integer
-          contentEncoding: int64
-        datasourceUid:
-          type: string
-        queries:
-          type: object
-        starred:
-          type: boolean
-        uid:
-          type: string
-    AddServiceAccountTokenCommand:
-      title: AddServiceAccountTokenCommand
-      type: object
-      properties:
-        name:
-          type: string
-        secondsToLive:
-          type: integer
-          contentEncoding: int64
-    ErrorResponseBody:
-      title: ErrorResponseBody
-      required:
-      - message
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
-        message:
-          type: string
-          description: a human readable version of the error
-        status:
-          type: string
-          description: 'Status An optional status to denote the cause of the error.
-
-
-            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
-    ServiceAccountDTO:
-      title: ServiceAccountDTO
-      type: object
-      properties:
-        accessControl:
-          type: object
-          additionalProperties:
-            type: boolean
-          examples:
-          - serviceaccounts:delete: true
-            serviceaccounts:read: true
-            serviceaccounts:write: true
         avatarUrl:
           type: string
-          examples:
-          - /avatar/85ec38023d90823d3e5b43ef35646af9
         id:
           type: integer
           contentEncoding: int64
-        isDisabled:
-          type: boolean
-          examples:
-          - false
-        isExternal:
-          type: boolean
-          examples:
-          - false
-        login:
-          type: string
-          examples:
-          - sa-grafana
         name:
           type: string
-          examples:
-          - grafana
-        orgId:
-          type: integer
-          contentEncoding: int64
-          examples:
-          - 1
-        role:
-          type: string
-          examples:
-          - Viewer
-        tokens:
-          type: integer
-          contentEncoding: int64
-          examples:
-          - 0
-        uid:
-          type: string
-          examples:
-          - fe1xejlha91xce
-      description: 'swagger: model'
-    ReportDashboard:
-      title: ReportDashboard
-      type: object
-      properties:
-        dashboard:
-          $ref: '#/components/schemas/ReportDashboardID'
-        reportVariables:
-          type: object
-        timeRange:
-          $ref: '#/components/schemas/ReportTimeRange'
-    RoleDTO:
-      title: RoleDTO
+    CreateQueryInQueryHistoryCommand:
+      title: CreateQueryInQueryHistoryCommand
       required:
-      - created
-      - description
-      - displayName
-      - group
-      - name
-      - uid
-      - updated
-      - version
+      - queries
       type: object
       properties:
-        created:
+        datasourceUid:
+          type: string
+          description: UID of the data source for which are queries stored.
+          examples:
+          - PE1C5CBDA0504A6A3
+        queries:
+          type: object
+      description: CreateQueryInQueryHistoryCommand is the command for adding query history
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    ReportSchedule:
+      title: ReportSchedule
+      type: object
+      properties:
+        dayOfMonth:
+          type: string
+        endDate:
           type: string
           contentEncoding: date-time
-        delegatable:
-          type: boolean
-        description:
+        frequency:
           type: string
-        displayName:
-          type: string
-        global:
-          type: boolean
-        group:
-          type: string
-        hidden:
-          type: boolean
-        mapped:
-          type: boolean
-        name:
-          type: string
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Permission'
-          description: ''
-        uid:
-          type: string
-        updated:
-          type: string
-          contentEncoding: date-time
-        version:
+        intervalAmount:
           type: integer
           contentEncoding: int64
+        intervalFrequency:
+          type: string
+        startDate:
+          type: string
+          contentEncoding: date-time
+        timeZone:
+          type: string
+        workdaysOnly:
+          type: boolean
     Folder:
       title: Folder
       type: object
@@ -1584,6 +1411,56 @@ components:
         version:
           type: integer
           contentEncoding: int64
+    CreateSnapshotResponseDTO:
+      title: CreateSnapshotResponseDTO
+      type: object
+      properties:
+        uid:
+          type: string
+    Kind:
+      title: Kind
+      const: 1
+      type: integer
+      description: 'Kind of element to create, Use 1 for library panels or 2 for c.
+
+        Description:
+
+        1 - library panels'
+    EmailDTO:
+      title: EmailDTO
+      type: object
+      properties:
+        recipient:
+          type: string
+        uid:
+          type: string
+    CreatePlaylistCommand:
+      title: CreatePlaylistCommand
+      type: object
+      properties:
+        interval:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlaylistItem'
+          description: ''
+        name:
+          type: string
+    CloudMigrationSessionResponseDTO:
+      title: CloudMigrationSessionResponseDTO
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        slug:
+          type: string
+        uid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
     LibraryElementDTOisthefrontendDTOforentities.:
       title: LibraryElementDTOisthefrontendDTOforentities.
       type: object
@@ -1652,250 +1529,96 @@ components:
         target_ref_id:
           type: string
       description: RecordingRuleJSON is the external representation of a recording rule
-    ReportDashboardID:
-      title: ReportDashboardID
-      type: object
-      properties:
-        id:
-          type: integer
-          contentEncoding: int64
-        name:
-          type: string
-        uid:
-          type: string
-    CorrelationConfig:
-      title: CorrelationConfig
-      required:
-      - field
-      - target
-      type: object
-      properties:
-        field:
-          type: string
-          description: Field used to attach the correlation link
-          examples:
-          - message
-        target:
-          type: object
-          additionalProperties: {}
-          description: Target data query
-          examples:
-          - prop1: value1
-            prop2: value
-        transformations:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transformation'
-          description: ''
-        type:
-          type: string
-          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
-
-            +enum'
-    ReportSchedule:
-      title: ReportSchedule
-      type: object
-      properties:
-        dayOfMonth:
-          type: string
-        endDate:
-          type: string
-          contentEncoding: date-time
-        frequency:
-          type: string
-        intervalAmount:
-          type: integer
-          contentEncoding: int64
-        intervalFrequency:
-          type: string
-        startDate:
-          type: string
-          contentEncoding: date-time
-        timeZone:
-          type: string
-        workdaysOnly:
-          type: boolean
-    LibraryElementResponseisaresponsestructforLibraryElementDTO.:
-      title: LibraryElementResponseisaresponsestructforLibraryElementDTO.
+    QueryHistoryResponse:
+      title: QueryHistoryResponse
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/LibraryElementDTOisthefrontendDTOforentities.'
-    messageResponse:
-      title: messageResponse
+          $ref: '#/components/schemas/QueryHistoryDTO'
+      description: QueryHistoryResponse is a response struct for QueryHistoryDTO
+    createOrgResponse:
+      title: createOrgResponse
+      required:
+      - message
+      - orgId
       type: object
       properties:
         message:
           type: string
-    CreateAccessTokenResponseDTO:
-      title: CreateAccessTokenResponseDTO
-      type: object
-      properties:
-        token:
-          type: string
-    Playlist:
-      title: Playlist
-      type: object
-      properties:
-        id:
+          description: Message Message of the created org.
+          examples:
+          - Data source added
+        orgId:
           type: integer
+          description: ID Identifier of the created org.
           contentEncoding: int64
-        interval:
-          type: string
-        name:
-          type: string
-        uid:
-          type: string
-      description: Playlist model
-    Kind:
-      title: Kind
-      const: 1
-      type: integer
-      description: 'Kind of element to create, Use 1 for library panels or 2 for c.
-
-        Description:
-
-        1 - library panels'
-    AdminCreateUserResponse:
-      title: AdminCreateUserResponse
-      type: object
-      properties:
-        id:
-          type: integer
-          contentEncoding: int64
-        message:
-          type: string
-        uid:
-          type: string
-    ReportTimeRange:
-      title: ReportTimeRange
-      type: object
-      properties:
-        from:
-          type: string
-        to:
-          type: string
-    createTeamResponse:
-      title: createTeamResponse
-      type: object
-      properties:
-        message:
-          type: string
-        teamId:
-          type: integer
-          contentEncoding: int64
-        uid:
-          type: string
-    ResourceType:
-      title: ResourceType
-      enum:
-      - DASHBOARD
-      - DATASOURCE
-      - FOLDER
-      - LIBRARY_ELEMENT
-      - ALERT_RULE
-      - ALERT_RULE_GROUP
-      - CONTACT_POINT
-      - NOTIFICATION_POLICY
-      - NOTIFICATION_TEMPLATE
-      - MUTE_TIMING
-      - PLUGIN
-      type: string
-    CreateLibraryElementCommand:
-      title: CreateLibraryElementCommand
-      type: object
-      properties:
-        folderId:
-          type: integer
-          description: 'ID of the folder where the library element is stored.
-
-
-            Deprecated: use FolderUID instead'
-          contentEncoding: int64
-        folderUid:
-          type: string
-          description: UID of the folder where the library element is stored.
-        kind:
-          allOf:
-          - $ref: '#/components/schemas/Kind'
-          - description: 'Kind of element to create, Use 1 for library panels or 2 for c.
-
-              Description:
-
-              1 - library panels'
-        model:
-          type: object
-          description: The JSON model for the library element.
-        name:
-          type: string
-          description: Name of the library element.
-        uid:
-          type: string
-      description: CreateLibraryElementCommand is the command for adding a LibraryElement
-    AdminCreateUserForm:
-      title: AdminCreateUserForm
+          examples:
+          - 65
+    CreateTeamCommand:
+      title: CreateTeamCommand
+      required:
+      - name
       type: object
       properties:
         email:
           type: string
-        login:
+        name:
+          type: string
+    PlaylistItem:
+      title: PlaylistItem
+      type: object
+      properties:
+        Id:
+          type: integer
+          contentEncoding: int64
+        PlaylistId:
+          type: integer
+          contentEncoding: int64
+        order:
+          type: integer
+          contentEncoding: int64
+        title:
+          type: string
+        type:
+          type: string
+        value:
+          type: string
+    NewApiKeyResult:
+      title: NewApiKeyResult
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 1
+        key:
           type: string
         name:
           type: string
-        orgId:
-          type: integer
-          contentEncoding: int64
-        password:
-          type: string
-    Permission:
-      title: Permission
+          examples:
+          - grafana
+    LibraryElementDTOMetaisthemetainformationforLibraryElementDTO.:
+      title: LibraryElementDTOMetaisthemetainformationforLibraryElementDTO.
       type: object
       properties:
-        action:
-          type: string
+        connectedDashboards:
+          type: integer
+          contentEncoding: int64
         created:
           type: string
           contentEncoding: date-time
-        scope:
+        createdBy:
+          $ref: '#/components/schemas/LibraryElementDTOMetaUser'
+        folderName:
+          type: string
+        folderUid:
           type: string
         updated:
           type: string
           contentEncoding: date-time
-      description: Permission is the model for access control permissions
-    CreateSnapshotRequestDTO:
-      title: CreateSnapshotRequestDTO
-      type: object
-      properties:
-        resourceTypes:
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourceType'
-          description: ''
-    EmailDTO:
-      title: EmailDTO
-      type: object
-      properties:
-        recipient:
-          type: string
-        uid:
-          type: string
-    GroupAttributes:
-      title: GroupAttributes
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            type: string
-          description: ''
-    Role:
-      title: Role
-      enum:
-      - None
-      - Viewer
-      - Editor
-      - Admin
-      type: string
+        updatedBy:
+          $ref: '#/components/schemas/LibraryElementDTOMetaUser'
     createDashboardSnapshotResponse:
       title: createDashboardSnapshotResponse
       type: object
@@ -1914,38 +1637,33 @@ components:
           description: Unique key
         url:
           type: string
-    PrometheusRemoteWriteTargetJSON:
-      title: PrometheusRemoteWriteTargetJSON
+    CloudMigrationSessionRequestDTO:
+      title: CloudMigrationSessionRequestDTO
       type: object
       properties:
-        data_source_uid:
+        authToken:
           type: string
-        id:
-          type: string
-        remote_write_path:
-          type: string
-    PublicDashboardDTO:
-      title: PublicDashboardDTO
+    CreateOrgCommand:
+      title: CreateOrgCommand
       type: object
       properties:
-        accessToken:
+        name:
           type: string
-        annotationsEnabled:
-          type: boolean
-        isEnabled:
-          type: boolean
-        share:
-          type: string
-        timeSelectionEnabled:
-          type: boolean
-        uid:
-          type: string
-    CreateSnapshotResponseDTO:
-      title: CreateSnapshotResponseDTO
+    Permission:
+      title: Permission
       type: object
       properties:
-        uid:
+        action:
           type: string
+        created:
+          type: string
+          contentEncoding: date-time
+        scope:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+      description: Permission is the model for access control permissions
     PublicDashboard:
       title: PublicDashboard
       type: object
@@ -1981,23 +1699,78 @@ components:
         updatedBy:
           type: integer
           contentEncoding: int64
-    CreateServiceAccountForm:
-      title: CreateServiceAccountForm
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
       type: object
       properties:
-        isDisabled:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    createReportResponse:
+      title: createReportResponse
+      type: object
+      properties:
+        id:
+          type: integer
+          contentEncoding: int64
+        message:
+          type: string
+    RoleDTO:
+      title: RoleDTO
+      required:
+      - created
+      - description
+      - displayName
+      - group
+      - name
+      - uid
+      - updated
+      - version
+      type: object
+      properties:
+        created:
+          type: string
+          contentEncoding: date-time
+        delegatable:
           type: boolean
-          examples:
-          - false
+        description:
+          type: string
+        displayName:
+          type: string
+        global:
+          type: boolean
+        group:
+          type: string
+        hidden:
+          type: boolean
+        mapped:
+          type: boolean
         name:
           type: string
-          examples:
-          - grafana
-        role:
-          allOf:
-          - $ref: '#/components/schemas/Role'
-          - examples:
-            - Admin
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+          description: ''
+        uid:
+          type: string
+        updated:
+          type: string
+          contentEncoding: date-time
+        version:
+          type: integer
+          contentEncoding: int64
     CreateFolderCommand:
       title: CreateFolderCommand
       type: object
@@ -2013,37 +1786,35 @@ components:
       description: 'CreateFolderCommand captures the information required by the folder service
 
         to create a folder.'
-    NewApiKeyResult:
-      title: NewApiKeyResult
+    QueryHistoryDTO:
+      title: QueryHistoryDTO
       type: object
       properties:
-        id:
+        comment:
+          type: string
+        createdAt:
           type: integer
           contentEncoding: int64
-          examples:
-          - 1
-        key:
+        createdBy:
+          type: integer
+          contentEncoding: int64
+        datasourceUid:
           type: string
-        name:
+        queries:
+          type: object
+        starred:
+          type: boolean
+        uid:
           type: string
-          examples:
-          - grafana
-    CreateTeamCommand:
-      title: CreateTeamCommand
-      required:
-      - name
-      type: object
-      properties:
-        email:
-          type: string
-        name:
-          type: string
-    CreateOrgCommand:
-      title: CreateOrgCommand
+    AddServiceAccountTokenCommand:
+      title: AddServiceAccountTokenCommand
       type: object
       properties:
         name:
           type: string
+        secondsToLive:
+          type: integer
+          contentEncoding: int64
     Unstructured:
       title: Unstructured
       type: object
@@ -2057,20 +1828,21 @@ components:
       description: 'Unstructured allows objects that do not have Golang structs registered to be manipulated
 
         generically.'
-    CreateQueryInQueryHistoryCommand:
-      title: CreateQueryInQueryHistoryCommand
-      required:
-      - queries
-      type: object
-      properties:
-        datasourceUid:
-          type: string
-          description: UID of the data source for which are queries stored.
-          examples:
-          - PE1C5CBDA0504A6A3
-        queries:
-          type: object
-      description: CreateQueryInQueryHistoryCommand is the command for adding query history
+    ResourceType:
+      title: ResourceType
+      enum:
+      - DASHBOARD
+      - DATASOURCE
+      - FOLDER
+      - LIBRARY_ELEMENT
+      - ALERT_RULE
+      - ALERT_RULE_GROUP
+      - CONTACT_POINT
+      - NOTIFICATION_POLICY
+      - NOTIFICATION_TEMPLATE
+      - MUTE_TIMING
+      - PLUGIN
+      type: string
     CreateOrUpdateReport:
       title: CreateOrUpdateReport
       type: object
@@ -2109,304 +1881,38 @@ components:
           description: +enum
         subject:
           type: string
-    CreateRoleForm:
-      title: CreateRoleForm
+    LibraryElementResponseisaresponsestructforLibraryElementDTO.:
+      title: LibraryElementResponseisaresponsestructforLibraryElementDTO.
       type: object
       properties:
-        description:
-          type: string
-        displayName:
-          type: string
-        global:
-          type: boolean
-        group:
-          type: string
-        hidden:
-          type: boolean
-        name:
-          type: string
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Permission'
-          description: ''
-        uid:
-          type: string
-        version:
-          type: integer
-          contentEncoding: int64
-    CreatePlaylistCommand:
-      title: CreatePlaylistCommand
+        result:
+          $ref: '#/components/schemas/LibraryElementDTOisthefrontendDTOforentities.'
+    ReportDashboardID:
+      title: ReportDashboardID
       type: object
       properties:
-        interval:
-          type: string
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/PlaylistItem'
-          description: ''
-        name:
-          type: string
-    Correlation:
-      title: Correlation
-      type: object
-      properties:
-        config:
-          $ref: '#/components/schemas/CorrelationConfig'
-        description:
-          type: string
-          description: Description of the correlation
-          examples:
-          - Logs to Traces
-        label:
-          type: string
-          description: Label identifying the correlation
-          examples:
-          - My Label
-        orgId:
-          type: integer
-          description: OrgID of the data source the correlation originates from
-          contentEncoding: int64
-          examples:
-          - 1
-        provisioned:
-          type: boolean
-          description: Provisioned True if the correlation was created during provisioning
-        sourceUID:
-          type: string
-          description: UID of the data source the correlation originates from
-          examples:
-          - d0oxYRg4z
-        targetUID:
-          type: string
-          description: UID of the data source the correlation points to
-          examples:
-          - PE1C5CBDA0504A6A3
-        type:
-          type: string
-          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
-
-            +enum'
-        uid:
-          type: string
-          description: Unique identifier of the correlation
-          examples:
-          - 50xhMlg9k
-      description: Correlation is the model for correlations definitions
-    Type1:
-      title: Type1
-      enum:
-      - regex
-      - logfmt
-      type: string
-    CreateCorrelationCommand:
-      title: CreateCorrelationCommand
-      type: object
-      properties:
-        config:
-          $ref: '#/components/schemas/CorrelationConfig'
-        description:
-          type: string
-          description: Optional description of the correlation
-          examples:
-          - Logs to Traces
-        label:
-          type: string
-          description: Optional label identifying the correlation
-          examples:
-          - My label
-        provisioned:
-          type: boolean
-          description: True if correlation was created with provisioning. This makes it read-only.
-        targetUID:
-          type: string
-          description: Target data source UID to which the correlation is created. required if type = query
-          examples:
-          - PE1C5CBDA0504A6A3
-        type:
-          type: string
-          description: 'the type of correlation, either query for containing query information, or external for containing an external URL
-
-            +enum'
-      description: CreateCorrelationCommand is the command for creating a correlation
-    CreateDashboardSnapshotCommand:
-      title: CreateDashboardSnapshotCommand
-      required:
-      - dashboard
-      type: object
-      properties:
-        apiVersion:
-          type: string
-          description: 'APIVersion defines the versioned schema of this representation of an object.
-
-            Servers should convert recognized schemas to the latest internal value, and
-
-            may reject unrecognized values.
-
-            More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-
-            +optional'
-        dashboard:
-          allOf:
-          - $ref: '#/components/schemas/Unstructured'
-          - description: 'Unstructured allows objects that do not have Golang structs registered to be manipulated
-
-              generically.'
-        deleteKey:
-          type: string
-          description: Unique key used to delete the snapshot. It is different from the `key` so that only the creator can delete the snapshot. Required if `external` is `true`.
-        expires:
-          type: integer
-          description: When the snapshot should expire in seconds in seconds. Default is never to expire.
-          contentEncoding: int64
-          default: 0
-        external:
-          type: boolean
-          description: 'these are passed when storing an external snapshot ref
-
-            Save the snapshot on an external server rather than locally.'
-          default: false
-        key:
-          type: string
-          description: Define the unique key. Required if `external` is `true`.
-        kind:
-          type: string
-          description: 'Kind is a string value representing the REST resource this object represents.
-
-            Servers may infer this from the endpoint the client submits requests to.
-
-            Cannot be updated.
-
-            In CamelCase.
-
-            More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-
-            +optional'
-        name:
-          type: string
-          description: Snapshot name
-    publicError1:
-      title: publicError1
-      required:
-      - messageId
-      - statusCode
-      type: object
-      properties:
-        extra:
-          type: object
-          additionalProperties: {}
-          description: Extra Additional information about the error
-        message:
-          type: string
-          description: Message A human readable message
-        messageId:
-          type: string
-          description: MessageID A unique identifier for the error
-        statusCode:
-          type: integer
-          description: StatusCode The HTTP status code returned
-          contentEncoding: int64
-      description: 'PublicError is derived from Error and only contains information
-
-        available to the end user.'
-    CloudMigrationSessionResponseDTO:
-      title: CloudMigrationSessionResponseDTO
-      type: object
-      properties:
-        created:
-          type: string
-          contentEncoding: date-time
-        slug:
-          type: string
-        uid:
-          type: string
-        updated:
-          type: string
-          contentEncoding: date-time
-    LibraryElementDTOMetaUser:
-      title: LibraryElementDTOMetaUser
-      type: object
-      properties:
-        avatarUrl:
-          type: string
         id:
           type: integer
           contentEncoding: int64
         name:
           type: string
-    Transformation:
-      title: Transformation
+        uid:
+          type: string
+    ReportDashboard:
+      title: ReportDashboard
       type: object
       properties:
-        expression:
-          type: string
-        field:
-          type: string
-        mapValue:
-          type: string
-        type:
-          $ref: '#/components/schemas/Type1'
-    CloudMigrationSessionRequestDTO:
-      title: CloudMigrationSessionRequestDTO
-      type: object
-      properties:
-        authToken:
-          type: string
-    SuccessResponseBody:
-      title: SuccessResponseBody
-      type: object
-      properties:
-        message:
-          type: string
-    createOrgResponse:
-      title: createOrgResponse
-      required:
-      - message
-      - orgId
-      type: object
-      properties:
-        message:
-          type: string
-          description: Message Message of the created org.
-          examples:
-          - Data source added
-        orgId:
-          type: integer
-          description: ID Identifier of the created org.
-          contentEncoding: int64
-          examples:
-          - 65
-    QueryHistoryResponse:
-      title: QueryHistoryResponse
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/QueryHistoryDTO'
-      description: QueryHistoryResponse is a response struct for QueryHistoryDTO
-    CreateCorrelationResponseBody:
-      title: CreateCorrelationResponseBody
-      type: object
-      properties:
-        message:
-          type: string
-          examples:
-          - Correlation created
-        result:
-          allOf:
-          - $ref: '#/components/schemas/Correlation'
-          - description: Correlation is the model for correlations definitions
-      description: CreateCorrelationResponse is the response struct for CreateCorrelationCommand
+        dashboard:
+          $ref: '#/components/schemas/ReportDashboardID'
+        reportVariables:
+          type: object
+        timeRange:
+          $ref: '#/components/schemas/ReportTimeRange'
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: Service account token or API key
-    BasicAuth:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
       type: http
       scheme: basic
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: 'Format: Bearer <api-key>'

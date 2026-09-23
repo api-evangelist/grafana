@@ -1,14 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Folders API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
-  contact:
-    name: Grafana Labs
-    url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+  title: Grafana Folders API
+  version: '1.0'
+  description: 'Operations tagged Folders across 2 of this provider''s published API definitions: grafana-api.yml, grafana-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://{instance}.grafana.net/api
   description: Grafana Cloud
@@ -17,16 +11,19 @@ servers:
       default: your-instance
 - url: http://localhost:3000/api
   description: Local Grafana instance
-security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 tags:
 - name: Folders
   description: Dashboard folder management
 paths:
   /folders:
-    parameters: []
     get:
       tags:
       - Folders
@@ -52,6 +49,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Folder'
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
     post:
       tags:
       - Folders
@@ -70,6 +71,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Folder'
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
+    parameters: []
+    servers:
+    - url: https://{instance}.grafana.net/api
+      description: Grafana Cloud
+      variables:
+        instance:
+          default: your-instance
+    - url: http://localhost:3000/api
+      description: Local Grafana instance
   /folders/{uid}:
     get:
       tags:
@@ -89,6 +103,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Folder'
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
     put:
       tags:
       - Folders
@@ -109,6 +127,10 @@ paths:
       responses:
         '200':
           description: Folder updated
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
     delete:
       tags:
       - Folders
@@ -123,6 +145,18 @@ paths:
       responses:
         '200':
           description: Folder deleted
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
+    servers:
+    - url: https://{instance}.grafana.net/api
+      description: Grafana Cloud
+      variables:
+        instance:
+          default: your-instance
+    - url: http://localhost:3000/api
+      description: Local Grafana instance
   /folders/id/{folder_id}:
     parameters: []
     get:
@@ -181,6 +215,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /folders/{folder_uid}:
     parameters: []
     get:
@@ -238,6 +284,9 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
     put:
       tags:
       - Folders
@@ -325,139 +374,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
-    delete:
-      tags:
-      - Folders
-      summary: Grafana Delete Folder
-      description: This API operation deletes a specific folder in Grafana by providing its unique identifier (folder_uid) in the request path. When executed, it permanently removes the folder and potentially all its contents from the Grafana instance, which may include dashboards, alerts, and other resources stored within that folder. The operation requires appropriate permissions to delete folders and returns a confirmation response upon successful deletion, though the exact behavior regarding cascade deletion of folder contents depends on Grafana's configuration and the specific implementation version being used.
-      operationId: deleteFolder
-      parameters:
-      - name: folder_uid
-        in: path
-        description: ''
-        required: true
-        schema:
-          type: string
-      - name: forceDeleteRules
-        in: query
-        description: 'If `true` any Grafana 8 Alerts under this folder will be deleted.
-
-          Set to `false` so that the request will fail if the folder contains any Grafana 8 Alerts.'
-        style: form
-        explode: true
-        schema:
-          type: boolean
-          default: false
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/deleteFolderResponse'
-        '400':
-          description: BadRequestError is returned when the request is invalid and it cannot be processed.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '404':
-          description: NotFoundError is returned when the requested resource was not found.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
-  /folders/{folder_uid}/counts:
-    parameters: []
-    get:
-      tags:
-      - Folders
-      summary: Grafana Get Folder Descendant Counts
-      description: Returns statistical information about the descendants of a specified folder in Grafana, identified by its unique folder UID. This endpoint retrieves count data for various types of resources that exist within the folder hierarchy, such as dashboards, alerts, and other nested folders, providing administrators and users with a quick overview of the folder's contents without needing to traverse the entire folder structure manually.
-      operationId: getFolderDescendantCounts
-      parameters:
-      - name: folder_uid
-        in: path
-        description: ''
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  type: integer
-                  format: int64
-                contentMediaType: application/json
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '404':
-          description: NotFoundError is returned when the requested resource was not found.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /folders/{folder_uid}/move:
     parameters: []
     post:
@@ -522,6 +450,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /folders/{folder_uid}/permissions:
     parameters: []
     get:
@@ -583,6 +523,9 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
     post:
       tags:
       - Folders
@@ -645,8 +588,94 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
 components:
   schemas:
+    UpdateFolderCommand:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+        version:
+          type: integer
+    Folder:
+      type: object
+      properties:
+        id:
+          type: integer
+        uid:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+        hasAcl:
+          type: boolean
+        canSave:
+          type: boolean
+        canEdit:
+          type: boolean
+        canAdmin:
+          type: boolean
+        canDelete:
+          type: boolean
+        createdBy:
+          type: string
+        created:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+        updated:
+          type: string
+          format: date-time
+        version:
+          type: integer
+        parentUid:
+          type: string
+          description: UID of parent folder for nested folders
+    CreateFolderCommand:
+      type: object
+      required:
+      - title
+      properties:
+        uid:
+          type: string
+        title:
+          type: string
+        parentUid:
+          type: string
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
     DashboardACLInfoDTO:
       title: DashboardACLInfoDTO
       type: object
@@ -707,6 +736,15 @@ components:
           type: string
         userUid:
           type: string
+    UpdateDashboardACLCommand:
+      title: UpdateDashboardACLCommand
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardACLUpdateItem'
+          description: ''
     UpdateFolderCommand_2:
       title: UpdateFolderCommand
       type: object
@@ -727,83 +765,6 @@ components:
       description: 'UpdateFolderCommand captures the information required by the folder service
 
         to update a folder. Use Move to update a folder''s parent folder.'
-    Folder:
-      type: object
-      properties:
-        id:
-          type: integer
-        uid:
-          type: string
-        title:
-          type: string
-        url:
-          type: string
-        hasAcl:
-          type: boolean
-        canSave:
-          type: boolean
-        canEdit:
-          type: boolean
-        canAdmin:
-          type: boolean
-        canDelete:
-          type: boolean
-        createdBy:
-          type: string
-        created:
-          type: string
-          format: date-time
-        updatedBy:
-          type: string
-        updated:
-          type: string
-          format: date-time
-        version:
-          type: integer
-        parentUid:
-          type: string
-          description: UID of parent folder for nested folders
-    UpdateFolderCommand:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-        version:
-          type: integer
-    deleteFolderResponse:
-      title: deleteFolderResponse
-      required:
-      - id
-      - message
-      - title
-      type: object
-      properties:
-        id:
-          type: integer
-          description: ID Identifier of the deleted folder.
-          contentEncoding: int64
-          examples:
-          - 65
-        message:
-          type: string
-          description: Message Message of the deleted folder.
-          examples:
-          - Folder My Folder deleted
-        title:
-          type: string
-          description: Title of the deleted folder.
-          examples:
-          - My Folder
-    Role:
-      title: Role
-      enum:
-      - None
-      - Viewer
-      - Editor
-      - Admin
-      type: string
     DashboardACLUpdateItem:
       title: DashboardACLUpdateItem
       type: object
@@ -828,6 +789,18 @@ components:
       description: 'MoveFolderCommand captures the information required by the folder service
 
         to move a folder.'
+    permission1:
+      title: permission1
+      enum:
+      - Edit
+      - View
+      type: string
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
     Folder_2:
       title: Folder
       type: object
@@ -888,50 +861,32 @@ components:
         version:
           type: integer
           contentEncoding: int64
-    CreateFolderCommand:
+    FolderSearchHit:
+      title: FolderSearchHit
       type: object
-      required:
-      - title
       properties:
-        uid:
+        id:
+          type: integer
+          contentEncoding: int64
+        managedBy:
+          type: string
+          description: 'It can be a user or a tool or a generic API client.
+
+            +enum'
+        parentUid:
           type: string
         title:
           type: string
-        parentUid:
+        uid:
           type: string
-    SuccessResponseBody:
-      title: SuccessResponseBody
-      type: object
-      properties:
-        message:
-          type: string
-    ErrorResponseBody:
-      title: ErrorResponseBody
-      required:
-      - message
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
-        message:
-          type: string
-          description: a human readable version of the error
-        status:
-          type: string
-          description: 'Status An optional status to denote the cause of the error.
-
-
-            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
-    UpdateDashboardACLCommand:
-      title: UpdateDashboardACLCommand
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/DashboardACLUpdateItem'
-          description: ''
+    Role:
+      title: Role
+      enum:
+      - None
+      - Viewer
+      - Editor
+      - Admin
+      type: string
   securitySchemes:
     BearerAuth:
       type: http
@@ -945,3 +900,13 @@ components:
       in: header
       name: Authorization
       description: 'Format: Bearer <api-key>'
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
+      type: http
+      scheme: basic
+x-refined-from:
+- grafana-api.yml
+- grafana-openapi.yml

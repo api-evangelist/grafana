@@ -1,14 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Annotations API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
-  contact:
-    name: Grafana Labs
-    url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+  title: Grafana Annotations API
+  version: '1.0'
+  description: 'Operations tagged Annotations across 2 of this provider''s published API definitions: grafana-api.yml, grafana-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://{instance}.grafana.net/api
   description: Grafana Cloud
@@ -17,16 +11,19 @@ servers:
       default: your-instance
 - url: http://localhost:3000/api
   description: Local Grafana instance
-security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 tags:
 - name: Annotations
   description: Dashboard annotations
 paths:
   /annotations:
-    parameters: []
     get:
       tags:
       - Annotations
@@ -70,6 +67,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Annotation'
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
     post:
       tags:
       - Annotations
@@ -84,6 +85,19 @@ paths:
       responses:
         '200':
           description: Annotation created
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
+    parameters: []
+    servers:
+    - url: https://{instance}.grafana.net/api
+      description: Grafana Cloud
+      variables:
+        instance:
+          default: your-instance
+    - url: http://localhost:3000/api
+      description: Local Grafana instance
   /annotations/{id}:
     delete:
       tags:
@@ -99,6 +113,18 @@ paths:
       responses:
         '200':
           description: Annotation deleted
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
+    servers:
+    - url: https://{instance}.grafana.net/api
+      description: Grafana Cloud
+      variables:
+        instance:
+          default: your-instance
+    - url: http://localhost:3000/api
+      description: Local Grafana instance
   /annotations/graphite:
     parameters: []
     post:
@@ -157,6 +183,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /annotations/mass-delete:
     parameters: []
     post:
@@ -201,6 +239,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /annotations/tags:
     parameters: []
     get:
@@ -253,6 +303,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /annotations/{annotation_id}:
     parameters: []
     get:
@@ -296,6 +358,9 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
     put:
       tags:
       - Annotations
@@ -358,6 +423,9 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
     delete:
       tags:
       - Annotations
@@ -406,6 +474,9 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
     patch:
       tags:
       - Annotations
@@ -468,6 +539,18 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
   /public/dashboards/{accessToken}/annotations:
     parameters: []
     get:
@@ -536,8 +619,110 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
         ChooseTags: true
+      security:
+      - basic: []
+      - api_key: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
+    - url: https://{defaultHost}
+      variables:
+        defaultHost:
+          default: www.example.com/api
 components:
   schemas:
+    Annotation:
+      type: object
+      properties:
+        id:
+          type: integer
+        alertId:
+          type: integer
+        dashboardId:
+          type: integer
+        dashboardUID:
+          type: string
+        panelId:
+          type: integer
+        userId:
+          type: integer
+        login:
+          type: string
+        email:
+          type: string
+        avatarUrl:
+          type: string
+        time:
+          type: integer
+          description: Epoch timestamp in milliseconds
+        timeEnd:
+          type: integer
+        text:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        created:
+          type: integer
+        updated:
+          type: integer
+    CreateAnnotationCommand:
+      type: object
+      required:
+      - text
+      properties:
+        dashboardId:
+          type: integer
+        dashboardUID:
+          type: string
+        panelId:
+          type: integer
+        time:
+          type: integer
+        timeEnd:
+          type: integer
+        text:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+    TagsDTOisthefrontendDTOforTag.:
+      title: TagsDTOisthefrontendDTOforTag.
+      type: object
+      properties:
+        count:
+          type: integer
+          contentEncoding: int64
+        tag:
+          type: string
+    publicError1:
+      title: publicError1
+      required:
+      - messageId
+      - statusCode
+      type: object
+      properties:
+        extra:
+          type: object
+          additionalProperties: {}
+          description: Extra Additional information about the error
+        message:
+          type: string
+          description: Message A human readable message
+        messageId:
+          type: string
+          description: MessageID A unique identifier for the error
+        statusCode:
+          type: integer
+          description: StatusCode The HTTP status code returned
+          contentEncoding: int64
+      description: 'PublicError is derived from Error and only contains information
+
+        available to the end user.'
     AnnotationPanelFilter:
       title: AnnotationPanelFilter
       type: object
@@ -551,117 +736,50 @@ components:
             type: integer
             contentEncoding: int32
           description: Panel IDs that should be included or excluded
-    Annotation_2:
-      title: Annotation
+    AnnotationTarget:
+      title: AnnotationTarget
       type: object
       properties:
-        alertId:
+        limit:
           type: integer
+          description: 'Only required/valid for the grafana datasource...
+
+            but code+tests is already depending on it so hard to change'
           contentEncoding: int64
-        alertName:
-          type: string
-        avatarUrl:
-          type: string
-        created:
-          type: integer
-          contentEncoding: int64
-        dashboardId:
-          type: integer
-          description: 'Deprecated: Use DashboardUID and OrgID instead'
-          contentEncoding: int64
-        dashboardUID:
-          type: string
-        data:
-          type: object
-        email:
-          type: string
-        id:
-          type: integer
-          contentEncoding: int64
-        login:
-          type: string
-        newState:
-          type: string
-        panelId:
-          type: integer
-          contentEncoding: int64
-        prevState:
-          type: string
+        matchAny:
+          type: boolean
+          description: 'Only required/valid for the grafana datasource...
+
+            but code+tests is already depending on it so hard to change'
         tags:
           type: array
           items:
             type: string
-          description: ''
-        text:
+          description: 'Only required/valid for the grafana datasource...
+
+            but code+tests is already depending on it so hard to change'
+        type:
           type: string
-        time:
-          type: integer
-          contentEncoding: int64
-        timeEnd:
-          type: integer
-          contentEncoding: int64
-        updated:
-          type: integer
-          contentEncoding: int64
-        userId:
-          type: integer
-          contentEncoding: int64
-    postAnnotationResponse:
-      title: postAnnotationResponse
+          description: 'Only required/valid for the grafana datasource...
+
+            but code+tests is already depending on it so hard to change'
+      description: 'TODO: this should be a regular DataQuery that depends on the selected dashboard
+
+        these match the properties of the "grafana" datasouce that is default in most dashboards'
+    PostAnnotationsCmd:
+      title: PostAnnotationsCmd
       required:
-      - id
-      - message
+      - text
       type: object
       properties:
-        id:
-          type: integer
-          description: ID Identifier of the created annotation.
-          contentEncoding: int64
-          examples:
-          - 65
-        message:
-          type: string
-          description: Message Message of the created annotation.
-    MassDeleteAnnotationsCmd:
-      title: MassDeleteAnnotationsCmd
-      type: object
-      properties:
-        annotationId:
-          type: integer
-          contentEncoding: int64
         dashboardId:
           type: integer
           contentEncoding: int64
         dashboardUID:
           type: string
-        panelId:
-          type: integer
-          contentEncoding: int64
-    ErrorResponseBody:
-      title: ErrorResponseBody
-      required:
-      - message
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
-        message:
-          type: string
-          description: a human readable version of the error
-        status:
-          type: string
-          description: 'Status An optional status to denote the cause of the error.
-
-
-            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
-    PatchAnnotationsCmd:
-      title: PatchAnnotationsCmd
-      type: object
-      properties:
         data:
           type: object
-        id:
+        panelId:
           type: integer
           contentEncoding: int64
         tags:
@@ -731,169 +849,6 @@ components:
       description: 'TODO docs
 
         FROM: AnnotationQuery in grafana-data/src/types/annotations.ts'
-    AnnotationTarget:
-      title: AnnotationTarget
-      type: object
-      properties:
-        limit:
-          type: integer
-          description: 'Only required/valid for the grafana datasource...
-
-            but code+tests is already depending on it so hard to change'
-          contentEncoding: int64
-        matchAny:
-          type: boolean
-          description: 'Only required/valid for the grafana datasource...
-
-            but code+tests is already depending on it so hard to change'
-        tags:
-          type: array
-          items:
-            type: string
-          description: 'Only required/valid for the grafana datasource...
-
-            but code+tests is already depending on it so hard to change'
-        type:
-          type: string
-          description: 'Only required/valid for the grafana datasource...
-
-            but code+tests is already depending on it so hard to change'
-      description: 'TODO: this should be a regular DataQuery that depends on the selected dashboard
-
-        these match the properties of the "grafana" datasouce that is default in most dashboards'
-    FindTagsResultistheresultofatagssearch.:
-      title: FindTagsResultistheresultofatagssearch.
-      type: object
-      properties:
-        tags:
-          type: array
-          items:
-            $ref: '#/components/schemas/TagsDTOisthefrontendDTOforTag.'
-          description: ''
-    TagsDTOisthefrontendDTOforTag.:
-      title: TagsDTOisthefrontendDTOforTag.
-      type: object
-      properties:
-        count:
-          type: integer
-          contentEncoding: int64
-        tag:
-          type: string
-    UpdateAnnotationsCmd:
-      title: UpdateAnnotationsCmd
-      type: object
-      properties:
-        data:
-          type: object
-        id:
-          type: integer
-          contentEncoding: int64
-        tags:
-          type: array
-          items:
-            type: string
-          description: ''
-        text:
-          type: string
-        time:
-          type: integer
-          contentEncoding: int64
-        timeEnd:
-          type: integer
-          contentEncoding: int64
-    CreateAnnotationCommand:
-      type: object
-      required:
-      - text
-      properties:
-        dashboardId:
-          type: integer
-        dashboardUID:
-          type: string
-        panelId:
-          type: integer
-        time:
-          type: integer
-        timeEnd:
-          type: integer
-        text:
-          type: string
-        tags:
-          type: array
-          items:
-            type: string
-    Annotation:
-      type: object
-      properties:
-        id:
-          type: integer
-        alertId:
-          type: integer
-        dashboardId:
-          type: integer
-        dashboardUID:
-          type: string
-        panelId:
-          type: integer
-        userId:
-          type: integer
-        login:
-          type: string
-        email:
-          type: string
-        avatarUrl:
-          type: string
-        time:
-          type: integer
-          description: Epoch timestamp in milliseconds
-        timeEnd:
-          type: integer
-        text:
-          type: string
-        tags:
-          type: array
-          items:
-            type: string
-        created:
-          type: integer
-        updated:
-          type: integer
-    GetAnnotationTagsResponseisaresponsestructforFindTagsResult.:
-      title: GetAnnotationTagsResponseisaresponsestructforFindTagsResult.
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/FindTagsResultistheresultofatagssearch.'
-    publicError1:
-      title: publicError1
-      required:
-      - messageId
-      - statusCode
-      type: object
-      properties:
-        extra:
-          type: object
-          additionalProperties: {}
-          description: Extra Additional information about the error
-        message:
-          type: string
-          description: Message A human readable message
-        messageId:
-          type: string
-          description: MessageID A unique identifier for the error
-        statusCode:
-          type: integer
-          description: StatusCode The HTTP status code returned
-          contentEncoding: int64
-      description: 'PublicError is derived from Error and only contains information
-
-        available to the end user.'
-    SuccessResponseBody:
-      title: SuccessResponseBody
-      type: object
-      properties:
-        message:
-          type: string
     DataSourceRef:
       title: DataSourceRef
       type: object
@@ -905,6 +860,43 @@ components:
           type: string
           description: Specific datasource instance
       description: Ref to a DataSource instance
+    postAnnotationResponse:
+      title: postAnnotationResponse
+      required:
+      - id
+      - message
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID Identifier of the created annotation.
+          contentEncoding: int64
+          examples:
+          - 65
+        message:
+          type: string
+          description: Message Message of the created annotation.
+    SuccessResponseBody:
+      title: SuccessResponseBody
+      type: object
+      properties:
+        message:
+          type: string
+    GetAnnotationTagsResponseisaresponsestructforFindTagsResult.:
+      title: GetAnnotationTagsResponseisaresponsestructforFindTagsResult.
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/FindTagsResultistheresultofatagssearch.'
+    FindTagsResultistheresultofatagssearch.:
+      title: FindTagsResultistheresultofatagssearch.
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagsDTOisthefrontendDTOforTag.'
+          description: ''
     AnnotationEvent:
       title: AnnotationEvent
       type: object
@@ -943,6 +935,144 @@ components:
         timeEnd:
           type: integer
           contentEncoding: int64
+    UpdateAnnotationsCmd:
+      title: UpdateAnnotationsCmd
+      type: object
+      properties:
+        data:
+          type: object
+        id:
+          type: integer
+          contentEncoding: int64
+        tags:
+          type: array
+          items:
+            type: string
+          description: ''
+        text:
+          type: string
+        time:
+          type: integer
+          contentEncoding: int64
+        timeEnd:
+          type: integer
+          contentEncoding: int64
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
+    Annotation_2:
+      title: Annotation
+      type: object
+      properties:
+        alertId:
+          type: integer
+          contentEncoding: int64
+        alertName:
+          type: string
+        avatarUrl:
+          type: string
+        created:
+          type: integer
+          contentEncoding: int64
+        dashboardId:
+          type: integer
+          description: 'Deprecated: Use DashboardUID and OrgID instead'
+          contentEncoding: int64
+        dashboardUID:
+          type: string
+        data:
+          type: object
+        email:
+          type: string
+        id:
+          type: integer
+          contentEncoding: int64
+        login:
+          type: string
+        newState:
+          type: string
+        panelId:
+          type: integer
+          contentEncoding: int64
+        prevState:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+          description: ''
+        text:
+          type: string
+        time:
+          type: integer
+          contentEncoding: int64
+        timeEnd:
+          type: integer
+          contentEncoding: int64
+        updated:
+          type: integer
+          contentEncoding: int64
+        userId:
+          type: integer
+          contentEncoding: int64
+    MassDeleteAnnotationsCmd:
+      title: MassDeleteAnnotationsCmd
+      type: object
+      properties:
+        annotationId:
+          type: integer
+          contentEncoding: int64
+        dashboardId:
+          type: integer
+          contentEncoding: int64
+        dashboardUID:
+          type: string
+        panelId:
+          type: integer
+          contentEncoding: int64
+    type3:
+      title: type3
+      enum:
+      - alert
+      - annotation
+      type: string
+    PatchAnnotationsCmd:
+      title: PatchAnnotationsCmd
+      type: object
+      properties:
+        data:
+          type: object
+        id:
+          type: integer
+          contentEncoding: int64
+        tags:
+          type: array
+          items:
+            type: string
+          description: ''
+        text:
+          type: string
+        time:
+          type: integer
+          contentEncoding: int64
+        timeEnd:
+          type: integer
+          contentEncoding: int64
   securitySchemes:
     BearerAuth:
       type: http
@@ -956,3 +1086,13 @@ components:
       in: header
       name: Authorization
       description: 'Format: Bearer <api-key>'
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
+      type: http
+      scheme: basic
+x-refined-from:
+- grafana-api.yml
+- grafana-openapi.yml

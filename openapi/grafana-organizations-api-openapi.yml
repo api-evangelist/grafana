@@ -1,14 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Organizations API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
-  contact:
-    name: Grafana Labs
-    url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+  title: Grafana Organizations API
+  version: '1.0'
+  description: 'Operations tagged Organizations across 2 of this provider''s published API definitions: grafana-api.yml, grafana-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://{instance}.grafana.net/api
   description: Grafana Cloud
@@ -17,16 +11,19 @@ servers:
       default: your-instance
 - url: http://localhost:3000/api
   description: Local Grafana instance
-security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 tags:
 - name: Organizations
   description: Organization management
 paths:
   /orgs:
-    parameters: []
     get:
       tags:
       - Organizations
@@ -54,6 +51,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Organization'
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
     post:
       tags:
       - Organizations
@@ -68,6 +69,19 @@ paths:
       responses:
         '200':
           description: Organization created
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
+    parameters: []
+    servers:
+    - url: https://{instance}.grafana.net/api
+      description: Grafana Cloud
+      variables:
+        instance:
+          default: your-instance
+    - url: http://localhost:3000/api
+      description: Local Grafana instance
   /orgs/{orgId}:
     get:
       tags:
@@ -87,6 +101,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Organization'
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
     put:
       tags:
       - Organizations
@@ -107,6 +125,10 @@ paths:
       responses:
         '200':
           description: Organization updated
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
     delete:
       tags:
       - Organizations
@@ -121,6 +143,18 @@ paths:
       responses:
         '200':
           description: Organization deleted
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
+    servers:
+    - url: https://{instance}.grafana.net/api
+      description: Grafana Cloud
+      variables:
+        instance:
+          default: your-instance
+    - url: http://localhost:3000/api
+      description: Local Grafana instance
   /orgs/{orgId}/users:
     get:
       tags:
@@ -142,6 +176,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/OrgUser'
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
     post:
       tags:
       - Organizations
@@ -162,12 +200,43 @@ paths:
       responses:
         '200':
           description: User added
+      security:
+      - BearerAuth: []
+      - BasicAuth: []
+      - ApiKeyAuth: []
+    servers:
+    - url: https://{instance}.grafana.net/api
+      description: Grafana Cloud
+      variables:
+        instance:
+          default: your-instance
+    - url: http://localhost:3000/api
+      description: Local Grafana instance
 components:
   schemas:
     CreateOrgCommand:
       type: object
       required:
       - name
+      properties:
+        name:
+          type: string
+    AddOrgUserCommand:
+      type: object
+      required:
+      - loginOrEmail
+      - role
+      properties:
+        loginOrEmail:
+          type: string
+        role:
+          type: string
+          enum:
+          - Viewer
+          - Editor
+          - Admin
+    UpdateOrgCommand:
+      type: object
       properties:
         name:
           type: string
@@ -193,11 +262,6 @@ components:
               type: string
             country:
               type: string
-    UpdateOrgCommand:
-      type: object
-      properties:
-        name:
-          type: string
     OrgUser:
       type: object
       properties:
@@ -224,20 +288,33 @@ components:
           format: date-time
         lastSeenAtAge:
           type: string
-    AddOrgUserCommand:
+    OrgDTO:
+      title: OrgDTO
       type: object
-      required:
-      - loginOrEmail
-      - role
       properties:
-        loginOrEmail:
+        id:
+          type: integer
+          contentEncoding: int64
+        name:
           type: string
-        role:
+    ErrorResponseBody:
+      title: ErrorResponseBody
+      required:
+      - message
+      type: object
+      properties:
+        error:
           type: string
-          enum:
-          - Viewer
-          - Editor
-          - Admin
+          description: Error An optional detailed description of the actual error. Only included if running in developer mode.
+        message:
+          type: string
+          description: a human readable version of the error
+        status:
+          type: string
+          description: 'Status An optional status to denote the cause of the error.
+
+
+            For example, a 412 Precondition Failed error may include additional information of why that error happened.'
   securitySchemes:
     BearerAuth:
       type: http
@@ -251,3 +328,13 @@ components:
       in: header
       name: Authorization
       description: 'Format: Bearer <api-key>'
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
+      type: http
+      scheme: basic
+x-refined-from:
+- grafana-api.yml
+- grafana-openapi.yml

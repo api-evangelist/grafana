@@ -1,26 +1,24 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Grafana HTTP Access Licenses API
-  description: The Grafana HTTP API provides programmatic access to Grafana's core functionality including dashboards, data sources, alerts, users, organizations, folders, annotations, and teams. Authentication is handled via API keys, basic auth, or OAuth tokens passed in the Authorization header.
-  version: 11.0.0
+  title: Grafana Licenses API
+  description: Grafana is an open-source analytics and visualization platform that helps you monitor and analyze data from various sources.
   contact:
     name: Grafana Labs
     url: https://grafana.com
-  license:
-    name: AGPL-3.0
-    url: https://www.gnu.org/licenses/agpl-3.0.html
+    email: hello@grafana.com
+  version: 0.0.1
 servers:
-- url: https://{instance}.grafana.net/api
-  description: Grafana Cloud
+- url: http://{defaultHost}
   variables:
-    instance:
-      default: your-instance
-- url: http://localhost:3000/api
-  description: Local Grafana instance
+    defaultHost:
+      default: www.example.com/api
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com/api
 security:
-- BearerAuth: []
-- BasicAuth: []
-- ApiKeyAuth: []
+- basic: []
+- api_key: []
 tags:
 - name: Licenses
 paths:
@@ -56,27 +54,6 @@ paths:
         ChooseTags: true
   /licensing/token:
     parameters: []
-    get:
-      tags:
-      - Licenses
-      summary: Grafana Get License Token
-      description: This API operation retrieves the current license token information from a Grafana instance. When invoked with a GET request to the /licensing/token endpoint, it returns details about the active licensing configuration, which may include token metadata, validity status, expiration dates, and associated entitlements or features enabled by the license. This endpoint is typically used by administrators to verify licensing status, check token validity, or retrieve license information for audit and compliance purposes within Grafana's enterprise or commercial offerings.
-      operationId: getLicenseToken
-      parameters: []
-      responses:
-        '200':
-          description: (empty)
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Token'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
     post:
       tags:
       - Licenses
@@ -101,69 +78,6 @@ paths:
                 $ref: '#/components/schemas/Token'
         '400':
           description: BadRequestError is returned when the request is invalid and it cannot be processed.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-      deprecated: false
-      x-api-evangelist-processing:
-        SplitPascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
-    delete:
-      tags:
-      - Licenses
-      summary: Grafana Delete License Token
-      description: This API operation removes the currently active license token from a Grafana instance. When executed, it deletes the stored license information, effectively reverting the instance to an unlicensed state or to use any default licensing configuration. This endpoint requires appropriate administrative permissions and is typically used when decommissioning a licensed Grafana installation, switching to a different license, or troubleshooting license-related issues. The DELETE method ensures complete removal of the token from the system's license management configuration.
-      operationId: deleteLicenseToken
-      parameters: []
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DeleteTokenCommand'
-        required: true
-      responses:
-        '202':
-          description: AcceptedResponse
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '400':
-          description: BadRequestError is returned when the request is invalid and it cannot be processed.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '401':
-          description: UnauthorizedError is returned when the request is not authenticated.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '403':
-          description: ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '422':
-          description: UnprocessableEntityError
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '500':
-          description: InternalServerError is a general error indicating something went wrong internally.
           headers: {}
           content:
             application/json:
@@ -219,6 +133,22 @@ paths:
         ChooseTags: true
 components:
   schemas:
+    ActiveUserStats:
+      title: ActiveUserStats
+      type: object
+      properties:
+        active_admins_and_editors:
+          type: integer
+          contentEncoding: int64
+        active_anonymous_devices:
+          type: integer
+          contentEncoding: int64
+        active_users:
+          type: integer
+          contentEncoding: int64
+        active_viewers:
+          type: integer
+          contentEncoding: int64
     Token:
       title: Token
       type: object
@@ -286,22 +216,6 @@ components:
           contentEncoding: int64
         usage_billing:
           type: boolean
-    ActiveUserStats:
-      title: ActiveUserStats
-      type: object
-      properties:
-        active_admins_and_editors:
-          type: integer
-          contentEncoding: int64
-        active_anonymous_devices:
-          type: integer
-          contentEncoding: int64
-        active_users:
-          type: integer
-          contentEncoding: int64
-        active_viewers:
-          type: integer
-          contentEncoding: int64
     ErrorResponseBody:
       title: ErrorResponseBody
       required:
@@ -327,15 +241,10 @@ components:
         instance:
           type: string
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: Service account token or API key
-    BasicAuth:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
       type: http
       scheme: basic
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: 'Format: Bearer <api-key>'

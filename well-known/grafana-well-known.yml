@@ -2,19 +2,24 @@ generated: '2026-06-20'
 method: searched
 host: https://grafana.com
 source: live probes of /.well-known/* on grafana.com
-documents:
-- path: /.well-known/security.txt
-  status: 404
-- path: /.well-known/openid-configuration
-  status: 404
-- path: /.well-known/oauth-authorization-server
-  status: 404
-- path: /.well-known/api-catalog
-  status: 404
-- path: /.well-known/ai-plugin.json
-  status: 404
-notes: >-
-  grafana.com publishes no /.well-known discovery documents. Security reporting is handled
-  via https://grafana.com/legal/report-a-security-issue/ and an Intigriti VDP/bug-bounty
-  program (see security/grafana-vulnerability-disclosure.yml), not a security.txt.
+notes: grafana.com publishes no /.well-known discovery documents. Security reporting is handled via https://grafana.com/legal/report-a-security-issue/
+  and an Intigriti VDP/bug-bounty program (see security/grafana-vulnerability-disclosure.yml), not a security.txt.
   OIDC discovery documents live on a customer's own Grafana instance, not the marketing host.
+hosts:
+- host: https://grafana.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+x-shape-fix:
+  converted: '2026-08-20'
+  from: documents
+  note: Rewritten into hosts[] -> documents[], the only shape well_known_docs() in score.rb reads. A served
+    .well-known surface recorded in any other shape scores as absent.
